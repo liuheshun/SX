@@ -40,48 +40,93 @@
 @implementation MyViewController
 -(void)viewWillAppear:(BOOL)animated{
     
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getLoginNotifications:) name:@"postLoginNotification" object:nil];
-    
-    [self requsetMyData];
-
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//    self.isLogin = [user valueForKey:@"isLoginState"];
     if ([user valueForKey:@"isLoginState"])
     {
         [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
     }
-    DLog(@"loginState登陆状态 ==== %@" ,[GlobalHelper shareInstance].isLoginState);
+    
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusNotReachable)
+    {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+        
+    }else{
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+//        [self.view addSubview:self.tableView];
+        if (self.tableView) {
+             [self.view addSubview:self.tableView];
+        }
+        [self requsetMyData];
 
+    }
 
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    [SVProgressHUD dismiss];
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navigationController.navigationBarHidden = YES;
-    [self.view addSubview:self.tableView];
+    self.myDataMarray = [NSMutableArray array];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    
-    
-    
 
+    [self netWorkIsOnLine];
 }
+
+
+
+-(void)netWorkIsOnLine{
+    
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    NSLog(@"Initial reachability status:%@",@(status));
+    
+    if (status == RealStatusNotReachable)
+    {
+        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+        
+    }else{
+        
+        [self.view addSubview:self.tableView];
+        [self requsetMyData];
+
+        
+        [[GlobalHelper shareInstance] removeErrorView];
+    }
+}
+
+
+#pragma mark = 重新加载
+
+-(void)errorLoadingBtnAction{
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    
+    if (status == RealStatusNotReachable){
+        
+    }else{
+        [self.view addSubview:self.tableView];
+        [self requsetMyData];
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+
+        [[GlobalHelper shareInstance] removeErrorView];
+    }
+}
+
+
+
+
 
 
 #pragma mark = 我的数据
 
 -(void)requsetMyData{
     
-    self.myDataMarray = [NSMutableArray array];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
@@ -89,7 +134,6 @@
     NSString *nonce = [self ret32bitString];//随机数
     NSString *curTime = [self dateTransformToTimeSp];
     NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
     [dic setValue:secret forKey:@"secret"];
     [dic setValue:nonce forKey:@"nonce"];
     [dic setValue:curTime forKey:@"curTime"];
@@ -97,6 +141,7 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     DLog(@"2我的接口=== %@" ,dic);
+    [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
@@ -108,7 +153,8 @@
         }
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
-            
+            [self.myDataMarray removeAllObjects];
+
             NSInteger waitBuy =[ returnData[@"data"][@"waitBuy"] integerValue];
             NSInteger waitTransport =[ returnData[@"data"][@"waitTransport"] integerValue];
             NSInteger  salesReturn = [returnData[@"data"][@"salesReturn"] integerValue];
@@ -205,6 +251,8 @@
     upParam.mimeType =@"image/png";
     upParam.data = data;
 
+    [MHAsiNetworkHandler startMonitoring];
+
     [MHNetworkManager uploadFileWithURL:[NSString stringWithFormat:@"%@/auth/user/updateHeadPic" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"头像返回======= %@",returnData);
         if ([returnData[@"status"] integerValue] == 200) {
@@ -286,7 +334,8 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     DLog(@"修改用户头像dic==== %@" ,dic);
-    
+    [MHAsiNetworkHandler startMonitoring];
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/updateHeadPic" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"修改用户头像==== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
@@ -319,6 +368,7 @@
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:userNameString forKey:@"nickname"];
     DLog(@"修改用户昵称dic==== %@" ,dic);
+    [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/updateName" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"修改用户昵称==== %@" ,returnData);

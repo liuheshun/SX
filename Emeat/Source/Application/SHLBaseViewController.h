@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "HomePageModel.h"
+
 #import "HomePageTableViewCell.h"
+
+#import "RealReachability.h"
 
 typedef void(^clickRightItemBlock)(void);
 
@@ -41,6 +45,8 @@ typedef void(^clickRightItemBlock)(void);
 #pragma mark 判断手机格式是否正确
 -(BOOL)checkTel:(NSString *)tel;
 
+///网络状态
+@property (nonatomic,assign) ReachabilityStatus reachabilityStatus;
 
 
 /**

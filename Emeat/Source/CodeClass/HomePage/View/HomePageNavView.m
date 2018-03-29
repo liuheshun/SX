@@ -38,8 +38,8 @@
 -(UIButton*)selectAddressBtn{
     if (!_selectAddressBtn) {
         _selectAddressBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _selectAddressBtn.frame = CGRectMake((kWidth-150)/2, kStatusBarHeight, 150, kTopBarHeight);
-        _selectAddressBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        _selectAddressBtn.frame = CGRectMake((kWidth-150*kScale)/2, kStatusBarHeight, 150*kScale, kTopBarHeight);
+        _selectAddressBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_selectAddressBtn setImage:[UIImage imageNamed:@"jiantou"] forState:0];
         _selectAddressBtn.titleLabel.lineBreakMode =  NSLineBreakByTruncatingTail;
         _selectAddressBtn.backgroundColor = RGB(236, 31, 35, 1);
@@ -55,7 +55,7 @@
     if (!_sortBtn) {
         _sortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _sortBtn.frame = CGRectMake(kWidth-kTopBarHeight, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
-        _sortBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        _sortBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_sortBtn setImage:[UIImage imageNamed:@"fenlei"] forState:0];
         [_sortBtn addTarget:self action:@selector(sortBtnAction) forControlEvents:1];
     }
@@ -66,13 +66,13 @@
 -(UIButton*)searchBtn{
     if (!_searchBtn) {
         _searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _searchBtn.frame = CGRectMake(30, MaxY(self.selectAddressBtn), kWidth-60, 30);
+        _searchBtn.frame = CGRectMake(30*kScale, MaxY(self.selectAddressBtn), kWidth-60*kScale, 30*kScale);
         _searchBtn.backgroundColor = [UIColor whiteColor];
         [_searchBtn setImage:[UIImage imageNamed:@"sousuo"] forState:0];
         [_searchBtn setTitle:@"请输入商品名称" forState:0];
         [_searchBtn setTitleColor:RGB(185, 185, 185, 1) forState:0];
-        _searchBtn.titleLabel.font = [UIFont systemFontOfSize:12.0];
-        _searchBtn.layer.cornerRadius = 15;
+        _searchBtn.titleLabel.font = [UIFont systemFontOfSize:12.0*kScale];
+        _searchBtn.layer.cornerRadius = 15*kScale;
         _searchBtn.layer.masksToBounds = YES;
         [_searchBtn addTarget:self action:@selector(searchBtnAction) forControlEvents:1];
         
@@ -105,7 +105,7 @@
 -(UIButton*)shadeBtn{
     if (!_shadeBtn) {
         _shadeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _shadeBtn.frame = CGRectMake(0, 0, kWidth-125, kHeight-LL_TabbarSafeBottomMargin);
+        _shadeBtn.frame = CGRectMake(0, 0, kWidth-125*kScale, kHeight-LL_TabbarSafeBottomMargin);
         _shadeBtn.backgroundColor = RGB(0, 0, 0, 0.5);
         [_shadeBtn setImage:[UIImage imageNamed:@"niu"] forState:0];
         [_shadeBtn addTarget:self action:@selector(shadeBtnAction) forControlEvents:1];
@@ -116,7 +116,7 @@
 
 -(UITableView*)tableView{
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(kWidth-125, kStatusBarHeight, 125, kHeight-kStatusBarHeight-LL_TabbarSafeBottomMargin) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(kWidth-125*kScale, kStatusBarHeight, 125*kScale, kHeight-kStatusBarHeight-LL_TabbarSafeBottomMargin) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -134,19 +134,19 @@
     return 1;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 115;
+    return 115*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-        return 50;
+        return 50*kScale;
     }
     return 0.01;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-        UILabel *sortTitleLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, WIDTH(self.tableView), 50)];
+        UILabel *sortTitleLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, WIDTH(self.tableView), 50*kScale)];
         sortTitleLab.text = @"分类";
         sortTitleLab.textAlignment = NSTextAlignmentCenter;
         sortTitleLab.textColor = [UIColor whiteColor];
@@ -168,7 +168,7 @@
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 1)];
     view.backgroundColor = [UIColor whiteColor];
-    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(12.5, 0, 100, 1)];
+    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(12.5*kScale, 0, 100*kScale, 1)];
     lineView.backgroundColor = RGB(236, 31, 35, 1 );
     [view addSubview:lineView];
     

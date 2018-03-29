@@ -214,7 +214,7 @@
         [self.dataArray removeAllObjects];
     }
     
-    [MHAsiNetworkHandler startMonitoring];
+    //[MHAsiNetworkHandler startMonitoring];
     DLog(@"分类列表strURL==== %@" ,strURL);
 
     

@@ -12,12 +12,17 @@
 @interface SelectPayTypeViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
-//单选，当前选中的行
+///单选，当前选中的行
 @property (assign, nonatomic) NSIndexPath *selIndex;
-//底部view
+///底部view
 @property (nonatomic,strong) UIButton *bottomPayBtn;
-//当前选择的支付方式
+///当前选择的支付方式
 @property (nonatomic,strong) NSString *selectPayType;
+///付款方式
+@property (nonatomic,strong) NSMutableArray *payTypeMarray;
+///图标
+@property (nonatomic,strong) NSMutableArray *payTypeIconMarray;
+
 
 
 @end
@@ -30,6 +35,17 @@
     self.navItem.title = @"选择支付方式";
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.bottomPayBtn];
+    if (self.periodic == 0) {
+        ///非周期性用户
+        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" , nil];
+        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian", nil];
+        
+    }else if (self.periodic == 1){
+         ///周期性用户
+         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" ,@"其它方式", nil];
+        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian",@"qitazhifu", nil];
+
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -54,29 +70,29 @@
     return 1;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
+    return self.payTypeMarray.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50;
+    return 50*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
    
-    return 15;
+    return 15*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15*kScale)];
     view.backgroundColor = RGB(238, 238, 238, 1);
     return view;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 15;
+    return 15*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15*kScale)];
     view.backgroundColor = [UIColor whiteColor];
     
     return view;
@@ -94,10 +110,8 @@
         cell1.backgroundColor = [UIColor whiteColor];
         
     }
-    NSArray*array = @[@"支付宝支付" ,@"微信支付" ,@"银行卡快捷支付" ,@"其它方式"];
-    NSArray *iconArray = @[@"zhifubao" ,@"weixin" ,@"yinlian" ,@"qitazhifu"];
-    [cell1.payTypeBtn setTitle:array[indexPath.row] forState:0];
-    [cell1.payTypeBtn setImage:[UIImage imageNamed:iconArray[indexPath.row]] forState:0];
+    [cell1.payTypeBtn setTitle:self.payTypeMarray[indexPath.row] forState:0];
+    [cell1.payTypeBtn setImage:[UIImage imageNamed:self.payTypeIconMarray[indexPath.row]] forState:0];
     cell1.payTypeBtn.userInteractionEnabled = NO;
     cell1.roundPayBtn.userInteractionEnabled = NO;
     

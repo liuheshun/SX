@@ -42,6 +42,8 @@
 -(void)configHomePageCellWithModel:(HomePageModel *)model{
     
     [self.mainImv sd_setImageWithURL:[NSURL URLWithString:model.mainImage]];
+    [self.mainImv sd_setImageWithURL:[NSURL URLWithString:model.mainImage] placeholderImage:[UIImage imageNamed:@"列表图加载"]];
+    
     self.nameLab.text = model.commodityName;
     self.descLab.text = model.commodityDesc;
   

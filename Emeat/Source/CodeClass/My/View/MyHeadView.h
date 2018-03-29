@@ -35,7 +35,7 @@ typedef void(^returnUserNameBlock)(NSString *userName);
 @property (nonatomic,strong) UIButton *checkAllOrderBtn;
 ///待付款
 @property (nonatomic,strong) UIButton *waitPayBtn;
-///待发货
+///待发货(待确认)
 @property (nonatomic,strong) UIButton *waitSendGoodsBtn;
 ///待收货
 @property (nonatomic,strong) UIButton *waitReceiveBtn;

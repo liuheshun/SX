@@ -33,7 +33,6 @@
 		162F970920577DDC004EA49F /* ZJSegmentStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96FF20577DDB004EA49F /* ZJSegmentStyle.m */; };
 		162F970A20577DDC004EA49F /* ZJScrollSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970020577DDB004EA49F /* ZJScrollSegmentView.m */; };
 		162F970B20577DDC004EA49F /* ZJScrollPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970120577DDB004EA49F /* ZJScrollPageView.m */; };
-		162F970E20579AFF004EA49F /* EmptyStatusViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970D20579AFF004EA49F /* EmptyStatusViews.m */; };
 		1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA7F1FCE938900F7162C /* SortListSegmentView.m */; };
 		1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA821FCFA66200F7162C /* SortCheckView.m */; };
 		1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA851FCFE0FF00F7162C /* SeacherViewController.m */; };
@@ -48,7 +47,6 @@
 		165581152008F8D100F33D6B /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1655810D2008F8D100F33D6B /* README.txt */; };
 		166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166DACF71FC6B9F500119444 /* HomePageNavView.m */; };
 		1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */; };
-		1679D1B8204D4DC4009C2E25 /* EmptyStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1B7204D4DC4009C2E25 /* EmptyStatusView.m */; };
 		1679D1BE204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */; };
 		1681304E1FC2955F0045207E /* HomePageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1681304D1FC2955F0045207E /* HomePageTableViewCell.m */; };
 		168130511FC2A5B90045207E /* HomePageDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 168130501FC2A5B90045207E /* HomePageDetailsViewController.m */; };
@@ -215,8 +213,6 @@
 		162F970120577DDB004EA49F /* ZJScrollPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollPageView.m; sourceTree = "<group>"; };
 		162F970220577DDB004EA49F /* UIViewController+ZJScrollPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZJScrollPageController.h"; sourceTree = "<group>"; };
 		162F970320577DDB004EA49F /* ZJTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTitleView.h; sourceTree = "<group>"; };
-		162F970C20579AFF004EA49F /* EmptyStatusViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyStatusViews.h; sourceTree = "<group>"; };
-		162F970D20579AFF004EA49F /* EmptyStatusViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyStatusViews.m; sourceTree = "<group>"; };
 		1643DA7E1FCE938900F7162C /* SortListSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortListSegmentView.h; sourceTree = "<group>"; };
 		1643DA7F1FCE938900F7162C /* SortListSegmentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortListSegmentView.m; sourceTree = "<group>"; };
 		1643DA811FCFA66200F7162C /* SortCheckView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortCheckView.h; sourceTree = "<group>"; };
@@ -244,8 +240,6 @@
 		166DACF71FC6B9F500119444 /* HomePageNavView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageNavView.m; sourceTree = "<group>"; };
 		1679D1B3204D249A009C2E25 /* MyAddressTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAddressTableViewCell.h; sourceTree = "<group>"; };
 		1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyAddressTableViewCell.m; sourceTree = "<group>"; };
-		1679D1B6204D4DC4009C2E25 /* EmptyStatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyStatusView.h; sourceTree = "<group>"; };
-		1679D1B7204D4DC4009C2E25 /* EmptyStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyStatusView.m; sourceTree = "<group>"; };
 		1679D1BC204E7C3A009C2E25 /* HomePageOtherDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageOtherDetailsViewController.h; sourceTree = "<group>"; };
 		1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageOtherDetailsViewController.m; sourceTree = "<group>"; };
 		1681304C1FC2955F0045207E /* HomePageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageTableViewCell.h; sourceTree = "<group>"; };
@@ -732,10 +726,6 @@
 				16D950CE1FF4EAA400DBC7B8 /* LimitInput.m */,
 				16D950B31FF0DB4B00DBC7B8 /* GlobalHelper.h */,
 				16D950B41FF0DB4B00DBC7B8 /* GlobalHelper.m */,
-				162F970C20579AFF004EA49F /* EmptyStatusViews.h */,
-				162F970D20579AFF004EA49F /* EmptyStatusViews.m */,
-				1679D1B6204D4DC4009C2E25 /* EmptyStatusView.h */,
-				1679D1B7204D4DC4009C2E25 /* EmptyStatusView.m */,
 				16DC91EA2010750C003C25BE /* BDImagePicker */,
 				16DC91E0200F655E003C25BE /* addCarAnimationTool */,
 				16FF04E71FD4E9E700F8C280 /* Location */,
@@ -1376,7 +1366,6 @@
 				16EE103A1FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m in Sources */,
 				16901CA51FD67FF50080762A /* DDSearchManager.h in Sources */,
 				16901CA61FD67FF50080762A /* DDSearchManager.m in Sources */,
-				1679D1B8204D4DC4009C2E25 /* EmptyStatusView.m in Sources */,
 				16901CF51FDAB9D80080762A /* OrderDetailesViewController.m in Sources */,
 				16901CA71FD67FF50080762A /* DDSearchObj.h in Sources */,
 				16EE10171FE1683A0099DA91 /* AfterSaleViewController.m in Sources */,
@@ -1470,7 +1459,6 @@
 				16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */,
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,
-				162F970E20579AFF004EA49F /* EmptyStatusViews.m in Sources */,
 				1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */,
 				168130571FC3C1210045207E /* HomePageCommentDetailsTableViewCell.m in Sources */,
 				16CFD7531FB595270015F2C1 /* ConfirmOrderInfoBottomView.m in Sources */,

@@ -52,7 +52,7 @@
     
     else  if (orderModel.status == 50 || orderModel.status == 40)
     {
-        self.orderStatusLab.text = @"待发货";
+        self.orderStatusLab.text = @"待确认";
         self.orderStatusDetailsLab.text = @"用户已支付,等待商家发货";
         [self.statusImv setImage:[UIImage imageNamed:@"daifahuo1"] forState:0];
 

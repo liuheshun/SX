@@ -11,8 +11,10 @@
 #import "ShoppingCartViewController.h"
 #import "MyViewController.h"
 #import "IQKeyboardManager.h"
-
 #import <AMapFoundationKit/AMapFoundationKit.h>
+#import "RealReachability.h"
+#import "WXApi.h"
+
 //高德地图key
 static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
@@ -25,73 +27,9 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 
 
--(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
-    DLog(@"----------------------------------");
-  
-    if (tabBarController.selectedIndex == 1) {
-        
-    }
-    
-}
-
--(BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
-    
-    
-    //这里我判断的是当前点击的tabBarItem的标题
-    if ([viewController.tabBarItem.title isEqualToString:@"购物车"]) {
-        //如果用户ID存在的话，说明已登陆
-        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        
-        
-       if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"])
-       {
-            return YES;
-           
-     
-    
-        }
-        else
-        {
-            //跳到登录页面
-            LoginViewController *login = [[LoginViewController alloc] init];
-            //隐藏tabbar
-            login.hidesBottomBarWhenPushed = YES;
-            login.fromShoppingType = @"200";
-            [((UINavigationController *)tabBarController.selectedViewController) pushViewController:login animated:YES];
-            
-            
-            return NO;
-        }
-    }
-    else
-        return YES;
-//    if ([tabBarController.tabBar.selectedItem.title isEqualToString:@"购物车"]) {
-//
-//        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//        DLog(@"sssssssssss=========%@" , [user valueForKey:@"isLoginState"]);
-//
-//        if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"]) {
-//
-//            ShoppingCartViewController *VC = [ShoppingCartViewController new];
-//            UINavigationController *nav= [[UINavigationController alloc] init];
-//            [nav.navigationController pushViewController:VC animated:YES];
-//
-//        }else{
-//
-//            LoginViewController *VC = [LoginViewController new];
-//            VC.fromShoppingVC = @"1";
-//           UINavigationController *nav= [[UINavigationController alloc] init];
-//            [nav.navigationController pushViewController:VC animated:YES];
-//        }
-//
-//        //return NO;
-//    }
-//
-//    return YES;
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    //
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -99,8 +37,6 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
     //配置高德地图
     [AMapServices sharedServices].apiKey = amapServiceKey;
-
-   // [self setTabBar];
     //键盘遮挡
     IQKeyboardManager * manager = [IQKeyboardManager sharedManager];
     manager.enable = YES;
@@ -113,6 +49,11 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         UITableView.appearance.estimatedSectionFooterHeight = 0;
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
     }
+    
+    ///开启网络监测
+    [GLobalRealReachability startNotifier];
+    //微信注册//
+    [WXApi registerApp:@"wx3202ad817c81cb99"];
     return YES;
 }
 
@@ -376,13 +317,44 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(236, 31, 35, 1), NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     return  self.tabBars;
-    
-  
-    
 
     
 }
 
+
+-(BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    
+    
+    //这里我判断的是当前点击的tabBarItem的标题
+    if ([viewController.tabBarItem.title isEqualToString:@"购物车"]) {
+        //如果用户ID存在的话，说明已登陆
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        
+        
+        if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"])
+        {
+            return YES;
+            
+            
+            
+        }
+        else
+        {
+            //跳到登录页面
+            LoginViewController *login = [[LoginViewController alloc] init];
+            //隐藏tabbar
+            login.hidesBottomBarWhenPushed = YES;
+            login.fromShoppingType = @"200";
+            [((UINavigationController *)tabBarController.selectedViewController) pushViewController:login animated:YES];
+            
+            
+            return NO;
+        }
+    }
+    else
+        return YES;
+    
+}
 
 
 

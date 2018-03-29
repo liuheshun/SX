@@ -46,7 +46,7 @@
         
         
     }
-    else  if (model.status == 50 || model.status == 40)///待发货
+    else  if (model.status == 50 || model.status == 40)///待发货(待确认)
     {
         self.orderPayStatus.text = @"已支付";
         if (model.paymentType == 11) {

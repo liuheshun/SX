@@ -79,8 +79,11 @@
             
             if ([returnData[@"status"] integerValue] == 200) {
                 NSString *orderNo =  returnData[@"data"][@"orderNo"];
+                NSInteger periodic = [returnData[@"data"][@"periodic"] integerValue];
+                
                 SelectPayTypeViewController *VC = [SelectPayTypeViewController new];
                 VC.orderNo = orderNo;
+                VC.periodic = periodic;
                 [self.navigationController pushViewController:VC animated:YES];
                 
             }

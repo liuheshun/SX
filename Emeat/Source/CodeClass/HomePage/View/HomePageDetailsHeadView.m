@@ -23,7 +23,7 @@
 -(void)setSDCycleScrollView:(NSArray*)imvURLArray{
 
     
-    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 300*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"dingdanxaingqingtu"]];   //placeholder
+    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 300*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"商品主图加载"]];   //placeholder
     cycleScrollView.imageURLStringsGroup = imvURLArray;
     cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
     cycleScrollView.showPageControl = YES;//是否显示分页控件

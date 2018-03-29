@@ -365,7 +365,7 @@
         [_waitSendGoodsBtn setTitleColor:RGB(136, 136, 136, 1) forState:0];
 
         [_waitSendGoodsBtn setImage:[UIImage imageNamed:@"daifahuo"] forState:0];
-        [_waitSendGoodsBtn setTitle:@"待发货" forState:0];
+        [_waitSendGoodsBtn setTitle:@"待确认" forState:0];
     }
     return _waitSendGoodsBtn;
 }

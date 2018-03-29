@@ -69,7 +69,16 @@
 
 
 -(void)viewWillAppear:(BOOL)animated{
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusNotReachable)
+    {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+
+    }else{
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+
+    }
 
 
 }
@@ -78,10 +87,6 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = RGB(238, 238, 238, 1);
-    self.navItem.title = @"首页";
-    self.navBar.barTintColor = RGB(236, 31, 35, 1);
-    self.statusBarView.backgroundColor = RGB(236, 31, 35, 1);
 
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -91,23 +96,62 @@
     
     self.sortListMarray = [NSMutableArray array];
     self.dataArray = [NSMutableArray array];
+    self.bannerMarray = [NSMutableArray array];
+
+    [self netWorkIsOnLine];
+   
+}
+
+-(void)netWorkIsOnLine{
+    
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusNotReachable)
+    {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+
+        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+        
+    }else{
+        
+        [self setMainViewData];
+        [[GlobalHelper shareInstance] removeErrorView];
+    }
+}
+
+
+
+#pragma mark = 重新加载
+
+-(void)errorLoadingBtnAction{
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    
+    if (status == RealStatusNotReachable){
+        
+    }else{
+        [self setMainViewData];
+        [[GlobalHelper shareInstance] removeErrorView];
+    }
+}
+
+
+-(void)setMainViewData{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+
     [self.view addSubview:self.tableView];
     [self setCycleScrollViews];
     [self.view addSubview:self.headTieleView];
-    
     [self.view addSubview:self.navView];
     [self.navView addSubview:self.addressNoticeView];
     [self addBlockAction];
-
     [self setupRefresh];
     ///更新购物车数量
     [self requestBadNumValue];
-    DLog(@"kkkkkk=====   ===== %f" ,kScale);
 }
+
 #pragma mark = 添加block事件
 
 -(void)addBlockAction{
-    
     
     __weak __typeof(self) weakSelf = self;
     
@@ -318,16 +362,14 @@
 #pragma mark = 商品banner数据
 
 -(void)requsetHomPageBannerData{
-    self.bannerMarray = [NSMutableArray array];
-    [MHAsiNetworkHandler startMonitoring];
     
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/banner/queryBannerForWeb" ,baseUrl] params:nil successBlock:^(NSDictionary *returnData) {        
          DLog(@"bannertu=====%@" ,returnData);
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
+            [self.bannerMarray removeAllObjects];
             for (NSDictionary *dic in returnData[@"data"]) {
                   HomePageModel *bannerModel = [HomePageModel yy_modelWithJSON:dic];
-               // DLog(@"bannertu图片=====%@" ,bannerModel.bannerImage);
                 [self.bannerMarray addObject:bannerModel];
             }
 
@@ -360,11 +402,8 @@
 
 #pragma mark = 商品列表数据
 -(void)requestListData:(NSInteger)currentPage{
-    if (currentPage == 1) {
-        [self.dataArray removeAllObjects];
-    }
+  
     [MHAsiNetworkHandler startMonitoring];
-    DLog(@"商品列表数据接口===== %@" ,[NSString stringWithFormat:@"%@/mobile/commodity/commodityShow?currentPage=%ld" , baseUrl , currentPage]);
     
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/mobile/commodity/commodityShow?currentPage=%ld" , baseUrl , currentPage] params:nil successBlock:^(NSDictionary *returnData) {
         DLog(@"商品列表== %@" ,returnData);
@@ -375,6 +414,9 @@
 
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
+            if (currentPage == 1) {
+                [self.dataArray removeAllObjects];
+            }
             for (NSDictionary *dic in returnData[@"data"][@"list"]) {
                 HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
                 NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
@@ -872,10 +914,11 @@
     
 }
 
+#pragma mark = 首页轮播图
 
 - (void )setCycleScrollViews{
     
-    _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, kBarHeight+42+noticeViewHeiht, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"dingdanxaingqingt"]];   //placeholder
+    _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, kBarHeight+42+noticeViewHeiht, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"banner加载"]];   //placeholder
     
     
    

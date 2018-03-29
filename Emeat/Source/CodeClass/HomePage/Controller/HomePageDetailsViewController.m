@@ -339,9 +339,18 @@
 
 -(void)cartBtnAction{
     
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusNotReachable)
+    {
+        SVProgressHUD.minimumDismissTimeInterval = 2.0f;
+        [SVProgressHUD showErrorWithStatus:@"好像断网了,请检查网络"];
+        
+    }else{
+    
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"])
     {
+        
         ShoppingCartViewController *VC = [ShoppingCartViewController new];
         VC.isShowTabBarBottomView = YES;
         [self.navigationController pushViewController:VC animated:YES];
@@ -353,6 +362,7 @@
         [self.navigationController pushViewController:VC animated:YES];
         
   
+    }
     }
 }
 

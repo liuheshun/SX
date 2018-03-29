@@ -50,8 +50,6 @@
     UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imgURL];
     
     
-   
-    
     if ( !cachedImage ) {
         [self downloadImage:model.commodityDetail forIndexPath:indexPath tableView:tableView];
        // [cell.btn setBackgroundImage:[UIImage imageNamed:kDownloadImageHolder] forState:UIControlStateNormal];
@@ -66,6 +64,7 @@
     } else {
         //[cell.btn setBackgroundImage:cachedImage forState:UIControlStateNormal];
         self.detailsImv.image = cachedImage;
+        
         //手动计算cell
         CGFloat imgHeight = cachedImage.size.height * [UIScreen mainScreen].bounds.size.width / cachedImage.size.width;
         CGRect rect = self.detailsImv.frame;
@@ -86,7 +85,6 @@
         [[SDImageCache sharedImageCache] storeImage:image forKey:imageURL toDisk:YES completion:^{
             
         }];
-//        self.detailsImv.image = image;
 
         dispatch_async(dispatch_get_main_queue(), ^{
             

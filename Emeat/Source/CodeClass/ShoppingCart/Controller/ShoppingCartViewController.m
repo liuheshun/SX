@@ -60,17 +60,21 @@
 @implementation ShoppingCartViewController
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self requestShoppingListData];
-    [self requestBadNumValue];
-    [self requestGuesslikeData];
-
-    //刷新购物车
-    
-    [myTableView reloadData];
-
-    
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    if (status == RealStatusNotReachable)
+    {
+        
+    }else{
+        
+//        [self setupMainView];
+        [self requestShoppingListData];
+        [self requestBadNumValue];
+        [self requestGuesslikeData];
+      
+    }
+  
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-   
+
 
 }
 
@@ -84,11 +88,52 @@
     self.productIdMarray = [NSMutableArray array];
     self.guessLikeMarray = [NSMutableArray array];
     self.ShoppingListDataMarray = [NSMutableArray array];
-
-    [self setupMainView];
     self.navItem.title = @"购物车";
-    [self setupRefresh];
+    [self netWorkIsOnLine];
+  
 }
+
+
+-(void)netWorkIsOnLine{
+    
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    
+    if (status == RealStatusNotReachable)
+    {
+        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+        
+    }else{
+        
+        [self setupMainView];
+        [self setupRefresh];
+        [self requestGuesslikeData];
+
+        [[GlobalHelper shareInstance] removeErrorView];
+    }
+}
+
+
+#pragma mark = 重新加载
+
+-(void)errorLoadingBtnAction{
+    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    
+    if (status == RealStatusNotReachable){
+        
+    }else{
+        [self setupMainView];
+        [self setupRefresh];
+        [self requestGuesslikeData];
+
+        [[GlobalHelper shareInstance] removeErrorView];
+    }
+}
+
+
+
+
+
 
 -(void)countPrices{
     self.bottomView.priceLabel.text = [NSString stringWithFormat:@"¥ %@" ,self.cartTotalPrice];
@@ -817,7 +862,7 @@
     myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kBarHeight, kWidth, tbHeight) style:UITableViewStyleGrouped];
     myTableView.delegate = self;
     myTableView.dataSource = self;
-    myTableView.rowHeight = 90;
+    myTableView.rowHeight = 90*kScale;
     myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     myTableView.backgroundColor = RGB(238, 238, 238, 1);
     [self.view addSubview:myTableView];
@@ -856,6 +901,9 @@
         return 35*kScale;
 
     }else{
+        if (self.guessLikeMarray.count == 0) {
+            return 0.01;
+        }
         return 65*kScale;
     }
 }
@@ -875,10 +923,18 @@
         }
 
     }else{
+        if (self.guessLikeMarray.count == 0) {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 0.01)];
+            view.backgroundColor = RGB(238, 238, 238, 1);
+            return view;
+        }
+        else
+        {
         YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 55*kScale)];
         headview.titleLab.text = @"猜你喜欢";
         headview.backgroundColor = [UIColor whiteColor];
         return headview;
+        }
     }
    
    
@@ -889,10 +945,16 @@
         if (self.ShoppingListDataMarray.count == 0) {
             return 0.01;
         }
-        return 15;
+        return 15*kScale;
+    }else{
+       
+        if (self.guessLikeMarray.count == 0) {
+            return 0.01;
+        }
+        return 15*kScale;
+
     }
    
-    return 15;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{

@@ -59,6 +59,8 @@
 {
     if (self.networkError == YES) {
        // SHOW_ALERT(@"网络连接断开,请检查网络!");
+        [SVProgressHUD showErrorWithStatus:@"好像断网了,请检查网络!"];
+        SVProgressHUD.maximumDismissTimeInterval = 1;
         if (failureBlock) {
             failureBlock(nil);
         }

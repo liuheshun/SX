@@ -63,7 +63,7 @@
     self.numberLabel = [[UILabel alloc]init];
     self.numberLabel.textAlignment = NSTextAlignmentCenter;
     self.numberLabel.text = @"1";
-    self.numberLabel.font = [UIFont systemFontOfSize:15];
+    self.numberLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
     [self addSubview:self.numberLabel];
     
     
@@ -72,15 +72,15 @@
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(0);
         make.bottom.equalTo(self).offset(0);
-        make.height.equalTo(@25);
-        make.width.equalTo(@25);
+        make.height.equalTo(@(25*kScale));
+        make.width.equalTo(@(25*kScale));
     }];
     
     //数量显示
     [self.numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(addBtn.mas_left);
         make.bottom.equalTo(addBtn);
-        make.width.equalTo(@30);
+        make.width.equalTo(@(30*kScale));
         make.height.equalTo(addBtn);
     }];
     

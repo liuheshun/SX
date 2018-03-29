@@ -90,6 +90,9 @@
                 [MBProgressHUD hideAllHUDsForView:nil animated:YES];
              //   DTLog(@"---error==%@\n",error.localizedDescription);
                 if (failureBlock) {
+                    [SVProgressHUD setErrorImage:[UIImage imageNamed:@""]];
+                    [SVProgressHUD showErrorWithStatus:@"error ,请稍后重试"];
+                    SVProgressHUD.minimumDismissTimeInterval = 2.0f;
                     failureBlock(error);
                 }
                 if ([weakSelf.delegate respondsToSelector:@selector(requestdidFailWithError:)]) {

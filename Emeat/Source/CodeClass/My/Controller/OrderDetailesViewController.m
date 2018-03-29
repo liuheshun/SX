@@ -413,7 +413,7 @@
         
 
     }
-    else  if (self.status == 50 || self.status == 40)///待发货
+    else  if (self.status == 50 || self.status == 40)///待发货(待确认)
     {
         [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
         [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {

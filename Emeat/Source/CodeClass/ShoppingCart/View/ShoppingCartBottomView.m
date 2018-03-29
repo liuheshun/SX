@@ -28,7 +28,7 @@
 //    [self.view addSubview:bgView];
 //
     UILabel *line = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kWidth, 0.5)];
-    line.backgroundColor = RGB(191, 191, 191, 1);
+    line.backgroundColor = RGB(220, 220, 220, 1);
     [self addSubview:line];
     
     //全选按钮

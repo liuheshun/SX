@@ -29,7 +29,64 @@
     [self showNavBarLeftItem];
     [self addNotification];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:)name:kRealReachabilityChangedNotification object:nil];
+    
+    
 }
+
+
+
+- (void)networkChanged:(NSNotification *)notification
+{
+    RealReachability *reachability = (RealReachability *)notification.object;
+    ReachabilityStatus status = [reachability currentReachabilityStatus];
+    ReachabilityStatus previousStatus = [reachability previousReachabilityStatus];
+    NSLog(@"networkChanged, currentStatus:%@, previousStatus:%@", @(status), @(previousStatus));
+    self.reachabilityStatus = status;
+    if (status == RealStatusNotReachable)
+    {
+//        self.flagLabel.text = @"Network unreachable!";
+        DLog(@"无网络");
+        
+    }
+    
+    if (status == RealStatusViaWiFi)
+    {
+//        self.flagLabel.text = @"Network wifi! Free!";
+        DLog(@"wifi");
+
+    }
+    
+    if (status == RealStatusViaWWAN)
+    {
+//        self.flagLabel.text = @"Network WWAN! In charge!";
+    }
+    
+    WWANAccessType accessType = [GLobalRealReachability currentWWANtype];
+    
+    if (status == RealStatusViaWWAN)
+    {
+        if (accessType == WWANType2G)
+        {
+//            self.flagLabel.text = @"RealReachabilityStatus2G";
+        }
+        else if (accessType == WWANType3G)
+        {
+//            self.flagLabel.text = @"RealReachabilityStatus3G";
+        }
+        else if (accessType == WWANType4G)
+        {
+//            self.flagLabel.text = @"RealReachabilityStatus4G";
+            DLog(@"4444ggggggggggg");
+
+        }
+        else
+        {
+//            self.flagLabel.text = @"Unknown RealReachability WWAN Status, might be iOS6";
+        }
+    }
+}
+
 
 
 
@@ -460,7 +517,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 #pragma mark = 加入购物车数据
 
 -(void)addCartPostDataWithProductId:(NSInteger)productId homePageModel:(HomePageModel*)model NSIndexPath:(NSIndexPath*)indexPath cell:(HomePageTableViewCell*)weakCell isFirstClick:(BOOL)isFirst tableView:(UITableView*)tableView{
-    [SVProgressHUD show];
+    //[SVProgressHUD show];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
@@ -490,7 +547,6 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 //            DLog(@"sss");
 //        }
         if ([returnData[@"code"] isEqualToString:@"0404"]) {
-            [SVProgressHUD dismiss];
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
             LoginViewController *VC = [LoginViewController new];
@@ -542,7 +598,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             [GlobalHelper shareInstance].shoppingCartBadgeValue += 1;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
             
-            [SVProgressHUD dismiss];
+            
             
         }
         else
@@ -550,13 +606,12 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             //            model.number = 0;
             
             SVProgressHUD.minimumDismissTimeInterval = 0.5;
-            SVProgressHUD.maximumDismissTimeInterval = 1;
+            SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
         DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
         [tableView reloadData];
     } failureBlock:^(NSError *error) {
-        [SVProgressHUD dismiss];
 
         DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
         

@@ -61,7 +61,7 @@
     // 颜色渐变
     style.gradualChangeTitleColor = NO;
     //    style.showExtraButton = YES;
-    self.titles = @[@"全部", @"待付款", @"待发货", @"待收货"  ,@"退货/售后"];
+    self.titles = @[@"全部", @"待付款", @"待确认", @"待收货"  ,@"退货/售后"];
     // 初始化
     ZJScrollPageView *scrollPageView = [[ZJScrollPageView alloc] initWithFrame:CGRectMake(0, kBarHeight, self.view.bounds.size.width, self.view.bounds.size.height - kBarHeight) segmentStyle:style titles:self.titles parentViewController:self delegate:self];
     

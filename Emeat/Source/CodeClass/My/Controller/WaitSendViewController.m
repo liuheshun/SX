@@ -88,10 +88,7 @@
 
 
 -(void)requestDataWithTotalPage:(NSInteger)totalPage{
-    if (totalPage == 1) {
-        [self.orderListMarray removeAllObjects];
-        [self.orderImvArray removeAllObjects];
-    }
+  
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
@@ -106,10 +103,12 @@
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:@"50" forKey:@"status"];
-    DLog(@"待发货 ============ %@" ,dic);
+    DLog(@"待发货(待确认) ============ %@" ,dic);
+    [MHAsiNetworkHandler startMonitoring];
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/queryByStatus?currentPage=%ld" , baseUrl ,totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"待发货 订单=== %@" ,returnData);
+        DLog(@"待发货(待确认)订单=== %@" ,returnData);
         
         NSInteger pages = [returnData[@"data"][@"pages"] integerValue];
         NSInteger pageSize = [returnData[@"data"][@"pageSize"] integerValue];
@@ -117,6 +116,10 @@
 
         if ([returnData[@"status"] integerValue] == 200)
         {
+            if (totalPage == 1) {
+                [self.orderListMarray removeAllObjects];
+                [self.orderImvArray removeAllObjects];
+            }
             for (NSMutableDictionary *dic in returnData[@"data"][@"list"])
             {
                 OrderModel *firstModel = [OrderModel yy_modelWithJSON:dic];
@@ -156,7 +159,7 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"待发货 订单error=== %@" ,error);
+        DLog(@"待发货(待确认) 订单error=== %@" ,error);
         
     } showHUD:NO];
     

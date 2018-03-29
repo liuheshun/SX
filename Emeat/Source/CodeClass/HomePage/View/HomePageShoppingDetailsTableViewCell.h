@@ -14,5 +14,4 @@
 
 -(void)configCell:(HomePageModel*)model forIndexPath:(NSIndexPath *)indexPath tableView:(UITableView*)tableView;
 
--(CGFloat)returnCellHeight;
 @end
