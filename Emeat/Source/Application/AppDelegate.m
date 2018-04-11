@@ -18,7 +18,7 @@
 //高德地图key
 static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
-@interface AppDelegate ()<UITabBarControllerDelegate>
+@interface AppDelegate ()<UITabBarControllerDelegate,WXApiDelegate>
 @property (strong, nonatomic) UITabBarController *tabBars;
 
 @end
@@ -29,7 +29,8 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    [NSThread sleepForTimeInterval:1.0];//设置启动页面时间
+
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -53,7 +54,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     ///开启网络监测
     [GLobalRealReachability startNotifier];
     //微信注册//
-    [WXApi registerApp:@"wx3202ad817c81cb99"];
+    [WXApi registerApp:@"wxbd69c8d0e62710fa"];
     return YES;
 }
 
@@ -139,14 +140,16 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
     if ([url.host isEqualToString:@"safepay"]) {
         // 支付跳转支付宝钱包进行支付，处理支付结果
-        // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             NSLog(@"result = %@",resultDic);
         }];
         
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+            
+            
             NSLog(@"result = %@",resultDic);
+            
             // 解析 auth code
             NSString *result = resultDic[@"result"];
             NSString *authCode = nil;
@@ -163,7 +166,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         }];
         
     }else if ([url.host isEqualToString:@"pay"]){
-        
+        //微信支付
       [WXApi handleOpenURL:url delegate:self];
         
     }//银联支付处理支付结果
@@ -195,6 +198,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         PayResp *response = (PayResp *)resp;
         switch (response.errCode) {
             case WXSuccess:
+                ////服务端查询
                 //服务器端查询支付通知或查询API返回的结果再提示成功
                 NSLog(@"支付成功");
                 //通过通知告诉支付界面该做哪些操作
@@ -212,9 +216,264 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                 NSLog(@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr);
                 break;
         }
+    }else if ([resp isKindOfClass:[SendAuthResp class]]){
+        
+        [self getWeiXinCodeFinishedWithResp:resp];
+        
+    }else if ([resp isKindOfClass:[SendMessageToWXResp class]]){
+       // [WMLoginHelper shareInstance].isShare = @"1";
+    }
+}
+- (void)getWeiXinCodeFinishedWithResp:(BaseResp *)resp
+{
+    if (resp.errCode == 0)
+    {
+        //statusCodeLabel.text = @"用户同意";
+        SendAuthResp *aresp = (SendAuthResp *)resp;
+        
+        [self getAccessTokenWithCode:aresp.code];
+        
+    }else if (resp.errCode == -4){
+        //"用户拒绝";
+    }else if (resp.errCode == -2){
+        //"用户取消";
     }
 }
 
+#pragma mark======================通过code获取accessToken===============
+- (void)getAccessTokenWithCode:(NSString *)code{
+    
+    NSString *urlString =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=authorization_code",KWeixinAPP_ID,KWeixinAPP_SECRET,code];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        NSString *dataStr = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+        NSData *data = [dataStr dataUsingEncoding:NSUTF8StringEncoding];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (data){
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                
+                if ([dict objectForKey:@"errcode"]){
+                    //获取token错误
+                }else{
+                    //存储AccessToken OpenId RefreshToken以便下次直接登陆
+                    //AccessToken有效期两小时，RefreshToken有效期三十天
+                    
+                    [[NSUserDefaults standardUserDefaults] setObject:dict[@"access_token"] forKey:@"access_token"];
+                    [[NSUserDefaults standardUserDefaults] setObject:dict[@"openid"] forKey:@"openid"];
+                    [[NSUserDefaults standardUserDefaults] setObject:dict[@"refresh_token"] forKey:@"refresh_token"];
+                    
+                    [self getUserInfoWithAccessToken:[dict objectForKey:@"access_token"] andOpenId:[dict objectForKey:@"openid"]];
+                    
+                    
+                }
+                
+            }
+            
+        });
+        
+        
+    });
+    
+    /*
+     30      正确返回
+     31      "access_token" = “Oez*****8Q";
+     32      "expires_in" = 7200;
+     33      openid = ooVLKjppt7****p5cI;
+     34      "refresh_token" = “Oez*****smAM-g";
+     35      scope = "snsapi_userinfo";
+     36      */
+    /*
+     39      错误返回
+     40      errcode = 40029;
+     41      errmsg = "invalid code";
+     42      */
+}
+
+#pragma mark ===============微信登陆获取用户信息 传给服务端======================
+
+- (void)getUserInfoWithAccessToken:(NSString *)accessToken andOpenId:(NSString *)openId
+{
+    
+    NSString *urlString =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/userinfo?access_token=%@&openid=%@",accessToken,openId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        NSString *dataStr = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+        NSData *data = [dataStr dataUsingEncoding:NSUTF8StringEncoding];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (data){
+                NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                if ([dic objectForKey:@"errcode"]){
+                    
+                    //AccessToken失效,重新获取accessToken
+                    [self getAccessTokenWithRefreshToken:[[NSUserDefaults standardUserDefaults]objectForKey:@"refresh_token"]];
+                    
+                    
+                }
+                    else{
+//                    [SVProgressHUD show];
+//                    //获取需要的数据用户信息发给服务器
+//                    //  LRLog(@"微信名字==%@",[dic objectForKey:@"nickname"]);
+//                    NSString*url = [NSString stringWithFormat:@"%@/mobile/appWeixinRegiest.action?nickName=%@&openid=%@&unionid=%@&logo=%@&appType=1&appToken=%@",baseUrl,[dic objectForKey:@"nickname"], [[NSUserDefaults standardUserDefaults] objectForKey:@"openid"],[dic objectForKey:@"unionid"],[dic objectForKey:@"headimgurl"],[WMLoginHelper shareInstance].deviceToken];
+//
+//                    NSString *endUrl = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//
+//
+//                    [MHNetworkManager postReqeustWithURL:endUrl params:nil successBlock:^(NSDictionary *returnData) {
+//
+//                        LRLog(@"微信登陆=======  %@",returnData);
+//                        if ([returnData[@"status"] isEqualToString:@"success"]) {
+//                            //  LRLog(@"微信用户信息===== %@",returnData);
+//                            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//                            //存储用户信息
+//                            [user setObject:returnData[@"user"][@"id"] forKey:@"userId"];
+//
+//
+//                            [user setObject:returnData[@"user"][@"name"] forKey:@"attendName"];
+//
+//                            [user setObject:returnData[@"user"][@"phoneNumber"] forKey:@"mobile"];
+//
+//                            [user setObject:returnData[@"user"][@"companyName"] forKey:@"unit"];
+//
+//                            [user setObject:returnData[@"user"][@"job"] forKey:@"job"];
+//
+//                            [user setObject:returnData[@"user"][@"emailAddress"] forKey:@"email"];
+//
+//                            [user setObject:returnData[@"user"][@"logo"] forKey:@"image"];
+//
+//                            [user setObject:returnData[@"user"][@"city"] forKey:@"city"];
+//
+//                            [user setObject:returnData[@"user"][@"mobileStatus"] forKey:@"mobileStatus"];
+//                            [user setObject:returnData[@"user"][@"openid"] forKey:@"openid"];
+//
+//                            if ([WMLoginHelper shareInstance].wechatAuthorize == YES
+//                                ) {
+//                                [WMLoginHelper shareInstance].wechatAuthorize = NO;
+//                                UINavigationController *nav= [[UINavigationController alloc] initWithRootViewController:[MyEarningViewController new]];
+//                                [nav popViewControllerAnimated:YES];
+//                                [SVProgressHUD dismiss];
+//
+//                                return ;
+//                            }else{
+//                                [SVProgressHUD dismiss];
+//
+//                            }
+//
+//                            if ([returnData[@"user"][@"mobileStatus"] integerValue]== 1) {
+//                                //NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//
+//                                [user setObject:@"0" forKey:@"login_type"];////状态0微信登陆
+//
+//                                [self login];//登陆
+//                                [SVProgressHUD dismiss];
+//
+//                            }else if ([returnData[@"user"][@"mobileStatus"] integerValue]== 0){
+//
+//                                [SVProgressHUD dismiss];
+//                                [self validate];//验证手机号
+//                            }
+//
+//                        }
+//                    } failureBlock:^(NSError *error) {
+//                        // LRLog(@"微信登陆失败方法");
+//                        [SVProgressHUD dismiss];
+//                        [SVProgressHUD showErrorWithStatus:@"操作失败,请稍后重试"];
+//
+//                    } showHUD:NO];
+//
+//
+//                    //
+//                    //                             [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"nickname"] forKey:@"weixin_attendName"];
+//                    //                            [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"headimgurl"] forKey:@"weixin_image"];
+//                    //
+//
+//
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:@"Note" object:nil]; // 发送通知
+//
+                }
+                
+            }
+            
+            
+        });
+        
+        
+    });
+    
+    /*
+     29      city = ****;
+     30      country = CN;
+     31      headimgurl = "http://wx.qlogo.cn/mmopen/q9UTH59ty0K1PRvIQkyydYMia4xN3gib2m2FGh0tiaMZrPS9t4yPJFKedOt5gDFUvM6GusdNGWOJVEqGcSsZjdQGKYm9gr60hibd/0";
+     32      language = "zh_CN";
+     33      nickname = “****";
+     34      openid = oo*********;
+     35      privilege =     (
+     36      );
+     37      province = *****;
+     38      sex = 1;
+     39      unionid = “o7VbZjg***JrExs";
+     40      */
+    
+    /*
+     43      错误代码
+     44      errcode = 42001;
+     45      errmsg = "access_token expired";
+     46      */
+}
+- (void)getAccessTokenWithRefreshToken:(NSString *)refreshToken
+{
+    NSString *urlString =[NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%@&grant_type=refresh_token&refresh_token=%@",KWeixinAPP_ID,refreshToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        
+        NSString *dataStr = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+        NSData *data = [dataStr dataUsingEncoding:NSUTF8StringEncoding];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (data)
+            {
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                
+                if ([dict objectForKey:@"errcode"])
+                {
+                    //授权过期
+                }else{
+                    
+                    //重新使用AccessToken获取信息
+                    
+                    [[NSUserDefaults standardUserDefaults] setObject:dict[@"access_token"] forKey:@"access_token"];
+                    [[NSUserDefaults standardUserDefaults] setObject:dict[@"openid"] forKey:@"openid"];
+                    [[NSUserDefaults standardUserDefaults] setObject:dict[@"refresh_token"] forKey:@"refresh_token"];
+                    
+                    
+                }
+            }
+        });
+    });
+    
+    
+    /*
+     30      "access_token" = “Oez****5tXA";
+     31      "expires_in" = 7200;
+     32      openid = ooV****p5cI;
+     33      "refresh_token" = “Oez****QNFLcA";
+     34      scope = "snsapi_userinfo,";
+     35      */
+    /*
+     38      错误代码
+     39      "errcode":40030,
+     40      "errmsg":"invalid refresh_token"
+     41      */
+}
 
 
 
@@ -355,7 +614,6 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         return YES;
     
 }
-
 
 
 

@@ -84,7 +84,6 @@
 -(void)netWorkIsOnLine{
     
     ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    NSLog(@"Initial reachability status:%@",@(status));
     
     if (status == RealStatusNotReachable)
     {
@@ -127,61 +126,70 @@
 
 -(void)requsetMyData{
     
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    [dic setValue:secret forKey:@"secret"];
-    [dic setValue:nonce forKey:@"nonce"];
-    [dic setValue:curTime forKey:@"curTime"];
-    [dic setValue:checkSum forKey:@"checkSum"];
-    [dic setValue:ticket forKey:@"ticket"];
-    [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
-    DLog(@"2我的接口=== %@" ,dic);
-    [MHAsiNetworkHandler startMonitoring];
-
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
-        DLog(@"2我的接口=== %@" ,returnData);
-        if ([returnData[@"code"] isEqualToString:@"0404"] ||[returnData[@"code"] isEqualToString:@"04"]) {
-            [GlobalHelper shareInstance].isLoginState = @"0";
-            [user setValue:@"0" forKey:@"isLoginState"];
-
-        }
-        
-        if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
-            [self.myDataMarray removeAllObjects];
-
-            NSInteger waitBuy =[ returnData[@"data"][@"waitBuy"] integerValue];
-            NSInteger waitTransport =[ returnData[@"data"][@"waitTransport"] integerValue];
-            NSInteger  salesReturn = [returnData[@"data"][@"salesReturn"] integerValue];
-            NSInteger waitRecive = [returnData[@"data"][@"waitRecive"] integerValue];
-            NSInteger waitEvaluation = [returnData[@"data"][@"waitEvaluation"]integerValue ];
-            NSDictionary *dic = returnData[@"data"][@"user"];
-            MyModel *model = [MyModel yy_modelWithJSON:dic];
-            model.waitBuy = waitBuy;
-            model.waitTransport = waitTransport;
-            model.salesReturn = salesReturn;
-            model.waitRecive = waitRecive;
-            model.waitEvaluation = waitEvaluation;
-            [self.myDataMarray addObject:model];
-           // }
-//        }else{
-////            [self alertMessage:returnData[@"msg"] willDo:nil];
-//        }
-        
-        }
-        [self.tableView reloadData];
-
-    } failureBlock:^(NSError *error) {
-        DLog(@"2我的接口error=== %@" ,error);
-
-        
-    } showHUD:NO];
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSString *ticket = [user valueForKey:@"ticket"];
+        NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+        NSString *nonce = [self ret32bitString];//随机数
+        NSString *curTime = [self dateTransformToTimeSp];
+        NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+        [dic setValue:secret forKey:@"secret"];
+        [dic setValue:nonce forKey:@"nonce"];
+        [dic setValue:curTime forKey:@"curTime"];
+        [dic setValue:checkSum forKey:@"checkSum"];
+        [dic setValue:ticket forKey:@"ticket"];
+        [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
+        DLog(@"2我的接口=== %@" ,dic);
+        [MHAsiNetworkHandler startMonitoring];
+        
+        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+            
+            DLog(@"2我的接口=== %@" ,returnData);
+            if ([returnData[@"code"] isEqualToString:@"0404"] || [returnData[@"code"] isEqualToString:@"04"]) {
+                [GlobalHelper shareInstance].isLoginState = @"0";
+                [user setValue:@"0" forKey:@"isLoginState"];
+                
+            }
+            
+            if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
+                [self.myDataMarray removeAllObjects];
+                
+                NSInteger waitBuy =[ returnData[@"data"][@"waitBuy"] integerValue];
+                NSInteger waitTransport =[ returnData[@"data"][@"waitTransport"] integerValue];
+                NSInteger  salesReturn = [returnData[@"data"][@"salesReturn"] integerValue];
+                NSInteger waitRecive = [returnData[@"data"][@"waitRecive"] integerValue];
+                NSInteger waitEvaluation = [returnData[@"data"][@"waitEvaluation"]integerValue ];
+                NSDictionary *dic = returnData[@"data"][@"user"];
+                MyModel *model = [MyModel yy_modelWithJSON:dic];
+                model.waitBuy = waitBuy;
+                model.waitTransport = waitTransport;
+                model.salesReturn = salesReturn;
+                model.waitRecive = waitRecive;
+                model.waitEvaluation = waitEvaluation;
+                [self.myDataMarray addObject:model];
+                // }
+                //        }else{
+                ////            [self alertMessage:returnData[@"msg"] willDo:nil];
+                //        }
+                
+            }
+            [self.tableView reloadData];
+            
+        } failureBlock:^(NSError *error) {
+            DLog(@"2我的接口error=== %@" ,error);
+            
+            
+        } showHUD:NO];
+        
+    });
+
+    
+    
+  
     
 }
 
@@ -203,11 +211,11 @@
     [BDImagePicker showImagePickerFromViewController:self allowsEditing:NO finishAction:^(UIImage *image) {
         DLog(@"touxiang===== %@" ,image);
         if (image) {
-            self.customImage = image;
-           [self.headView.userImv setImage:image forState:0];
-            
-          
- 
+//            self.customImage = image;
+//           [self.headView.userImv setImage:image forState:0];
+//
+//
+//
                [self postImageDta:image];
 
         }
@@ -220,7 +228,7 @@
 #pragma mark=============================上传头像=============================
 
 -(void)postImageDta:(UIImage*)image{
-    
+    [SVProgressHUD show];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
 //    NSData *finallImageData = UIImageJPEGRepresentation(newImage,0.50);
 
@@ -261,12 +269,14 @@
             MyModel *model = self.myDataMarray[0];
             model.headPic = returnData[@"data"];
             [self.myDataMarray addObject:model];
-            SVProgressHUD.minimumDismissTimeInterval =2;
-            [SVProgressHUD showSuccessWithStatus:@"上传头像成功"];
+//            SVProgressHUD.minimumDismissTimeInterval =2;
+//            [SVProgressHUD showSuccessWithStatus:@"上传头像成功"];
 
         }else{
             [SVProgressHUD showSuccessWithStatus:returnData[@"msg"]];
         }
+        [SVProgressHUD dismiss];
+
         [self.tableView reloadData];
     } failureBlock:^(NSError *error) {
         DLog(@"头像上传error======= %@" ,error);
@@ -314,39 +324,6 @@
 
 
 
-
-#pragma mark = 修改用户头像
-
--(void)updataUserImv :(UIImage*)userImage{
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setValue:secret forKey:@"secret"];
-    [dic setValue:nonce forKey:@"nonce"];
-    [dic setValue:curTime forKey:@"curTime"];
-    [dic setValue:checkSum forKey:@"checkSum"];
-    [dic setValue:ticket forKey:@"ticket"];
-    [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
-    DLog(@"修改用户头像dic==== %@" ,dic);
-    [MHAsiNetworkHandler startMonitoring];
-
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/updateHeadPic" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"修改用户头像==== %@" ,returnData);
-        if ([returnData[@"status"] integerValue] == 200) {
-            [SVProgressHUD showSuccessWithStatus:@"修改成功"];
-        }
-    } failureBlock:^(NSError *error) {
-        DLog(@"修改用户头像error==== %@" ,error);
-        
-    } showHUD:NO];
-    
-}
 
 #pragma mark = 修改用户昵称
 

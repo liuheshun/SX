@@ -20,7 +20,7 @@
 
 #pragma mark = Alipay
 
--(void)sendAliPay:(NSDictionary*)dic;
+-(void)sendAliPay:(NSString*)orderString;
 
 #pragma mark =  UPPay
 -(void)sendUPPay:(NSDictionary*)dic UiviewController:(UIViewController*)VC;

@@ -45,7 +45,7 @@
 
 }
 -(void)leftItemAction{
-    if ([self.fromVC isEqualToString:@"1"])
+    if ([self.fromPayVC isEqualToString:@"1"])
     {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }else
@@ -111,11 +111,10 @@
             OrderModel *footModel = [OrderModel yy_modelWithJSON:returnData[@"data"]];
             self.status = footModel.status;
             [self.footViewOrderInfoMarray addObject:footModel];
-            
-            [self.view addSubview:self.orderInfoBottomView];////////
-            [self setBottomViewFrames];
             [self.view addSubview:self.tableView];
-
+            [self.view addSubview:self.orderInfoBottomView];////////
+            [self setOrderInfoBottomViewFrame];
+            [self setBottomViewFrames];
             [self.tableView reloadData];
         }
         else
@@ -390,7 +389,6 @@
         
  
         
-       // [self.orderInfoBottomView.rightBottomBtn setTitle:[NSString stringWithFormat:@"立即支付(%@)" ,@"12:34:24"] forState:0];
         self.orderInfoBottomView.rightBottomBtn.backgroundColor = RGB(236, 31, 35, 1);
         self.orderInfoBottomView.leftBottomBtn.tag = 10;
         self.orderInfoBottomView.rightBottomBtn.tag = 10;
@@ -410,7 +408,6 @@
         }];
         
         [self setTableViewFrames];
-        
 
     }
     else  if (self.status == 50 || self.status == 40)///待发货(待确认)
@@ -507,13 +504,7 @@
 -(ConfirmOrderInfoBottomView *)orderInfoBottomView{
     if (!_orderInfoBottomView) {
         _orderInfoBottomView = [ConfirmOrderInfoBottomView new];
-        [self.view addSubview:self.orderInfoBottomView];
-        [self.orderInfoBottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(self.view);
-            make.height.equalTo(@44);
-            make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
-            
-        }];
+        _orderInfoBottomView.backgroundColor = [UIColor whiteColor];
         [_orderInfoBottomView.leftBottomBtn addTarget:self action:@selector(leftBottomBtnAction:) forControlEvents:1];
         [_orderInfoBottomView.rightBottomBtn addTarget:self action:@selector(rightBottomBtnAction:) forControlEvents:1];
 
@@ -521,7 +512,14 @@
     
     return _orderInfoBottomView;
 }
-
+-(void)setOrderInfoBottomViewFrame{
+    [self.orderInfoBottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@44);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
+        
+    }];
+}
 
 -(UITableView*)tableView{
     if (!_tableView) {

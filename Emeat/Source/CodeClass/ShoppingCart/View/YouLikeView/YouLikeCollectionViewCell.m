@@ -20,8 +20,7 @@
 
 
 -(void)SetCollCellData:(HomePageModel*)model{
-    
-    [self.imv sd_setImageWithURL:[NSURL URLWithString:model.mainImage]];
+    [self.imv sd_setImageWithURL:[NSURL URLWithString:model.mainImage] placeholderImage:[UIImage imageNamed:@"列表图加载"]];
     self.nameLable.text = model.commodityName;
     self.priceLable.text = [NSString stringWithFormat:@"¥%.2f元/kg" , (float)model.unitPrice/100];
     

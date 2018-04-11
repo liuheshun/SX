@@ -35,6 +35,7 @@
     self.navItem.title = @"选择支付方式";
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.bottomPayBtn];
+    [self setBottomViewFrame];
     if (self.periodic == 0) {
         ///非周期性用户
         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" , nil];
@@ -141,20 +142,20 @@
     switch (indexPath.row) {
         case 0:{
             DLog(@"支付宝");
-            self.selectPayType = @"0";
+            self.selectPayType = @"999";
         }
             break;
             
         case 1:{
             DLog(@"微信");
-            self.selectPayType = @"1";
+            self.selectPayType = @"888";
 
         }
             break;
             
         case 2:{
             DLog(@"银联");
-            self.selectPayType = @"2";
+            self.selectPayType = @"7";
 
         }
             break;
@@ -176,20 +177,32 @@
 -(UIButton *)bottomPayBtn{
     if (!_bottomPayBtn) {
         _bottomPayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _bottomPayBtn.frame = CGRectMake(0, kHeight-44 - LL_TabbarSafeBottomMargin, kWidth, 44);
+//        _bottomPayBtn.frame = CGRectMake(0, kHeight-44 - LL_TabbarSafeBottomMargin, kWidth, 44);
         _bottomPayBtn.backgroundColor = RGB(231, 31, 35, 1);
         [_bottomPayBtn addTarget:self action:@selector(bottomPayBtnAction) forControlEvents:1];
         [_bottomPayBtn setTitle:@"确定支付" forState:0];
+        
     }
     return _bottomPayBtn;
+}
+-(void)setBottomViewFrame{
+    [self.bottomPayBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@44);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
+        
+    }];
+    
 }
 
 -(void)bottomPayBtnAction{
     DLog(@"立即支付");
-    if ([self.selectPayType isEqualToString:@"0"]) {
+    if ([self.selectPayType isEqualToString:@"999"]) {
         DLog(@"调用支付宝支付");
+//        [self aliPay];
+        [self requsetOtherPayTypes:@"999"];
 
-    }else if ([self.selectPayType isEqualToString:@"1"]){
+    }else if ([self.selectPayType isEqualToString:@"888"]){
         DLog(@"调用微信支付");
         if (![WXApi isWXAppInstalled]) {
             [SVProgressHUD dismiss];
@@ -201,25 +214,27 @@
             //调起支付
             [SVProgressHUD dismiss];
             
-            [self sendWXpay];
+            NSDictionary *dic;
+
+            [self sendWXpay:dic];
         }
         
         
     }else if ([self.selectPayType isEqualToString:@"2"]){
         DLog(@"yinhangka");
-
+        [self UPPay];
     }else if ([self.selectPayType isEqualToString:@"11"]){
         DLog(@"qitafangshi");
-        [self requsetOtherPayTypes];
+        [self requsetOtherPayTypes:@"11"];
         [SVProgressHUD show];
 
     }
 }
 
 
-#pragma mark == 周期性付款
+#pragma mark == 付款请求
 
--(void)requsetOtherPayTypes{
+-(void)requsetOtherPayTypes:(NSString*)payId{
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -235,7 +250,7 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    [dic setValue:self.selectPayType forKey:@"payId"];
+    [dic setValue:payId forKey:@"payId"];
     [dic setValue:@" " forKey:@"bankType"];
     [dic setValue:@" " forKey:@"transactionType"];
 
@@ -243,13 +258,15 @@
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/payInfo/pay" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"周期性付款信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
-
+        if ([payId isEqualToString:@"11"]) {
+            
+        
         if ([returnData[@"status"] integerValue] == 200)
         {
             [SVProgressHUD dismiss];
             OrderDetailesViewController *VC = [OrderDetailesViewController new];
             VC.orderNo = self.orderNo;
-            VC.fromVC = @"1";
+            VC.fromPayVC = @"1";
             DLog(@"订单号===== %@" ,self.orderNo);
             [self.navigationController pushViewController:VC animated:YES];
             
@@ -257,6 +274,11 @@
         else
         {
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
+        }
+            
+        }else if ([payId isEqualToString:@"999"]){
+            
+            
         }
 
 //
@@ -288,20 +310,27 @@
 }
 
 
-
--(void)sendWXpay{
-    
-    
-    NSDictionary *dic;
-    
+#pragma mark = 微信支付
+-(void)sendWXpay:(NSDictionary*)dic{
     
     [[LHSPayManger sharedManager] sendWXPay:dic];
-
     
 }
 
+#pragma mark = 银行卡支付
+-(void)UPPay{
+    
+    [[LHSPayManger sharedManager] sendUPPay:[NSDictionary dictionary] UiviewController:self];
+
+}
 
 
+#pragma mark = 支付宝支付
+-(void)aliPay{
+    NSDictionary *dic ;
+    [[LHSPayManger sharedManager] sendAliPay:dic];
+
+}
 
 - (void)handlePayResult:(NSNotification *)noti{
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"支付结果" message:[NSString stringWithFormat:@"%@",noti.object] preferredStyle:UIAlertControllerStyleActionSheet];

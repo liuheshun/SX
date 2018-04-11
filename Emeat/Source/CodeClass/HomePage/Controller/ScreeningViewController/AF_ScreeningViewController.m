@@ -125,7 +125,6 @@
 - (void)selectedValueChangeBlock:(NSInteger)section key:(NSInteger)index value:(NSString *)value button:(UIButton*)btn{
 
 
-    DLog(@"点击===== %ld   %ld  %@" , section , index , value);
  
     if ([value isEqualToString:@"YES"]) {;
         if (section == 1) {
@@ -170,10 +169,7 @@
         
     }
     
-    
-    DLog(@"111111== %@" ,[self dictionaryToJson:self.countryMarray ]);
-    DLog(@"222222== %@" ,[self dictionaryToJson:self.weightMarray ]);
-    DLog(@"333333== %@" ,[self dictionaryToJson:self.kindMarray ]);
+  
      self.countStr = [self.countryMarray componentsJoinedByString:@","];
     self.weightStr = [self.weightMarray componentsJoinedByString:@","];
 
@@ -181,7 +177,6 @@
 
 //    DLog(@"ssssssssss--------------%@" , string);
 
-    DLog(@"选着== %@" , [self dictionaryToJson:self.selectMarray ]);
     [self.selectButtonMarray addObject:btn];
     
    

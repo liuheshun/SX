@@ -14,7 +14,7 @@
     if (self) {
         [self addSubview:self.leftBottomBtn];
         [self addSubview:self.rightBottomBtn];
-        
+        [self setMainFrame];
     }
     return self;
 }
@@ -22,7 +22,7 @@
 -(UIButton*)leftBottomBtn{
     if (!_leftBottomBtn) {
         _leftBottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _leftBottomBtn.frame = CGRectMake(0, 0, kWidth/2, HEIGHT(self));
+//        _leftBottomBtn.frame = CGRectMake(0, 0, kWidth/2, HEIGHT(self));
         [_leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
         _leftBottomBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
     }
@@ -32,7 +32,7 @@
 -(UIButton*)rightBottomBtn{
     if (!_rightBottomBtn) {
         _rightBottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _rightBottomBtn.frame = CGRectMake(MaxX(self.leftBottomBtn), 0, kWidth/2, HEIGHT(self));
+//        _rightBottomBtn.frame = CGRectMake(MaxX(self.leftBottomBtn), 0, kWidth/2, HEIGHT(self));
         [_rightBottomBtn setTitleColor:[UIColor whiteColor] forState:0];
         [_rightBottomBtn setBackgroundColor:RGB(236, 31, 35, 1)];
         _rightBottomBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
@@ -43,7 +43,24 @@
 
 
 
-
+-(void)setMainFrame{
+    [self.leftBottomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.width.equalTo(@(kWidth/2));
+        make.top.equalTo(self.mas_top).with.offset(0);
+        make.bottom.equalTo(self.mas_bottom).with.offset(0);
+        
+    }];
+    
+    [self.rightBottomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.leftBottomBtn.mas_right).with.offset(0);
+        make.width.equalTo(@(kWidth/2));
+        make.top.equalTo(self.mas_top).with.offset(0);
+        make.bottom.equalTo(self.mas_bottom).with.offset(0);
+        
+    }];
+    
+}
 
 
 

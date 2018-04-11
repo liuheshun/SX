@@ -122,6 +122,7 @@
 		16DF76D4201B309100078F10 /* MyAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76D3201B309100078F10 /* MyAddressModel.m */; };
 		16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76D6201EDD8C00078F10 /* OrderModel.m */; };
 		16DF76E02021D14100078F10 /* HomePageAddressNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76DF2021D14100078F10 /* HomePageAddressNoticeView.m */; };
+		16E27F30207E006B00F82F9D /* UserAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E27F2F207E006B00F82F9D /* UserAgreementViewController.m */; };
 		16ED4D5E1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16ED4D5D1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m */; };
 		16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16ED4D601FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m */; };
 		16EE10081FE167480099DA91 /* AllOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE10071FE167480099DA91 /* AllOrderViewController.m */; };
@@ -384,6 +385,8 @@
 		16DF76D6201EDD8C00078F10 /* OrderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderModel.m; sourceTree = "<group>"; };
 		16DF76DE2021D14100078F10 /* HomePageAddressNoticeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageAddressNoticeView.h; sourceTree = "<group>"; };
 		16DF76DF2021D14100078F10 /* HomePageAddressNoticeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageAddressNoticeView.m; sourceTree = "<group>"; };
+		16E27F2E207E006B00F82F9D /* UserAgreementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserAgreementViewController.h; sourceTree = "<group>"; };
+		16E27F2F207E006B00F82F9D /* UserAgreementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserAgreementViewController.m; sourceTree = "<group>"; };
 		16ED4D5C1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartAddressHeadView.h; sourceTree = "<group>"; };
 		16ED4D5D1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartAddressHeadView.m; sourceTree = "<group>"; };
 		16ED4D5F1FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartEmptyHeadView.h; sourceTree = "<group>"; };
@@ -985,6 +988,8 @@
 				16D677AF2016CE7D00318FAA /* GHWelcomeViewController.m */,
 				16D950C41FF3755800DBC7B8 /* LoginViewController.h */,
 				16D950C51FF3755800DBC7B8 /* LoginViewController.m */,
+				16E27F2E207E006B00F82F9D /* UserAgreementViewController.h */,
+				16E27F2F207E006B00F82F9D /* UserAgreementViewController.m */,
 				16D950C71FF37B5E00DBC7B8 /* LoginView.h */,
 				16D950C81FF37B5E00DBC7B8 /* LoginView.m */,
 			);
@@ -1416,6 +1421,7 @@
 				162F970820577DDC004EA49F /* ZJCollectionView.m in Sources */,
 				16CFD7471FB43F820015F2C1 /* ConfirmOrderInfoPayTypeTableViewCell.m in Sources */,
 				1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */,
+				16E27F30207E006B00F82F9D /* UserAgreementViewController.m in Sources */,
 				16CFD75F1FBAB4B40015F2C1 /* MyHeadView.m in Sources */,
 				16901C9D1FD5A5B40080762A /* GetWidthAndHeightOfString.m in Sources */,
 				16CFD74D1FB5496A0015F2C1 /* ConfirmOrderInfoTableViewCell.m in Sources */,
@@ -1638,6 +1644,23 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = /Users/w/Desktop/Emeat/Emeat/Source/Resources/PrefixHeader.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AMapFoundation\"",
+					"\"${PODS_ROOT}/Headers/Public/AMapSearch\"",
+					"\"${PODS_ROOT}/Headers/Public/IQKeyboardManager\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/PYSearch\"",
+					"\"${PODS_ROOT}/Headers/Public/RealReachability\"",
+					"\"${PODS_ROOT}/Headers/Public/SDCycleScrollView\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/YYModel\"",
+					"$(SRCROOT)/Emeat",
+				);
 				INFOPLIST_FILE = /Users/w/Desktop/Emeat/Emeat/Source/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1671,6 +1694,23 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = /Users/w/Desktop/Emeat/Emeat/Source/Resources/PrefixHeader.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AMapFoundation\"",
+					"\"${PODS_ROOT}/Headers/Public/AMapSearch\"",
+					"\"${PODS_ROOT}/Headers/Public/IQKeyboardManager\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/PYSearch\"",
+					"\"${PODS_ROOT}/Headers/Public/RealReachability\"",
+					"\"${PODS_ROOT}/Headers/Public/SDCycleScrollView\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/YYModel\"",
+					"$(SRCROOT)/Emeat",
+				);
 				INFOPLIST_FILE = /Users/w/Desktop/Emeat/Emeat/Source/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

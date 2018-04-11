@@ -141,7 +141,25 @@
             [weakSelf alertMessage:@"请填写完整的收货地址信息" willDo:nil];
             
         }else{
-        
+            
+            if ([weakSelf checkTel:weakSelf.receiverPhone] == NO) {
+                
+                [weakSelf alertMessage:@"请填写正确格式的手机号" willDo:nil];
+
+            }else if ([weakSelf containTheillegalCharacter:weakSelf.receiverName] == YES){
+                
+                [weakSelf alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
+
+            }else if ([weakSelf containTheillegalCharacter:weakSelf.receiverAddress] == YES){
+                
+                [weakSelf alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
+
+            }
+            
+            
+            else{
+            
+            
            [weakSelf.addressDic setValue:weakSelf.receiverName forKey:@"receiverName"];
            [weakSelf.addressDic setValue:weakSelf.receiverPhone forKey:@"receiverPhone"];
 
@@ -161,12 +179,13 @@
 
             
         }
+            
+        }
     };
     
  
     self.addNewAddressView.textFieldTitleBlock = ^(NSMutableDictionary *dic) {
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        
         weakSelf.receiverAddress = [user valueForKey:@"addressDetails"];
         weakSelf.receiverName = [user valueForKey:@"name"];
         weakSelf.receiverPhone = [user valueForKey:@"phoneNumer"];

@@ -19,12 +19,17 @@
 @property (nonatomic,strong) UIView *lineView2;
 
 @property (nonatomic,strong) UIButton *loginBtn;
+
 @property (nonatomic,strong) UIButton *wechatBtn;
 
 @property (nonatomic,strong) UIView *leftLineView;
 @property (nonatomic,strong) UIView *rightLineView;
 @property (nonatomic,strong) UILabel *oauthLable;
 
+@property (nonatomic,strong) UILabel *agreementLab;
+@property (nonatomic,strong) UIButton *agreementBtn;
+
+@property (nonatomic,strong) UILabel *kfPhoneNumLab;
 
 
 

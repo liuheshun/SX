@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#define KWeixinAPP_ID  @"wxbd69c8d0e62710fa"
+#define KWeixinAPP_SECRET      @"c0944b09fce0fffcf3d19e5acc6dfca0" //微信appsecret
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

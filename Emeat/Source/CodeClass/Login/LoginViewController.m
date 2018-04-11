@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "LoginView.h"
+#import "UserAgreementViewController.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 @property (nonatomic,strong) LoginView *loginView;
@@ -209,9 +210,38 @@
     [self.loginView.codeTextField addTarget:self action:@selector(codeTextFieldTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.loginView.codeBtn addTarget:self action:@selector(sendCodeMessage) forControlEvents:1];
     [self.loginView.loginBtn addTarget:self action:@selector(loginBtnActions) forControlEvents:1];
+   
+    if (![WXApi isWXAppInstalled]) {
+        [self.loginView.oauthLable removeFromSuperview];
+        [self.loginView.leftLineView removeFromSuperview];
+        [self.loginView.rightLineView removeFromSuperview];
+        [self.loginView.wechatBtn removeFromSuperview];
+    }else{
+        [self.loginView.wechatBtn addTarget:self action:@selector(wechatBtnLoginAction) forControlEvents:1];
+    }
+    
+    [self.loginView.agreementBtn addTarget:self action:@selector(agreementBtnAction) forControlEvents:1];
 
 }
 
+#pragma mark == 微信登陆
+-(void)wechatBtnLoginAction{
+    if (![WXApi isWXAppInstalled]) {
+        [self alertMessage:@"请安装微信客户端进行使用" willDo:nil];
+    }else{
+        SendAuthReq *req =[[SendAuthReq alloc ] init];
+        req.scope = @"snsapi_userinfo"; // 此处不能随意改
+        req.state = @"123"; // 这个貌似没影响
+        [WXApi sendReq:req];
+    }
+}
+
+#pragma mark = 用户协议
+-(void)agreementBtnAction{
+    
+    UserAgreementViewController *VC = [UserAgreementViewController new];
+    [self.navigationController pushViewController:VC animated:YES];
+}
 
 -(void)phoneNumTextFieldTextFieldDidChange:(UITextField*)textField{
     

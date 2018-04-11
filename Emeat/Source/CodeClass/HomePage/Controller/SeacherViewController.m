@@ -415,6 +415,7 @@
     if (self.searchDataMarray.count != 0) {
         HomePageModel *model = self.searchDataMarray[indexPath.row];
         VC.detailsId = [NSString stringWithFormat:@"%ld" ,model.id];
+        VC.fromSearchVC = @"1";
         [self.navigationController pushViewController:VC animated:YES];
     }
    

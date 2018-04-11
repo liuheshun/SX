@@ -20,6 +20,17 @@
         [self.bgView addSubview:self.codeBtn];
         [self.bgView addSubview:self.codeTextField];
         [self addSubview:self.loginBtn];
+        
+        [self addSubview:self.oauthLable];
+        [self addSubview:self.leftLineView];
+        [self addSubview:self.rightLineView];
+        [self addSubview:self.wechatBtn];
+        [self addSubview:self.agreementLab];
+        [self addSubview:self.agreementBtn];
+        
+        
+        [self addSubview:self.kfPhoneNumLab];
+        
         [self setMainViewFrame];
     }
     return self;
@@ -115,6 +126,85 @@
     return _loginBtn;
 }
 
+
+-(UILabel *)oauthLable{
+    if (!_oauthLable) {
+        _oauthLable = [[UILabel alloc] init];
+        _oauthLable.font = [UIFont systemFontOfSize:12*kScale];
+        _oauthLable.textColor = RGB(136, 136, 136, 1);
+        _oauthLable.text = @"一键登录";
+        _oauthLable.textAlignment = NSTextAlignmentCenter;
+        
+    }
+    return _oauthLable;
+}
+
+-(UIView *)leftLineView{
+    if (!_leftLineView) {
+        _leftLineView = [[UIView alloc] init];
+        _leftLineView.backgroundColor = RGB(136, 136, 136, 1);
+    }
+    return _leftLineView;
+}
+
+-(UIView *)rightLineView{
+    if (!_rightLineView) {
+        _rightLineView = [[UIView alloc] init];
+        _rightLineView.backgroundColor = RGB(136, 136, 136, 1);
+    }
+    return _rightLineView;
+}
+
+-(UIButton *)wechatBtn{
+    if (!_wechatBtn) {
+        _wechatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_wechatBtn setImage:[UIImage imageNamed:@"loginWeixin"] forState:0];
+        [_wechatBtn setTitle:@"微信" forState:0];
+        _wechatBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        _wechatBtn.titleLabel.font = [UIFont systemFontOfSize:12*kScale];
+        [_wechatBtn setTitleColor:RGB(136, 136, 136, 1) forState:0];
+    }
+    return _wechatBtn;
+}
+
+
+-(UILabel *)agreementLab{
+    if (!_agreementLab) {
+        _agreementLab = [[UILabel alloc] init];
+        _agreementLab.font = [UIFont systemFontOfSize:12.0f*kScale];
+        _agreementLab.textColor = RGB(136, 136, 136, 1);
+        _agreementLab.text = @"登录/注册代表您已同意";
+        _agreementLab.textAlignment = NSTextAlignmentRight;
+    }
+    return _agreementLab;
+}
+
+-(UIButton *)agreementBtn{
+    if (!_agreementBtn) {
+        _agreementBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _agreementBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+        [_agreementBtn setTitle:@"《赛鲜服务协议》" forState:0];
+        [_agreementBtn setTitleColor:RGB(231, 35, 36, 1) forState:0];
+        ;
+        
+        _agreementBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    }
+    return _agreementBtn;
+}
+
+
+-(UILabel *)kfPhoneNumLab{
+    if (!_kfPhoneNumLab) {
+        _kfPhoneNumLab = [[UILabel alloc] init];
+        _kfPhoneNumLab.textColor = RGB(136, 136, 136, 1);
+        _kfPhoneNumLab.font = [UIFont systemFontOfSize:12.0f*kScale];
+        _kfPhoneNumLab.textAlignment = NSTextAlignmentCenter;
+        _kfPhoneNumLab.text = @"客服热线 : 400110611";
+    }
+    return _kfPhoneNumLab;
+}
+
+
 -(void)setMainViewFrame{
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.right.equalTo(self);
@@ -148,9 +238,7 @@
         make.height.equalTo(@30);
         make.width.equalTo(@75);
     }];
-    
-    
-    
+
     
     [self.codeTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).with.offset(30);
@@ -166,6 +254,70 @@
         make.height.equalTo(@40);
     }];
     
+    
+    
+    [self.oauthLable mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.loginBtn.mas_bottom).with.offset(65*kScale);
+        make.width.equalTo(@(60*kScale));
+        make.centerX.equalTo(self);
+        make.height.equalTo(@(10*kScale));
+    }];
+    
+    
+    [self.leftLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(110*kScale));
+        make.height.equalTo(@(1*kScale));
+        make.right.equalTo(self.oauthLable.mas_left).with.offset(-10*kScale);
+        make.centerY.equalTo(self.oauthLable);
+        
+    }];
+    
+    
+    
+    [self.rightLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(110*kScale));
+        make.height.equalTo(@(1*kScale));
+        make.left.equalTo(self.oauthLable.mas_right).with.offset(10*kScale);
+        make.centerY.equalTo(self.oauthLable);
+        
+    }];
+    
+    
+    [self.wechatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.oauthLable.mas_bottom).with.offset(38*kScale);
+        make.width.height.equalTo(@(80*kScale));
+        make.centerX.equalTo(self);
+    }];
+    
+    [_wechatBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:10*kScale];
+
+    
+    [self.agreementLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.equalTo(self.mas_left).with.offset((kWidth-235*kScale)/2);
+        make.height.equalTo(@(12*kScale));
+        make.width.equalTo(@(135*kScale));
+        make.bottom.equalTo(self.mas_bottom).with.offset(-47*kScale);
+        
+        
+    }];
+    
+    [self.agreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.left.equalTo(self.agreementLab.mas_right).with.offset(0);
+        make.height.equalTo(@(12*kScale));
+        make.width.equalTo(@(100*kScale));
+        make.bottom.equalTo(self.mas_bottom).with.offset(-47*kScale);
+        
+        
+    }];
+    
+    [self.kfPhoneNumLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self);
+        make.height.equalTo(@(12*kScale));
+        make.bottom.equalTo(self.mas_bottom).with.offset(-25*kScale);
+        
+    }];
     
 }
 

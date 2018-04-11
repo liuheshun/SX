@@ -100,7 +100,9 @@
             }
             
         }else{
-            
+            [self.orderListMarray removeAllObjects];
+            [self.orderImvArray removeAllObjects];
+
            [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wkf" viewWidth:50 viewHeight:54 UITableView:self.tableView ] ;
         }
         [self.tableView reloadData];
@@ -119,7 +121,7 @@
 
 -(UITableView*)tableView{
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-kBarHeight - 44) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-kBarHeight - 44-LL_TabbarSafeBottomMargin ) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];

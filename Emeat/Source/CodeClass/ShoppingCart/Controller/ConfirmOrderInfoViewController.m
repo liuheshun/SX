@@ -39,6 +39,7 @@
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.bottomView];
+    [self setBottomViewFrame];
     self.navItem.title = @"确认订单";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:@"" forKey:@"conmmentString"];
@@ -110,15 +111,24 @@
     
 }
 
+#pragma mark = 底部视图
+
 -(ConfirmOrderInfoBottomView*)bottomView{
     if (!_bottomView) {
-        _bottomView = [[ConfirmOrderInfoBottomView alloc] initWithFrame:CGRectMake(0, kHeight-45 - LL_TabbarSafeBottomMargin, kWidth, 45)];
+        _bottomView = [[ConfirmOrderInfoBottomView alloc] init];
         _bottomView.backgroundColor = [UIColor whiteColor];
         [_bottomView.rightBottomBtn addTarget:self action:@selector(rightBottomBtnAction) forControlEvents:1];
-        
     
     }
     return _bottomView;
+}
+
+-(void)setBottomViewFrame{
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@45);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
+    }];
 }
 
 -(UITableView*)tableView{

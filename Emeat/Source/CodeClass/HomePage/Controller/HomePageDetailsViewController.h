@@ -13,6 +13,8 @@
 @property (nonatomic,strong) NSString *detailsId;
 ///是否来自banner图 1来自banner
 @property (nonatomic,strong) NSString *fromBaner;
+///是否来自搜索页面 1来自搜索页面
+@property (nonatomic,strong) NSString *fromSearchVC;
 
 
 @end

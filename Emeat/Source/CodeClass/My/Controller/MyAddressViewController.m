@@ -192,6 +192,12 @@
     VC.isCanRemove = NO;
     VC.navTitle = @"编辑收货地址";
     VC.postMyAddressModel = self.addressDataMarray[btn.tag];
+
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:VC.postMyAddressModel.receiverName forKey:@"name"];
+    [user setValue:[NSString stringWithFormat:@"%ld" ,VC.postMyAddressModel.receiverPhone] forKey:@"phoneNumer"];
+    [user setValue:VC.postMyAddressModel.receiverAddress forKey:@"addressDetails"];
     [self.navigationController pushViewController:VC animated:YES];
 }
 

@@ -79,6 +79,7 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
     }
+    [self requestBadNumValue];
 
 
 }
@@ -87,6 +88,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = RGB(238, 238, 238, 1);
 
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

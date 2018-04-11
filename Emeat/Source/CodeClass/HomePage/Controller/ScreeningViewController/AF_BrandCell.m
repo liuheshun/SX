@@ -128,7 +128,8 @@
         
         button.frame = CGRectMake(appviewx, appviewy, appvieww, appviewh);
         
-        [button setTitle:attributeArr[i][@"dataName"] forState:UIControlStateNormal];
+        [button setTitle:[attributeArr[i][@"dataName"] stringByReplacingOccurrencesOfString:@" " withString:@""]
+   forState:UIControlStateNormal];
 
     }
         _height = (spacing + appviewh) * (row + 1) + spacing;

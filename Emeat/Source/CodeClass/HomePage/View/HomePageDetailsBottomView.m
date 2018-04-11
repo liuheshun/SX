@@ -56,7 +56,7 @@
     [self.cartBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(0);
         make.bottom.equalTo(self.mas_bottom).with.offset(0);
-        make.width.equalTo(@100);
+        make.width.equalTo(@(100*kScale));
         make.height.equalTo(self);
     }];
     

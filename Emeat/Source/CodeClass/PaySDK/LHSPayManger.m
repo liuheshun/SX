@@ -19,7 +19,7 @@
     return payManger;
 }
 
-#pragma mark = WeChat pay methods
+#pragma mark = 微信支付
 
 -(void)sendWXPay:(NSDictionary*)dic{
     NSMutableString *stamp  = dic[@"msg"] [@"timestamp"];
@@ -37,26 +37,27 @@
 
 }
 
+#pragma mark = 支付宝支付
 
--(void)sendAliPay:(NSDictionary *)dic{
-    NSString *orderString = dic[@"orderString"];
-    NSString *appScheme = dic[@"appScheme"];
+-(void)sendAliPay:(NSString *)orderString{
+//    NSString *orderString = dic[@"orderString"];
+    NSString *appScheme = @"appScheme";
     
     [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
 //        NSDictionary *dic = resultDic;
 //        NSString *resultStr = EncodeFormDic(dic, @"resultStatus");
-        NSLog(@"resultStr_%@",dic);
+        NSLog(@"resultStr_%@",resultDic);
         //[self paymentResult:resultStr];
     }];
     
 }
 
-
+#pragma mark = 银联支付
 -(void)sendUPPay:(NSDictionary*)dic UiviewController:(UIViewController*)VC{
-    NSString *tn;
+    NSString *tn = @"711160276350323179701";
     if (tn.length > 0) {
         //当获得的tn不为空时，调用支付接口
-        [[UPPaymentControl defaultControl] startPay:tn fromScheme:@"UPPayDemo" mode:@"respCode" viewController:VC];
+        [[UPPaymentControl defaultControl] startPay:tn fromScheme:@"UPPaySaixian" mode:@"01" viewController:VC];
     }else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"银联参数配置不正确" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];

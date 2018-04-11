@@ -259,6 +259,34 @@
     }
     
 }
+
+
+
+
+
+
+
+
+//判断是否含有非法字符 yes 有  no没有 （非法字符是指 除数字 字母 文字以外的所有字符）
+- (BOOL)containTheillegalCharacter:(NSString *)content{
+    //提示 标签不能输入特殊字符
+    NSString *str =@"^[A-Za-z0-9\\u4e00-\u9fa5]+$";
+    NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", str];
+    if (![emailTest evaluateWithObject:content]) {
+        return YES;
+    }
+    return NO;
+}
+
+
+
+
+
+
+
+
+
+
 //判断是否输入了emoji 表情
 - (BOOL)checkStringContainsEmoji:(NSString *)string{
     __block BOOL returnValue = NO;
@@ -546,7 +574,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 //        if ([modelq isEqual:@"(null)"]) {
 //            DLog(@"sss");
 //        }
-        if ([returnData[@"code"] isEqualToString:@"0404"]) {
+        if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
             LoginViewController *VC = [LoginViewController new];
@@ -695,6 +723,14 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     
     
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/get_cart_product_count" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:@"0" forKey:@"isLoginState"];
+            [GlobalHelper shareInstance].shoppingCartBadgeValue = 0;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
+        }
         
         if ([returnData[@"status"] integerValue] == 200)
         {

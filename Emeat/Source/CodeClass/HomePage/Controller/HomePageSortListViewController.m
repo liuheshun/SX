@@ -267,7 +267,7 @@
         
         DLog(@"returnData筛选== %@" ,returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
-            ///////品种parentId=5 原产地parentId=1 重量规格parentId=10
+            ///品种parentId=5 原产地parentId=1 重量规格parentId=10
 
             for (NSDictionary *dic in returnData[@"data"]) {
                 

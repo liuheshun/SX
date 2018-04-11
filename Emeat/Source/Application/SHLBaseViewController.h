@@ -45,6 +45,11 @@ typedef void(^clickRightItemBlock)(void);
 #pragma mark 判断手机格式是否正确
 -(BOOL)checkTel:(NSString *)tel;
 
+
+//判断是否含有非法字符 yes 有  no没有 （非法字符是指 除数字 字母 文字以外的所有字符）
+-(BOOL)containTheillegalCharacter:(NSString *)content;
+
+
 ///网络状态
 @property (nonatomic,assign) ReachabilityStatus reachabilityStatus;
 

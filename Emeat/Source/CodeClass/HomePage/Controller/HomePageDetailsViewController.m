@@ -57,9 +57,7 @@
    
     [self requsetDetailsData];
     
-    
-    [self setButtonBadgeValue:self.bottomView.cartBtn badgeValue:[NSString stringWithFormat:@"%ld",[GlobalHelper shareInstance].shoppingCartBadgeValue ] badgeOriginX:MaxX(self.bottomView.cartBtn.imageView)-5 badgeOriginY:Y(self.bottomView.cartBtn.imageView)-12];
-    
+  
 }
 #pragma mark = 商品详情数据
 
@@ -99,6 +97,10 @@
                     [SVProgressHUD dismiss];
                     [self.view addSubview:self.tableView];
                     [self.view addSubview:self.bottomView];
+                    [self setBottomViewFrame];
+                    
+                    [self setButtonBadgeValue:self.bottomView.cartBtn badgeValue:[NSString stringWithFormat:@"%ld",[GlobalHelper shareInstance].shoppingCartBadgeValue ] badgeOriginX:MaxX(self.bottomView.cartBtn.imageView)-5 badgeOriginY:Y(self.bottomView.cartBtn.imageView)-12];
+                    
                     [self.tableView reloadData];
                 }
               
@@ -323,17 +325,29 @@
     
 }
 
-
+#pragma mark = 底部视图
 
 -(HomePageDetailsBottomView*)bottomView{
     if (!_bottomView) {
-        _bottomView = [[HomePageDetailsBottomView alloc] initWithFrame:CGRectMake(0, kHeight-49-LL_TabbarSafeBottomMargin, kWidth, 49)];
+        _bottomView = [[HomePageDetailsBottomView alloc] init];
+        _bottomView.backgroundColor = [UIColor whiteColor];
         [_bottomView.cartBtn addTarget:self action:@selector(cartBtnAction) forControlEvents:1];
         [_bottomView.addCartBtn addTarget:self action:@selector(addCartBtnAction) forControlEvents:1];
-
     }
     return _bottomView;
 }
+
+#pragma makr = 底部视图frame
+
+-(void)setBottomViewFrame{
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@49);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
+        
+    }];
+}
+
 
 #pragma mark =购物车
 

@@ -65,11 +65,13 @@
     {
         
     }else{
-        
-//        [self setupMainView];
-        [self requestShoppingListData];
-        [self requestBadNumValue];
-        [self requestGuesslikeData];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self requestShoppingListData];
+            [self requestBadNumValue];
+            [self requestGuesslikeData];
+        });
+    
+     
       
     }
   
@@ -160,46 +162,46 @@
 }
 
 
-#pragma mark =====购物车数量
--(void)requestBadNumValue{
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setValue:secret forKey:@"secret"];
-    [dic setValue:nonce forKey:@"nonce"];
-    [dic setValue:curTime forKey:@"curTime"];
-    [dic setValue:checkSum forKey:@"checkSum"];
-    [dic setValue:ticket forKey:@"ticket"];
-    
-    
-    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/get_cart_product_count" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
-        if ([returnData[@"status"] integerValue] == 200)
-        {
-            [GlobalHelper shareInstance].shoppingCartBadgeValue = [returnData[@"data"] integerValue];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
-        }
-        
-        DLog(@"购物车数量==  %@" ,returnData);
-    } failureBlock:^(NSError *error) {
-        
-        DLog(@"购物车数量error==  %@" ,error);
-        
-    } showHUD:NO];
-    
-    
-    
-    
-    
-    
-}
+//#pragma mark =====购物车数量
+//-(void)requestBadNumValue{
+//    
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//    NSString *ticket = [user valueForKey:@"ticket"];
+//    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+//    NSString *nonce = [self ret32bitString];//随机数
+//    NSString *curTime = [self dateTransformToTimeSp];
+//    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+//    
+//    [dic setValue:secret forKey:@"secret"];
+//    [dic setValue:nonce forKey:@"nonce"];
+//    [dic setValue:curTime forKey:@"curTime"];
+//    [dic setValue:checkSum forKey:@"checkSum"];
+//    [dic setValue:ticket forKey:@"ticket"];
+//    
+//    
+//    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/get_cart_product_count" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+//        
+//        if ([returnData[@"status"] integerValue] == 200)
+//        {
+//            [GlobalHelper shareInstance].shoppingCartBadgeValue = [returnData[@"data"] integerValue];
+//            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
+//        }
+//        
+//        DLog(@"购物车数量==  %@" ,returnData);
+//    } failureBlock:^(NSError *error) {
+//        
+//        DLog(@"购物车数量error==  %@" ,error);
+//        
+//    } showHUD:NO];
+//    
+//    
+//    
+//    
+//    
+//    
+//}
 
 #pragma mark = =获取订单信息(去结算)
 
@@ -519,6 +521,8 @@
 - (void)headerRereshing{
     
     [self requestShoppingListData];
+    [self requestBadNumValue];
+
     [myTableView.mj_header endRefreshing];
     [myTableView.mj_footer endRefreshing];
     
@@ -549,7 +553,7 @@
 
         DLog(@"购物车列表数据接口======= %@  %@" , returnData[@"msg"], returnData );
          ////下面判断可删除
-        if ([returnData[@"code"]isEqualToString:@"0404"]) {
+        if ([returnData[@"code"]isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
         }
@@ -835,14 +839,23 @@
 #pragma mark - 设置底部视图
 -(void)setupBottomView
 {
-    CGFloat yHeight = kHeight - 44-kBottomBarHeight;
+    CGFloat yHeight =  0;
     if (self.isShowTabBarBottomView == YES)
     {
-        yHeight = kHeight - 44 -LL_TabbarSafeBottomMargin;
+        yHeight = LL_TabbarSafeBottomMargin;
     }
-    self.bottomView= [[ShoppingCartBottomView alloc] initWithFrame:CGRectMake(0, yHeight, kWidth, 44)];
+    self.bottomView= [[ShoppingCartBottomView alloc] init];
     self.bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.bottomView];
+    
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@44);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-yHeight);
+        
+        
+    }];
+    
     [self.bottomView.selectAll addTarget:self action:@selector(selectAllBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.bottomView.PayBtn addTarget:self action:@selector(goPayBtnClick) forControlEvents:UIControlEventTouchUpInside];
 

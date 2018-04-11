@@ -10,19 +10,19 @@
 //beta.cyberfresh.cn
 //admin.cyberfresh.cn
 
-//
-////URL:
-//#define baseUrl @"http://admin.cyberfresh.cn/m"
-//#define loginBaseUrl @"http://admin.cyberfresh.cn/cas"
+
+//URL:
+#define baseUrl @"http://beta.cyberfresh.cn/m"
+#define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
 /////设置的
 #define setbaseUrl @"http://admin.cyberfresh.cn"
 
 
-
-//URL:本地
-#define baseUrl @"http://192.168.0.200:8080/m"
-#define loginBaseUrl @"http://192.168.0.200/cas"
-
+//
+////URL:本地
+//#define baseUrl @"http://192.168.0.200/m"
+//#define loginBaseUrl @"http://192.168.0.200/cas"
+//
 
 ///获取版本号
 ///http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1
