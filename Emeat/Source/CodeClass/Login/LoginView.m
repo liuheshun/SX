@@ -21,15 +21,14 @@
         [self.bgView addSubview:self.codeTextField];
         [self addSubview:self.loginBtn];
         
-        [self addSubview:self.oauthLable];
-        [self addSubview:self.leftLineView];
-        [self addSubview:self.rightLineView];
-        [self addSubview:self.wechatBtn];
-        [self addSubview:self.agreementLab];
-        [self addSubview:self.agreementBtn];
-        
-        
-        [self addSubview:self.kfPhoneNumLab];
+//        [self addSubview:self.oauthLable];
+//        [self addSubview:self.leftLineView];
+//        [self addSubview:self.rightLineView];
+//        [self addSubview:self.wechatBtn];
+//        [self addSubview:self.agreementLab];
+//        [self addSubview:self.agreementBtn];
+//
+//        [self addSubview:self.kfPhoneNumLab];
         
         [self setMainViewFrame];
     }
@@ -255,70 +254,70 @@
     }];
     
     
-    
-    [self.oauthLable mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.loginBtn.mas_bottom).with.offset(65*kScale);
-        make.width.equalTo(@(60*kScale));
-        make.centerX.equalTo(self);
-        make.height.equalTo(@(10*kScale));
-    }];
-    
-    
-    [self.leftLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@(110*kScale));
-        make.height.equalTo(@(1*kScale));
-        make.right.equalTo(self.oauthLable.mas_left).with.offset(-10*kScale);
-        make.centerY.equalTo(self.oauthLable);
-        
-    }];
-    
-    
-    
-    [self.rightLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@(110*kScale));
-        make.height.equalTo(@(1*kScale));
-        make.left.equalTo(self.oauthLable.mas_right).with.offset(10*kScale);
-        make.centerY.equalTo(self.oauthLable);
-        
-    }];
-    
-    
-    [self.wechatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.oauthLable.mas_bottom).with.offset(38*kScale);
-        make.width.height.equalTo(@(80*kScale));
-        make.centerX.equalTo(self);
-    }];
-    
-    [_wechatBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:10*kScale];
-
-    
-    [self.agreementLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.equalTo(self.mas_left).with.offset((kWidth-235*kScale)/2);
-        make.height.equalTo(@(12*kScale));
-        make.width.equalTo(@(135*kScale));
-        make.bottom.equalTo(self.mas_bottom).with.offset(-47*kScale);
-        
-        
-    }];
-    
-    [self.agreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.equalTo(self.agreementLab.mas_right).with.offset(0);
-        make.height.equalTo(@(12*kScale));
-        make.width.equalTo(@(100*kScale));
-        make.bottom.equalTo(self.mas_bottom).with.offset(-47*kScale);
-        
-        
-    }];
-    
-    [self.kfPhoneNumLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
-        make.height.equalTo(@(12*kScale));
-        make.bottom.equalTo(self.mas_bottom).with.offset(-25*kScale);
-        
-    }];
-    
+//    
+//    [self.oauthLable mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.loginBtn.mas_bottom).with.offset(65*kScale);
+//        make.width.equalTo(@(60*kScale));
+//        make.centerX.equalTo(self);
+//        make.height.equalTo(@(10*kScale));
+//    }];
+//    
+//    
+//    [self.leftLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(@(110*kScale));
+//        make.height.equalTo(@(1*kScale));
+//        make.right.equalTo(self.oauthLable.mas_left).with.offset(-10*kScale);
+//        make.centerY.equalTo(self.oauthLable);
+//        
+//    }];
+//    
+//    
+//    
+//    [self.rightLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(@(110*kScale));
+//        make.height.equalTo(@(1*kScale));
+//        make.left.equalTo(self.oauthLable.mas_right).with.offset(10*kScale);
+//        make.centerY.equalTo(self.oauthLable);
+//        
+//    }];
+//    
+//    
+//    [self.wechatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.oauthLable.mas_bottom).with.offset(38*kScale);
+//        make.width.height.equalTo(@(80*kScale));
+//        make.centerX.equalTo(self);
+//    }];
+//    
+//    [_wechatBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:10*kScale];
+//
+//    
+//    [self.agreementLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        
+//        make.left.equalTo(self.mas_left).with.offset((kWidth-235*kScale)/2);
+//        make.height.equalTo(@(12*kScale));
+//        make.width.equalTo(@(135*kScale));
+//        make.bottom.equalTo(self.mas_bottom).with.offset(-47*kScale);
+//        
+//        
+//    }];
+//    
+//    [self.agreementBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        
+//        make.left.equalTo(self.agreementLab.mas_right).with.offset(0);
+//        make.height.equalTo(@(12*kScale));
+//        make.width.equalTo(@(100*kScale));
+//        make.bottom.equalTo(self.mas_bottom).with.offset(-47*kScale);
+//        
+//        
+//    }];
+//    
+//    [self.kfPhoneNumLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.equalTo(self);
+//        make.height.equalTo(@(12*kScale));
+//        make.bottom.equalTo(self.mas_bottom).with.offset(-25*kScale);
+//        
+//    }];
+//    
 }
 
 

@@ -12,7 +12,13 @@
 #import "MyOrderDetailsTableViewCell.h"
 #import "ConfirmOrderInfoBottomView.h"
 #import "SelectPayTypeViewController.h"
-@interface OrderDetailesViewController ()<UITableViewDelegate ,UITableViewDataSource>
+
+#import "TZImagePickerController.h"
+#import "MHUploadParam.h"
+
+#import "AFHTTPSessionManager.h"
+
+@interface OrderDetailesViewController ()<UITableViewDelegate ,UITableViewDataSource,TZImagePickerControllerDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) MyOrderDetailsStatusHeadView *myOrderDetailsStatusHeadView;
 @property (nonatomic,strong) MyOrderDetailsStatusFootView *myOrderDetailsStatusFootView;
@@ -28,6 +34,10 @@
 ///订单状态
 @property (nonatomic,assign) NSInteger status;
 
+///打款凭证图片数组
+@property (nonatomic,strong)  NSMutableArray *monetProveMarray;
+///是否周期性付款
+@property (nonatomic,assign) NSInteger period;
 
 
 @end
@@ -105,6 +115,8 @@
                 }
                 
                 orderModel.myAddressModel = addressModel;
+                ///周期性用户
+//                self.period = orderModel.periodic;
                 [self.productMarray addObject:orderModel];
             }
             
@@ -266,10 +278,135 @@
         SelectPayTypeViewController *VC = [SelectPayTypeViewController new];
         VC.orderNo = self.orderNo;
         [self.navigationController pushViewController:VC animated:YES];
+    }else if (btn.tag == 40){///上传打款凭证
+        DLog(@"-----------上传打款凭证-------------");
+        TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:4 delegate:self];
+        
+        // You can get the photos by block, the same as by delegate.
+        // 你可以通过block或者代理，来得到用户选择的照片.
+        [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+            DLog(@"选择的图片=== %@" ,photos);
+            [self postImageDta:photos];
+        }];
+        
+        
+        [self presentViewController:imagePickerVc animated:YES completion:nil];
     }
     
     
 }
+#pragma mark=============================上传打款凭证=============================
+
+-(void)postImageDta:(NSArray*)array{
+    
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    //    NSData *finallImageData = UIImageJPEGRepresentation(newImage,0.50);
+    NSData *data ;
+    for (int i = 0; i <array.count; i++) {
+       data = [self resetSizeOfImageData:array[i] maxSize:1024];
+
+    }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
+    [dic setValue:self.orderNo forKey:@"orderNo"];
+    
+    [SVProgressHUD showProgress:-1 status:@"正在上传,请稍等."];
+   NSString* path = [[NSString stringWithFormat:@"%@/auth/order/upVoucher" ,baseUrl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer.timeoutInterval = 10;
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json", @"text/plain", @"text/html", nil];
+    
+    [manager POST:path parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        for (int i = 0; i < array.count; i ++) {
+            NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
+            formatter.dateFormat=@"yyyyMMddHHmmss";
+            NSString *str=[formatter stringFromDate:[NSDate date]];
+            NSString *fileName=[NSString stringWithFormat:@"%@.jpg",str];
+            UIImage *image = array[i];
+            NSData *imageData = UIImageJPEGRepresentation(image, 0.28);
+            [formData appendPartWithFileData:imageData name:[NSString stringWithFormat:@"upload%d",i+1] fileName:fileName mimeType:@"image/jpeg"];
+        }
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        DLog(@"uploadProgress is %lld,总字节 is %lld",uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+       
+        DLog(@"responseObject==========  %@",responseObject);
+        if ([[NSString stringWithFormat:@"%@" , responseObject[@"status"]] isEqualToString:@"200"]) {
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+             ///再次请求订单详情数据
+            [self requsetOrderDetailsData];
+            
+        }else {
+            [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
+
+            
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [SVProgressHUD showErrorWithStatus:@"上传失败"];
+//        if (failure == nil) return ;
+      //  failure();
+    }];
+}
+
+
+
+
+#pragma mark==================图片压缩===========================
+- (NSData *)resetSizeOfImageData:(UIImage *)source_image maxSize:(NSInteger)maxSize
+{
+    //先调整分辨率
+    CGSize newSize = CGSizeMake(source_image.size.width, source_image.size.height);
+    DLog(@"wwwwwwww=w==w=w==w=w  %f %f " ,newSize.height , newSize.width);
+    CGFloat tempHeight = newSize.height / maxSize;
+    CGFloat tempWidth = newSize.width / maxSize;
+    
+    if (tempWidth > 1.0 && tempWidth > tempHeight) {
+        newSize = CGSizeMake(source_image.size.width / tempWidth, source_image.size.height / tempWidth);
+    }
+    else if (tempHeight > 1.0 && tempWidth < tempHeight){
+        newSize = CGSizeMake(source_image.size.width / tempHeight, source_image.size.height / tempHeight);
+    }
+    
+    UIGraphicsBeginImageContext(newSize);
+    [source_image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //调整大小
+    NSData *imageData = UIImageJPEGRepresentation(newImage,1.0);
+    NSUInteger sizeOrigin = [imageData length];
+    NSUInteger sizeOriginKB = sizeOrigin / maxSize;
+    if (sizeOriginKB > maxSize) {
+        NSData *finallImageData = UIImageJPEGRepresentation(newImage,0.50);
+        return finallImageData;
+    }
+    
+    return imageData;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -410,14 +547,14 @@
         [self setTableViewFrames];
 
     }
-    else  if (self.status == 50 || self.status == 40)///待发货(待确认)
+    else  if (self.status == 50 || self.status == 40 || self.status == 46)///待发货(待确认)
     {
-        [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
-        [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(self.orderInfoBottomView);
-            make.height.equalTo(@44);
-            make.bottom.equalTo(self.orderInfoBottomView.mas_bottom).with.offset(0);
-        }];
+//        [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
+//        [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.equalTo(self.orderInfoBottomView);
+//            make.height.equalTo(@44);
+//            make.bottom.equalTo(self.orderInfoBottomView.mas_bottom).with.offset(0);
+//        }];
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 1)];
         lineView.backgroundColor = RGB(238, 238, 238, 1);
         [self.orderInfoBottomView addSubview:lineView];
@@ -426,6 +563,10 @@
         self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
         self.orderInfoBottomView.leftBottomBtn.tag = 40;
 
+        [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
+        self.orderInfoBottomView.rightBottomBtn.tag = 40;
+
+        
         
         [self setTableViewFrames];
 
@@ -546,14 +687,36 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
     if (self.footViewOrderInfoMarray.count != 0) {
+        
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
         
-        
         CGSize strSize = [orderModel.orderComment boundingRectWithSize:CGSizeMake(kWidth-30, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
+      
         
+     if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46){
+         if (orderModel.periodic == 1){
+             ///周期性用户
+             return 282*kScale+strSize.height + 104*kScale;
+         }else{
+             return 282*kScale+strSize.height ;
+             
+         }
 
-        return 282*kScale+strSize.height;
+     }else{
+         
+         
+         return 282*kScale+strSize.height ;
+
+     }
+        
+         
+        
+        
+        
+        
+        
     }else{
     return 0;
     }
@@ -565,8 +728,11 @@
     self.myOrderDetailsStatusHeadView.backgroundColor = RGB(238, 238, 238, 1);
     
     if (self.headViewSendAddressMarray.count != 0) {
+        
         MyAddressModel *addressModel = [self.headViewSendAddressMarray firstObject];
+        
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
+        
         [self.myOrderDetailsStatusHeadView configAddressWithModel:addressModel orderModel:orderModel];
         
     }
@@ -575,23 +741,95 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 269+10;
+    return 269*kScale+10*kScale+55*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
    
-    self.myOrderDetailsStatusFootView = [[MyOrderDetailsStatusFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 269+10)];
+    self.myOrderDetailsStatusFootView = [[MyOrderDetailsStatusFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 269*kScale+10*kScale)];
     self.myOrderDetailsStatusFootView.backgroundColor = RGB(238, 238, 238, 1);
     if (self.footViewOrderInfoMarray.count != 0)
     {
-        
+
         OrderModel *model = [self.footViewOrderInfoMarray firstObject];
-       [self.myOrderDetailsStatusFootView configOrderDetailsFootViewWithModel:model];
+        NSArray *imvArray = [model.voucherImg componentsSeparatedByString:@","];
+        self.monetProveMarray = [NSMutableArray arrayWithArray:imvArray];
+
+        [self.myOrderDetailsStatusFootView configOrderDetailsFootViewWithModel:model configMoneyProve:self.monetProveMarray isShow:YES];
+       
+        self.myOrderDetailsStatusFootView.proveImage.userInteractionEnabled = YES;
+
+        __weak __typeof(self) weakSelf = self;
+
+        self.myOrderDetailsStatusFootView.returnDeleteClickBlcok = ^(NSInteger clickIndex) {
+            DLog(@"%ld" , clickIndex);
+            [weakSelf.monetProveMarray removeObjectAtIndex:clickIndex];
+            NSString *string = [weakSelf.monetProveMarray  componentsJoinedByString:@","];//分隔符
+            [weakSelf deleteMoneyProve:string];
+            DLog(@"%@" ,string );
+            
+        };
     }
-    
-    
+   
     return self.myOrderDetailsStatusFootView;
 }
+
+#pragma mark ===================删除打款凭证============
+-(void)deleteMoneyProve:(NSString*)imageString{
+//    /auth/order/modificationVoucher
+//    方式：post
+//    参数：Long orderNo,String images
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
+    [dic setValue:self.orderNo forKey:@"orderNo"];
+    [dic setValue:imageString forKey:@"images"];
+    
+    DLog(@"获取ticket== %@" ,dic);
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/modificationVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        if ([[NSString stringWithFormat:@"%@" ,returnData[@"status"]] isEqualToString:@"200"]) {
+            
+            
+            OrderModel *model = [self.footViewOrderInfoMarray firstObject];
+
+            model.voucherImg = returnData[@"data"];
+//            NSArray *imvArray = [model.voucherImg componentsSeparatedByString:@","];
+//            self.monetProveMarray = [NSMutableArray arrayWithArray:imvArray];
+//
+            [self.tableView reloadData];
+            DLog(@"delete=======================%@" ,returnData);
+            DLog(@"delete=======================%ld" ,self.monetProveMarray.count);
+
+
+        }
+        
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+    
+
+    
+    
+    
+}
+
+
 
 
 
@@ -613,6 +851,19 @@
     
     return cell1;
 }
+
+
+//#pragma mark ==========================更改打款凭证======================
+//
+//-(void)deleteImvBtnAction:(UIButton*)btn{
+//
+//    DLog(@"--------tag==%ld" ,btn.tag);
+//
+//
+//
+//}
+
+
 
 #pragma mark  = 点击事件
 

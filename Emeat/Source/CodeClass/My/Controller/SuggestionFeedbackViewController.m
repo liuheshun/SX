@@ -33,7 +33,11 @@
 }
 
 -(void)rightItemAction{
+    if (self.self.conmmentString.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入您的意见反馈"];
+    }else{
     [self  postSuggestData];
+    }
     DLog(@"反馈提交===== %@" ,self.conmmentString );
 }
 
@@ -71,7 +75,7 @@
             
         }else{
             SVProgressHUD.minimumDismissTimeInterval = 1;
-            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
+            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"请登录重试%@",returnData[@"code"]]];
         }
         
     } failureBlock:^(NSError *error) {

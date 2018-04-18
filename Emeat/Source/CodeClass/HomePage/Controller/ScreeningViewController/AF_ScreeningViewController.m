@@ -202,11 +202,13 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section != 0) {
-        AF_BrandCell *cell = [[AF_BrandCell alloc]init];
-        cell.attributeArr = self.dataArr[indexPath.section-1];
-        return cell.height;
-//        return 300;
+    if (self.dataArr.count !=0) {
+        if (indexPath.section != 0) {
+            AF_BrandCell *cell = [[AF_BrandCell alloc]init];
+            cell.attributeArr = self.dataArr[indexPath.section-1];
+            return cell.height;
+    }
+  
     }
     return 44;
 }

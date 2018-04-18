@@ -202,7 +202,7 @@
         
     };
    
-#pragma mark = 搜索
+#pragma mark = 搜索商品
     
     
     self.navView.searchBtnBlock = ^{
@@ -214,24 +214,29 @@
         
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
     
+//
+//          //  searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+//
+//            SeacherViewController *sVc = [[SeacherViewController alloc] init];
+//
+//            searchViewController.searchResultController = sVc;
+//
+//            sVc.searchText = searchText;
             
-            searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
-            
+   
             SeacherViewController *sVc = [[SeacherViewController alloc] init];
-            
-            searchViewController.searchResultController = sVc;
-            
             sVc.searchText = searchText;
-    
-    
+            [searchViewController.navigationController pushViewController:sVc animated:YES];
+
             
         }];
-        
+        searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+
         searchViewController.showSearchHistory = NO;
-        
+
         searchViewController.showHotSearch = NO;
-    
-        
+
+
         searchViewController.delegate = weakSelf;
         
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;

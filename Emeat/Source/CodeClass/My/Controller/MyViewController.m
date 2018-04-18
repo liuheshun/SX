@@ -125,10 +125,9 @@
 #pragma mark = 我的数据
 
 -(void)requsetMyData{
+//    [SVProgressHUD show];
     
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
         
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -177,6 +176,7 @@
                 //        }
                 
             }
+       //     [SVProgressHUD dismiss];
             [self.tableView reloadData];
             
         } failureBlock:^(NSError *error) {
@@ -185,7 +185,7 @@
             
         } showHUD:NO];
         
-    });
+   
 
     
     
@@ -549,7 +549,7 @@
         {
             MyModel *model = self.myDataMarray[section];
             [self.headView addTopHeadView:[GlobalHelper shareInstance].isLoginState configHeadViewMyModel:model];
-         
+
             
         }else
         {

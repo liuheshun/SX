@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface MyOrderDetailsStatusFootView : UIView
+
+typedef void(^ReturnDeleteClickBlcok)(NSInteger clickIndex);
+
+
 @property (nonatomic,strong) UIView *footTopBgView;
 //商品总价
 @property (nonatomic,strong) UILabel *orderAllPricesLab;
@@ -37,18 +42,13 @@
 
 ///取消时间
 @property (nonatomic,strong) UILabel *cancelTime;
+ //// ///赋值 以及   上传打款凭证
+-(void)configOrderDetailsFootViewWithModel:(OrderModel*)model configMoneyProve:(NSMutableArray*)imageArray isShow:(BOOL)isShow;
 
+@property (nonatomic,strong) UIImageView *proveImage;
+@property (nonatomic,strong) UIButton *deleteImvBtn;
 
-
-
-
-
-
-
-
-
-
--(void)configOrderDetailsFootViewWithModel:(OrderModel*)model;
+@property (nonatomic,copy) ReturnDeleteClickBlcok returnDeleteClickBlcok;
 
 
 

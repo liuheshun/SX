@@ -331,6 +331,7 @@
         [weakSelf.navigationController pushViewController:VC animated:YES];
     };
     
+#pragma mark =======搜索
     self.homePageNavView.searchBtnBlock = ^{
         NSArray *hotSeaches = @[@"Java", @"Python"];
         // 2. Create a search view controller
@@ -338,12 +339,21 @@
             // Called when search begain.
             // eg：Push to a temp view controller
             
-            searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+//            searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+//            SeacherViewController *sVc = [[SeacherViewController alloc] init];
+//            searchViewController.searchResultController = sVc;
+//            sVc.searchText = searchText;
+        
+            
             SeacherViewController *sVc = [[SeacherViewController alloc] init];
-            searchViewController.searchResultController = sVc;
             sVc.searchText = searchText;
             sVc.fromSortString = @"1";
             sVc.position = weakSelf.ID;
+            
+            [searchViewController.navigationController pushViewController:sVc animated:YES];
+
+            
+            
             
         }];
         searchViewController.showSearchHistory = NO;

@@ -18,8 +18,6 @@
         [self.statusBgImv addSubview:self.orderStatusDetailsLab];
         [self.statusBgImv addSubview:self.statusImv];
         
-        
-        
         [self addSubview:self.sendBgView];
         [self.sendBgView addSubview:self.sendInfoLab];
         [self.sendBgView addSubview:self.sendAddressLab];
@@ -39,92 +37,103 @@
     return self;
 }
 
--(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel
-{
-    DLog(@"sssssssssssssssss=========== = %ld" ,orderModel.status);
-    if (orderModel.status == 10)
-    {
+-(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel{
+    DLog(@"sssssssssssssssss=========== 状态码= %ld  周期性用户码 = %ld" ,orderModel.status , orderModel.periodic);
+    if (orderModel.status == 10){
         self.orderStatusLab.text = @"待支付";
         self.orderStatusDetailsLab.text = @"订单提交成功,等待用户支付";
         [self.statusImv setImage:[UIImage imageNamed:@"daizhifu"] forState:0];
 
-    }
-    
-    else  if (orderModel.status == 50 || orderModel.status == 40)
-    {
+    }else  if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46){
         self.orderStatusLab.text = @"待确认";
         self.orderStatusDetailsLab.text = @"用户已支付,等待商家发货";
         [self.statusImv setImage:[UIImage imageNamed:@"daifahuo1"] forState:0];
+        
+        
+        
+#pragma mark ============================1为周期性用户
+        if (orderModel.periodic == 1) {
+            [self addSubview:self.myOrderDetailsStatusAccountHeadView];
+            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.mas_left).with.offset(0);
+                make.top.equalTo(self.myOrderDetailsStatusAccountHeadView.mas_bottom).with.offset(20*kScale);
+                make.right.equalTo(self.mas_right).with.offset(0);
+                make.height.equalTo(@(96*kScale));
+            }];
+            
+        }else if (orderModel.periodic == 0){
+            
+            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.mas_left).with.offset(0);
+                make.top.equalTo(self.statusBgImv.mas_bottom).with.offset(10*kScale);
+                make.right.equalTo(self.mas_right).with.offset(0);
+                make.height.equalTo(@(96*kScale));
+            }];
+            
+        }
+        
+        
 
-    }
-    else if (orderModel.status == 60)
-    {
+    }else if (orderModel.status == 60){
           self.orderStatusLab.text = @"配送中";
         self.orderStatusDetailsLab.text = @"商家已发货,正在配送中";
         [self.statusImv setImage:[UIImage imageNamed:@"peisongzhong"] forState:0];
 
-    }else if (orderModel.status == 70)
-    {
+    }else if (orderModel.status == 70){
         self.orderStatusLab.text = @"待收货";
         self.orderStatusDetailsLab.text = @"商家已送达,等待签收";
         [self.statusImv setImage:[UIImage imageNamed:@"daiheyan"] forState:0];
         
-    }
-    
-    
-    
-    
-    else if (orderModel.status == 120)
+    }else if (orderModel.status == 120)
     {
         self.orderStatusLab.text = @"待核验";
         self.orderStatusDetailsLab.text = @"用户正在退回相应商品,等待商家核验";
         [self.statusImv setImage:[UIImage imageNamed:@"daiheyan"] forState:0];
 
-    }
-    else if (orderModel.status == 140)
-    {
+    }else if (orderModel.status == 140){
         self.orderStatusLab.text = @"已退货";
         self.orderStatusDetailsLab.text = @"用户已退回相应商品,货款已退回";
         [self.statusImv setImage:[UIImage imageNamed:@"yituihuo"] forState:0];
 
-    }
-    else if (orderModel.status == 20)
-    {
+    }else if (orderModel.status == 20){
         self.orderStatusLab.text = @"取消退货";
         self.orderStatusDetailsLab.text = @"商家经过核验,退货申请已取消";
         [self.statusImv setImage:[UIImage imageNamed:@"quxiaotuihuo"] forState:0];
 
-    }else if (orderModel.status == 80)
-    {
+    }else if (orderModel.status == 80){
         self.orderStatusLab.text = @"已完成";
         self.orderStatusDetailsLab.text = @"用户确认收货 ,订单完成";
         [self.statusImv setImage:[UIImage imageNamed:@"yiwancheng"] forState:0];
 
         
-    }
-    else if (orderModel.status == 0)
-    {
+    }else if (orderModel.status == 0){
         self.orderStatusLab.text = @"已取消";
         self.orderStatusDetailsLab.text = @"用户已取消订单";
         
         [self.statusImv setImage:[UIImage imageNamed:@"quxiaotuihuo"] forState:0];
     }
+
+    
+    
    
     
+    
+    
+   
+    ///配送地址
     self.orderNameLab.text = addressModel.receiverName;
     self.orderPhoneNumerLab.text =[NSString stringWithFormat:@"%ld",addressModel.receiverPhone] ;
     self.orderAddressLab.text = [NSString stringWithFormat:@"%@%@" ,addressModel.receiverProvince , addressModel.receiverAddress];
     
-    self.orderCommentDetailsLab.text = orderModel.orderComment;
-
-  CGFloat orderCommentDetailsLabHeight = [GetWidthAndHeightOfString getHeightForText:self.orderCommentDetailsLab width:kWidth-30*kScale];
     
+    ///备注信息
+    self.orderCommentDetailsLab.text = orderModel.orderComment;
+ 
+    CGFloat orderCommentDetailsLabHeight = [GetWidthAndHeightOfString getHeightForText:self.orderCommentDetailsLab width:kWidth-30*kScale];
     
     [self.orderCommentBgView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(40*kScale + orderCommentDetailsLabHeight));
     }];
-    
-    
     [self.orderCommentDetailsLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(orderCommentDetailsLabHeight));
     }];
@@ -140,6 +149,19 @@
     
     
     orderModel.orderDeatailsCommentHeight = orderCommentDetailsLabHeight;
+}
+
+
+
+
+#pragma mark == 周期性用户view
+
+-(MyOrderDetailsStatusAccountHeadView *)myOrderDetailsStatusAccountHeadView{
+    if (!_myOrderDetailsStatusAccountHeadView) {
+        _myOrderDetailsStatusAccountHeadView = [[MyOrderDetailsStatusAccountHeadView  alloc] initWithFrame:CGRectMake(0, 95*kScale, kWidth, 94*kScale)];
+        _myOrderDetailsStatusAccountHeadView.backgroundColor = [UIColor whiteColor];
+    }
+    return _myOrderDetailsStatusAccountHeadView;
 }
 
 
@@ -331,6 +353,8 @@
         make.width.equalTo(@(55*kScale));
         make.height.equalTo(@(41*kScale));
     }];
+    
+    
     //配送信息frame
     
     [self.sendBgView mas_makeConstraints:^(MASConstraintMaker *make) {

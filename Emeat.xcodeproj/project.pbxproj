@@ -78,6 +78,7 @@
 		16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E0201337BF00C4642C /* LDImagePicker.m */; };
 		16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E2201337BF00C4642C /* VPImageCropperViewController.m */; };
 		16B750E82013386E00C4642C /* LDActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E72013386E00C4642C /* LDActionSheet.m */; };
+		16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */; };
 		16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1EDD2003603000E919C7 /* AF_BrandCell.h */; };
 		16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1ED82003602F00E919C7 /* AF_BrandCell.m */; };
 		16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1EDA2003603000E919C7 /* AF_MainScreeningViewController.h */; };
@@ -123,6 +124,7 @@
 		16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76D6201EDD8C00078F10 /* OrderModel.m */; };
 		16DF76E02021D14100078F10 /* HomePageAddressNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76DF2021D14100078F10 /* HomePageAddressNoticeView.m */; };
 		16E27F30207E006B00F82F9D /* UserAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E27F2F207E006B00F82F9D /* UserAgreementViewController.m */; };
+		16E6B28220860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E6B28120860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m */; };
 		16ED4D5E1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16ED4D5D1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m */; };
 		16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16ED4D601FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m */; };
 		16EE10081FE167480099DA91 /* AllOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE10071FE167480099DA91 /* AllOrderViewController.m */; };
@@ -141,6 +143,7 @@
 		16EE103A1FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE10391FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m */; };
 		16EE103D1FECD6970099DA91 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE103C1FECD6970099DA91 /* AboutUsViewController.m */; };
 		16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE103F1FECD7080099DA91 /* SuggestionFeedbackViewController.m */; };
+		16F0AF46207F9AE10093FE7D /* MyHeadLonginOutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */; };
 		16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB31371FAC5D9D00049580 /* AppDelegate.m */; };
 		16FB313E1FAC5D9D00049580 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16FB313C1FAC5D9D00049580 /* Main.storyboard */; };
 		16FB31401FAC5D9D00049580 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16FB313F1FAC5D9D00049580 /* Assets.xcassets */; };
@@ -298,6 +301,8 @@
 		16B750E2201337BF00C4642C /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 		16B750E62013386E00C4642C /* LDActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDActionSheet.h; sourceTree = "<group>"; };
 		16B750E72013386E00C4642C /* LDActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDActionSheet.m; sourceTree = "<group>"; };
+		16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchIntroductionView.m; sourceTree = "<group>"; };
+		16BB3EF9207F500B00623045 /* LaunchIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchIntroductionView.h; sourceTree = "<group>"; };
 		16CE1ED62003602F00E919C7 /* AF_ScreeningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AF_ScreeningViewController.m; sourceTree = "<group>"; };
 		16CE1ED72003602F00E919C7 /* AXPriceRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AXPriceRangeCell.xib; sourceTree = "<group>"; };
 		16CE1ED82003602F00E919C7 /* AF_BrandCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AF_BrandCell.m; sourceTree = "<group>"; };
@@ -387,6 +392,8 @@
 		16DF76DF2021D14100078F10 /* HomePageAddressNoticeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageAddressNoticeView.m; sourceTree = "<group>"; };
 		16E27F2E207E006B00F82F9D /* UserAgreementViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserAgreementViewController.h; sourceTree = "<group>"; };
 		16E27F2F207E006B00F82F9D /* UserAgreementViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserAgreementViewController.m; sourceTree = "<group>"; };
+		16E6B28020860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyOrderDetailsStatusAccountHeadView.h; sourceTree = "<group>"; };
+		16E6B28120860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyOrderDetailsStatusAccountHeadView.m; sourceTree = "<group>"; };
 		16ED4D5C1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartAddressHeadView.h; sourceTree = "<group>"; };
 		16ED4D5D1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartAddressHeadView.m; sourceTree = "<group>"; };
 		16ED4D5F1FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartEmptyHeadView.h; sourceTree = "<group>"; };
@@ -423,6 +430,8 @@
 		16EE103C1FECD6970099DA91 /* AboutUsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		16EE103E1FECD7080099DA91 /* SuggestionFeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuggestionFeedbackViewController.h; sourceTree = "<group>"; };
 		16EE103F1FECD7080099DA91 /* SuggestionFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuggestionFeedbackViewController.m; sourceTree = "<group>"; };
+		16F0AF44207F9AE10093FE7D /* MyHeadLonginOutView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyHeadLonginOutView.h; sourceTree = "<group>"; };
+		16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyHeadLonginOutView.m; sourceTree = "<group>"; };
 		16FB31331FAC5D9D00049580 /* Emeat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emeat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16FB31361FAC5D9D00049580 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		16FB31371FAC5D9D00049580 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -645,6 +654,15 @@
 			path = LDActionSheet;
 			sourceTree = "<group>";
 		};
+		16BB3EF7207F500B00623045 /* LaunchIntroduction */ = {
+			isa = PBXGroup;
+			children = (
+				16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */,
+				16BB3EF9207F500B00623045 /* LaunchIntroductionView.h */,
+			);
+			path = LaunchIntroduction;
+			sourceTree = "<group>";
+		};
 		16CE1ED52003542D00E919C7 /* ScreeningViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -715,6 +733,7 @@
 		16CFD7251FB2A6F20015F2C1 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				16BB3EF7207F500B00623045 /* LaunchIntroduction */,
 				16B750E52013386E00C4642C /* LDActionSheet */,
 				16B750DE201337BF00C4642C /* LDImagePicker */,
 				16DC91FF20130BDD003C25BE /* MBProgressHUD */,
@@ -915,6 +934,8 @@
 			children = (
 				16CFD75D1FBAB4B40015F2C1 /* MyHeadView.h */,
 				16CFD75E1FBAB4B40015F2C1 /* MyHeadView.m */,
+				16F0AF44207F9AE10093FE7D /* MyHeadLonginOutView.h */,
+				16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */,
 				16CFD7631FBAECA30015F2C1 /* MyTableViewCell.h */,
 				16CFD7641FBAECA30015F2C1 /* MyTableViewCell.m */,
 				16EE102F1FE269050099DA91 /* MyOrderTableViewCell.h */,
@@ -923,6 +944,8 @@
 				16EE10331FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.m */,
 				16EE10351FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.h */,
 				16EE10361FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.m */,
+				16E6B28020860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.h */,
+				16E6B28120860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m */,
 				16EE10381FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.h */,
 				16EE10391FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m */,
 			);
@@ -1319,6 +1342,7 @@
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/PYSearch/PYSearch/PYSearch.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -1372,10 +1396,12 @@
 				16901CA51FD67FF50080762A /* DDSearchManager.h in Sources */,
 				16901CA61FD67FF50080762A /* DDSearchManager.m in Sources */,
 				16901CF51FDAB9D80080762A /* OrderDetailesViewController.m in Sources */,
+				16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */,
 				16901CA71FD67FF50080762A /* DDSearchObj.h in Sources */,
 				16EE10171FE1683A0099DA91 /* AfterSaleViewController.m in Sources */,
 				16ED4D5E1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m in Sources */,
 				16901CA81FD67FF50080762A /* DDSearchObj.m in Sources */,
+				16E6B28220860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m in Sources */,
 				16CFD7501FB58E9B0015F2C1 /* ConfirmOrderInfoFootView.m in Sources */,
 				162F96ED205765AA004EA49F /* UIView+SGPagingView.m in Sources */,
 				16EE103D1FECD6970099DA91 /* AboutUsViewController.m in Sources */,
@@ -1462,6 +1488,7 @@
 				16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */,
 				16D950B51FF0DB4B00DBC7B8 /* GlobalHelper.m in Sources */,
 				16EE10371FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.m in Sources */,
+				16F0AF46207F9AE10093FE7D /* MyHeadLonginOutView.m in Sources */,
 				16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */,
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,

@@ -36,6 +36,7 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.bottomPayBtn];
     [self setBottomViewFrame];
+//    self.periodic = 1; ////先暂时改完周期性用户
     if (self.periodic == 0) {
         ///非周期性用户
         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" , nil];
@@ -43,7 +44,7 @@
         
     }else if (self.periodic == 1){
          ///周期性用户
-         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" ,@"其它方式", nil];
+         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" ,@"线下打款", nil];
         self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian",@"qitazhifu", nil];
 
     }
@@ -142,12 +143,16 @@
     switch (indexPath.row) {
         case 0:{
             DLog(@"支付宝");
+            [SVProgressHUD showErrorWithStatus:@"开发中"];
+
             self.selectPayType = @"999";
         }
             break;
             
         case 1:{
             DLog(@"微信");
+            [SVProgressHUD showErrorWithStatus:@"开发中"];
+
             self.selectPayType = @"888";
 
         }
@@ -155,13 +160,15 @@
             
         case 2:{
             DLog(@"银联");
+            [SVProgressHUD showErrorWithStatus:@"开发中"];
+
             self.selectPayType = @"7";
 
         }
             break;
             
         case 3:{
-            DLog(@"其它");
+            DLog(@"线下打款");
             self.selectPayType = @"11";
 
         }

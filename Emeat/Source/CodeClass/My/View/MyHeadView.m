@@ -7,6 +7,8 @@
 //
 
 #import "MyHeadView.h"
+#import <SDWebImage/UIButton+WebCache.h>
+
 
 @implementation MyHeadView
 
@@ -81,12 +83,10 @@
         [self.editBtn addTarget:self action:@selector(editBtnAction) forControlEvents:1];
         
         self.userName.text = model.nickname;
-        if (model.headPic.length == 0) {
-            [self.userImv setImage:[UIImage imageNamed:@"user_imv"] forState:0];
-        }else{
-            [self.userImv setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:model.headPic]]] forState:0];
-        }
-        
+
+        [self.userImv sd_setBackgroundImageWithURL:[NSURL URLWithString:model.headPic] forState:0 placeholderImage:[UIImage imageNamed:@"user_imv"]];
+            
+
         
         self.phoneLab.text = model.customerAccount ;
         

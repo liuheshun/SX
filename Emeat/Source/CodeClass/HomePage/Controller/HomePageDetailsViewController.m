@@ -42,7 +42,8 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
-    
+    self.navigationController.navigationBarHidden = YES;
+
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [SVProgressHUD dismiss];
@@ -56,9 +57,44 @@
     isClickGoods = YES;
    
     [self requsetDetailsData];
-    
+    [self showNavBarLeftItem ];
   
 }
+
+
+-(void)showNavBarLeftItem{
+    //    NSArray *viewcontrollers=self.navigationController.viewControllers;
+    //    if (viewcontrollers.count>1) {
+    //        if ([viewcontrollers objectAtIndex:viewcontrollers.count-1]==self) {
+    //            //push方式 判断页面是否存在push
+    //创建一个左边按钮
+    self.leftButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"fanhui"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(leftItemAction)];
+    [self.navBar pushNavigationItem:self.navItem animated:NO];
+    [self.navItem setLeftBarButtonItem:self.leftButton];
+    
+    //        }
+    //    }
+    //    else{
+    //        //present方式
+    //    }
+    
+    
+    
+}
+
+
+-(void)leftItemAction{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+
+
+
+
+
+
 #pragma mark = 商品详情数据
 
 -(void)requsetDetailsData{

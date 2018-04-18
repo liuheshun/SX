@@ -14,6 +14,7 @@
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import "RealReachability.h"
 #import "WXApi.h"
+#import "LaunchIntroductionView.h"
 
 //高德地图key
 static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
@@ -30,11 +31,23 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [NSThread sleepForTimeInterval:1.0];//设置启动页面时间
-
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     self.window.rootViewController = [self setTabBar];
+    
+  
+    
+    if (@available(iOS 11.0, *)) {
+        UITableView.appearance.estimatedRowHeight = 0;
+        UITableView.appearance.estimatedSectionFooterHeight = 0;
+        UITableView.appearance.estimatedSectionHeaderHeight = 0;
+    }
+    
+    //开启网络监测
+    [GLobalRealReachability startNotifier];
+    //微信注册
+    [WXApi registerApp:@"wxbd69c8d0e62710fa"];
     
     //配置高德地图
     [AMapServices sharedServices].apiKey = amapServiceKey;
@@ -44,17 +57,28 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     manager.shouldResignOnTouchOutside = YES;
     manager.shouldToolbarUsesTextFieldTintColor = YES;
     manager.enableAutoToolbar = YES;
+    //配置引导页
     
-    if (@available(iOS 11.0, *)) {
-        UITableView.appearance.estimatedRowHeight = 0;
-        UITableView.appearance.estimatedSectionFooterHeight = 0;
-        UITableView.appearance.estimatedSectionHeaderHeight = 0;
+ //   由于iPhone X高度发生变化,图片铺满整个屏幕时候造成图片拉伸,现在需要UI切一个1125*2436的3x图片和以前做iPhone X机型判断1124*2001图片,并且对图片contentMode属性进行设置
+    NSArray *coverImageNames;
+    CGFloat Y ;
+    if (LL_iPhoneX) {
+        coverImageNames = @[@"X0",@"X1",@"X2",@"X3"];
+        Y = 505+145-10;
+    }else{
+        
+        coverImageNames = @[@"launch0",@"launch1",@"launch2",@"launch3"];
+        Y = 505*kScale;
     }
+    DLog(@"kkkkkk------------=== %f" ,kScale);
+    LaunchIntroductionView *launch = [LaunchIntroductionView sharedWithImages:coverImageNames buttonImage:@"login" buttonFrame:CGRectMake((kWidth-137*kScale)/2,Y, 137*kScale, 38*kScale)];
+    launch.currentColor = RGB(137, 137, 137, 1);
+    launch.nomalColor = RGB(221, 221, 221, 1);
+//    imageView.clipsToBounds = YES;//超出区域裁剪
+//
+//    imageView.contentMode = UIViewContentModeScaleAspectFill;//图片等比例拉伸，会填充整个区域，但是会有一部分过大而超出整个区域
+//
     
-    ///开启网络监测
-    [GLobalRealReachability startNotifier];
-    //微信注册//
-    [WXApi registerApp:@"wxbd69c8d0e62710fa"];
     return YES;
 }
 
@@ -65,8 +89,11 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
-    
-    if ([url.host isEqualToString:@"safepay"]) {//支付宝支付
+    if ([url.host isEqualToString:@"oauth"]) {//微信登陆
+        
+        [WXApi handleOpenURL:url delegate:self];
+        
+    }else if ([url.host isEqualToString:@"safepay"]) {//支付宝支付
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             NSLog(@"result = %@",resultDic);
@@ -137,8 +164,12 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 // NOTE: 9.0以后使用新API接口
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options{
-    
-    if ([url.host isEqualToString:@"safepay"]) {
+    DLog(@"hhhhhhhh==== %@  == %@" ,url , options);
+    if ([url.host isEqualToString:@"oauth"]) {//微信登陆
+        
+        [WXApi handleOpenURL:url delegate:self];
+
+    }else if ([url.host isEqualToString:@"safepay"]) {
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             NSLog(@"result = %@",resultDic);
@@ -216,11 +247,11 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                 NSLog(@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr);
                 break;
         }
-    }else if ([resp isKindOfClass:[SendAuthResp class]]){
+    }else if ([resp isKindOfClass:[SendAuthResp class]]){//微信登陆
         
         [self getWeiXinCodeFinishedWithResp:resp];
         
-    }else if ([resp isKindOfClass:[SendMessageToWXResp class]]){
+    }else if ([resp isKindOfClass:[SendMessageToWXResp class]]){//微信分享
        // [WMLoginHelper shareInstance].isShare = @"1";
     }
 }
@@ -315,8 +346,8 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                     [self getAccessTokenWithRefreshToken:[[NSUserDefaults standardUserDefaults]objectForKey:@"refresh_token"]];
                     
                     
-                }
-                    else{
+                }else{
+                    DLog(@"微信登陆成功=====");
 //                    [SVProgressHUD show];
 //                    //获取需要的数据用户信息发给服务器
 //                    //  LRLog(@"微信名字==%@",[dic objectForKey:@"nickname"]);

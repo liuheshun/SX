@@ -12,17 +12,17 @@
 
 
 //URL:
-#define baseUrl @"http://beta.cyberfresh.cn/m"
-#define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
+#define baseUrl @"http://admin.cyberfresh.cn/m"
+#define loginBaseUrl @"http://admin.cyberfresh.cn/cas"
 /////设置的
 #define setbaseUrl @"http://admin.cyberfresh.cn"
 
 
 //
 ////URL:本地
-//#define baseUrl @"http://192.168.0.200/m"
-//#define loginBaseUrl @"http://192.168.0.200/cas"
-//
+//#define baseUrl @"http://192.168.0.194/m"
+//#define loginBaseUrl @"http://192.168.0.194/cas"
+
 
 ///获取版本号
 ///http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1
@@ -32,21 +32,22 @@
 
 
 
+#define zp @"http://beta.cyberfresh.cn"
 
 
-
-///本地测试
-
-#define loginKN @"http://192.168.0.120:7070"
-
-#define knL @"http://192.168.0.120/m"
-
-#define guiguan @"http://192.168.0.171:8080"
-
-#define baseUrl11 @"http://192.168.0.200:8080/m"
-
-
-
+//
+/////本地测试
+//
+//#define loginKN @"http://192.168.0.120:7070"
+//
+//#define knL @"http://192.168.0.120/m"
+//
+//#define guiguan @"http://192.168.0.171:8080"
+//
+//#define baseUrl11 @"http://192.168.0.200:8080/m"
+//
+//
+//
 
 
 

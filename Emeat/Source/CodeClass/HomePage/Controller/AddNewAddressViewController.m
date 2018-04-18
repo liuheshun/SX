@@ -133,7 +133,7 @@
         
         [weakSelf.view endEditing:YES]; //实现该方法是需要注意view需要是继承UIControl而来的
 
-        DLog(@"保存 = = 名字= %@  电话==%@  省== %@    详细地址== %@ " , weakSelf.receiverName, weakSelf.receiverPhone ,weakSelf.receiverProvince , weakSelf.receiverAddress );
+        DLog(@"保存 = = 名字= %@  电话==%@  省== %@    详细地址== %@  shippid== %ld" , weakSelf.receiverName, weakSelf.receiverPhone ,weakSelf.receiverProvince , weakSelf.receiverAddress  ,weakSelf.shippingCategory);
         
         
         if (weakSelf.receiverName.length == 0 || weakSelf.receiverPhone.length == 0 || weakSelf.receiverProvince.length == 0 || weakSelf.receiverAddress.length == 0) {
@@ -168,12 +168,11 @@
             
         [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@" ,weakSelf.receiverProvince] forKey:@"receiverProvince"];
     
-        if ([NSString stringWithFormat:@"%ld" ,weakSelf.shippingCategory].length ==0 ) {
+        if (weakSelf.shippingCategory ==0 ) {
             weakSelf.shippingCategory = 1;//默认标签
         }
         [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%ld" ,weakSelf.shippingCategory] forKey:@"shippingCategory"];
-            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-       // [weakSelf.addressDic setValue:[user valueForKey:@"userId"] forKey:@"userId"];
+
             
         [weakSelf addAddressData];
 

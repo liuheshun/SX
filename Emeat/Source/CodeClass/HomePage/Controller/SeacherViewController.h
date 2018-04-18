@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SeacherViewController : SHLBaseViewController
+@interface SeacherViewController : UIViewController
 @property (nonatomic,strong) NSString *searchText;
 ///判断是否来自分来页面 1表示来自分来搜索
 @property (nonatomic,strong) NSString *fromSortString;

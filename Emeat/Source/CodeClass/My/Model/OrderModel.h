@@ -61,12 +61,16 @@
 
 @property (nonatomic,strong) NSString *paymentTypeDesc;
 
+///上传打款凭证图片string
+@property (nonatomic,strong) NSString *voucherImg;
 
 
 ///订单详情页备注信息高度
 @property (nonatomic,assign) CGFloat orderDeatailsCommentHeight;
 
 
+///是否为周期性用户
+@property (nonatomic,assign) NSInteger periodic;
 
 
 

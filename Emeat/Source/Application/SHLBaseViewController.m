@@ -142,6 +142,20 @@
     
 }
 
+
+#pragma mark = 返回事件
+
+-(void)leftItemAction{
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
+
+
 -(void)showNavBarItemRight{
     
     //创建一个右边按钮
@@ -175,16 +189,6 @@
 
 
 
-
-#pragma mark = 返回事件
-
--(void)leftItemAction{
-    if (self.presentingViewController) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
 
 /**
  * 设置button角标

@@ -56,10 +56,20 @@
         }
         case 1:
         {
-            SuggestionFeedbackViewController *VC = [SuggestionFeedbackViewController new];
-            [self.navigationController pushViewController:VC animated:YES];
-            DLog(@"意见反馈");
-            break;
+            if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
+                
+                SuggestionFeedbackViewController *VC = [SuggestionFeedbackViewController new];
+                [self.navigationController pushViewController:VC animated:YES];
+                DLog(@"意见反馈");
+                break;
+                
+            }else{
+                LoginViewController *VC = [LoginViewController new];
+                VC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:VC animated:YES];
+                
+            }
+           
         }
         default:
             break;

@@ -131,6 +131,9 @@
             
             [self.navigationController popViewControllerAnimated:YES];
             
+        }else if ([returnData[@"code"] isEqualToString:@"0406"]){
+            [SVProgressHUD showErrorWithStatus:@"手机号与验证码错误不匹配"];
+
         }
         else
         {

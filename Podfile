@@ -13,6 +13,7 @@ target 'Emeat' do
    pod 'SVProgressHUD', '~> 2.2.2'
    pod 'YYModel'
    pod 'RealReachability'
+pod 'TZImagePickerController'
 
 
 end
