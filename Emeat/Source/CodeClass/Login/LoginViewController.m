@@ -9,7 +9,7 @@
 #import "LoginViewController.h"
 #import "LoginView.h"
 #import "UserAgreementViewController.h"
-
+#import "ShopCertificationViewController.h"
 @interface LoginViewController ()<UITextFieldDelegate>
 @property (nonatomic,strong) LoginView *loginView;
 @property (nonatomic,assign) NSInteger  phoneNum;
@@ -116,20 +116,25 @@
     DLog(@"获取登陆tttt== === %@" ,dic);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/mobile/doLogin" ,loginBaseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"denglu 登陆== === %@  rrrr======r=%@" ,returnData[@"data"]  , returnData);
+        DLog(@"denglu 登陆== === %@  "   , returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
-//            self.infoString = returnData[@"data"];
-//
-//            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:[self.infoString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
-//            NSLog(@"url==== : %@",[dic objectForKey:@"id"]);
-
-            
+   
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:returnData[@"data"][@"id"]  forKey:@"userId"];
             
             [user setValue:@"1" forKey:@"isLoginState"];
+            NSDictionary *data = returnData[@"data"];
+            if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {//未认证
+                //
+                [self.navigationController popViewControllerAnimated:YES];
+
+            }else{
+                [self.navigationController pushViewController:[ShopCertificationViewController new] animated:YES];
+            }
             
-            [self.navigationController popViewControllerAnimated:YES];
+            
+            
+            
             
         }else if ([returnData[@"code"] isEqualToString:@"0406"]){
             [SVProgressHUD showErrorWithStatus:@"手机号与验证码错误不匹配"];
@@ -229,14 +234,21 @@
 
 #pragma mark == 微信登陆
 -(void)wechatBtnLoginAction{
-    if (![WXApi isWXAppInstalled]) {
-        [self alertMessage:@"请安装微信客户端进行使用" willDo:nil];
-    }else{
-        SendAuthReq *req =[[SendAuthReq alloc ] init];
-        req.scope = @"snsapi_userinfo"; // 此处不能随意改
-        req.state = @"123"; // 这个貌似没影响
-        [WXApi sendReq:req];
-    }
+    
+    
+    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+    [self.navigationController pushViewController:VC animated:YES];
+    
+    
+//    
+//    if (![WXApi isWXAppInstalled]) {
+//        [self alertMessage:@"请安装微信客户端进行使用" willDo:nil];
+//    }else{
+//        SendAuthReq *req =[[SendAuthReq alloc ] init];
+//        req.scope = @"snsapi_userinfo"; // 此处不能随意改
+//        req.state = @"123"; // 这个貌似没影响
+//        [WXApi sendReq:req];
+//    }
 }
 
 #pragma mark = 用户协议

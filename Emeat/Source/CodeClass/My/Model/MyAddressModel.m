@@ -9,5 +9,8 @@
 #import "MyAddressModel.h"
 
 @implementation MyAddressModel
-
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+    
+    
+}
 @end

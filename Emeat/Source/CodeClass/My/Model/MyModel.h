@@ -28,4 +28,30 @@
 ///用户头像
 @property (nonatomic,strong) NSString *headPic;
 
+
+///店铺认证
+///店铺id
+@property (nonatomic,assign) NSInteger storeId;
+
+///店铺地址
+@property (nonatomic,strong) NSString *address;
+///店铺详细地址
+@property (nonatomic,strong) NSString *addressDetail;
+///店铺联系电话
+@property (nonatomic,assign) NSInteger callNumber;
+///店铺联系人
+@property (nonatomic,strong) NSString *kp;
+///店铺名字
+@property (nonatomic,strong) NSString *storeName;
+
+///邀请码
+@property (nonatomic,assign) NSInteger bdName;
+
+
+///是否认证审核通过
+@property (nonatomic,assign) NSInteger isApprove;
+
+
+
+
 @end

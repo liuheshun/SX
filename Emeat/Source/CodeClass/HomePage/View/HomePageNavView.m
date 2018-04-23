@@ -107,7 +107,8 @@
         _shadeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _shadeBtn.frame = CGRectMake(0, 0, kWidth-125*kScale, kHeight-LL_TabbarSafeBottomMargin);
         _shadeBtn.backgroundColor = RGB(0, 0, 0, 0.5);
-        [_shadeBtn setImage:[UIImage imageNamed:@"niu"] forState:0];
+        [_shadeBtn setImage:[UIImage imageNamed:@"牛"] forState:0];
+        _shadeBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -10*kScale, 0, 10*kScale);
         [_shadeBtn addTarget:self action:@selector(shadeBtnAction) forControlEvents:1];
     }
     return _shadeBtn;
@@ -183,7 +184,7 @@
     if (cell1 == nil) {
         cell1 = [[HomePageNavSortTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sort_cell"];
         
-        //[cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
+        [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
         cell1.backgroundColor = [UIColor whiteColor];
         
     }

@@ -28,6 +28,11 @@ typedef void(^returnUserNameBlock)(NSString *userName);
 
 ///用户手机号
 @property (nonatomic,strong) UILabel *phoneLab;
+///店铺名字
+@property (nonatomic,strong) UIButton *shopNameBtn;
+///👑认证皇冠
+@property (nonatomic,strong) UIImageView *shopCertifiImv;
+
 
 ///我的订单
 @property (nonatomic,strong) UIButton *myOrderBtn;

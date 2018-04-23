@@ -458,7 +458,7 @@
     //[MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/rightBanner" , baseUrl] params:nil successBlock:^(NSDictionary *returnData) {
-        
+        DLog(@"标签=== %@" ,returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.sortListMarray removeAllObjects];
 

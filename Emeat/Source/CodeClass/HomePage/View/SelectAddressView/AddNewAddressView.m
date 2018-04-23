@@ -11,9 +11,6 @@
 
 @implementation AddNewAddressView
 
-//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    return YES;
-//}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     return [textField resignFirstResponder];

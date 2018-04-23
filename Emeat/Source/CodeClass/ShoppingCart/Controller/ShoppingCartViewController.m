@@ -98,38 +98,49 @@
 
 -(void)netWorkIsOnLine{
     
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
+        if (status == RealStatusNotReachable)
+        {
+            [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+            [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+            
+        }else{
+            
+            [self setupMainView];
+            [self setupRefresh];
+            [self requestGuesslikeData];
+            
+            [[GlobalHelper shareInstance] removeErrorView];
+        }
+        
+    }];
+   
     
-    if (status == RealStatusNotReachable)
-    {
-        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
-        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
-        
-    }else{
-        
-        [self setupMainView];
-        [self setupRefresh];
-        [self requestGuesslikeData];
-
-        [[GlobalHelper shareInstance] removeErrorView];
-    }
+    
+    
+ 
 }
 
 
 #pragma mark = 重新加载
 
 -(void)errorLoadingBtnAction{
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
     
-    if (status == RealStatusNotReachable){
+    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
         
-    }else{
-        [self setupMainView];
-        [self setupRefresh];
-        [self requestGuesslikeData];
-
-        [[GlobalHelper shareInstance] removeErrorView];
-    }
+        if (status == RealStatusNotReachable){
+            
+        }else{
+            [self setupMainView];
+            [self setupRefresh];
+            [self requestGuesslikeData];
+            
+            [[GlobalHelper shareInstance] removeErrorView];
+        }
+        
+    }];
+ 
+   
 }
 
 

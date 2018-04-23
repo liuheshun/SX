@@ -14,6 +14,10 @@
 #import "ConfirmOrderInfoAddressHeadView.h"
 #import "SelectPayTypeViewController.h"
 #import "MyAddressViewController.h"
+
+#import "MMMyCustomView.h"
+
+
 @interface ConfirmOrderInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -43,7 +47,24 @@
     self.navItem.title = @"确认订单";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:@"" forKey:@"conmmentString"];
- 
+    
+    
+    [MMPopupWindow sharedWindow].touchWildToHide = YES;
+    MMAlertViewConfig1 *alertConfig = [MMAlertViewConfig1 globalConfig1];
+    alertConfig.defaultTextOK = @"确定";
+    alertConfig.defaultTextCancel = @"取消";
+    alertConfig.titleFontSize = 17*kScale;
+    alertConfig.detailFontSize = 13*kScale;
+    alertConfig.buttonFontSize = 15*kScale;
+    alertConfig.buttonHeight = 40*kScale;
+    alertConfig.width = 315*kScale;
+    alertConfig.buttonBackgroundColor = [UIColor redColor];
+    alertConfig.detailColor = RGB(136, 136, 136, 1);
+    alertConfig.itemNormalColor = [UIColor whiteColor];
+
+    alertConfig.splitColor = [UIColor whiteColor];
+    
+    
     
 }
 
@@ -87,6 +108,30 @@
                 VC.periodic = periodic;
                 [self.navigationController pushViewController:VC animated:YES];
                 
+            }else{
+               
+
+                MMMyCustomView *alertView = [[MMMyCustomView alloc] initWithConfirmTitle:@"认证提示" detail:@"您的店铺还未通过认证，请耐心等待工作人员与您联系，客服热线 4001106111。"];
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                [alertView show];
+                
+//                MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
+//                    NSLog(@"animation complete");
+//                    
+//                };
+//                MMPopupItemHandler block = ^(NSInteger index){
+//                    NSLog(@"clickd %@ button",@(index));
+//                };
+//                NSArray *items =
+//                @[MMItemMake(@"Done", MMItemTypeNormal, block),
+//                  MMItemMake(@"Cancel", MMItemTypeNormal, block)];
+//                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"sss" detail:@"gsfesfs" items:items];
+//                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+//                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+//                [alertView show];
+                
+
             }
             
         } failureBlock:^(NSError *error) {

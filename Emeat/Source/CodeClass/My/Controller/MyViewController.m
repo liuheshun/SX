@@ -18,6 +18,7 @@
 
 #import "MHUploadParam.h"
 
+#import "ShopCertificationViewController.h"
 
 
 //#import "LDActionSheet.h"
@@ -34,6 +35,8 @@
 ///我的数据源
 @property (nonatomic,strong) NSMutableArray *myDataMarray;
 
+///存放店铺认证相关信息
+@property (nonatomic,strong) NSMutableArray *shopCertifiMarray;
 
 @end
 
@@ -70,6 +73,7 @@
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navigationController.navigationBarHidden = YES;
     self.myDataMarray = [NSMutableArray array];
+    self.shopCertifiMarray = [NSMutableArray array];
     if (@available(iOS 11.0, *)) {
         self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }else {
@@ -162,6 +166,9 @@
                 NSInteger  salesReturn = [returnData[@"data"][@"salesReturn"] integerValue];
                 NSInteger waitRecive = [returnData[@"data"][@"waitRecive"] integerValue];
                 NSInteger waitEvaluation = [returnData[@"data"][@"waitEvaluation"]integerValue ];
+                NSString *storeName = returnData[@"data"][@"store"][@"storeName"];
+                NSInteger isApprove = [returnData[@"data"][@"store"][@"isApprove"] integerValue];
+                NSInteger storeId = [returnData[@"data"][@"store"][@"id"] integerValue];
                 NSDictionary *dic = returnData[@"data"][@"user"];
                 MyModel *model = [MyModel yy_modelWithJSON:dic];
                 model.waitBuy = waitBuy;
@@ -169,7 +176,17 @@
                 model.salesReturn = salesReturn;
                 model.waitRecive = waitRecive;
                 model.waitEvaluation = waitEvaluation;
+                model.storeName = storeName;
+                model.isApprove = isApprove;
+                model.storeId = storeId;
                 [self.myDataMarray addObject:model];
+                
+                NSDictionary *dic1 = returnData[@"data"][@"store"];
+                MyModel *model1 = [MyModel yy_modelWithJSON:dic1];
+                NSInteger storeId1 = [returnData[@"data"][@"store"][@"id"] integerValue];
+                model1.storeId = storeId1;
+                [self.shopCertifiMarray addObject:model1];
+                
                 // }
                 //        }else{
                 ////            [self alertMessage:returnData[@"msg"] willDo:nil];
@@ -359,6 +376,28 @@
     
 }
 
+
+
+#pragma mark = ===店家认证点击事件
+
+-(void)shopNameBtnAction{
+    
+    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+    VC.hidesBottomBarWhenPushed = YES;
+    VC.isRemakeShopCerific = @"1";
+    if (self.shopCertifiMarray.count != 0) {
+        VC.shopCertifiMyModel = [self.shopCertifiMarray firstObject];
+    }
+    [self.navigationController pushViewController:VC animated:YES];
+    
+}
+
+
+
+
+
+
+
 #pragma mark = 查看全部订单
 
 -(void)checkAllOrderBtnAction{
@@ -477,6 +516,7 @@
     }
 }
 
+#pragma mark = 点击事件
 
 -(void)addCkickAction{
     
@@ -502,6 +542,7 @@
     };
    // [self.headView.userName addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
+    [self.headView.shopNameBtn addTarget:self action:@selector(shopNameBtnAction) forControlEvents:1];
 }
 
 
@@ -631,7 +672,6 @@
 //
 //            ContactServiceViewController *VC = [ContactServiceViewController new];
 //            VC.hidesBottomBarWhenPushed = YES;
-//
 //            [self.navigationController pushViewController:VC animated:YES];
         }else if (indexPath.row == 2){
             

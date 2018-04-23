@@ -78,31 +78,44 @@
         [self.bgImv addSubview:self.userName];
         [self.bgImv addSubview:self.editBtn];
         [self.bgImv addSubview:self.phoneLab];
+        [self.bgImv addSubview:self.shopNameBtn];
+        [self.bgImv addSubview:self.shopCertifiImv];
         [self.loginBtn removeFromSuperview];
         [self setUserImvFrame];
         [self.editBtn addTarget:self action:@selector(editBtnAction) forControlEvents:1];
         
-        self.userName.text = model.nickname;
-
         [self.userImv sd_setBackgroundImageWithURL:[NSURL URLWithString:model.headPic] forState:0 placeholderImage:[UIImage imageNamed:@"user_imv"]];
-            
 
-        
+        self.userName.text = model.nickname;
         self.phoneLab.text = model.customerAccount ;
+        [self.shopNameBtn setTitle:model.storeName forState:0];
         
-        [self setButtonBadgeValue:self.waitPayBtn badgeValue:[NSString stringWithFormat:@"%ld",model.waitBuy] badgeOriginX:MaxX(self.waitPayBtn.imageView)-5 badgeOriginY:-5];
-        [self setButtonBadgeValue:self.waitSendGoodsBtn badgeValue:[NSString stringWithFormat:@"%ld",model.waitTransport] badgeOriginX:MaxX(self.waitSendGoodsBtn.imageView)-5 badgeOriginY:-5];
+        if (model.isApprove == 1) {
+            self.shopCertifiImv.image = [UIImage imageNamed:@"已认证"];
+        }else{
+            self.shopCertifiImv.image = [UIImage imageNamed:@"dairenzheng"];
+
+        }
+
+        [self setButtonBadgeValue:self.waitPayBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.waitBuy] badgeOriginX:MaxX(self.waitPayBtn.imageView)-5 badgeOriginY:-5];
+        [self setButtonBadgeValue:self.waitSendGoodsBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.waitTransport] badgeOriginX:MaxX(self.waitSendGoodsBtn.imageView)-5 badgeOriginY:-5];
         
-        [self setButtonBadgeValue:self.waitReceiveBtn badgeValue:[NSString stringWithFormat:@"%ld",model.waitRecive] badgeOriginX:MaxX(self.waitReceiveBtn.imageView)-5 badgeOriginY:-5];
+        [self setButtonBadgeValue:self.waitReceiveBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.waitRecive] badgeOriginX:MaxX(self.waitReceiveBtn.imageView)-5 badgeOriginY:-5];
         
-        [self setButtonBadgeValue:self.returnGoodsBtn badgeValue:[NSString stringWithFormat:@"%ld",model.salesReturn] badgeOriginX:MaxX(self.returnGoodsBtn.imageView)-5 badgeOriginY:-5];
+        [self setButtonBadgeValue:self.returnGoodsBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.salesReturn] badgeOriginX:MaxX(self.returnGoodsBtn.imageView)-5 badgeOriginY:-5];
         
-        CGFloat userNameW = [GetWidthAndHeightOfString getWidthForText:self.userName height:15];
+        CGFloat userNameW = [GetWidthAndHeightOfString getWidthForText:self.userName height:15*kScale];
       
         [self.userName mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@(userNameW));
         }];
         
+        
+        CGFloat shopNameBtn = [GetWidthAndHeightOfString getWidthForText:self.shopNameBtn height:25*kScale]+25*kScale;
+        
+        [self.shopNameBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(shopNameBtn));
+        }];
         
         
     }else{//未登录
@@ -153,14 +166,14 @@
     
     [self.userName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.userImv.mas_right).with.offset(10*kScale);
-        make.top.equalTo(self.userImv.mas_top).with.offset(13*kScale);
+        make.top.equalTo(self.bgImv.mas_top).with.offset(36*kScale);
         make.width.equalTo(@(80*kScale));
         make.height.equalTo(@(15*kScale));
     }];
     
     [self.editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.userName.mas_right).with.offset(10*kScale);
-        make.top.equalTo(self.userImv.mas_top).with.offset(10*kScale);
+        make.top.equalTo(self.bgImv.mas_top).with.offset(34*kScale);
         make.width.equalTo(@(20*kScale));
         make.height.equalTo(@(20*kScale));
     }];
@@ -170,6 +183,23 @@
         make.top.equalTo(self.userName.mas_bottom).with.offset(5*kScale);
         make.width.equalTo(@(200*kScale));
         make.height.equalTo(@(15*kScale));
+    }];
+    
+    
+    [self.shopNameBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.userImv.mas_right).with.offset(10*kScale);
+        make.top.equalTo(self.phoneLab.mas_bottom).with.offset(5*kScale);
+        make.width.equalTo(@(220*kScale));
+        make.height.equalTo(@(25*kScale));
+    }];
+    
+    
+    
+    [self.shopCertifiImv mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bgImv.mas_right).with.offset(-17*kScale);
+        make.bottom.equalTo(self.shopNameBtn.mas_top).with.offset(7*kScale);
+        make.width.equalTo(@(57*kScale));
+        make.height.equalTo(@(48*kScale));
     }];
     
 }
@@ -270,6 +300,7 @@
 }
 
 
+///用户相关信息
 -(UIButton*)userImv{
     if (!_userImv) {
         _userImv = [UIButton  buttonWithType:UIButtonTypeCustom];
@@ -307,12 +338,37 @@
     if (!_phoneLab) {
         _phoneLab = [[UILabel alloc] init];
         _phoneLab.font = [UIFont systemFontOfSize:15.0f*kScale];
-        _phoneLab.textColor = [UIColor whiteColor];
+        _phoneLab.textColor = RGB(221, 221, 221, 1);
     }
     return _phoneLab;
 }
+-(UIButton*)shopNameBtn{
+    if (!_shopNameBtn) {
+        _shopNameBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _shopNameBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
+        [_shopNameBtn setTitleColor:[UIColor whiteColor] forState:0];
+        [_shopNameBtn setImage:[UIImage imageNamed:@"shangdian"] forState:0];
+        _shopNameBtn.layer.borderWidth = 1;
+        _shopNameBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+        _shopNameBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _shopNameBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10*kScale, 0, 0);
+        _shopNameBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 15*kScale, 0, 0);
+
+        
+    }
+    return _shopNameBtn;
+}
 
 
+-(UIImageView *)shopCertifiImv{
+    if (!_shopCertifiImv) {
+        _shopCertifiImv = [[UIImageView alloc] init];
+    }
+    return _shopCertifiImv;
+}
+
+
+///订单部分
 -(UIButton*)myOrderBtn{
     if (!_myOrderBtn) {
         _myOrderBtn = [UIButton buttonWithType:UIButtonTypeCustom];

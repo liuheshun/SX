@@ -20,6 +20,8 @@ PODS:
   - IQKeyboardManager (5.0.8)
   - Masonry (1.1.0)
   - MJRefresh (3.1.14.1)
+  - MMPopupView (1.7.2):
+    - Masonry
   - PYSearch (0.8.8)
   - RealReachability (1.1.9):
     - RealReachability/Connection (= 1.1.9)
@@ -41,6 +43,7 @@ DEPENDENCIES:
   - IQKeyboardManager (~> 5.0.4)
   - Masonry (~> 1.1.0)
   - MJRefresh (~> 3.1.14.1)
+  - MMPopupView
   - PYSearch
   - RealReachability
   - SDCycleScrollView (~> 1.73)
@@ -55,6 +58,7 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 266cb7b1d11f94a3e71229d77f960f9a1b538e5b
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: 238e6a37e2dba12160ee3b79f6d2a2b26abcab42
+  MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   PYSearch: aa3704f283c67667808de6df514c24df03f5f116
   RealReachability: a8c483900986a0f3305733961effbfbb00637a02
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
@@ -63,6 +67,6 @@ SPEC CHECKSUMS:
   TZImagePickerController: 34ecb53af8c349964394407e42b6e54e22589ebe
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 8ef471adfa0b546eec79c8dafb051fcc48351e1d
+PODFILE CHECKSUM: 038fc0038d671df061a2909f88d60cab14a0db49
 
 COCOAPODS: 1.3.1
