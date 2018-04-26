@@ -300,7 +300,7 @@
 
 -(AddNewAddressView*)addNewAddressView{
     if (!_addNewAddressView) {
-        _addNewAddressView = [[AddNewAddressView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, 245)];
+        _addNewAddressView = [[AddNewAddressView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, 245*kScale)];
         _addNewAddressView.backgroundColor = [UIColor whiteColor];
     }
     [_addNewAddressView.textFieldPhoneNumer addTarget:self action:@selector(phoneNumTextFieldTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];

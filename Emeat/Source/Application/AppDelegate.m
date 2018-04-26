@@ -197,7 +197,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
 
-            NSLog(@"支付宝钱包esult = %@",resultDic);
+            //NSLog(@"支付宝钱包esult = %@",resultDic);
             
             // 解析 auth code
             NSString *result = resultDic[@"result"];
@@ -211,7 +211,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                     }
                 }
             }
-            NSLog(@"授权结果 authCode = %@", authCode?:@"");
+          //  NSLog(@"授权结果 authCode = %@", authCode?:@"");
         }];
         
     }else if ([url.host isEqualToString:@"pay"]){
@@ -249,20 +249,20 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             case WXSuccess:
                 ////服务端查询
                 //服务器端查询支付通知或查询API返回的结果再提示成功
-                NSLog(@"支付成功");
+               // NSLog(@"支付成功");
                 //通过通知告诉支付界面该做哪些操作
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYS" object:nil];
                 break;
             case WXErrCodeCommon:
-                NSLog(@"支付失败");
+               // NSLog(@"支付失败");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYF" object:nil];
                 break;
             case WXErrCodeUserCancel:
-                NSLog(@"用户取消");
+               // NSLog(@"用户取消");
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYC" object:nil];
                 break;
             default:
-                NSLog(@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr);
+               // NSLog(@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr);
                 break;
         }
     }else if ([resp isKindOfClass:[SendAuthResp class]]){//微信登陆

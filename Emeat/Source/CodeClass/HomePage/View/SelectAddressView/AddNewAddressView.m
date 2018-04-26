@@ -198,7 +198,7 @@
 -(UITextField *)textFieldName{
     if (!_textFieldName) {
         _textFieldName = [[UITextField alloc] init];
-        _textFieldName.placeholder = @"收货人姓名";
+        _textFieldName.placeholder = @"收货人姓名(中文、字母、数字)";
         [_textFieldName setValue:[UIFont boldSystemFontOfSize:15.0f*kScale] forKeyPath:@"_placeholderLabel.font"];
         _textFieldName.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_textFieldName setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
@@ -269,7 +269,7 @@
 -(UITextField *)textFieldDetailsAddress{
     if (!_textFieldDetailsAddress) {
         _textFieldDetailsAddress = [[UITextField alloc] init];
-        _textFieldDetailsAddress.placeholder = @"详细地址(精确到门牌号)";
+        _textFieldDetailsAddress.placeholder = @"详细地址精确到门牌号(中文、字母、数字)";
         [_textFieldDetailsAddress setValue:[UIFont boldSystemFontOfSize:15.0f*kScale] forKeyPath:@"_placeholderLabel.font"];
         _textFieldDetailsAddress.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_textFieldDetailsAddress setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];

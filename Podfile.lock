@@ -14,9 +14,9 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - AMapFoundation (1.4.3)
-  - AMapSearch (5.7.0):
-    - AMapFoundation (~> 1.4)
+  - AMapFoundation-NO-IDFA (1.4.3)
+  - AMapSearch-NO-IDFA (5.7.0):
+    - AMapFoundation-NO-IDFA (~> 1.4)
   - IQKeyboardManager (5.0.8)
   - Masonry (1.1.0)
   - MJRefresh (3.1.14.1)
@@ -39,7 +39,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
-  - AMapSearch
+  - AMapSearch-NO-IDFA
   - IQKeyboardManager (~> 5.0.4)
   - Masonry (~> 1.1.0)
   - MJRefresh (~> 3.1.14.1)
@@ -53,8 +53,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  AMapFoundation: 973682cfe60b92efd73a8ef8f1144fa0fa8e1296
-  AMapSearch: 314f75e9ce282b53dbf66455efa416c39f12b5b1
+  AMapFoundation-NO-IDFA: b6cbefab250ae8ab2e31aa9bb3dbbb98137cd76f
+  AMapSearch-NO-IDFA: 612a92f75ff20544f42d376dfcf3c034da4ad0b6
   IQKeyboardManager: 266cb7b1d11f94a3e71229d77f960f9a1b538e5b
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: 238e6a37e2dba12160ee3b79f6d2a2b26abcab42
@@ -67,6 +67,6 @@ SPEC CHECKSUMS:
   TZImagePickerController: 34ecb53af8c349964394407e42b6e54e22589ebe
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 038fc0038d671df061a2909f88d60cab14a0db49
+PODFILE CHECKSUM: 8574065e5c5f52ce860059b41378132535eba9c7
 
 COCOAPODS: 1.3.1

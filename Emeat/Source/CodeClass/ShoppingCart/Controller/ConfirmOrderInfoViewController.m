@@ -202,24 +202,24 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 1){
-        return 40;
+        return 40*kScale;
     }else if (indexPath.section == 2){
-        return 40;
+        return 40*kScale;
     }else if (indexPath.section == 3){
-        return 30;
+        return 30*kScale;
     }
-    return 65;
+    return 65*kScale;
     
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
    
-    return 10;
+    return 10*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10*kScale)];
     view.backgroundColor = RGB(238, 238, 238, 1);
     if (section == 3) {
         view.backgroundColor = [UIColor whiteColor];
@@ -230,14 +230,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 3) {
-        return 80;
+        return 80*kScale;
     }
     return 0.1;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (section == 3) {
-        ConfirmOrderInfoFootView *view = [[ConfirmOrderInfoFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 80)];
+        ConfirmOrderInfoFootView *view = [[ConfirmOrderInfoFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 80*kScale)];
         if (self.orderListMarray.count != 0) {
             ShoppingCartModel *model = [self.orderListMarray firstObject];
             [view configFootViewWithShoppingModel:model];
@@ -249,7 +249,7 @@
         return view;
         
     }
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10*kScale)];
     view.backgroundColor = [UIColor whiteColor];
     
     return view;

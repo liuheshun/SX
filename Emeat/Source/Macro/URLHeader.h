@@ -12,10 +12,10 @@
 
 
 //URL:
-#define baseUrl @"http://beta.cyberfresh.cn/m"
-#define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
+#define baseUrl @"http://admin.cyberfresh.cn/m"
+#define loginBaseUrl @"http://admin.cyberfresh.cn/cas"
 ///设置的
-#define setbaseUrl @"http://beta.cyberfresh.cn"
+#define setbaseUrl @"http://admin.cyberfresh.cn"
 
 
 //

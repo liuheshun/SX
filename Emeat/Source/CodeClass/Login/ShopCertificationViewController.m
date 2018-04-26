@@ -44,9 +44,9 @@
     
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-}
+//-(void)viewWillDisappear:(BOOL)animated{
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

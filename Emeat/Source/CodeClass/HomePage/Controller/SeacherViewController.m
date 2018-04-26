@@ -114,7 +114,6 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     [self.view addSubview:self.tableView];
-    DLog(@"搜索关键词====== %@" ,self.searchText);
     totalPage = 1;
     [self requesaSeacherListData:self.searchText totalPage:totalPage];
     [self setupRefresh];

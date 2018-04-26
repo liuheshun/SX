@@ -96,7 +96,7 @@
     
     
     //提醒字眼
-    self.searchController.searchBar.placeholder= @"请输入关键字搜索";
+    self.searchController.searchBar.placeholder= @"请输入地址关键字搜索";
     [self.searchController.searchBar sizeToFit];
     
     self.searchController.searchBar.searchBarStyle =UISearchBarStyleMinimal;
