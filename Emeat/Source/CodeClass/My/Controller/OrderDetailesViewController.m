@@ -33,6 +33,9 @@
 
 ///订单状态
 @property (nonatomic,assign) NSInteger status;
+///支付方式
+@property (nonatomic,assign) NSInteger paymentType;
+
 
 ///打款凭证图片数组
 @property (nonatomic,strong)  NSMutableArray *monetProveMarray;
@@ -115,13 +118,13 @@
                 }
                 
                 orderModel.myAddressModel = addressModel;
-                ///周期性用户
-//                self.period = orderModel.periodic;
+
                 [self.productMarray addObject:orderModel];
             }
             
             OrderModel *footModel = [OrderModel yy_modelWithJSON:returnData[@"data"]];
             self.status = footModel.status;
+            self.paymentType = footModel.paymentType;
             [self.footViewOrderInfoMarray addObject:footModel];
             [self.view addSubview:self.tableView];
             [self.view addSubview:self.orderInfoBottomView];////////
@@ -275,8 +278,14 @@
 {
     if (btn.tag == 10) {
         DLog(@"立即支付");
+        
         SelectPayTypeViewController *VC = [SelectPayTypeViewController new];
         VC.orderNo = self.orderNo;
+        if (self.footViewOrderInfoMarray.count != 0) {
+            OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
+            VC.periodic = orderModel.periodic;
+        }
+
         [self.navigationController pushViewController:VC animated:YES];
     }else if (btn.tag == 40){///上传打款凭证
         DLog(@"-----------上传打款凭证-------------");
@@ -457,10 +466,10 @@
         NSDate *date2 = [NSDate date];
         NSTimeInterval timeInterval = [date2 timeIntervalSinceDate:date1];
  
-        ///10分钟
+        ///20分钟
         DLog(@"sdfffffffffffffffff============ %f" ,timeInterval);
 
-        timeInterval = 10*60 - timeInterval;
+        timeInterval = 20*60 - timeInterval;
         if (timeInterval >0) {
             
             if (_timer==nil) {
@@ -491,11 +500,16 @@
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 if (days==0) {
                                     if (hours == 0) {
-                                        if (minute <=10&& second<10) {
+                                        
+                                        if (minute >=10 && second<10) {
+                                            [self.orderInfoBottomView.rightBottomBtn setTitle:[NSString stringWithFormat:@"立即支付(%d:0%d)" ,minute , second] forState:0];
+                                        }else if (minute >=10 && second >10){
+                                            [self.orderInfoBottomView.rightBottomBtn setTitle:[NSString stringWithFormat:@"立即支付(%d:%d)" ,minute , second] forState:0];
+                                        }else if (minute <10&& second<10) {
                                             [self.orderInfoBottomView.rightBottomBtn setTitle:[NSString stringWithFormat:@"立即支付(0%d:0%d)" ,minute , second] forState:0];
                                             
                                             
-                                        }else if (minute <=10&& second>10){
+                                        }else if (minute <=10&& second>=10){
                                             [self.orderInfoBottomView.rightBottomBtn setTitle:[NSString stringWithFormat:@"立即支付(0%d:%d)" ,minute , second] forState:0];
                                             
                                         }
@@ -504,7 +518,7 @@
                                     
                                     
                                 }else{
-                                   
+                                    DLog(@"--------------------超过限制");
                                 }
                                 
                                 
@@ -519,7 +533,6 @@
         }
         else
         {
-            
             //取消订单
             [self requsetCancelOrderData];
         }
@@ -549,12 +562,8 @@
     }
     else  if (self.status == 50 || self.status == 40 || self.status == 46)///待发货(待确认)
     {
-//        [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
-//        [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.left.right.equalTo(self.orderInfoBottomView);
-//            make.height.equalTo(@44);
-//            make.bottom.equalTo(self.orderInfoBottomView.mas_bottom).with.offset(0);
-//        }];
+        if (self.paymentType == 11) {//线下打款
+       
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 1)];
         lineView.backgroundColor = RGB(238, 238, 238, 1);
         [self.orderInfoBottomView addSubview:lineView];
@@ -562,13 +571,29 @@
         [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
         self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
         self.orderInfoBottomView.leftBottomBtn.tag = 40;
-
         [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
         self.orderInfoBottomView.rightBottomBtn.tag = 40;
+            
+            DLog(@"线下===========打款");
+            
+        }else{//其余线上支付
+            
+            DLog(@"线上------------打款");
 
-        
-        
+            
+            [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
+            [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.equalTo(self.orderInfoBottomView);
+                make.height.equalTo(@44);
+                make.bottom.equalTo(self.orderInfoBottomView.mas_bottom).with.offset(0);
+            }];
+            [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
+            [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
+            self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
+            self.orderInfoBottomView.leftBottomBtn.tag = 40;
+        }
         [self setTableViewFrames];
+
 
     }
     else if (self.status == 60)///配送中
@@ -696,8 +721,8 @@
       
         
      if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46){
-         if (orderModel.periodic == 1){
-             ///周期性用户
+         if (orderModel.paymentType == 11){
+             ///线下打款方式
              return 282*kScale+strSize.height + 104*kScale;
          }else{
              return 282*kScale+strSize.height ;
@@ -710,12 +735,7 @@
          return 282*kScale+strSize.height ;
 
      }
-        
-         
-        
-        
-        
-        
+  
         
     }else{
     return 0;

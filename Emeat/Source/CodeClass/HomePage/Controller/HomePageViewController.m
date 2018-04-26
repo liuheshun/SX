@@ -15,15 +15,15 @@
 #import "SelectAddressViewController.h"
 #import "RHLocation.h"
 #import "DDSearchManager.h"
-
 #import "HomePageModel.h"
 #import "HomePageAddressNoticeView.h"
 #import "HomePageOtherDetailsViewController.h"
+#import "JMHoledView.h"
 
 #define tableViewHeadHeight (226*kScale+42+kBarHeight)
 
 
-@interface HomePageViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,PYSearchViewControllerDelegate,CLLocationManagerDelegate,RHLocationDelegate>
+@interface HomePageViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,PYSearchViewControllerDelegate,CLLocationManagerDelegate,RHLocationDelegate ,JMHoledViewDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UILabel *lab;
 @property (nonatomic,strong) HomePageNavView *navView;
@@ -99,7 +99,6 @@
     self.sortListMarray = [NSMutableArray array];
     self.dataArray = [NSMutableArray array];
     self.bannerMarray = [NSMutableArray array];
-
     [self netWorkIsOnLine];
    
 }
@@ -149,7 +148,15 @@
     [self setupRefresh];
     ///更新购物车数量
     [self requestBadNumValue];
+    
+    ////
+    
+
+
+    
 }
+
+
 
 #pragma mark = 添加block事件
 
@@ -214,19 +221,20 @@
         
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
     
-//
-//          //  searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
-//
-//            SeacherViewController *sVc = [[SeacherViewController alloc] init];
-//
-//            searchViewController.searchResultController = sVc;
-//
-//            sVc.searchText = searchText;
-            
-   
+
+            searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+            searchViewController.showSearchResultWhenSearchBarRefocused = YES;
+
             SeacherViewController *sVc = [[SeacherViewController alloc] init];
+
+            searchViewController.searchResultController = sVc;
+
             sVc.searchText = searchText;
-            [searchViewController.navigationController pushViewController:sVc animated:YES];
+            
+//   
+//            SeacherViewController *sVc = [[SeacherViewController alloc] init];
+//            sVc.searchText = searchText;
+//            [searchViewController.navigationController pushViewController:sVc animated:YES];
 
             
         }];
@@ -421,6 +429,8 @@
 
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
+            
+            
             if (currentPage == 1) {
                 [self.dataArray removeAllObjects];
             }
@@ -429,9 +439,7 @@
                 NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
                 if (mainImvMarray.count!=0) {
                     model.mainImage = [mainImvMarray firstObject];
-                }
-                
-                
+                }                
                 model.pages = pages;
                 model.pageSize = pageSize;
                 model.total = total;
@@ -773,7 +781,7 @@
         if (scrollView.contentOffset.x == 0) {
           
             CGFloat tableViewoffsetY = scrollView.contentOffset.y;
-            DLog(@"偏移量========= %f " ,tableViewoffsetY );
+//            DLog(@"偏移量========= %f " ,tableViewoffsetY );
             CGFloat tempY = tableViewoffsetY;
             
             if ( tableViewoffsetY>=0 ) {

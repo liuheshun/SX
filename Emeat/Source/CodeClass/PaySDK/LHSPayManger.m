@@ -7,6 +7,8 @@
 //
 
 #import "LHSPayManger.h"
+#import <CommonCrypto/CommonDigest.h>
+#import "OrderDetailesViewController.h"
 
 @implementation LHSPayManger
 
@@ -40,14 +42,12 @@
 #pragma mark = 支付宝支付
 
 -(void)sendAliPay:(NSString *)orderString{
-//    NSString *orderString = dic[@"orderString"];
-    NSString *appScheme = @"appScheme";
-    
+    NSString *appScheme = @"alisdkSaixian";
     [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-//        NSDictionary *dic = resultDic;
-//        NSString *resultStr = EncodeFormDic(dic, @"resultStatus");
-        NSLog(@"resultStr_%@",resultDic);
-        //[self paymentResult:resultStr];
+        NSLog(@"调起支付结果==== resultStr_%@",resultDic);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+
+//        [self paymentResult:resultDic];
     }];
     
 }
@@ -79,23 +79,123 @@
 
 
 
--(void)paymentResult:(NSString *)resultd {
-    NSLog(@" = %@",resultd);
+-(void)paymentResult:(NSDictionary *)resultDic {
     //结果处理
-    if ([resultd isEqualToString:@"9000"]) {
+    if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]) {
         //支付宝回调显示支付成功后调用自己的后台的借口确认是否支付成功
-        //[self payOrdCallback:@"1"];
-    }else if ([resultd isEqualToString:@"6001"]){
-       // [self payCancel];
+        NSString *orderStringNO = resultDic[@"result"];
         
+        orderStringNO = [orderStringNO stringByReplacingOccurrencesOfString:@" " withString:@"/"];
+        NSData *jsonData = [orderStringNO dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *err;
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                            options:NSJSONReadingMutableContainers
+                                                              error:&err];
+        orderStringNO = dic[@"alipay_trade_app_pay_response"][@"out_trade_no"];
+        DLog(@"ssssssssssss==== %@" ,orderStringNO);
+
+        [self requsetOrderDetailsData:orderStringNO];
+        
+        
+    }else if ([resultDic[@"resultStatus"] isEqualToString:@"6001"]){
+       // [self payCancel];
+        DLog(@"取消支付");
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:@"取消"];
     }else{
        // [self payFail];
+        DLog(@"支付失败");
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:@"失败"];
     }
 }
 
 
+#pragma mark === 请求订单详情 校验订单状态是否支付成功
+-(void)requsetOrderDetailsData:(NSString*)orderNo{
+   
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    
+    [dic setObject:secret forKey:@"secret"];
+    [dic setObject:nonce forKey:@"nonce"];
+    [dic setObject:curTime forKey:@"curTime"];
+    [dic setObject:checkSum forKey:@"checkSum"];
+    [dic setObject:ticket forKey:@"ticket"];
+    [dic setValue:orderNo forKey:@"orderNo"];
+    
+    
+    DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
+        
+        if ([returnData[@"status"] integerValue] == 200)
+        {
+            
+            OrderModel *model = [OrderModel yy_modelWithJSON:returnData[@"data"]];
+            if (model.status == 40) {//已付款 , 订单支付成功
+            
+                
+            }else{//支付不成功
+                
+            }
+//            self.status = footModel.status;
+//            [self.footViewOrderInfoMarray addObject:footModel];
+            
+        }
+        
+    } failureBlock:^(NSError *error) {
+        DLog(@"获取订单信息err0r=== %@  " ,error);
+        [SVProgressHUD dismiss];
+    } showHUD:NO];
+    
+}
 
 
+///sha1加密方式
 
+- (NSString *) sha1:(NSString *)input
+{
+    //const char *cstr = [input cStringUsingEncoding:NSUTF8StringEncoding];
+    //NSData *data = [NSData dataWithBytes:cstr length:input.length];
+    
+    NSData *data = [input dataUsingEncoding:NSUTF8StringEncoding];
+    
+    uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+    
+    CC_SHA1(data.bytes, (unsigned int)data.length, digest);
+    
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+    
+    for(int i=0; i<CC_SHA1_DIGEST_LENGTH; i++) {
+        [output appendFormat:@"%02x", digest[i]];
+    }
+    
+    return output;
+}
+
+//1970获取当前时间转为时间戳
+- (NSString *)dateTransformToTimeSp{
+    UInt64 recordTime = [[NSDate date] timeIntervalSince1970];
+    NSString *timeSp = [NSString stringWithFormat:@"%llu",recordTime];
+    return timeSp;
+}
+
+///随机数
+
+-(NSString *)ret32bitString
+
+{
+    
+    char data[32];
+    
+    for (int x=0;x<32;data[x++] = (char)('A' + (arc4random_uniform(26))));
+    
+    return [[NSString alloc] initWithBytes:data length:32 encoding:NSUTF8StringEncoding];
+    
+}
 
 @end

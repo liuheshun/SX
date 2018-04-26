@@ -39,13 +39,14 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [self setNavBar ];
-    [self showNavBarLeftItem];
-    self.navItem.title = @"搜索结果";
+    self.navigationController.navigationBarHidden = NO;
+//    [self setNavBar ];
+//    [self showNavBarLeftItem];
+//    self.navItem.title = @"搜索结果";
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
-    self.navigationController.navigationBarHidden = NO;
+//    self.navigationController.navigationBarHidden = NO;
 
     [[GlobalHelper shareInstance] removeEmptyView];
 
@@ -218,7 +219,7 @@
 
 -(UITableView*)tableView{
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight-LL_TabbarSafeBottomMargin-kBarHeight) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-LL_TabbarSafeBottomMargin) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];

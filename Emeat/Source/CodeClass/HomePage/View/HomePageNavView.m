@@ -57,6 +57,9 @@
         _sortBtn.frame = CGRectMake(kWidth-kTopBarHeight, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
         _sortBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_sortBtn setImage:[UIImage imageNamed:@"fenlei"] forState:0];
+        [_sortBtn setTitle:@"  分类" forState:0];
+        [_sortBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:5];
+        _sortBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
         [_sortBtn addTarget:self action:@selector(sortBtnAction) forControlEvents:1];
     }
     return _sortBtn;

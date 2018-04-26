@@ -224,7 +224,7 @@
 -(UITextField *)textFieldShopManagerName{
     if (!_textFieldShopManagerName) {
         _textFieldShopManagerName = [[UITextField alloc] init];
-        _textFieldShopManagerName.placeholder = @"店长姓名 (请输入真实姓名)";
+        _textFieldShopManagerName.placeholder = @"姓名 (请输入真实姓名)";
         [_textFieldShopManagerName setValue:[UIFont boldSystemFontOfSize:15.0f*kScale] forKeyPath:@"_placeholderLabel.font"];
         _textFieldShopManagerName.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_textFieldShopManagerName setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
@@ -335,7 +335,7 @@
     
     UIView *lastView = nil;
     UIButton *lastBtn = nil;
-    NSArray *imvArray = @[@"shangdian" ,@"xingming" ,@"shoujihao" ,@"dingwei",@" " ,@"yaoqingma"];
+    NSArray *imvArray = @[@"shangdian1" ,@"xingming" ,@"shoujihao" ,@"dingwei",@" " ,@"yaoqingma"];
     for (int i =0; i < 6; i++) {
         UIView *lineView = [[UIView alloc] init];
         lineView.backgroundColor = RGB(238, 238, 238, 1);

@@ -15,14 +15,9 @@
 #import "SettingViewController.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "BDImagePicker.h"
-
 #import "MHUploadParam.h"
-
 #import "ShopCertificationViewController.h"
 
-
-//#import "LDActionSheet.h"
-//#import "LDImagePicker.h"
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -129,10 +124,7 @@
 #pragma mark = 我的数据
 
 -(void)requsetMyData{
-//    [SVProgressHUD show];
     
-    
-        
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSString *ticket = [user valueForKey:@"ticket"];
@@ -155,9 +147,8 @@
             if ([returnData[@"code"] isEqualToString:@"0404"] || [returnData[@"code"] isEqualToString:@"04"]) {
                 [GlobalHelper shareInstance].isLoginState = @"0";
                 [user setValue:@"0" forKey:@"isLoginState"];
-                
+                [self.tableView reloadData];
             }
-            
             if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
                 [self.myDataMarray removeAllObjects];
                 
@@ -181,25 +172,24 @@
                 model.storeId = storeId;
                 [self.myDataMarray addObject:model];
                 
+                
                 NSDictionary *dic1 = returnData[@"data"][@"store"];
-                MyModel *model1 = [MyModel yy_modelWithJSON:dic1];
-                NSInteger storeId1 = [returnData[@"data"][@"store"][@"id"] integerValue];
-                model1.storeId = storeId1;
-                [self.shopCertifiMarray addObject:model1];
+                if (dic1) {
+                    MyModel *model1 = [MyModel yy_modelWithJSON:dic1];
+                    NSInteger storeId1 = [returnData[@"data"][@"store"][@"id"] integerValue];
+                    model1.storeId = storeId1;
+                    [self.shopCertifiMarray removeAllObjects];
+                    [self.shopCertifiMarray addObject:model1];
+                }
                 
-                // }
-                //        }else{
-                ////            [self alertMessage:returnData[@"msg"] willDo:nil];
-                //        }
-                
+            }else{
+               // [self alertMessage:returnData[@"msg"] willDo:nil];
             }
-       //     [SVProgressHUD dismiss];
+            
             [self.tableView reloadData];
             
         } failureBlock:^(NSError *error) {
             DLog(@"2我的接口error=== %@" ,error);
-            
-            
         } showHUD:NO];
         
    

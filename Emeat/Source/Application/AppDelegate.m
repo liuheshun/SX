@@ -97,10 +97,15 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             NSLog(@"result = %@",resultDic);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+
         }];
         
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+
             NSLog(@"result = %@",resultDic);
             // 解析 auth code
             NSString *result = resultDic[@"result"];
@@ -172,14 +177,27 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     }else if ([url.host isEqualToString:@"safepay"]) {
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            NSLog(@"result = %@",resultDic);
+            NSLog(@"appppppdpppresult = %@",resultDic);
+            
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+
+            
+            NSString *result = resultDic[@"result"];
+            NSString *resultStatus = resultDic[@"resultStatus"];
+            //9000  订单支付成功 正常流程会进入这里 如果中断了就去外面delegate那里的Block
+            if ([resultStatus isEqualToString:@"9000"])
+            {
+            }
+            
         }];
         
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
             
-            
-            NSLog(@"result = %@",resultDic);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+
+            NSLog(@"支付宝钱包esult = %@",resultDic);
             
             // 解析 auth code
             NSString *result = resultDic[@"result"];

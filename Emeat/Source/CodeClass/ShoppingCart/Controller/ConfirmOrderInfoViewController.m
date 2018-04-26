@@ -106,6 +106,7 @@
                 SelectPayTypeViewController *VC = [SelectPayTypeViewController new];
                 VC.orderNo = orderNo;
                 VC.periodic = periodic;
+                VC.fromVC = @"1";
                 [self.navigationController pushViewController:VC animated:YES];
                 
             }else{

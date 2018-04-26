@@ -9,6 +9,10 @@
 #import "SelectPayTypeViewController.h"
 #import "ConfirmOrderInfoPayTypeTableViewCell.h"
 #import "OrderDetailesViewController.h"
+#import "MMMyCustomView.h"
+
+
+
 @interface SelectPayTypeViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -23,7 +27,7 @@
 ///图标
 @property (nonatomic,strong) NSMutableArray *payTypeIconMarray;
 
-
+@property (nonatomic,strong) MMAlertViewConfig1 *alertConfig;
 
 @end
 
@@ -39,16 +43,47 @@
 //    self.periodic = 1; ////先暂时改完周期性用户
     if (self.periodic == 0) {
         ///非周期性用户
-        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" , nil];
-        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian", nil];
+        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" , nil];
+      //  self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian", nil];
+        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" , nil];
+
         
     }else if (self.periodic == 1){
          ///周期性用户
-         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付",@"微信支付" ,@"银行卡快捷支付" ,@"线下打款", nil];
-        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian",@"qitazhifu", nil];
+         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝支付" ,@"线下打款", nil];
+       // self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian",@"qitazhifu", nil];
+        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"qitazhifu", nil];
 
     }
+    
+    
+    [MMPopupWindow sharedWindow].touchWildToHide = YES;
+    self.alertConfig = [MMAlertViewConfig1 globalConfig1];
+    self.alertConfig.defaultTextOK = @"确定";
+    self.alertConfig.defaultTextCancel = @"取消";
+    self.alertConfig.titleFontSize = 17*kScale;
+    self.alertConfig.detailFontSize = 13*kScale;
+    self.alertConfig.buttonFontSize = 15*kScale;
+    self.alertConfig.buttonHeight = 40*kScale;
+    self.alertConfig.width = 315*kScale;
+//    alertConfig.buttonBackgroundColor = [UIColor redColor];
+    self.alertConfig.detailColor = RGB(136, 136, 136, 1);
+    self.alertConfig.itemNormalColor = [UIColor whiteColor];
+    self.alertConfig.splitColor = [UIColor whiteColor];
+    
 }
+
+-(void)leftItemAction{
+    if ([self.fromVC isEqualToString:@"1"])
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
 
 -(void)viewWillDisappear:(BOOL)animated{
     [SVProgressHUD dismiss];
@@ -108,7 +143,7 @@
     if (cell1 == nil) {
         cell1 = [[ConfirmOrderInfoPayTypeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"list_cell_pay"];
         
-        //[cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
+        [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
         cell1.backgroundColor = [UIColor whiteColor];
         
     }
@@ -143,7 +178,7 @@
     switch (indexPath.row) {
         case 0:{
             DLog(@"支付宝");
-            [SVProgressHUD showErrorWithStatus:@"开发中"];
+//            [SVProgressHUD showErrorWithStatus:@"开发中"];
 
             self.selectPayType = @"999";
         }
@@ -151,7 +186,7 @@
             
         case 1:{
             DLog(@"微信");
-            [SVProgressHUD showErrorWithStatus:@"开发中"];
+           [SVProgressHUD showErrorWithStatus:@"开发中"];
 
             self.selectPayType = @"888";
 
@@ -284,37 +319,171 @@
         }
             
         }else if ([payId isEqualToString:@"999"]){
-            
-            
+            if ([returnData[@"status"] integerValue] == 200)
+            {
+                //注册通知
+                [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handlePayResult:) name:@"payResult" object:nil];
+                ///调起支付宝支付
+                [[LHSPayManger sharedManager] sendAliPay:returnData[@"data"][@"body"]];
+
+            }
+
         }
 
-//
-//            NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
-//
-//            for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
-//
-//                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
-//                model.productTotalPrice = [productTotalPrice integerValue];
-//                [orderListMarray addObject:model];
-//            }
-//
-//            [SVProgressHUD dismiss];
-////            ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController new];
-////            VC.hidesBottomBarWhenPushed = YES;
-////            VC.orderListMarray = orderListMarray;
-////            [self.navigationController pushViewController:VC animated:YES];
-//            NSLog(@"去结算");
-//        }
-//        else
-//        {
-//            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
-//        }
+
     } failureBlock:^(NSError *error) {
         DLog(@"获取订单信息err0r=== %@  " ,error);
         [SVProgressHUD dismiss];
     } showHUD:NO];
     
 }
+
+- (void)handlePayResult:(NSNotification *)noti{
+    UIAlertController * alert = [[UIAlertController alloc] init];
+    [SVProgressHUD dismiss];
+    
+    DLog(@"通知返回结果=== %@  === %@" ,noti , noti.object);
+    
+    //结果处理
+    if ([noti.object[@"resultStatus"] isEqualToString:@"9000"]) {
+        //支付宝回调显示支付成功后调用自己的后台的借口确认是否支付成功
+        NSString *orderStringNO = noti.object[@"result"];
+        
+        orderStringNO = [orderStringNO stringByReplacingOccurrencesOfString:@" " withString:@"/"];
+        NSData *jsonData = [orderStringNO dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *err;
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                            options:NSJSONReadingMutableContainers
+                                                              error:&err];
+        orderStringNO = dic[@"alipay_trade_app_pay_response"][@"out_trade_no"];
+        DLog(@"ssssssssssss==== %@" ,orderStringNO);
+        
+        [self requsetOrderDetailsData:orderStringNO];
+        
+        
+    }else {
+        // [self payCancel];
+        DLog(@"取消支付");
+        //添加按钮
+        [alert addAction:[UIAlertAction actionWithTitle:@"重新支付" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //   [self requestPayData:self.payPrices];
+            
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+   
+    
+    
+    
+    
+//
+//    if ([noti.object isEqualToString:@"成功"]) {
+//        DLog(@"支付成功后点击返回");
+//
+//
+//        OrderDetailesViewController *VC = [OrderDetailesViewController new];
+//        [self.navigationController pushViewController:VC animated:YES];
+//        //[self setup];
+//
+//
+//    }
+//    else
+//    {
+//        //添加按钮
+//        [alert addAction:[UIAlertAction actionWithTitle:@"重新支付" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//         //   [self requestPayData:self.payPrices];
+//
+//        }]];
+//        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+//        [self presentViewController:alert animated:YES completion:nil];
+//    }
+//
+    //上边添加了监听，这里记得移除
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"payResult" object:nil];
+}
+
+
+
+#pragma mark === 请求订单详情 校验订单状态是否支付成功
+-(void)requsetOrderDetailsData:(NSString*)orderNo{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    
+    [dic setObject:secret forKey:@"secret"];
+    [dic setObject:nonce forKey:@"nonce"];
+    [dic setObject:curTime forKey:@"curTime"];
+    [dic setObject:checkSum forKey:@"checkSum"];
+    [dic setObject:ticket forKey:@"ticket"];
+    [dic setValue:orderNo forKey:@"orderNo"];
+    
+    DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
+        
+        if ([returnData[@"status"] integerValue] == 200)
+        {
+            
+            OrderModel *model = [OrderModel yy_modelWithJSON:returnData[@"data"]];
+            if (model.status == 40) {//已付款 , 订单支付成功
+                
+//                self.alertConfig.itemNormalColor = RGB(231, 35, 36, 1);
+//                self.alertConfig.splitColor = RGB(136, 136, 136, 1);
+//                self.alertConfig.cornerRadius = 0;
+                MMPopupItemHandler block = ^(NSInteger index){
+                    if (index == 0) {
+//                        DLog(@"取消查看订单");
+//                        [self.navigationController popToRootViewControllerAnimated:YES];
+//                    }else{
+                        ///查看订单
+                        OrderDetailesViewController *VC = [OrderDetailesViewController new];
+                        VC.orderNo = model.orderNo;
+                        VC.fromPayVC = @"1";
+                        [self.navigationController pushViewController:VC animated:YES];
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"查看订单详情", MMItemTypeNormal, block),];
+                
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"恭喜您,支付成功!" detail:@"工作人员正在为您安排发货,请耐心等待 " items:items];
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                [alertView show];
+                
+               
+                
+            }else{//支付不成功
+                
+                MMPopupItemHandler block = ^(NSInteger index){
+                    
+                };
+                NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
+                
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"支付失败" detail:@"订单支付失败，请稍后到我的订单详情中查看,或者与工作人员联系，客服热线4001106111" items:items];
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                [alertView show];
+            }
+            //            self.status = footModel.status;
+            //            [self.footViewOrderInfoMarray addObject:footModel];
+            
+        }
+        
+    } failureBlock:^(NSError *error) {
+        DLog(@"获取订单信息err0r=== %@  " ,error);
+        [SVProgressHUD dismiss];
+    } showHUD:NO];
+    
+}
+
+
+
+
 
 
 #pragma mark = 微信支付
@@ -338,32 +507,32 @@
     [[LHSPayManger sharedManager] sendAliPay:dic];
 
 }
-
-- (void)handlePayResult:(NSNotification *)noti{
-    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"支付结果" message:[NSString stringWithFormat:@"%@",noti.object] preferredStyle:UIAlertControllerStyleActionSheet];
-    if ([noti.object isEqualToString:@"成功"]) {
-        
-//        GHDetailsViewController *VC = [GHDetailsViewController new];
-//        [WMLoginHelper shareInstance].isHadSignUp = YES;
-//        [self presentViewController:VC animated:YES completion:nil];
 //
-        // [self.navigationController popViewControllerAnimated:YES];
-        
-    }
-    else
-    {
-        //添加按钮
-        [alert addAction:[UIAlertAction actionWithTitle:@"重新支付" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-           // [self commitBtnAction];
-            
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        
-    }
-    [self presentViewController:alert animated:YES completion:nil];
-    //上边添加了监听，这里记得移除
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"weixin_pay_result" object:nil];
-}
+//-(void)handlePayResult:(NSNotification *)noti{
+//    UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"支付结果" message:[NSString stringWithFormat:@"%@",noti.object] preferredStyle:UIAlertControllerStyleActionSheet];
+//    if ([noti.object isEqualToString:@"成功"]) {
+//
+////        GHDetailsViewController *VC = [GHDetailsViewController new];
+////        [WMLoginHelper shareInstance].isHadSignUp = YES;
+////        [self presentViewController:VC animated:YES completion:nil];
+////
+//        // [self.navigationController popViewControllerAnimated:YES];
+//
+//    }
+//    else
+//    {
+//        //添加按钮
+//        [alert addAction:[UIAlertAction actionWithTitle:@"重新支付" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//           // [self commitBtnAction];
+//
+//        }]];
+//        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+//
+//    }
+//    [self presentViewController:alert animated:YES completion:nil];
+//    //上边添加了监听，这里记得移除
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"weixin_pay_result" object:nil];
+//}
 
 
 

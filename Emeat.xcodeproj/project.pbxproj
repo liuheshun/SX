@@ -33,6 +33,7 @@
 		162F970920577DDC004EA49F /* ZJSegmentStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96FF20577DDB004EA49F /* ZJSegmentStyle.m */; };
 		162F970A20577DDC004EA49F /* ZJScrollSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970020577DDB004EA49F /* ZJScrollSegmentView.m */; };
 		162F970B20577DDC004EA49F /* ZJScrollPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970120577DDB004EA49F /* ZJScrollPageView.m */; };
+		16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16311B0B20909FB1005B2277 /* JMHoledView.m */; };
 		1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA7F1FCE938900F7162C /* SortListSegmentView.m */; };
 		1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA821FCFA66200F7162C /* SortCheckView.m */; };
 		1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA851FCFE0FF00F7162C /* SeacherViewController.m */; };
@@ -220,6 +221,8 @@
 		162F970120577DDB004EA49F /* ZJScrollPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollPageView.m; sourceTree = "<group>"; };
 		162F970220577DDB004EA49F /* UIViewController+ZJScrollPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZJScrollPageController.h"; sourceTree = "<group>"; };
 		162F970320577DDB004EA49F /* ZJTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTitleView.h; sourceTree = "<group>"; };
+		16311B0A20909FB1005B2277 /* JMHoledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMHoledView.h; sourceTree = "<group>"; };
+		16311B0B20909FB1005B2277 /* JMHoledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMHoledView.m; sourceTree = "<group>"; };
 		1643DA7E1FCE938900F7162C /* SortListSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortListSegmentView.h; sourceTree = "<group>"; };
 		1643DA7F1FCE938900F7162C /* SortListSegmentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortListSegmentView.m; sourceTree = "<group>"; };
 		1643DA811FCFA66200F7162C /* SortCheckView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortCheckView.h; sourceTree = "<group>"; };
@@ -574,6 +577,15 @@
 			path = ZJScrollPageView;
 			sourceTree = "<group>";
 		};
+		16311B0920909FB1005B2277 /* NoviceUserGuideView */ = {
+			isa = PBXGroup;
+			children = (
+				16311B0A20909FB1005B2277 /* JMHoledView.h */,
+				16311B0B20909FB1005B2277 /* JMHoledView.m */,
+			);
+			path = NoviceUserGuideView;
+			sourceTree = "<group>";
+		};
 		165581042008F86500F33D6B /* PaySDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +754,7 @@
 		16CFD7251FB2A6F20015F2C1 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				16311B0920909FB1005B2277 /* NoviceUserGuideView */,
 				16BB3EF7207F500B00623045 /* LaunchIntroduction */,
 				16B750E52013386E00C4642C /* LDActionSheet */,
 				16B750DE201337BF00C4642C /* LDImagePicker */,
@@ -1506,6 +1519,7 @@
 				16D950B51FF0DB4B00DBC7B8 /* GlobalHelper.m in Sources */,
 				16EE10371FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.m in Sources */,
 				16F0AF46207F9AE10093FE7D /* MyHeadLonginOutView.m in Sources */,
+				16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */,
 				16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */,
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,
@@ -1679,7 +1693,7 @@
 			baseConfigurationReference = 62F18760B885639E4AB589C4 /* Pods-Emeat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-1";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
@@ -1729,7 +1743,7 @@
 			baseConfigurationReference = 34DA93680C058AEFB6FB446B /* Pods-Emeat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-1";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;

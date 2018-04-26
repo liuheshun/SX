@@ -75,6 +75,10 @@
 #import "UPPaymentControl.h"
 #import "LHSPayManger.h"
 
+//通知的名字及参数
+#define WX_PAY_RESULT   @"weixin_pay_result"
+#define IS_SUCCESSED    @"wechat_pay_isSuccessed"
+#define IS_FAILED       @"wechat_pay_isFailed"
 
 
 // Include any system framework and library headers here that should be included in all compilation units.

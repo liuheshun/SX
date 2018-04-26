@@ -51,8 +51,9 @@
         
         
         
-#pragma mark ============================1为周期性用户
-        if (orderModel.periodic == 1) {
+#pragma mark ============================11为周期性用户 ,线下打款
+        if (orderModel.paymentType == 11) {
+            
             [self addSubview:self.myOrderDetailsStatusAccountHeadView];
             [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_left).with.offset(0);
@@ -61,7 +62,7 @@
                 make.height.equalTo(@(96*kScale));
             }];
             
-        }else if (orderModel.periodic == 0){
+        }else {
             
             [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_left).with.offset(0);
@@ -113,13 +114,6 @@
         [self.statusImv setImage:[UIImage imageNamed:@"quxiaotuihuo"] forState:0];
     }
 
-    
-    
-   
-    
-    
-    
-   
     ///配送地址
     self.orderNameLab.text = addressModel.receiverName;
     self.orderPhoneNumerLab.text =[NSString stringWithFormat:@"%ld",addressModel.receiverPhone] ;

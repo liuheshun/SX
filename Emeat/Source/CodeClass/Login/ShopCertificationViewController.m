@@ -107,8 +107,10 @@
     [dic1 setValue:self.ShopAddress forKey:@"address"];
     [dic1 setValue:self.ShopDetailsAddress forKey:@"addressDetail"];
     [dic1 setValue:self.ShopInviteCode forKey:@"userName"];
+//    ///
+//    [dic1 setValue:@"0" forKey:@"isDeleted"];
 
-
+//parentId=0
     [MHAsiNetworkHandler startMonitoring];
     NSString *url;
     if ([self.isRemakeShopCerific isEqualToString:@"1"]) {//重新认证

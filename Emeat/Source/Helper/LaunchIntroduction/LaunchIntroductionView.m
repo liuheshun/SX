@@ -7,14 +7,24 @@
 //
 
 #import "LaunchIntroductionView.h"
+#import "JMHoledView.h"
+
+
+
 
 static NSString *const kAppVersion = @"appVersion";
 
-@interface LaunchIntroductionView ()<UIScrollViewDelegate>
+@interface LaunchIntroductionView ()<UIScrollViewDelegate , JMHoledViewDelegate>
 {
     UIScrollView  *launchScrollView;
     UIPageControl *page;
+    NSInteger newUserCount;
+
 }
+///新手用户引导
+@property (nonatomic,strong) JMHoledView *jmHoledView;
+///
+@property (nonatomic,strong) UIImageView * NewUserView;
 
 @end
 
@@ -153,6 +163,7 @@ NSString *storyboard;
         self.alpha = 0;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self removeFromSuperview];
+            [self addNewUserView];
         });
         
     }];
@@ -193,5 +204,97 @@ NSString *storyboard;
         page.pageIndicatorTintColor = self.nomalColor;
     }
 }
+
+
+
+
+
+///////////////
+
+
+#pragma maek =====添加新手用户引导
+
+-(void)addNewUserView{
+    
+    
+    [[UIApplication sharedApplication].keyWindow addSubview:self.jmHoledView];
+    [self.jmHoledView addHCustomView:[self clickForView] onRect:CGRectMake((kWidth-150*kScale)/2, kHeight-200*kScale, 150*kScale, 43*kScale)];
+    
+    [self.jmHoledView addHCustomView:[self viewForDemo] onRect:CGRectMake(0, 0, launchScrollView.frame.size.width, launchScrollView.frame.size.height)];
+    [self.jmHoledView addHCustomView:[self clickForView] onRect:CGRectMake((kWidth-150*kScale)/2, kHeight-200*kScale, 150*kScale, 43*kScale)];
+    
+    
+}
+
+
+#pragma mark - JMHoledViewDelegate
+
+- (void)holedView:(JMHoledView *)holedView didSelectHoleAtIndex:(NSUInteger)index
+{
+    NSLog(@"%s %ld", __PRETTY_FUNCTION__,(long)index);
+    
+    if (index == 0) {
+        newUserCount++;
+        if (newUserCount == 1) {
+            
+            self.NewUserView.image = [UIImage imageNamed:@"用户引导-2"];
+            
+        }else if (newUserCount == 2){
+            self.NewUserView.image = [UIImage imageNamed:@"用户引导-3"];
+            
+        }else if (newUserCount == 3){
+            self.NewUserView.image = [UIImage imageNamed:@"用户引导-4"];
+            
+        }else{
+            [self.jmHoledView removeFromSuperview];
+        }
+        
+        
+        
+        
+        
+    }
+}
+
+- (UIView *)viewForDemo
+{
+    
+    self.NewUserView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"用户引导-1"]];
+    self.NewUserView.frame = launchScrollView.frame;
+    return self.NewUserView;
+    
+    
+    
+}
+
+
+- (UIView *)clickForView
+{
+    
+    UIImageView *v = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"用户引导按钮"]];
+    v.frame = CGRectMake((kWidth-150*kScale)/2, 200*kScale, 150*kScale, 43*kScale);
+    return v;
+    
+    
+    
+}
+
+-(JMHoledView *)jmHoledView{
+    if (!_jmHoledView) {
+        _jmHoledView = [[JMHoledView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
+        _jmHoledView.holeViewDelegate = self;
+        
+    }
+    return _jmHoledView;
+}
+
+
+
+
+
+
+
+
+
 
 @end

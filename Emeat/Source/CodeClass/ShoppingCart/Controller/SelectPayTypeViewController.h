@@ -14,4 +14,9 @@
 ///是否是周期性付款用户
 @property (nonatomic,assign) NSInteger periodic;
 
+///来自确认订单页面 = 1 或者 我的订单页面
+
+@property (nonatomic,strong) NSString *fromVC;
+
+
 @end

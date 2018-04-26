@@ -14,14 +14,18 @@
 //URL:
 #define baseUrl @"http://beta.cyberfresh.cn/m"
 #define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
-/////设置的
-#define setbaseUrl @"http://admin.cyberfresh.cn"
+///设置的
+#define setbaseUrl @"http://beta.cyberfresh.cn"
 
 
 //
 ////URL:本地
 //#define baseUrl @"http://192.168.0.141/m"
 //#define loginBaseUrl @"http://192.168.0.141/cas"
+
+////URL:本地
+//#define baseUrl @"http://192.168.0.194/m"
+//#define loginBaseUrl @"http://192.168.0.194/cas"
 
 
 ///获取版本号
@@ -32,7 +36,7 @@
 
 
 
-#define zp @"http://beta.cyberfresh.cn"
+//#define zp @"http://beta.cyberfresh.cn"
 
 
 //

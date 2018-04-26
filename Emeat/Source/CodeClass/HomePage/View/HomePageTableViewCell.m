@@ -74,7 +74,11 @@
     }else if ([model.commodityMark isEqualToString:@"特惠"]){
         [self.lableBtn setImage:[UIImage imageNamed:@"tehui"] forState:0];
 
-    }else {
+    }else if ([model.commodityMark isEqualToString:@"试样"]){
+        [self.lableBtn setImage:[UIImage imageNamed:@"试样"] forState:0];
+
+    }
+    else {
         [self.lableBtn setImage:[UIImage imageNamed:@"wu"] forState:0];
 
     }

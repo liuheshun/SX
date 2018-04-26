@@ -71,8 +71,8 @@
 
 ///是否为周期性用户
 @property (nonatomic,assign) NSInteger periodic;
-
-
+///支付方式 999= 支付宝 888=微信 11=线下打款
+@property (nonatomic,assign) NSInteger paymentType;
 
 /////订单编号
 //@property (nonatomic,assign) NSInteger orderNo;
@@ -100,8 +100,7 @@
 //@property (nonatomic,assign) NSInteger shippingId;
 /////付款金额
 //@property (nonatomic,assign) NSInteger payment;
-/////付款方式
-@property (nonatomic,assign) NSInteger paymentType;
+
 /////支付状态
 //@property (nonatomic,assign) NSInteger paymentStatus;
 /////订单状态

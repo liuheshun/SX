@@ -339,20 +339,23 @@
             // Called when search begain.
             // eg：Push to a temp view controller
             
-//            searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
-//            SeacherViewController *sVc = [[SeacherViewController alloc] init];
-//            searchViewController.searchResultController = sVc;
-//            sVc.searchText = searchText;
-        
-            
+            searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+            searchViewController.showSearchResultWhenSearchBarRefocused = YES;
+
             SeacherViewController *sVc = [[SeacherViewController alloc] init];
+            searchViewController.searchResultController = sVc;
             sVc.searchText = searchText;
             sVc.fromSortString = @"1";
             sVc.position = weakSelf.ID;
             
-            [searchViewController.navigationController pushViewController:sVc animated:YES];
-
-            
+//            SeacherViewController *sVc = [[SeacherViewController alloc] init];
+//            sVc.searchText = searchText;
+//            sVc.fromSortString = @"1";
+//            sVc.position = weakSelf.ID;
+//
+//            [searchViewController.navigationController pushViewController:sVc animated:YES];
+//
+//
             
             
         }];

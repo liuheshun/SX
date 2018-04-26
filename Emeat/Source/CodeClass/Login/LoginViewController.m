@@ -18,7 +18,9 @@
 @end
 
 @implementation LoginViewController
-
+{
+    int timeoutCount;
+}
 -(void)viewWillAppear:(BOOL)animated{
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 
@@ -182,6 +184,7 @@
                 
             });
             timeout--;
+            timeoutCount = timeout;
             
         }
     });
@@ -274,8 +277,15 @@
         }
         else
         {
-            self.loginView.codeBtn.backgroundColor = RGB(231, 35, 36, 1);
-            self.loginView.codeBtn.userInteractionEnabled = YES;
+            if (timeoutCount >0) {
+                self.loginView.codeBtn.backgroundColor = RGB(136, 136, 136, 1);
+                self.loginView.codeBtn.userInteractionEnabled = NO;
+
+            }else{
+                self.loginView.codeBtn.backgroundColor = RGB(231, 35, 36, 1);
+                self.loginView.codeBtn.userInteractionEnabled = YES;
+            }
+         
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:textField.text forKey:@"phoneNum"];
             

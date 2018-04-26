@@ -288,38 +288,21 @@
         
     }else{
         
-        DDSearchPointAnnotation *poi = self.searchMarray[indexPath.row];
-//        //国家
-//        @property (nonatomic, copy) NSString * country;
-//        //省
-//        @property (nonatomic,strong) NSString *administrativeArea;
-//
-//        //省 直辖市
-//        @property (nonatomic, copy) NSString * city;
-//        // 地级市 直辖市区
-//        @property (nonatomic, copy) NSString * locality;
-//        //县 区
-//        @property (nonatomic, copy) NSString * subLocality;
-//        //街道
-//        @property (nonatomic, copy) NSString * thoroughfare;
-//        //子街道
-//        @property (nonatomic, copy) NSString * subThoroughfare;
-//        //
-//        @property (nonatomic,strong) NSString *name;//具体位置
-
-
-        self.currentLocation.name = poi.name;
-        self.currentLocation.administrativeArea = poi.province;
-        self.currentLocation.city = poi.city;
-        self.currentLocation.subLocality = poi.district;//区域名称
-        self.currentLocation.thoroughfare = poi.address;
-        if ([self respondsToSelector:@selector(returnSearchAddressBlock)]) {
-            self.returnSearchAddressBlock(self.currentLocation);
-            
+        if (self.searchMarray.count != 0) {
+            DDSearchPointAnnotation *poi = self.searchMarray[indexPath.row];
+            self.currentLocation.name = poi.name;
+            self.currentLocation.administrativeArea = poi.province;
+            self.currentLocation.city = poi.city;
+            self.currentLocation.subLocality = poi.district;//区域名称
+            self.currentLocation.thoroughfare = poi.address;
+            if ([self respondsToSelector:@selector(returnSearchAddressBlock)]) {
+                self.returnSearchAddressBlock(self.currentLocation);
+                
+            }
         }
+        
     }
     
-//    AddNewAddressViewController *VC =  [AddNewAddressViewController new];
     [self.navigationController popViewControllerAnimated:YES];
 
     

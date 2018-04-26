@@ -121,13 +121,11 @@ detail:(NSString *)detail
                 make.left.right.equalTo(self).insets(UIEdgeInsetsMake(0, config.innerMargin, 0, config.innerMargin));
             }];
             self.detailLabel.textColor = config.detailColor;
-            self.detailLabel.textAlignment = NSTextAlignmentCenter;
             self.detailLabel.font = [UIFont systemFontOfSize:config.detailFontSize];
             self.detailLabel.numberOfLines = 0;
             self.detailLabel.backgroundColor = self.backgroundColor;
             self.detailLabel.text = detail;
             lastAttribute = self.detailLabel.mas_bottom;
-            
             
             ///拨打电话设置
             
@@ -149,7 +147,8 @@ detail:(NSString *)detail
             [phoneControl addTarget:self action:@selector(phoneLink) forControlEvents:UIControlEventTouchUpInside];
             [self.detailLabel addSubview:phoneControl];
             
-            
+            self.detailLabel.textAlignment = NSTextAlignmentCenter;
+
         }
         
         if ( self.inputHandler )
@@ -188,7 +187,7 @@ detail:(NSString *)detail
             UIButton *btn = [UIButton mm_buttonWithTarget:self action:@selector(actionButton:)];
             [self.buttonView addSubview:btn];
             btn.tag = i;
-            btn.layer.cornerRadius = 4;
+            btn.layer.cornerRadius = config.cornerRadius;
             btn.layer.masksToBounds = YES;
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                 
@@ -196,8 +195,11 @@ detail:(NSString *)detail
                     make.top.bottom.equalTo(self.buttonView);
                     make.height.mas_equalTo(config.buttonHeight);
                     make.left.equalTo(self.buttonView.mas_left).offset(85*kScale);
-
                     make.right.equalTo(self.buttonView.mas_right).offset(-85*kScale);
+                    
+                    btn.backgroundColor = config.buttonBackgroundColor;
+
+                    
                 }else if ( items.count == 2 )
                 {
                     make.top.bottom.equalTo(self.buttonView);
@@ -213,6 +215,9 @@ detail:(NSString *)detail
                         make.left.equalTo(lastButton.mas_right).offset(-MM_SPLIT_WIDTH);
                         make.width.equalTo(firstButton);
                     }
+                    [btn setBackgroundImage:[UIImage mm_imageWithColor:self.backgroundColor] forState:UIControlStateNormal];
+                    [btn setBackgroundImage:[UIImage mm_imageWithColor:config.itemPressedColor] forState:UIControlStateHighlighted];
+
                 }
                 else
                 {
@@ -229,13 +234,15 @@ detail:(NSString *)detail
                         make.top.equalTo(lastButton.mas_bottom).offset(-MM_SPLIT_WIDTH);
                         make.width.equalTo(firstButton);
                     }
+                    
+                    [btn setBackgroundImage:[UIImage mm_imageWithColor:self.backgroundColor] forState:UIControlStateNormal];
+                    [btn setBackgroundImage:[UIImage mm_imageWithColor:config.itemPressedColor] forState:UIControlStateHighlighted];
+
                 }
                 
                 lastButton = btn;
             }];
-//            [btn setBackgroundImage:[UIImage mm_imageWithColor:self.backgroundColor] forState:UIControlStateNormal];
-//            [btn setBackgroundImage:[UIImage mm_imageWithColor:config.itemPressedColor] forState:UIControlStateHighlighted];
-            btn.backgroundColor = config.buttonBackgroundColor;
+
             [btn setTitle:item.title forState:UIControlStateNormal];
            // [btn setTitleColor:item.highlight?config.itemHighlightColor:config.itemNormalColor forState:UIControlStateNormal];
             [btn setTitleColor:config.itemNormalColor forState:UIControlStateNormal];
@@ -284,11 +291,6 @@ detail:(NSString *)detail
 
 #pragma mark-<获取电话号码的坐标>
 -(CGRect)boundingRectForCharacterRange:(NSRange)range andLable:(UILabel *)lable lableSize:(CGSize)lableSize{
-    //    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:contentStr];
-    //    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    //    paraStyle.lineSpacing = 6;
-    //    NSDictionary *attrs =@{NSFontAttributeName : [UIFont systemFontOfSize:12.0], NSParagraphStyleAttributeName : paraStyle};
-    //    [attributeString setAttributes:attrs range:NSMakeRange(0, contentStr.length)];
     
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:lable.attributedText];
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
