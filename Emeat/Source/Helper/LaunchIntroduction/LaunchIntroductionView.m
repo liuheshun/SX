@@ -164,7 +164,7 @@ NSString *storyboard;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self removeFromSuperview];
             //后期加上
-           // [self addNewUserView];
+            [self addNewUserView];
         });
         
     }];
@@ -236,15 +236,33 @@ NSString *storyboard;
     
     if (index == 0) {
         newUserCount++;
+        
         if (newUserCount == 1) {
-            
-            self.NewUserView.image = [UIImage imageNamed:@"用户引导-2"];
+            UIImage *image;
+            if (LL_iPhoneX) {
+                image = [UIImage imageNamed:@"用户引导-2-X"];
+            }else{
+                image = [UIImage imageNamed:@"用户引导-2"];
+            }
+            self.NewUserView.image = image;
             
         }else if (newUserCount == 2){
-            self.NewUserView.image = [UIImage imageNamed:@"用户引导-3"];
+            UIImage *image;
+            if (LL_iPhoneX) {
+                image = [UIImage imageNamed:@"用户引导-3-X"];
+            }else{
+                image = [UIImage imageNamed:@"用户引导-3"];
+            }
+            self.NewUserView.image = image;
             
         }else if (newUserCount == 3){
-            self.NewUserView.image = [UIImage imageNamed:@"用户引导-4"];
+            UIImage *image;
+            if (LL_iPhoneX) {
+                image = [UIImage imageNamed:@"用户引导-4-X"];
+            }else{
+                image = [UIImage imageNamed:@"用户引导-4"];
+            }
+            self.NewUserView.image = image;
             
         }else{
             [self.jmHoledView removeFromSuperview];
@@ -259,8 +277,14 @@ NSString *storyboard;
 
 - (UIView *)viewForDemo
 {
+    UIImage *image;
     
-    self.NewUserView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"用户引导-1"]];
+    if (LL_iPhoneX) {
+        image = [UIImage imageNamed:@"用户引导-1-X"];
+    }else{
+        image = [UIImage imageNamed:@"用户引导-1"];
+    }
+    self.NewUserView = [[UIImageView alloc] initWithImage:image];
     self.NewUserView.frame = launchScrollView.frame;
     return self.NewUserView;
     

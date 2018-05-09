@@ -10,12 +10,14 @@
 //beta.cyberfresh.cn
 //admin.cyberfresh.cn
 
+///App Store链接
+#define appStoreURL @"https://itunes.apple.com/cn/app/%E8%B5%9B%E9%B2%9C/id1364356601?mt=8"
 
-//URL:
-#define baseUrl @"http://admin.cyberfresh.cn/m"
-#define loginBaseUrl @"http://admin.cyberfresh.cn/cas"
+////URL:
+//#define baseUrl @"http://beta.cyberfresh.cn/m"
+//#define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
 ///设置的
-#define setbaseUrl @"http://admin.cyberfresh.cn"
+#define setbaseUrl @"http://beta.cyberfresh.cn"
 
 
 //
@@ -24,8 +26,8 @@
 //#define loginBaseUrl @"http://192.168.0.141/cas"
 
 ////URL:本地
-//#define baseUrl @"http://192.168.0.194/m"
-//#define loginBaseUrl @"http://192.168.0.194/cas"
+#define baseUrl @"http://192.168.0.194/m"
+#define loginBaseUrl @"http://192.168.0.194/cas"
 
 
 ///获取版本号
@@ -55,17 +57,6 @@
 
 
 
-
-
-
-#define jiangHuDetailsOfUrl(baseUrl,actId ,shareParameter) [NSString stringWithFormat:@"%@/weixinPreview.action?actId=%lu_%@",baseUrl,actId ,shareParameter]
-
-
-
-#define daXiaDeatailsOfUrl(baseUrl,expertId)    [NSString stringWithFormat:@"%@/ExpertInvitation/invitationExpertDetail.action?expertId=%ld",baseUrl,expertId]    
-
-
-#define JueZhaoDetailsOfUrl(baseUrl,expertId,kid)  [NSString stringWithFormat:@"%@/ExpertInvitation/invitationExpertDetailfx.action?expertId=%ld&kid=%ld",baseUrl,expertId,kid]
 
 
 

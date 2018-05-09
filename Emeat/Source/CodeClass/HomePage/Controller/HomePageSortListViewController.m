@@ -64,7 +64,8 @@
     [self.homePageNavView addSubview:self.leftButtons];
     [self addSortAction];
     [self addChangeStatedBlockAction];
-    
+    self.checkMarray = [NSMutableArray array];
+
     [self.homePageNavView.selectAddressBtn setTitle:self.currentLocation.name forState:0];
     CGFloat imageWidth = self.homePageNavView.selectAddressBtn.imageView.bounds.size.width;
     CGFloat labelWidth = self.homePageNavView.selectAddressBtn.titleLabel.bounds.size.width;
@@ -259,7 +260,6 @@
 #pragma mark = 请求筛选标签数据
 
 -(void)requestCheckData{
-    self.checkMarray = [NSMutableArray array];
     NSMutableArray *countryMarray = [NSMutableArray array];
     NSMutableArray *weightMarray = [NSMutableArray array];
     NSMutableArray *kindMarray = [NSMutableArray array];
@@ -286,7 +286,7 @@
                 }
             }
             self.checkMarray = [NSMutableArray arrayWithObjects:countryMarray , weightMarray , kindMarray, nil];
-            
+
             [self.tableView reloadData];
         }
         
@@ -470,7 +470,10 @@
         
         
         DLog(@"checkStatedBlock");
-        [weakSelf setCheckMainFrame];
+        if (self.checkMarray.count != 0) {
+            [weakSelf requestCheckData];
+            [weakSelf setCheckMainFrame];
+        }
         weakSelf.statusStringURL = @"4";
     };
     
@@ -518,6 +521,7 @@
                            ,@"重量规格"
                            ,@"品种"
                            , nil];
+    DLog(@"---------------------------------------------=====  %@" ,self.checkMarray);
     rvc.itemButtonMarray = self.checkMarray;
     window.rootViewController = rvc;
     //设置视图偏移
@@ -569,10 +573,7 @@
 #pragma mark = 筛选请求=====
 
 -(void)confirmCheckAction:(NSString *)minPrices maxPrice:(NSString *)maxPrices countStr:(NSString *)couStr weightStr:(NSString *)weightStr kindStr:(NSString *)kindStr totalPage:(NSInteger)total URL:(NSString*)urlStr{
-    if (totalPage == 1) {
-        [self.dataArray removeAllObjects];
-
-    }
+   
 
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setValue:couStr forKey:@"origin"];
@@ -590,7 +591,9 @@
         DLog(@"筛选 列表returnData== %@" ,returnData);
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
-            
+            if (totalPage == 1) {
+                [self.dataArray removeAllObjects];
+            }
             NSInteger pages = [returnData[@"data"][@"page"][@"totalPage"] integerValue];
             NSInteger pageSize = [returnData[@"data"][@"page"][@"pageSize"] integerValue];
             NSInteger total = [returnData[@"data"][@"page"][@"totalRecords"] integerValue];

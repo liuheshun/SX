@@ -239,16 +239,20 @@
         
         return priceRangeCell;
     }else {
-        AF_BrandCell *cell = [AF_BrandCell cellWithTableView:tableView dataArr:self.dataArr[indexPath.section-1] indexPath:indexPath];
-        /** 取消cell点击状态 */
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.tag = indexPath.section;
-        cell.delegate = self;
- 
-        cell.attributeArr = self.dataArr[indexPath.section-1];
+        DLog(@"-------====  %@  -- %ld" ,self.dataArr , self.dataArr.count);
+            AF_BrandCell *cell = [AF_BrandCell cellWithTableView:tableView dataArr:self.dataArr[indexPath.section-1] indexPath:indexPath];
+            /** 取消cell点击状态 */
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.tag = indexPath.section;
+            cell.delegate = self;
+            
+            cell.attributeArr = self.dataArr[indexPath.section-1];
+            
         
         return cell;
+
     }
 }
 

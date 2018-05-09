@@ -180,6 +180,9 @@
                     model1.storeId = storeId1;
                     [self.shopCertifiMarray removeAllObjects];
                     [self.shopCertifiMarray addObject:model1];
+                }else{
+                    //清空认证信息 ,不能重新认证店铺,需新增
+                    
                 }
                 
             }else{
@@ -372,14 +375,20 @@
 
 -(void)shopNameBtnAction{
     
-    ShopCertificationViewController *VC = [ShopCertificationViewController new];
-    VC.hidesBottomBarWhenPushed = YES;
-    VC.isRemakeShopCerific = @"1";
     if (self.shopCertifiMarray.count != 0) {
+        ShopCertificationViewController *VC = [ShopCertificationViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        VC.isRemakeShopCerific = @"1";
         VC.shopCertifiMyModel = [self.shopCertifiMarray firstObject];
+        [self.navigationController pushViewController:VC animated:YES];
+    }else{
+        //首次认证
+        ShopCertificationViewController *VC = [ShopCertificationViewController new];
+        VC.isRemakeShopCerific = @"0";
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+
     }
-    [self.navigationController pushViewController:VC animated:YES];
-    
 }
 
 

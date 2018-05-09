@@ -151,7 +151,7 @@
 
 
 -(void)requsetCancelOrderData{
-    
+    [SVProgressHUD show];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
@@ -171,17 +171,13 @@
     DLog(@"取消订单dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"取消订单===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
-        
-        if ([returnData[@"status"] integerValue] == 200)
-        {
-            ///取消订单 刷新数据
+        if ([returnData[@"status"] integerValue] == 200){
+            ///取消订单后 刷新数据
             [self requsetOrderDetailsData];
-    
-        }
-        else
-        {
+        }else{
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
+        [SVProgressHUD dismiss];
         
     } failureBlock:^(NSError *error) {
         DLog(@"取消订单err0r=== %@  " ,error);
@@ -256,11 +252,6 @@
         [alert addAction:okAction];
         [alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
-        
-    
-        
-        
-        
         
     }
     else if (btn.tag == 60)
@@ -892,6 +883,23 @@
     //隐藏tabBar
     
 }
+
+
+
+//UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
+//UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//    ///删除整个商品
+//
+//    [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
+//
+//
+//}];
+//
+//UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+//
+//[alert addAction:okAction];
+//[alert addAction:cancel];
+//[self presentViewController:alert animated:YES completion:nil];
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

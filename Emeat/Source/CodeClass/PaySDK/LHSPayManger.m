@@ -24,16 +24,19 @@
 #pragma mark = 微信支付
 
 -(void)sendWXPay:(NSDictionary*)dic{
-    NSMutableString *stamp  = dic[@"msg"] [@"timestamp"];
-    //调起支付
-    PayReq *req = [[PayReq alloc]init];
-    req.partnerId = dic[@"msg"][@"partnerid"];//@"10000100";//商家id
-    req.prepayId = dic[@"msg"][@"prepayid"];//@"wx20160222181228eabc76df380849802454";//预支付订单
-    req.package = dic[@"msg"][@"package"];  //@"Sign=WXPay";//扩展字段  暂填写固定值Sign=WXPay
-    req.nonceStr = dic[@"msg"][@"noncestr"];//@"758d476b9ebdc37e698ccfbdbcd21906";//随机串，防重发
-    req.timeStamp = stamp.intValue; //@"1456135948";//时间戳
-    req.sign = dic[@"msg"][@"sign"];//@"61EC78AB39E256B2624D54C7E1390D70";//商家根据微信开放平台文档对数据做的签名
-    [WXApi sendReq:req];
+    if (dic) {
+        NSMutableString *stamp  = dic[@"timestamp"];
+        //调起支付
+        PayReq *req = [[PayReq alloc]init];
+        req.partnerId = dic[@"partnerid"];//@"10000100";//商家id
+        req.prepayId = dic[@"prepayid"];//@"wx20160222181228eabc76df380849802454";//预支付订单
+        req.package = dic[@"package"];  //@"Sign=WXPay";//扩展字段  暂填写固定值Sign=WXPay
+        req.nonceStr = dic[@"noncestr"];//@"758d476b9ebdc37e698ccfbdbcd21906";//随机串，防重发
+        req.timeStamp = stamp.intValue; //@"1456135948";//时间戳
+        req.sign = dic[@"sign"];//@"61EC78AB39E256B2624D54C7E1390D70";//商家根据微信开放平台文档对数据做的签名
+        [WXApi sendReq:req];
+
+    }
 
 
 
@@ -45,7 +48,7 @@
     NSString *appScheme = @"alisdkSaixian";
     [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
         NSLog(@"调起支付结果==== resultStr_%@",resultDic);
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
 //        [self paymentResult:resultDic];
     }];
@@ -100,11 +103,11 @@
     }else if ([resultDic[@"resultStatus"] isEqualToString:@"6001"]){
        // [self payCancel];
         DLog(@"取消支付");
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:@"取消"];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:@"取消"];
     }else{
        // [self payFail];
         DLog(@"支付失败");
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:@"失败"];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:@"失败"];
     }
 }
 

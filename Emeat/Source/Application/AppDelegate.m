@@ -97,14 +97,14 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             NSLog(@"result = %@",resultDic);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
         }];
         
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
             NSLog(@"result = %@",resultDic);
             // 解析 auth code
@@ -180,10 +180,9 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             NSLog(@"appppppdpppresult = %@",resultDic);
             
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
             
-            NSString *result = resultDic[@"result"];
             NSString *resultStatus = resultDic[@"resultStatus"];
             //9000  订单支付成功 正常流程会进入这里 如果中断了就去外面delegate那里的Block
             if ([resultStatus isEqualToString:@"9000"])
@@ -195,7 +194,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"payResult" object:resultDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
             //NSLog(@"支付宝钱包esult = %@",resultDic);
             
@@ -245,26 +244,44 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 {
     if ([resp isKindOfClass:[PayResp class]]) {
         PayResp *response = (PayResp *)resp;
+        DLog(@"resp=======%@" ,resp);
+
+        DLog(@"response=======%@" ,response);
+        DLog(@"response.errCode========%d" ,response.errCode);
         switch (response.errCode) {
             case WXSuccess:
-                ////服务端查询
-                //服务器端查询支付通知或查询API返回的结果再提示成功
-               // NSLog(@"支付成功");
-                //通过通知告诉支付界面该做哪些操作
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYS" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"WX_PAY_RESULT" object:@"成功"];
                 break;
-            case WXErrCodeCommon:
-               // NSLog(@"支付失败");
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYF" object:nil];
-                break;
-            case WXErrCodeUserCancel:
-               // NSLog(@"用户取消");
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYC" object:nil];
-                break;
+                
             default:
-               // NSLog(@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr);
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"WX_PAY_RESULT" object:@"失败"];
+                
                 break;
+                
         }
+        
+        
+//
+//        switch (response.errCode) {
+//            case WXSuccess:
+//                ////服务端查询
+//                //服务器端查询支付通知或查询API返回的结果再提示成功
+//               // NSLog(@"支付成功");
+//                //通过通知告诉支付界面该做哪些操作
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYS" object:nil];
+//                break;
+//            case WXErrCodeCommon:
+//               // NSLog(@"支付失败");
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYF" object:nil];
+//                break;
+//            case WXErrCodeUserCancel:
+//               // NSLog(@"用户取消");
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"WEIXINPAYC" object:nil];
+//                break;
+//            default:
+//               // NSLog(@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr);
+//                break;
+//        }
     }else if ([resp isKindOfClass:[SendAuthResp class]]){//微信登陆
         
         [self getWeiXinCodeFinishedWithResp:resp];
@@ -585,6 +602,8 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"versionUpdate" object:nil];
+
 }
 
 

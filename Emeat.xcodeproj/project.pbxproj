@@ -46,6 +46,8 @@
 		165581132008F8D100F33D6B /* libPaymentControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 165581092008F8D100F33D6B /* libPaymentControl.a */; };
 		165581142008F8D100F33D6B /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1655810C2008F8D100F33D6B /* libWeChatSDK.a */; };
 		165581152008F8D100F33D6B /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1655810D2008F8D100F33D6B /* README.txt */; };
+		165629BD20A051A8002D6EC8 /* VersionUpdateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 165629BC20A051A8002D6EC8 /* VersionUpdateView.m */; };
+		165629C020A05715002D6EC8 /* HWPopTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 165629BF20A05714002D6EC8 /* HWPopTool.m */; };
 		166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166DACF71FC6B9F500119444 /* HomePageNavView.m */; };
 		1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */; };
 		1679D1BE204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */; };
@@ -77,7 +79,6 @@
 		16901CFE1FDE6A0A0080762A /* MyAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901CFD1FDE6A0A0080762A /* MyAddressView.m */; };
 		16901D421FDF97360080762A /* SearchLocationAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901D411FDF97360080762A /* SearchLocationAddressViewController.m */; };
 		16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */; };
-		16AA64FA208DBCFF001496E8 /* my.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AA64F9208DBCFF001496E8 /* my.m */; };
 		16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E0201337BF00C4642C /* LDImagePicker.m */; };
 		16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E2201337BF00C4642C /* VPImageCropperViewController.m */; };
 		16B750E82013386E00C4642C /* LDActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E72013386E00C4642C /* LDActionSheet.m */; };
@@ -246,6 +247,10 @@
 		1655810E2008F8D100F33D6B /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
 		1655810F2008F8D100F33D6B /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		165581102008F8D100F33D6B /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		165629BB20A051A8002D6EC8 /* VersionUpdateView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VersionUpdateView.h; sourceTree = "<group>"; };
+		165629BC20A051A8002D6EC8 /* VersionUpdateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateView.m; sourceTree = "<group>"; };
+		165629BE20A05714002D6EC8 /* HWPopTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWPopTool.h; sourceTree = "<group>"; };
+		165629BF20A05714002D6EC8 /* HWPopTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWPopTool.m; sourceTree = "<group>"; };
 		166DACF61FC6B9F500119444 /* HomePageNavView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageNavView.h; sourceTree = "<group>"; };
 		166DACF71FC6B9F500119444 /* HomePageNavView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageNavView.m; sourceTree = "<group>"; };
 		1679D1B3204D249A009C2E25 /* MyAddressTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAddressTableViewCell.h; sourceTree = "<group>"; };
@@ -303,8 +308,6 @@
 		16901D411FDF97360080762A /* SearchLocationAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLocationAddressViewController.m; sourceTree = "<group>"; };
 		16AA64F5208DBCA0001496E8 /* MMMyCustomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMMyCustomView.h; sourceTree = "<group>"; };
 		16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMMyCustomView.m; sourceTree = "<group>"; };
-		16AA64F8208DBCFF001496E8 /* my.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = my.h; sourceTree = "<group>"; };
-		16AA64F9208DBCFF001496E8 /* my.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = my.m; sourceTree = "<group>"; };
 		16B750DF201337BF00C4642C /* LDImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDImagePicker.h; sourceTree = "<group>"; };
 		16B750E0201337BF00C4642C /* LDImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDImagePicker.m; sourceTree = "<group>"; };
 		16B750E1201337BF00C4642C /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
@@ -777,8 +780,10 @@
 				16FC44422029B83C00B95546 /* NSString+textFieldCategory.m */,
 				16AA64F5208DBCA0001496E8 /* MMMyCustomView.h */,
 				16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */,
-				16AA64F8208DBCFF001496E8 /* my.h */,
-				16AA64F9208DBCFF001496E8 /* my.m */,
+				165629BB20A051A8002D6EC8 /* VersionUpdateView.h */,
+				165629BC20A051A8002D6EC8 /* VersionUpdateView.m */,
+				165629BE20A05714002D6EC8 /* HWPopTool.h */,
+				165629BF20A05714002D6EC8 /* HWPopTool.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1421,6 +1426,8 @@
 				16EE10281FE1989A0099DA91 /* ContactServiceViewController.m in Sources */,
 				16DC91FE20130A56003C25BE /* MHUploadParam.m in Sources */,
 				16EE103A1FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m in Sources */,
+				165629C020A05715002D6EC8 /* HWPopTool.m in Sources */,
+				165629BD20A051A8002D6EC8 /* VersionUpdateView.m in Sources */,
 				16901CA51FD67FF50080762A /* DDSearchManager.h in Sources */,
 				16901CA61FD67FF50080762A /* DDSearchManager.m in Sources */,
 				16901CF51FDAB9D80080762A /* OrderDetailesViewController.m in Sources */,
@@ -1442,7 +1449,6 @@
 				1681305A1FC54DF30045207E /* HomePageDetailsBottomView.m in Sources */,
 				1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */,
 				1683BD751FB03E300043CA23 /* homePageHeadView.m in Sources */,
-				16AA64FA208DBCFF001496E8 /* my.m in Sources */,
 				16CFD76E1FBE910B0015F2C1 /* YouLikeCollectionViewCell.m in Sources */,
 				1683BD7B1FB18B670043CA23 /* ShoppingCartModel.m in Sources */,
 				1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */,
@@ -1729,6 +1735,56 @@
 					"$(PROJECT_DIR)/Emeat/Source/CodeClass/PaySDK/WechatSDK1.8.2",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"AFNetworking\"",
+					"-l\"IQKeyboardManager\"",
+					"-l\"MJRefresh\"",
+					"-l\"MMPopupView\"",
+					"-l\"Masonry\"",
+					"-l\"PYSearch\"",
+					"-l\"RealReachability\"",
+					"-l\"SDCycleScrollView\"",
+					"-l\"SDWebImage\"",
+					"-l\"SVProgressHUD\"",
+					"-ObjC",
+					"-l\"TZImagePickerController\"",
+					"-l\"YYModel\"",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AMapFoundationKit\"",
+					"-framework",
+					"\"AMapSearchKit\"",
+					"-framework",
+					"\"AssetsLibrary\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"JavaScriptCore\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Photos\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lxbox.Emeat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1779,6 +1835,56 @@
 					"$(PROJECT_DIR)/Emeat/Source/CodeClass/PaySDK/WechatSDK1.8.2",
 				);
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"AFNetworking\"",
+					"-l\"IQKeyboardManager\"",
+					"-l\"MJRefresh\"",
+					"-l\"MMPopupView\"",
+					"-l\"Masonry\"",
+					"-l\"PYSearch\"",
+					"-l\"RealReachability\"",
+					"-l\"SDCycleScrollView\"",
+					"-l\"SDWebImage\"",
+					"-l\"SVProgressHUD\"",
+					"-ObjC",
+					"-l\"TZImagePickerController\"",
+					"-l\"YYModel\"",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AMapFoundationKit\"",
+					"-framework",
+					"\"AMapSearchKit\"",
+					"-framework",
+					"\"AssetsLibrary\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"JavaScriptCore\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Photos\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lxbox.Emeat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

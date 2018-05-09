@@ -19,6 +19,8 @@
 #import "HomePageAddressNoticeView.h"
 #import "HomePageOtherDetailsViewController.h"
 #import "JMHoledView.h"
+#import "HWPopTool.h"
+#import "VersionUpdateView.h"
 
 #define tableViewHeadHeight (226*kScale+42+kBarHeight)
 
@@ -100,8 +102,73 @@
     self.dataArray = [NSMutableArray array];
     self.bannerMarray = [NSMutableArray array];
     [self netWorkIsOnLine];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+
    
 }
+
+-(void)checkVersionUpdate{
+    
+    [self requestVersionUpdateData];
+}
+
+-(void)requestVersionUpdateData{
+    //http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/appversion/index.jhtml?appType=2" ,baseUrl] params:nil successBlock:^(NSDictionary *returnData) {
+        
+        DLog(@"vvvvvvvvvvvv =====%@" ,returnData);
+        if ([returnData[@"code"] isEqualToString:@"00"]) {
+            
+            NSString* currentAppVersion = [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前app版本号
+            if ( [returnData[@"version"] floatValue] > [currentAppVersion floatValue] ) {
+                VersionUpdateViewConfig *config = [VersionUpdateViewConfig UpdateViewConfig];
+                config.imageString = @"versionUpdate";
+                config.titleString = returnData[@"content"];
+                config.isShowCancelBtn = returnData[@"isForce"];
+                if ([returnData[@"isForce"] isEqualToString:@"true"]) {//强制更新
+                    VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 150*kScale, 295*kScale, kHeight-100*kScale)];
+                    [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
+                    [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
+                    [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
+                    
+                }else{//非强制更新 只出现一次
+                    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                    if ([[user valueForKey:@"isFirst"] isEqualToString:@"second"]) {
+                        
+                    }else{
+                        VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 150*kScale, 295*kScale, kHeight-100*kScale)];
+                        [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
+                        [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
+                        [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
+                        [user setValue:@"second" forKey:@"isFirst"];
+
+                    }
+                   
+                    
+                }
+              
+              
+
+            }
+
+            
+           
+        }
+        
+        
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+    
+    
+    
+}
+
+
+
 
 -(void)netWorkIsOnLine{
     
@@ -954,6 +1021,11 @@
     return _headTieleView;
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
