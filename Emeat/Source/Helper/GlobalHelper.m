@@ -26,34 +26,37 @@
 #pragma mark = 空状态
 -(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView{
 
-
-    UIImageView *emptyImv = [[UIImageView alloc] init];
-    [tableView addSubview : emptyImv];
-    [emptyImv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo([[UIApplication  sharedApplication ]keyWindow]);
-        make.top.equalTo([[UIApplication  sharedApplication ]keyWindow]).with.offset(275);
-        make.width.equalTo(@(width));
-        make.height.equalTo(@(height));
+    DLog(@"tale================================= = = = = %@" ,tableView);
+    if (tableView) {
+        UIImageView *emptyImv = [[UIImageView alloc] initWithFrame:CGRectMake((kWidth - width)/2, 200*kScale, width, height)];
+        [tableView addSubview : emptyImv];
+//        [emptyImv mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo([[UIApplication  sharedApplication ]keyWindow]);
+//            make.top.equalTo([[UIApplication  sharedApplication ]keyWindow]).with.offset(275);
+//            make.width.equalTo(@(width));
+//            make.height.equalTo(@(height));
+//
+//        }];
+        emptyImv.image = [UIImage imageNamed:noticeImageString];
         
-    }];
-    emptyImv.image = [UIImage imageNamed:noticeImageString];
-    
-    UILabel *emptyLable = [[UILabel alloc] init];
-    emptyLable.font = [UIFont systemFontOfSize:15.0f];
-    emptyLable.textColor = RGB(136, 136, 136, 1);
-    emptyLable.text = noticeText;
-    emptyLable.textAlignment = NSTextAlignmentCenter;
-    [tableView addSubview:emptyLable];
-    [emptyLable mas_makeConstraints:^(MASConstraintMaker *make) {
+        UILabel *emptyLable = [[UILabel alloc] initWithFrame:CGRectMake(0, MaxY(emptyImv)+25*kScale, kWidth, 20*kScale)];
+        emptyLable.font = [UIFont systemFontOfSize:15.0f*kScale];
+        emptyLable.textColor = RGB(136, 136, 136, 1);
+        emptyLable.text = noticeText;
+        emptyLable.textAlignment = NSTextAlignmentCenter;
+        [tableView addSubview:emptyLable];
+//        [emptyLable mas_makeConstraints:^(MASConstraintMaker *make) {
+//
+//            make.left.right.equalTo([[UIApplication  sharedApplication ]keyWindow]);
+//            make.top.equalTo(emptyImv.mas_bottom).with.offset(25);
+//            make.height.equalTo(@20);
+//
+//        }];
         
-        make.left.right.equalTo([[UIApplication  sharedApplication ]keyWindow]);
-        make.top.equalTo(emptyImv.mas_bottom).with.offset(25);
-        make.height.equalTo(@20);
-        
-    }];
-    
-    self.emptyLable = emptyLable;
-    self.emptyImv = emptyImv;
+        self.emptyLable = emptyLable;
+        self.emptyImv = emptyImv;
+    }
+   
 }
 
 -(void)removeEmptyView{
@@ -114,6 +117,19 @@
         [self.errorImageView removeFromSuperview];
         [self.errorLoadingBtn removeFromSuperview];
     }];
+}
+
+
+#pragma mark ==== 检测是否开启定位权限
+-(void)openLocationServiceWithBlock:(ReturnBlock)returnBlock
+{
+    BOOL isOPen = NO;
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied) {
+        isOPen = YES;
+    }
+    if (returnBlock) {
+        returnBlock(isOPen);
+    }
 }
 
 @end

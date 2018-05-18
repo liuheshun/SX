@@ -990,9 +990,18 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
+{  ///底部是否全选
+    if ([self.allChecked isEqualToString:@"1"]) {
+        self.bottomView.selectAll.selected = YES;
         
+    }else if ([self.allChecked isEqualToString:@"0"])
+    {
+        self.bottomView.selectAll.selected = NO;
+        
+    }
+    
+    if (indexPath.section == 0) {
+        NSString *Identifier = [NSString stringWithFormat:@"cellID_shop%ld" ,indexPath.row];
     ShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID_shop"];
     if (!cell) {
         cell = [[ShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID_shop"];
@@ -1065,15 +1074,11 @@
       
     };
         
-        ///底部是否全选
-        if ([self.allChecked isEqualToString:@"1"]) {
-            self.bottomView.selectAll.selected = YES;
-
-        }else if ([self.allChecked isEqualToString:@"0"])
-        {
-            self.bottomView.selectAll.selected = NO;
-
-        }
+      
+            
+                [cell.deleteBtn addTarget:self action:@selector(deleteBtnProductsAction:) forControlEvents:1];
+                cell.deleteBtn.tag = indexPath.row;
+            
         ///商品cell赋值
         if (self.ShoppingListDataMarray.count!=0) {
             [cell reloadDataWith:[self.ShoppingListDataMarray objectAtIndex:indexPath.row]];
@@ -1131,19 +1136,54 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.ShoppingListDataMarray.count != 0) {
-         HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
-        
         ShoppingCartModel *model = self.ShoppingListDataMarray[indexPath.row];
-        VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId];
-        VC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:VC animated:YES];
+        if (model.productStatus == 11) {//上架
+            HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
+            
+            VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId];
+            VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:VC animated:YES];
+        }else{
+            
+        }
+        
     }
    
     
     
 }
 
-#pragma mark - 代理用来接收点击的是第几个
+#pragma mark ==商品下架 删除整个商品
+
+-(void)deleteBtnProductsAction:(UIButton*)btn{
+    DLog(@"删除商品tag================ %ld" ,btn.tag)
+    
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ///删除整个商品
+        if (self.ShoppingListDataMarray.count != 0) {
+            
+            ShoppingCartModel *model = self.ShoppingListDataMarray[btn.tag];
+            [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
+        }
+       
+        
+    }];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alert addAction:okAction];
+    [alert addAction:cancel];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+ 
+}
+
+
+
+#pragma mark - 猜你喜欢 代理用来接收点击的是第几个
 -(void)ClickCooRow :(NSInteger)CellRow
 {
     NSLog(@"猜你喜欢=== %ld" ,CellRow);

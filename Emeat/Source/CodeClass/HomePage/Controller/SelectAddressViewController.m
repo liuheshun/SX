@@ -326,9 +326,18 @@
   
     if (indexPath.section == 0) {
         
-        [cell1 addSubview:self.currentAddressView];
-        [self.currentAddressView setCurrentLabelTitle:self.currentLocation.name];
-        self.currentAddressView.placeholderLab.text = @"当前位置";
+        [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
+            [cell1 addSubview:self.currentAddressView];
+            if (isOpen == YES) {
+                [self.currentAddressView setCurrentLabelTitle:self.currentLocation.name];
+                self.currentAddressView.placeholderLab.text = @"当前位置";
+            }else{
+                [self.currentAddressView setCurrentLabelTitle:@"请在设置-隐私中打开定位服务权限"];
+                self.currentAddressView.placeholderLab.text = @" ";
+            }
+            
+        }];
+       
     
     }
     if (self.myAddressArray.count == 0) {///我的收货地址不存在
@@ -603,8 +612,17 @@
 }
 
 -(void)loadCurrentAddress{
-    [self rotateImageViews];
-    [self locationBtnAction];
+    
+    [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
+        if (isOpen == YES) {
+            [self rotateImageViews];
+            [self locationBtnAction];
+        }else{
+            [self stopAnimation];
+            
+        }
+    }];
+    
 }
 
 #pragma mark =定位点击事件

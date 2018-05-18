@@ -290,13 +290,14 @@
         
         if (self.searchMarray.count != 0) {
             DDSearchPointAnnotation *poi = self.searchMarray[indexPath.row];
-            self.currentLocation.name = poi.name;
-            self.currentLocation.administrativeArea = poi.province;
-            self.currentLocation.city = poi.city;
-            self.currentLocation.subLocality = poi.district;//区域名称
-            self.currentLocation.thoroughfare = poi.address;
+            Location *currentLocation = [[Location alloc] init];
+            currentLocation.name = poi.name;
+            currentLocation.administrativeArea = poi.province;
+            currentLocation.city = poi.city;
+            currentLocation.subLocality = poi.district;//区域名称
+            currentLocation.thoroughfare = poi.address;
             if ([self respondsToSelector:@selector(returnSearchAddressBlock)]) {
-                self.returnSearchAddressBlock(self.currentLocation);
+                self.returnSearchAddressBlock(currentLocation);
                 
             }
         }

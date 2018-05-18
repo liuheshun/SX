@@ -44,6 +44,29 @@
         self.orderStatusDetailsLab.text = @"订单提交成功,等待用户支付";
         [self.statusImv setImage:[UIImage imageNamed:@"daizhifu"] forState:0];
 
+        if (orderModel.paymentType == 12) {
+            
+            
+            [self addSubview:self.myOrderDetailsStatusAccountHeadView];
+            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.mas_left).with.offset(0);
+                make.top.equalTo(self.myOrderDetailsStatusAccountHeadView.mas_bottom).with.offset(20*kScale);
+                make.right.equalTo(self.mas_right).with.offset(0);
+                make.height.equalTo(@(96*kScale));
+            }];
+            
+        }else {
+            
+            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.mas_left).with.offset(0);
+                make.top.equalTo(self.statusBgImv.mas_bottom).with.offset(10*kScale);
+                make.right.equalTo(self.mas_right).with.offset(0);
+                make.height.equalTo(@(96*kScale));
+            }];
+            
+        }
+        
+        
     }else  if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46){
         self.orderStatusLab.text = @"待确认";
         self.orderStatusDetailsLab.text = @"用户已支付,等待商家发货";
@@ -51,8 +74,9 @@
         
         
         
-#pragma mark ============================11为周期性用户 ,线下打款
-        if (orderModel.paymentType == 11) {
+#pragma mark ============================12为 ,线下打款
+        if (orderModel.paymentType == 12) {
+            
             
             [self addSubview:self.myOrderDetailsStatusAccountHeadView];
             [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {

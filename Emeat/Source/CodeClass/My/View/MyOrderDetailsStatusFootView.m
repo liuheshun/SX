@@ -51,7 +51,7 @@
     else  if (model.status == 50 || model.status == 40 || model.status == 46)///待发货(待确认)
     {
         self.orderPayStatus.text = @"已支付";
-        if (model.paymentType == 11) {
+        if (model.paymentType == 12) {//线下打款 
             
         }
         else
@@ -107,7 +107,7 @@
         }
         else
         {
-            self.orderPayStatus.text = @"已支付";
+            self.orderPayStatus.text = @"需支付";
 
         }
 
@@ -175,18 +175,18 @@
             self.proveImage = imv;
             self.proveImage.userInteractionEnabled = YES;
             
-             self.deleteImvBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [lastView addSubview: self.deleteImvBtn ];
-            [ self.deleteImvBtn  setImage:[UIImage imageNamed:@"delete"] forState:0];
-            [ self.deleteImvBtn  mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(lastView.mas_right).with.offset(-3*kScale);
-                make.top.equalTo(lastView.mas_top).with.offset(3*kScale);
-                make.width.height.equalTo(@(15*kScale));
-                
-            }];
-
-            self.deleteImvBtn.tag = i;
-            [self.deleteImvBtn addTarget:self action:@selector(deleteImvBtns:) forControlEvents:1];
+//             self.deleteImvBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//            [lastView addSubview: self.deleteImvBtn ];
+//            [ self.deleteImvBtn  setImage:[UIImage imageNamed:@"delete"] forState:0];
+//            [ self.deleteImvBtn  mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.right.equalTo(lastView.mas_right).with.offset(-3*kScale);
+//                make.top.equalTo(lastView.mas_top).with.offset(3*kScale);
+//                make.width.height.equalTo(@(15*kScale));
+//                
+//            }];
+//
+//            self.deleteImvBtn.tag = i;
+//            [self.deleteImvBtn addTarget:self action:@selector(deleteImvBtns:) forControlEvents:1];
         }
         }
         

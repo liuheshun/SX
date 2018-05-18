@@ -29,7 +29,7 @@
 -(UILabel *)nameLab{
     if (!_nameLab) {
         _nameLab = [[UILabel alloc] init];
-        _nameLab.font = [UIFont systemFontOfSize:12.0f];
+        _nameLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _nameLab.textAlignment = NSTextAlignmentLeft;
     }
     return _nameLab;
@@ -40,7 +40,7 @@
 -(UILabel *)phoneNumLab{
     if (!_phoneNumLab) {
         _phoneNumLab = [[UILabel alloc] init];
-        _phoneNumLab.font = [UIFont systemFontOfSize:12.0f];
+        _phoneNumLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _phoneNumLab.textAlignment = NSTextAlignmentLeft;
     }
     return _phoneNumLab;
@@ -50,7 +50,7 @@
 -(UILabel *)addressType{
     if (!_addressType) {
         _addressType = [[UILabel alloc] init];
-        _addressType.font = [UIFont systemFontOfSize:12.0f];
+        _addressType.font = [UIFont systemFontOfSize:12.0f*kScale];
         _addressType.backgroundColor = RGB(231, 35, 36, 1);
         _addressType.layer.cornerRadius = 5;
         _addressType.layer.masksToBounds = YES;
@@ -64,7 +64,7 @@
 -(UILabel *)addressLab{
     if (!_addressLab) {
         _addressLab = [[UILabel alloc] init];
-        _addressLab.font = [UIFont systemFontOfSize:12.0f];
+        _addressLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _addressLab.textAlignment = NSTextAlignmentLeft;
         
     }
@@ -82,36 +82,36 @@
 
 -(void)setMainFrame{
     [self.nameLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset(15);
-        make.top.equalTo(self.mas_top).with.offset(15);
-        make.width.equalTo(@55);
-        make.height.equalTo(@15);
+        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+        make.top.equalTo(self.mas_top).with.offset(15*kScale);
+        make.width.equalTo(@(55*kScale));
+        make.height.equalTo(@(15*kScale));
     }];
     [self.phoneNumLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.nameLab.mas_right).with.offset(0);
         make.top.equalTo(self.nameLab);
-        make.right.equalTo(self.mas_right).with.offset(-15);
-        make.height.equalTo(@15);
+        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+        make.height.equalTo(@(15*kScale));
     }];
     
     [self.addressType mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.nameLab);
-        make.top.equalTo(self.nameLab.mas_bottom).with.offset(13);
-        make.width.equalTo(@35);
-        make.height.equalTo(@19);
+        make.top.equalTo(self.nameLab.mas_bottom).with.offset(13*kScale);
+        make.width.equalTo(@(35*kScale));
+        make.height.equalTo(@(19*kScale));
     }];
     
     [self.addressLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.phoneNumLab);
         make.top.equalTo(self.addressType);
-        make.right.equalTo(self.mas_right).with.offset(-15);
-        make.height.equalTo(@15);
+        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+        make.height.equalTo(@(15*kScale));
     }];
     
     [self.editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).with.offset(-15);
-        make.top.equalTo(self.mas_top).with.offset(10);
-        make.width.height.equalTo(@30);
+        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+        make.top.equalTo(self.mas_top).with.offset(10*kScale);
+        make.width.height.equalTo(@(30*kScale));
         
     }];
 }

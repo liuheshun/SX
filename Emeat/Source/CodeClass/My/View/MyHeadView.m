@@ -88,7 +88,12 @@
 
         self.userName.text = model.nickname;
         self.phoneLab.text = model.customerAccount ;
-        [self.shopNameBtn setTitle:model.storeName forState:0];
+        if (model.storeName) {
+            [self.shopNameBtn setTitle:model.storeName forState:0];
+        }else{
+            [self.shopNameBtn setTitle:@"认证店铺" forState:0];
+
+        }
         
         if (model.isApprove == 1) {
             self.shopCertifiImv.image = [UIImage imageNamed:@"已认证"];

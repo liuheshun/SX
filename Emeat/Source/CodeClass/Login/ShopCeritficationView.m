@@ -18,16 +18,16 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
     if (textField.tag == 1) {//店名
-       
+        
         [user setValue:textField.text forKey:@"shopName"];
         [self.selectedMdic setValue:textField.text forKey:@"shopName"];
     }else if (textField.tag == 2){//店长姓名
-       
+        
         [user setValue:textField.text forKey:@"shopManagerName"];
         
         [self.selectedMdic setValue:textField.text forKey:@"shopManagerName"];
     }else if (textField.tag == 3){//电话
-       
+        
         [user setValue:textField.text forKey:@"shopPhoneNum"];
         [self.selectedMdic setValue:textField.text forKey:@"shopPhoneNum"];
     }else if (textField.tag == 4){//详细地址
@@ -65,13 +65,13 @@
 #pragma mark ===赋值
 
 -(void)configShopCertifiViewWithModel:(MyModel*)model{
-
+    
     self.textFieldShopName.text = model.storeName;
     self.textFieldShopManagerName.text = model.kp;
     if (model.callNumber) {
-         self.textFieldPhoneNumer.text = [NSString stringWithFormat:@"%ld" ,model.callNumber];
+        self.textFieldPhoneNumer.text = [NSString stringWithFormat:@"%ld" ,model.callNumber];
     }
-   
+    
     self.textFieldCity.text = model.address;
     self.textFieldDetailsAddress.text = model.addressDetail;
     if (model.bdName) {
@@ -93,12 +93,28 @@
         [self.btnAddress addSubview:self.textFieldCity];
         [self.bgView addSubview:self.textFieldDetailsAddress];
         [self.bgView addSubview:self.textFieldInviteCode];
+        [self addSubview:self.skipBtn];
+
         [self addSubview:self.submitBtn];
         [self setMainViewFrame];
         
         [self setLineView];
         self.selectedMdic = [NSMutableDictionary dictionary];
-        
+        [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
+            if (isOpen == YES) {
+                _textFieldCity.userInteractionEnabled = NO;
+                _textFieldCity.placeholder = @"点击选择店铺地址";
+
+            }else{
+                //            DLog(@"----------无定位权限-------------");
+                //            [SVProgressHUD showErrorWithStatus:@"请开启定位权限"];
+                self.textFieldCity.userInteractionEnabled = YES;
+                [self.littleImvBtn removeFromSuperview];
+                _textFieldCity.placeholder = @"请输入店铺地址";
+
+            }
+            
+        }];
         
     }
     return self;
@@ -154,17 +170,17 @@
         make.height.equalTo(@(mHeight*kScale));
     }];
     //小图标
-    UIButton*btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setImage:[UIImage imageNamed:@"进入"] forState:0];
-    [self.btnAddress addSubview:btn];
-    [btn addTarget:self action:@selector(btnAddressAction) forControlEvents:1];
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.littleImvBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.littleImvBtn setImage:[UIImage imageNamed:@"进入"] forState:0];
+    [self.btnAddress addSubview:self.littleImvBtn];
+    [self.littleImvBtn addTarget:self action:@selector(btnAddressAction) forControlEvents:1];
+    [self.littleImvBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.btnAddress.mas_right).with.offset(0);
         make.width.equalTo(@(50*kScale));
         make.top.equalTo(self.btnAddress.mas_top).with.offset(0);
         make.height.equalTo(@(mHeight*kScale));
     }];
-  
+    
     
     
     [self.textFieldDetailsAddress mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -183,10 +199,19 @@
     }];
     
     
-    [self.submitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.skipBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
         make.top.equalTo(self.textFieldInviteCode.mas_bottom).with.offset(30*kScale);
+        make.width.equalTo(@(165*kScale));
+        make.height.equalTo(@(40*kScale));
+    }];
+    
+    
+    [self.submitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.textFieldInviteCode.mas_bottom).with.offset(30*kScale);
         make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+        make.width.equalTo(@(165*kScale));
+
         make.height.equalTo(@(40*kScale));
     }];
     
@@ -269,7 +294,6 @@
 -(UITextField *)textFieldCity{
     if (!_textFieldCity) {
         _textFieldCity = [[UITextField alloc] init];
-        _textFieldCity.placeholder = @"点击选择店铺地址";
         [_textFieldCity setValue:[UIFont boldSystemFontOfSize:15.0f*kScale] forKeyPath:@"_placeholderLabel.font"];
         _textFieldCity.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_textFieldCity setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
@@ -324,6 +348,16 @@
 }
 
 
+-(UIButton *)skipBtn{
+    if (!_skipBtn) {
+        _skipBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _skipBtn.layer.cornerRadius = 3;
+        _skipBtn.layer.masksToBounds = YES;
+        _skipBtn.backgroundColor =RGB(236, 31, 35, 1);
+        _skipBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
+    }
+    return _skipBtn;
+}
 
 
 
@@ -351,7 +385,7 @@
             make.height.equalTo(@(40*kScale));
             make.top.equalTo(self.mas_top).with.offset(41*kScale*i+1*kScale);
         }];
-
+        
         [imvBtn updateConstraintsIfNeeded];
         
         
@@ -380,3 +414,4 @@
 
 
 @end
+

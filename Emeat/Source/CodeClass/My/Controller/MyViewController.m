@@ -384,7 +384,7 @@
     }else{
         //首次认证
         ShopCertificationViewController *VC = [ShopCertificationViewController new];
-        VC.isRemakeShopCerific = @"0";
+        VC.isRemakeShopCerific = @"1";
         VC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:VC animated:YES];
 

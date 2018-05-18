@@ -21,13 +21,26 @@
 @property (nonatomic,strong) UIButton *orderCommentBtn;
 @property (nonatomic,strong) UIView *lineView;
 
-//订单图片数组
-@property (nonatomic,strong) NSArray  *HomeArray;
--(void)getHomeArray:(NSArray *)homeArray;
-
 ////config
 -(void)configWithOrderModel:(OrderModel*)model;
+
+@end
+
+
+
+@interface MyOrderTableCellConfig : NSObject
++ (MyOrderTableCellConfig*) myOrderTableCellConfig;
+
+@property (nonatomic,strong) NSString *imageString;
+@property (nonatomic,strong) NSString *titleString;
+@property (nonatomic,strong) NSString *isShowCancelBtn;
+@property (nonatomic,strong) NSArray  *orderImvArray;
 
 
 
 @end
+
+
+
+
+

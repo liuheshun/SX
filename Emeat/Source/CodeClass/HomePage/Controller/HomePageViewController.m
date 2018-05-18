@@ -108,6 +108,8 @@
    
 }
 
+#pragma mark == 检查版本更新
+
 -(void)checkVersionUpdate{
     
     [self requestVersionUpdateData];
@@ -137,7 +139,8 @@
                     if ([[user valueForKey:@"isFirst"] isEqualToString:@"second"]) {
                         
                     }else{
-                        VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 150*kScale, 295*kScale, kHeight-100*kScale)];
+                        VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 0, 295*kScale, kHeight-20*kScale)];
+//                        upView.backgroundColor = [UIColor cyanColor];
                         [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
                         [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
                         [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
@@ -754,9 +757,27 @@
 //    static dispatch_once_t onceToken;
 //    dispatch_once(&onceToken, ^{
 
-        [self setLocations];
+//        [self setLocations];
         
 //    });
+    [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
+        if (isOpen == YES) {
+            [self setLocations];
+
+        }else{
+//            DLog(@"----------无定位权限-------------");
+//            [SVProgressHUD showErrorWithStatus:@"请开启定位权限"];
+            [self.navView.selectAddressBtn setTitle:@" " forState:0];
+            CGFloat imageWidth = self.navView.selectAddressBtn.imageView.bounds.size.width;
+            CGFloat labelWidth = self.navView.selectAddressBtn.titleLabel.bounds.size.width;
+            self.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth);
+            self.navView.selectAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth);
+            noticeViewHeiht = 0;
+            [self.addressNoticeView removeFromSuperview];
+        }
+        
+    }];
+
     
 }
 
@@ -842,13 +863,10 @@
     
    
     
-    // 保证是我们的tableivew
     if (scrollView == self.tableView) {
-        // 保证我们是垂直方向滚动，而不是水平滚动
         if (scrollView.contentOffset.x == 0) {
           
-            CGFloat tableViewoffsetY = scrollView.contentOffset.y;
-//            DLog(@"偏移量========= %f " ,tableViewoffsetY );
+            CGFloat tableViewoffsetY = scrollView.contentOffset.y;            DLog(@"偏移量========= %f " ,tableViewoffsetY );
             CGFloat tempY = tableViewoffsetY;
             
             if ( tableViewoffsetY>=0 ) {
@@ -1001,9 +1019,6 @@
 - (void )setCycleScrollViews{
     
     _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, kBarHeight+42+noticeViewHeiht, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"banner加载"]];   //placeholder
-    
-    
-   
     _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
     _cycleScrollView.showPageControl = YES;//是否显示分页控件
     _cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色

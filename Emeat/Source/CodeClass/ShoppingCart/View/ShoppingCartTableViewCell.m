@@ -78,6 +78,46 @@
   
     self.numberLabel.text = [NSString stringWithFormat:@"%ld",(long)model.quatity];
     self.sizeLabel.text = model.productSize;
+    
+    
+    if (model.productStatus == 11) {//上架
+        self.deleteBtn.hidden = YES;
+        self.addBtn.hidden = NO;
+        self.cutBtn.hidden = NO;
+        self.numberLabel.hidden = NO;
+        
+        [self.selectBtn setImage:[UIImage imageNamed:@"no_selected"] forState:UIControlStateNormal];
+        [self.selectBtn setImage:[UIImage imageNamed:@"selected"] forState:UIControlStateSelected];
+        
+        
+        [self.addBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+        [self.addBtn setImage:[UIImage imageNamed:@"cart_addBtn_highlight"] forState:UIControlStateHighlighted];
+        [self.cutBtn setImage:[UIImage imageNamed:@"cut"] forState:UIControlStateNormal];
+        [self.cutBtn setImage:[UIImage imageNamed:@"cart_cutBtn_highlight"] forState:UIControlStateHighlighted];
+        self.selectBtn.userInteractionEnabled = YES;
+//        [self.deleteBtn removeFromSuperview];
+        
+        
+        
+    }else{///下架
+        self.selectBtn.userInteractionEnabled = NO;
+        model.productChecked = 0;
+        [self.selectBtn setImage:[UIImage imageNamed:@"xiajia"] forState:UIControlStateNormal];
+        self.productPrice.textColor = RGB(136, 136, 136, 1);
+        self.nameLabel.textColor = RGB(136, 136, 136, 1);
+        
+        self.deleteBtn.hidden = NO;
+
+        self.addBtn.hidden = YES;
+        self.cutBtn.hidden = YES;
+        self.numberLabel.hidden = YES;
+
+//        [self.addBtn removeFromSuperview];
+//        [self.cutBtn removeFromSuperview];
+//        [self.numberLabel removeFromSuperview];
+//
+    }
+    
     if (model.productChecked == 0)
     {
         self.isSelected = NO;
@@ -85,17 +125,21 @@
     {
         self.isSelected = YES;
     }
+    
     self.selectBtn.selected = self.isSelected;
+    
+   
+    
 
 }
 -(void)setupMainView
 {
     //白色背景
-    UIView *bgView = [[UIView alloc]init];
-    bgView.backgroundColor = [UIColor whiteColor];
+    self.bgView = [[UIView alloc]init];
+    self.bgView .backgroundColor = [UIColor whiteColor];
 //    bgView.layer.borderColor = kUIColorFromRGB(0xEEEEEE).CGColor;
 //    bgView.layer.borderWidth = 1;
-    [self addSubview:bgView];
+    [self addSubview:self.bgView ];
     
     //选中按钮
     self.selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -103,39 +147,39 @@
     [self.selectBtn setImage:[UIImage imageNamed:@"no_selected"] forState:UIControlStateNormal];
     [self.selectBtn setImage:[UIImage imageNamed:@"selected"] forState:UIControlStateSelected];
     [self.selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:self.selectBtn];
+    [self.bgView  addSubview:self.selectBtn];
     
     //照片背景
     UIView *imageBgView = [[UIView alloc]init];
     imageBgView.backgroundColor = kUIColorFromRGB(0xF3F3F3);
-    [bgView addSubview:imageBgView];
+    [self.bgView  addSubview:imageBgView];
     
     //显示照片
     self.imageView_cell = [[UIImageView alloc]init];
-    //    self.imageView_cell.image = [UIImage imageNamed:@"default_pic_1"];
+    //self.imageView_cell.image = [UIImage imageNamed:@"default_pic_1"];
    // self.imageView_cell.contentMode = UIViewContentModeScaleAspectFit;
-    [bgView addSubview:self.imageView_cell];
+    [self.bgView  addSubview:self.imageView_cell];
     
     //商品名
     self.nameLabel = [[UILabel alloc]init];
-    //    self.nameLabel.text = @"海报";
+    //self.nameLabel.text = @"海报";
     self.nameLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
     self.nameLabel.textColor = RGB(51, 51, 51, 1);
-    [bgView addSubview:self.nameLabel];
+    [self.bgView  addSubview:self.nameLabel];
     
     //尺寸
     self.sizeLabel = [[UILabel alloc]init];
     //    self.sizeLabel.text = @"尺寸:58*86cm";
     self.sizeLabel.textColor = RGBCOLOR(132, 132, 132);
     self.sizeLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
-    [bgView addSubview:self.sizeLabel];
+    [self.bgView  addSubview:self.sizeLabel];
     
     //价格
     self.productPrice = [[UILabel alloc]init];
     self.productPrice.font = [UIFont systemFontOfSize:15.0f*kScale];
     self.productPrice.textColor =RGBCOLOR(236, 31, 35);
     //    self.dateLabel.text = @"2015-12-03 17:49";
-    [bgView addSubview:self.productPrice];
+    [self.bgView  addSubview:self.productPrice];
     
 //    //价格
 //    self.priceLabel = [[UILabel alloc]init];
@@ -146,30 +190,33 @@
 //    [bgView addSubview:self.priceLabel];
     
     //数量加按钮
-    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
-    [addBtn setImage:[UIImage imageNamed:@"cart_addBtn_highlight"] forState:UIControlStateHighlighted];
-    [addBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:addBtn];
+    self.addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+   
+    [self.addBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.bgView  addSubview:self.addBtn];
     
     //数量减按钮
-    UIButton *cutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cutBtn setImage:[UIImage imageNamed:@"cut"] forState:UIControlStateNormal];
-    [cutBtn setImage:[UIImage imageNamed:@"cart_cutBtn_highlight"] forState:UIControlStateHighlighted];
-    [cutBtn addTarget:self action:@selector(cutBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:cutBtn];
+    self.cutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+   
+    [self.cutBtn addTarget:self action:@selector(cutBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.bgView  addSubview:self.cutBtn];
     
     //数量显示
     self.numberLabel = [[UILabel alloc]init];
     self.numberLabel.textAlignment = NSTextAlignmentCenter;
     self.numberLabel.text = @"1";
     self.numberLabel.font = [UIFont systemFontOfSize:15*kScale];
-    [bgView addSubview:self.numberLabel];
+    [self.bgView  addSubview:self.numberLabel];
+    
+    ///删除按钮
+    self.deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.deleteBtn setImage:[UIImage imageNamed:@"shanchu"] forState:UIControlStateNormal];
+    [self.bgView  addSubview:self.deleteBtn];
     
 #pragma mark - 添加约束
     
     //白色背景
-    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.bgView  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(0);
         make.top.equalTo(self).offset(15*kScale);
         make.bottom.equalTo(self);
@@ -179,17 +226,17 @@
     
     //选中按钮
     [self.selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(bgView).offset(15*kScale);
-        make.centerY.equalTo(bgView);
+        make.left.equalTo(self.bgView ).offset(15*kScale);
+        make.centerY.equalTo(self.bgView);
         make.width.equalTo(@(30*kScale));
         make.height.equalTo(@(30*kScale));
     }];
     
     //图片背景
     [imageBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(bgView).offset(0);
+        make.top.equalTo(self.bgView).offset(0);
         make.left.equalTo(self.selectBtn.mas_right).offset(15*kScale);
-        make.bottom.equalTo(bgView).offset(0);
+        make.bottom.equalTo(self.bgView).offset(0);
         make.width.equalTo(@(90*kScale));
     }];
     
@@ -201,9 +248,9 @@
     //商品名
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageBgView.mas_right).offset(10*kScale);
-        make.top.equalTo(bgView).offset(0);
+        make.top.equalTo(self.bgView).offset(0);
         make.height.equalTo(@(15*kScale));
-        make.right.equalTo(bgView.mas_right).offset(-10*kScale);
+        make.right.equalTo(self.bgView.mas_right).offset(-10*kScale);
     }];
     
     //商品尺寸
@@ -217,9 +264,9 @@
     //商品价格
     [self.productPrice mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageBgView.mas_right).offset(10*kScale);
-        make.bottom.equalTo(bgView).offset(0);
+        make.bottom.equalTo(self.bgView).offset(0);
         make.height.equalTo(@(20*kScale));
-        make.right.equalTo(cutBtn.mas_left);
+        make.right.equalTo(self.cutBtn.mas_left);
     }];
     
     //商品价格
@@ -231,28 +278,37 @@
 //    }];
     
     //数量加按钮
-    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(bgView).offset(-15*kScale);
-        make.bottom.equalTo(bgView).offset(0);
-        make.height.equalTo(@(25*kScale));
-        make.width.equalTo(@(25*kScale));
+    [self.addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bgView).offset(-15*kScale);
+        make.bottom.equalTo(self.bgView).offset(0);
+        make.height.equalTo(@(30*kScale));
+        make.width.equalTo(@(30*kScale));
     }];
     
     //数量显示
     [self.numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(addBtn.mas_left);
-        make.bottom.equalTo(addBtn);
+        make.right.equalTo(self.addBtn.mas_left);
+        make.bottom.equalTo(self.addBtn);
         make.width.equalTo(@(30*kScale));
-        make.height.equalTo(addBtn);
+        make.height.equalTo(self.addBtn);
     }];
     
     //数量减按钮
-    [cutBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.cutBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.numberLabel.mas_left);
-        make.height.equalTo(addBtn);
-        make.width.equalTo(addBtn);
-        make.bottom.equalTo(addBtn);
+        make.height.equalTo(self.addBtn);
+        make.width.equalTo(self.addBtn);
+        make.bottom.equalTo(self.addBtn);
     }];
+    
+    ///删除按钮
+    [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bgView).offset(-15*kScale);
+        make.bottom.equalTo(self.bgView).offset(0);
+        make.height.equalTo(@(30*kScale));
+        make.width.equalTo(@(30*kScale));
+    }];
+
 }
 
 

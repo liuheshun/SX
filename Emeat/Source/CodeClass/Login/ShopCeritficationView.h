@@ -25,14 +25,15 @@ typedef void(^textFieldChangeTitleBlock)(NSMutableDictionary *dic);
 ///地址
 @property (nonatomic,strong) UIButton *btnAddress;
 @property (nonatomic,strong) UITextField *textFieldCity;
+///地址小图标
+@property (nonatomic,strong) UIButton *littleImvBtn;
+
 ///详细地址
 @property (nonatomic,strong) UITextField *textFieldDetailsAddress;
 ///邀请码
 @property (nonatomic,strong) UITextField *textFieldInviteCode;
 
-
 @property (nonatomic,copy) textFieldChangeTitleBlock textFieldTitleBlock;
-
 
 //选择地址block
 @property (nonatomic,copy) textFieldChangeTitleBlock addressTitleBlockClickAction;
@@ -43,6 +44,10 @@ typedef void(^textFieldChangeTitleBlock)(NSMutableDictionary *dic);
 
 ///认证按钮
 @property (nonatomic,strong) UIButton *submitBtn;
+
+///跳过按钮
+@property (nonatomic,strong) UIButton *skipBtn;
+
 
 ///赋值\
 

@@ -168,8 +168,12 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString * Identifier = [NSString stringWithFormat:@"sale_cell"];
-    
+    if (self.orderImvArray.count != 0) {
+        MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
+        orderConfig.orderImvArray = self.orderImvArray[indexPath.section];
+        
+    }
+    NSString * Identifier =[NSString stringWithFormat:@"sale%ld" ,indexPath.section];
     MyOrderTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:Identifier];
     if (cell1 == nil) {
         cell1 = [[MyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
@@ -179,8 +183,8 @@
         
     }
     if (self.orderImvArray.count != 0) {
-        [cell1 getHomeArray:self.orderImvArray[indexPath.section]];
-    }
+        MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
+        orderConfig.orderImvArray = self.orderImvArray[indexPath.section];    }
     if (self.orderListMarray.count != 0) {
         OrderModel *model = self.orderListMarray[indexPath.section];
         [cell1 configWithOrderModel:model];

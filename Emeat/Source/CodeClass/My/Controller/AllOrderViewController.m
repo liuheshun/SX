@@ -114,10 +114,7 @@
 
 
 -(void)requestDataWithTotalPage:(NSInteger)totalPage{
-    if (totalPage == 1) {
-        [self.orderListMarray removeAllObjects];
-        [self.orderImvArray removeAllObjects];
-    }
+   
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
@@ -134,7 +131,7 @@
     DLog(@"所有的订单 ============ %@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/list?currentPage=%ld" , baseUrl ,totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
-        //DLog(@"所有的订单=== %@" ,returnData);
+        DLog(@"所有的订单=== %@" ,returnData);
         
         NSInteger pages = [returnData[@"data"][@"pages"] integerValue];
         NSInteger pageSize = [returnData[@"data"][@"pageSize"] integerValue];
@@ -142,6 +139,10 @@
 
         if ([returnData[@"status"] integerValue] == 200)
         {
+            if (totalPage == 1) {
+                [self.orderListMarray removeAllObjects];
+                [self.orderImvArray removeAllObjects];
+            }
             for (NSMutableDictionary *dic in returnData[@"data"][@"list"])
             {
                 OrderModel *firstModel = [OrderModel yy_modelWithJSON:dic];
@@ -241,8 +242,12 @@
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSString * Identifier =@"allIdentifier_cell";
+    if (self.orderImvArray.count != 0) {
+        MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
+        orderConfig.orderImvArray = self.orderImvArray[indexPath.section];
+        
+    }
+    NSString * Identifier =[NSString stringWithFormat:@"all%ld" ,indexPath.section];
     MyOrderTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:Identifier];
     if (cell1 == nil) {
         cell1 = [[MyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
@@ -254,10 +259,7 @@
     }
     
     
-    if (self.orderImvArray.count != 0) {
-        [cell1 getHomeArray:self.orderImvArray[indexPath.section]];
-        
-    }
+  
     if (self.orderListMarray.count != 0) {
         OrderModel *model = self.orderListMarray[indexPath.section];
         totalPageCount = model.pages;

@@ -56,10 +56,22 @@
     [self addBlockAction];
     if ([self.isRemakeShopCerific isEqualToString:@"1"]) {
         self.navItem.title = @"重新认证";
+        [self.shopCeritficationView.skipBtn removeFromSuperview];
+        
         [self.shopCeritficationView.submitBtn setTitle:@"重新认证" forState:0];
+        [self.shopCeritficationView.submitBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.shopCeritficationView.textFieldInviteCode.mas_bottom).with.offset(30*kScale);
+            make.right.equalTo(self.shopCeritficationView.mas_right).with.offset(-15*kScale);
+            make.left.equalTo(self.shopCeritficationView.mas_left).with.offset(15*kScale);
+
+            make.height.equalTo(@(40*kScale));
+        }];
+        
     }else{
         self.navItem.title = @"店铺认证";
         [self.shopCeritficationView.submitBtn setTitle:@"提交认证" forState:0];
+        [self.shopCeritficationView.skipBtn setTitle:@"跳过" forState:0];
+
     }
     
     ///赋值回显
@@ -107,10 +119,10 @@
     [dic1 setValue:self.ShopAddress forKey:@"address"];
     [dic1 setValue:self.ShopDetailsAddress forKey:@"addressDetail"];
     [dic1 setValue:self.ShopInviteCode forKey:@"userName"];
-//    ///
-//    [dic1 setValue:@"0" forKey:@"isDeleted"];
-
-//parentId=0
+    //    ///
+    //    [dic1 setValue:@"0" forKey:@"isDeleted"];
+    
+    //parentId=0
     [MHAsiNetworkHandler startMonitoring];
     NSString *url;
     if ([self.isRemakeShopCerific isEqualToString:@"1"]) {//重新认证
@@ -120,17 +132,17 @@
         url = [NSString stringWithFormat:@"%@/auth/mobile/store/newStore" ,baseUrl];
     }
     DLog(@"上传店铺信息dic==== %@      ====== %@" ,dic1 ,url);
-
+    
     __block int index1;
     [MHNetworkManager postReqeustWithURL:url params:dic1 successBlock:^(NSDictionary *returnData) {
         DLog(@"上传店铺信息returnData==== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
-           
+            
             MMPopupItemHandler block = ^(NSInteger index){
                 
                 NSLog(@"clickd %@ button",@(index));
                 //返回到指定的控制器，要保证前面有入栈。
-                 index1 = (int)[[self.navigationController viewControllers]indexOfObject:self];
+                index1 = (int)[[self.navigationController viewControllers]indexOfObject:self];
                 if (index1>2) {
                     [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index1-2)] animated:YES];
                 }else
@@ -149,8 +161,8 @@
             
             [alertView show];
             
-           
-           
+            
+            
             
         }else{
             MMPopupItemHandler block = ^(NSInteger index){
@@ -179,6 +191,21 @@
     
 }
 
+#pragma mark =====跳过认证
+
+-(void)skipBtnAction{
+    //返回到指定的控制器，要保证前面有入栈。
+
+    int index1 = (int)[[self.navigationController viewControllers]indexOfObject:self];
+    if (index1>2) {
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index1-2)] animated:YES];
+    }else
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
 #pragma mark =====提交认证
 
 -(void)submitBtnAction{
@@ -197,11 +224,15 @@
     DLog(@"保存 = = 名字= %@  dianzhang==%@  电话== %@    详细地址== %@  dizhhi== %@  code= %@" , self.shopCeritficationView.textFieldShopName.text, self.shopCeritficationView.textFieldShopManagerName.text ,self.ShopPhoneNumer , self.ShopAddress  ,self.ShopDetailsAddress ,self.ShopInviteCode);
     
     
-    if (self.ShopName.length == 0 || self.ShopManagerName.length == 0 || self.ShopPhoneNumer.length == 0 || self.ShopAddress.length == 0 || self.ShopDetailsAddress.length == 0) {
+    if (self.ShopName.length == 0 || self.ShopManagerName.length == 0 || self.ShopPhoneNumer.length == 0 ) {
         
         [self alertMessage:@"请填写完整的店铺信息" willDo:nil];
         
-    }else{
+    }else if ((self.ShopAddress.length != 0 && self.ShopDetailsAddress.length == 0) || (self.ShopAddress.length == 0 && self.ShopDetailsAddress.length != 0)){
+        [self alertMessage:@"请填写完整的店铺地址信息" willDo:nil];
+    }
+    
+    else{
         
         if ([self checkTel:self.ShopPhoneNumer] == NO) {
             
@@ -211,37 +242,33 @@
             
             [self alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
             
-        }else if ([self containTheillegalCharacter:self.ShopDetailsAddress] == YES){
+        }else if (self.ShopDetailsAddress.length !=0 && [self containTheillegalCharacter:self.ShopDetailsAddress] == YES){
             
             [self alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
             
         }else if ([self containTheillegalCharacter:self.ShopManagerName] == YES){
             [self alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
-
-        }
-        
-        
-        else{
             
+        }else{
             
             [self.addressDic setValue:self.ShopName forKey:@"shopName"];
             [self.addressDic setValue:self.ShopManagerName forKey:@"shopManagerName"];
             [self.addressDic setValue:self.ShopPhoneNumer forKey:@"shopPhoneNum"];
-
+            
             [self.addressDic setValue:[NSString stringWithFormat:@"%@" ,self.ShopAddress] forKey:@"receiverProvince"];
             [self.addressDic setValue:[NSString stringWithFormat:@"%@"  ,self.ShopAddress] forKey:@"shopAddressDetails"];///收货人详细地址:receiverAddress
             
             
             [self.addressDic setValue:[NSString stringWithFormat:@"%@" ,self.ShopInviteCode] forKey:@"shopInviteCode"];
             DLog(@"%@" ,self.addressDic);
-             [self postShopCertifiDate];
+            [self postShopCertifiDate];
             
             
         }
         
     }
     
-
+    
     
 }
 
@@ -253,14 +280,14 @@
     __weak __typeof(self) weakSelf = self;
     
 #pragma mark = 保存收货地址
- 
+    
     self.shopCeritficationView.textFieldTitleBlock = ^(NSMutableDictionary *dic) {
- 
-
+        
+        
     };
     
     
- 
+    
     
     self.shopCeritficationView.addressTitleBlockClickAction = ^(NSMutableDictionary *dic) {
         
@@ -270,13 +297,13 @@
             
             if ([location.administrativeArea isEqualToString:location.city]) {//判断是否为直辖市
                 weakSelf.shopCeritficationView.textFieldCity.text = [NSString stringWithFormat:@"%@%@%@" ,location.city,location.subLocality,location.name];
-//                weakSelf.ShopAddress = location.city;
+                //                weakSelf.ShopAddress = location.city;
             }else{
                 weakSelf.shopCeritficationView.textFieldCity.text = [NSString stringWithFormat:@"%@%@%@%@" ,location.administrativeArea ,location.city,location.subLocality ,location.name];
                 
-//                weakSelf.ShopAddress = location.administrativeArea;
+                //                weakSelf.ShopAddress = location.administrativeArea;
             }
-//            weakSelf.shopCeritficationView.textFieldSubstreet.text = [NSString stringWithFormat:@"%@%@",location.thoroughfare ,location.name];
+            //            weakSelf.shopCeritficationView.textFieldSubstreet.text = [NSString stringWithFormat:@"%@%@",location.thoroughfare ,location.name];
             
             weakSelf.ShopAddress = [NSString stringWithFormat:@"%@" ,weakSelf.shopCeritficationView.textFieldCity.text];
             
@@ -348,7 +375,7 @@
         }
     }
     
- 
+    
 }
 
 -(ShopCeritficationView*)shopCeritficationView{
@@ -360,6 +387,7 @@
     [_shopCeritficationView.textFieldShopName addTarget:self action:@selector(textFieldNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     [_shopCeritficationView.submitBtn addTarget:self action:@selector(submitBtnAction) forControlEvents:1];
+    [_shopCeritficationView.skipBtn addTarget:self action:@selector(skipBtnAction) forControlEvents:1];
     return _shopCeritficationView;
 }
 
@@ -379,13 +407,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

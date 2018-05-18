@@ -46,25 +46,25 @@
     [self.view addSubview:self.addNewAddressView];
     self.addressDic = [NSMutableDictionary dictionary];
 
+    DLog(@"111111111111111111============%@" , self.receiverAddress);
+
     if (_isCanRemove == NO) {
+        DLog(@"22222222222222222============%@" , self.receiverAddress);
         [self.view addSubview:self.removeBtn];
         [self setRemoveBtnFrame];
         [self.addNewAddressView configAddressView:self.postMyAddressModel];
 
-//         if (weakSelf.receiverName.length == 0 || weakSelf.receiverPhone.length == 0 || weakSelf.receiverProvince.length == 0 || weakSelf.receiverAddress.length == 0)
         self.receiverName = self.postMyAddressModel.receiverName;
         self.receiverPhone =[NSString stringWithFormat:@"%ld" , self.postMyAddressModel.receiverPhone] ;
         self.receiverProvince = self.postMyAddressModel.receiverProvince;
         self.receiverAddress = self.postMyAddressModel.receiverAddress;
-        DLog(@"保存 = = 名字= %@  电话==%@  省== %@    详细地址== %@ " , self.receiverName, self.receiverPhone ,self.receiverProvince , self.receiverAddress );
-        
         
     }
 }
 
 
 -(void)addAddressData{
-    
+    [SVProgressHUD show];
     
     NSMutableDictionary *checkDic = [self checkoutData];
     [self.addressDic setValuesForKeysWithDictionary:checkDic];
@@ -72,19 +72,18 @@
     DLog(@"地址详细字典======== ==== %@" ,self.addressDic);
     NSString *url;
     if (_isCanRemove == NO) {
-        DLog(@"更新地址");
+        //DLog(@"更新地址");
         [self.addressDic setValue:[NSString stringWithFormat:@"%ld" ,self.postMyAddressModel.id] forKey:@"id"];
         url =[NSString stringWithFormat:@"%@/auth/shipping/update" ,baseUrl];
     }else{
-        DLog(@"新增地址");
-
+       // DLog(@"新增地址");
         url =[NSString stringWithFormat:@"%@/auth/shipping/add" ,baseUrl];
-
     }
-    
     
     [MHNetworkManager postReqeustWithURL:url params:self.addressDic successBlock:^(NSDictionary *returnData) {
         DLog(@"新增收货地址===== %@ %@ " ,returnData, returnData[@"msg"]);
+        self.rightButton.enabled = YES;
+
         if ([returnData[@"status"] integerValue] == 200) {
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -92,8 +91,14 @@
             SVProgressHUD.minimumDismissTimeInterval = 1;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
+        [SVProgressHUD dismiss];
+
     } failureBlock:^(NSError *error) {
+        [SVProgressHUD dismiss];
+
         DLog(@"新增收货地址错误=== %@" , error);
+        self.rightButton.enabled = YES;
+
     } showHUD:NO];
     
   
@@ -104,17 +109,21 @@
 -(void)removeBtnAction{
     
     DLog(@"删除地址");
-    
+    [SVProgressHUD show];
     NSMutableDictionary *dic = [self checkoutData];
     
     [dic setValue:[NSString stringWithFormat:@"%ld" ,self.postMyAddressModel.id] forKey:@"shippingId"];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/shipping/del" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {
+            [SVProgressHUD dismiss];
+
             [self.navigationController popViewControllerAnimated:YES];
         }
         DLog(@"删除收货地址===== %@ %@ " ,returnData, returnData[@"msg"]);
     } failureBlock:^(NSError *error) {
+        [SVProgressHUD dismiss];
+
         DLog(@"删除收货地址错误=== %@" , error);
     } showHUD:NO];
     
@@ -129,17 +138,11 @@
 #pragma mark = 保存收货地址
     
     self.rightItemBlockAction = ^{
-
-        
         [weakSelf.view endEditing:YES]; //实现该方法是需要注意view需要是继承UIControl而来的
-
         DLog(@"保存 = = 名字= %@  电话==%@  省== %@    详细地址== %@  shippid== %ld" , weakSelf.receiverName, weakSelf.receiverPhone ,weakSelf.receiverProvince , weakSelf.receiverAddress  ,weakSelf.shippingCategory);
-        
-        
+    
         if (weakSelf.receiverName.length == 0 || weakSelf.receiverPhone.length == 0 || weakSelf.receiverProvince.length == 0 || weakSelf.receiverAddress.length == 0) {
-            
             [weakSelf alertMessage:@"请填写完整的收货地址信息" willDo:nil];
-            
         }else{
             
             if ([weakSelf checkTel:weakSelf.receiverPhone] == NO) {
@@ -151,45 +154,34 @@
                 [weakSelf alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
 
             }else if ([weakSelf containTheillegalCharacter:weakSelf.receiverAddress] == YES){
-                
                 [weakSelf alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
+            }else{
 
+                [weakSelf.addressDic setValue:weakSelf.receiverName forKey:@"receiverName"];
+                [weakSelf.addressDic setValue:weakSelf.receiverPhone forKey:@"receiverPhone"];
+                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@"  ,weakSelf.receiverAddress] forKey:@"receiverAddress"];///收货人详细地址:receiverAddress
+        
+                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@" ,weakSelf.receiverProvince] forKey:@"receiverProvince"];
+        
+                if (weakSelf.shippingCategory ==0 ) {
+                    weakSelf.shippingCategory = 1;//默认标签
+                }
+
+                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%ld" ,weakSelf.shippingCategory] forKey:@"shippingCategory"];
+                weakSelf.rightButton.enabled = NO;
+                [weakSelf addAddressData];
             }
-            
-            
-            else{
-            
-            
-           [weakSelf.addressDic setValue:weakSelf.receiverName forKey:@"receiverName"];
-           [weakSelf.addressDic setValue:weakSelf.receiverPhone forKey:@"receiverPhone"];
-
-           [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@"  ,weakSelf.receiverAddress] forKey:@"receiverAddress"];///收货人详细地址:receiverAddress
-
-            
-        [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@" ,weakSelf.receiverProvince] forKey:@"receiverProvince"];
+        
+        }
     
-        if (weakSelf.shippingCategory ==0 ) {
-            weakSelf.shippingCategory = 1;//默认标签
-        }
-        [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%ld" ,weakSelf.shippingCategory] forKey:@"shippingCategory"];
-
-            
-        [weakSelf addAddressData];
-
-            
-        }
-            
-        }
     };
     
- 
     self.addNewAddressView.textFieldTitleBlock = ^(NSMutableDictionary *dic) {
-        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        weakSelf.receiverAddress = [user valueForKey:@"addressDetails"];
-        weakSelf.receiverName = [user valueForKey:@"name"];
-        weakSelf.receiverPhone = [user valueForKey:@"phoneNumer"];
+        
+        weakSelf.receiverAddress = [dic valueForKey:@"addressDetails"];
+        weakSelf.receiverName = [dic valueForKey:@"name"];
+        weakSelf.receiverPhone = [dic valueForKey:@"phoneNumer"];
     };
-    
     
     self.addNewAddressView.lableTitleBlock = ^(NSInteger labelInter) {
         
@@ -249,8 +241,6 @@
     
     NSString *toBeString = textField.text;
     
-    NSLog(@" 打印信息toBeString:%@",toBeString);
-    
     NSString *lang = [[textField textInputMode] primaryLanguage]; // 键盘输入模式
     if ([lang isEqualToString:@"zh-Hans"]) { // 简体中文输入，包括简体拼音，健体五笔，简体手写
         
@@ -281,20 +271,7 @@
 
         }
     }
-  
-//    if (textField.text.length > 11)
-//    {
-//        textField.text = [textField.text substringToIndex:11];
-//    }
-//
-//    DLog(@"sssss== %@" ,textField.text);
-//
-//    if (textField.text.length == 11) {
-//        if (![self checkTel:textField.text] ) {
-//            [SVProgressHUD showInfoWithStatus:@"姓名长度20字以内"];
-//        }
-//
-//    }
+
 }
 
 
@@ -316,12 +293,12 @@
 -(UIButton*)saveBtn{
     if (!_saveBtn) {
         _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _saveBtn.frame = CGRectMake(30, MaxY(self.addNewAddressView)+30, 145, 40);
+        _saveBtn.frame = CGRectMake(30*kScale, MaxY(self.addNewAddressView)+30*kScale, 145*kScale, 40*kScale);
         _saveBtn.backgroundColor = RGB(231, 35, 36, 1);
         [_saveBtn setTitle:@"保存" forState:0];
         _saveBtn.layer.cornerRadius = 5;
         _saveBtn.layer.masksToBounds = YES;
-        _saveBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        _saveBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
     }
     return _saveBtn;
 }
@@ -335,7 +312,7 @@
         _removeBtn.layer.masksToBounds = YES;
         _removeBtn.backgroundColor = RGB(231, 35, 36, 1);
         [_removeBtn setTitle:@"删除" forState:0];
-        _removeBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        _removeBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_removeBtn setTitleColor:[UIColor whiteColor] forState:0];
         _removeBtn.layer.borderColor = RGB(231, 35, 36, 1).CGColor;
         _removeBtn.layer.borderWidth = 1;
@@ -346,9 +323,9 @@
 
 -(void)setRemoveBtnFrame{
     [self.removeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left).with.offset(30);
-        make.right.equalTo(self.view.mas_right).with.offset(-30); make.top.equalTo(self.addNewAddressView.mas_bottom).with.offset(30);
-        make.height.equalTo(@40);
+        make.left.equalTo(self.view.mas_left).with.offset(30*kScale);
+        make.right.equalTo(self.view.mas_right).with.offset(-30*kScale); make.top.equalTo(self.addNewAddressView.mas_bottom).with.offset(30*kScale);
+        make.height.equalTo(@(40*kScale));
     }];
 }
 

@@ -68,7 +68,8 @@
 ///订单详情页备注信息高度
 @property (nonatomic,assign) CGFloat orderDeatailsCommentHeight;
 
-
+///财务是否确认
+@property (nonatomic,assign) NSInteger financeConfirm;
 ///是否为周期性用户
 @property (nonatomic,assign) NSInteger periodic;
 ///支付方式 999= 支付宝 888=微信 11=线下打款

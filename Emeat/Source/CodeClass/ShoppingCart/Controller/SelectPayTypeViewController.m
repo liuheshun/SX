@@ -44,19 +44,19 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.bottomPayBtn];
     [self setBottomViewFrame];
-    if (self.periodic == 0) {
-        ///非周期性用户
-        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝",@"微信" , nil];
-      //  self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian", nil];
-        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin", nil];
-
-    }else if (self.periodic == 1){
+//    if (self.periodic == 0) {
+//        ///非周期性用户
+//        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝",@"微信" , nil];
+//      //  self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian", nil];
+//        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin", nil];
+//
+//    }else if (self.periodic == 1){
          ///周期性用户
          self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" ,@"线下打款", nil];
        // self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian",@"qitazhifu", nil];
         self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin" ,@"qitazhifu", nil];
 
-    }
+   // }
     
     
     [MMPopupWindow sharedWindow].touchWildToHide = YES;
@@ -199,7 +199,7 @@
 //
 //            self.selectPayType = @"7";
             DLog(@"线下打款");
-            self.selectPayType = @"11";
+            self.selectPayType = @"12";
 
         }
             break;
@@ -261,9 +261,9 @@
     }else if ([self.selectPayType isEqualToString:@"2"]){
         DLog(@"yinhangka");
 //        [self UPPay];
-    }else if ([self.selectPayType isEqualToString:@"11"]){
+    }else if ([self.selectPayType isEqualToString:@"12"]){
         DLog(@"qitafangshi");
-        [self requsetOtherPayTypes:@"11"];
+        [self requsetOtherPayTypes:@"12"];
         [SVProgressHUD show];
 
     }
@@ -292,14 +292,14 @@
     [dic setValue:@" " forKey:@"bankType"];
     [dic setValue:@" " forKey:@"transactionType"];
 
-    DLog(@"周期性付款====== dic == %@ %@ %@ " ,dic , self.orderNo ,self.selectPayType );
+    DLog(@"周期性付款====== dic == %@ 订单号===%@  支付方式==== %@ " ,dic , self.orderNo ,self.selectPayType );
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/payInfo/pay" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"周期性付款信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         self.returnData = [NSDictionary dictionaryWithDictionary:returnData];
        ///周期性付款
-        if ([payId isEqualToString:@"11"]) {
+        if ([payId isEqualToString:@"12"]) {
             
             if ([returnData[@"status"] integerValue] == 200)
             {

@@ -13,41 +13,31 @@
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-       
+        [self addSubview:self.orderTimeLab];
+        [self addSubview:self.orderStated];
+        [self addSubview:self.lineView];
+        [self addSubview:self.orderDetailsLab];
+        
+        [self   setMainFrame];
+        
+        [self setOrderImvFrame];
     }
     return self;
 }
 
 
 
-//接收数据
--(void)getHomeArray:(NSArray *)homeArray
-{
-    self.HomeArray = homeArray;
-    [self addSubview:self.orderTimeLab];
-    [self addSubview:self.orderStated];
-    [self addSubview:self.lineView];
-    [self addSubview:self.orderDetailsLab];
-
-    [self   setMainFrame];
-
-    [self setOrderImvFrame];
-   
-    
-}
+////接收数据
+//-(void)getHomeArray:(NSArray *)homeArray
+//{
+//    self.HomeArray = homeArray;
+//
+//
+//
+//}
 
 
 -(void)configWithOrderModel:(OrderModel*)model{
-    
-//    // timeStampString 是服务器返回的13位时间戳
-//    NSString *timeStampString  = model.createOrderTime;
-//    DLog(@"%@" ,model.createOrderTime);
-//    // iOS 生成的时间戳是10位
-//    NSTimeInterval interval    = [timeStampString doubleValue] / 1000.0;
-//    NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//    NSString *dateString       = [formatter stringFromDate: date];
 
     self.orderTimeLab.text = model.createOrderTime;
     self.orderStated.text = model.statusDesc;
@@ -90,10 +80,12 @@
 
 -(void)setOrderImvFrame{
     NSInteger arrayCount = 0;
-    if (self.HomeArray.count >3) {
+    MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
+    DLog(@"ccccccccc=========== %ld" , orderConfig.orderImvArray.count);
+    if (orderConfig.orderImvArray.count >3) {
         arrayCount = 4;
     }else{
-        arrayCount = self.HomeArray.count;
+        arrayCount = orderConfig.orderImvArray.count;
     }
       __block UIView *lastView = nil;
     for (int i = 0; i < arrayCount; i++) {
@@ -124,7 +116,7 @@
         }
         else
         {
-            [imv sd_setImageWithURL:[NSURL URLWithString:self.HomeArray[i]] placeholderImage:[UIImage imageNamed:@"small_placeholder"]];
+            [imv sd_setImageWithURL:[NSURL URLWithString:orderConfig.orderImvArray[i]] placeholderImage:[UIImage imageNamed:@"small_placeholder"]];
 
             [btn removeFromSuperview];
         }
@@ -178,11 +170,6 @@
     return _orderDetailsLab;
 }
 
-
-
-
-
-
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -195,3 +182,43 @@
 }
 
 @end
+
+
+
+@implementation MyOrderTableCellConfig
+
++ (MyOrderTableCellConfig *)myOrderTableCellConfig
+{
+    static MyOrderTableCellConfig *config1;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        
+        config1 = [MyOrderTableCellConfig new];
+        
+    });
+    
+    return config1;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if ( self )
+    {
+        
+    }
+    
+    return self;
+}
+
+@end
+
+
+
+
+
+
+
+

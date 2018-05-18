@@ -17,10 +17,11 @@
 #import "SelectAddressViewController.h"
 #import "HomePageViewController.h"
 #import "AppDelegate.h"
-#define offset [UIScreen mainScreen].bounds.size.width - 84
+#define offset [UIScreen mainScreen].bounds.size.width - 84*kScale
 
 @interface HomePageSortListViewController ()<UITableViewDelegate,UITableViewDataSource ,PYSearchViewControllerDelegate , AF_ScreeningViewControllerDelegate ,UIGestureRecognizerDelegate>
 {
+    UIView *shadeView;
     UIWindow *window;
 }
 
@@ -54,6 +55,10 @@
     NSInteger totalPageCount;//分页总数
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -482,7 +487,7 @@
     
 }
 
-
+#pragma mark ===隐藏筛选视图
 -(void)dismissWindow{
     //设置视图偏移
     [UIView animateWithDuration:.3 animations:^{
@@ -493,7 +498,7 @@
         window.hidden = NO;
         window = nil;
 
-
+        [shadeView removeFromSuperview];
         [self dismissViewControllerAnimated:NO completion:nil];
         
 
@@ -506,7 +511,10 @@
     /** 点击视图关闭window */
     self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissWindow)];
     self.tap.delegate = self;
-    [self.view addGestureRecognizer:self.tap];
+    shadeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 84*kScale, kHeight)];
+    shadeView.backgroundColor = RGB(0, 0, 0, 0.4);
+    [[UIApplication sharedApplication].keyWindow addSubview:shadeView];
+    [shadeView addGestureRecognizer:self.tap];
     
     /** 加载window */
     window = [[UIWindow alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width, 0, offset, [UIScreen mainScreen].bounds.size.height)];
@@ -521,7 +529,6 @@
                            ,@"重量规格"
                            ,@"品种"
                            , nil];
-    DLog(@"---------------------------------------------=====  %@" ,self.checkMarray);
     rvc.itemButtonMarray = self.checkMarray;
     window.rootViewController = rvc;
     //设置视图偏移

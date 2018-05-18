@@ -41,6 +41,7 @@
     [self addBlockAction];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     [self.view addSubview:self.tableView];
+    self.addressDataMarray = [NSMutableArray array];
 
 }
 
@@ -49,11 +50,11 @@
 -(void)getMyAddressData{
     
     NSMutableDictionary *dic = [self checkoutData];    
-    self.addressDataMarray = [NSMutableArray array];
-    [self.addressDataMarray removeAllObjects];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
+            [self.addressDataMarray removeAllObjects];
+
             for (NSDictionary *dic in returnData[@"data"]) {
                 MyAddressModel *addressModel = [MyAddressModel yy_modelWithJSON:dic];
                DLog(@"我的地址== %@" ,addressModel.receiverName);
@@ -80,11 +81,7 @@
         DLog(@"收货地址错误列表=== %@" , error);
         
     } showHUD:NO];
-    
-    
-  
-    
-    
+ 
     
 }
 
@@ -128,16 +125,16 @@
     return 1;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 75;
+    return 75*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
    
-    return 15;
+    return 15*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15*kScale)];
     view.backgroundColor = RGB(238, 238, 238, 1);
     return view;
 }

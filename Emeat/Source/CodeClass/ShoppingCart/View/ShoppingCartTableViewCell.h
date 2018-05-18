@@ -26,7 +26,7 @@ green:((float)((0xED5565 & 0xFF00) >> 8))/255.0 \
 blue:((float)(0xED5565 & 0xFF))/255.0 alpha:1.0]
 
 /**
- *  @author LQQ, 16-02-18 11:02:02
+
  *
  *  cell是否被选中的回调
  *
@@ -49,28 +49,31 @@ typedef void(^LQQNumChange)(void);
 @property (nonatomic,copy)LQQNumChange numCutBlock;
 
 
+///白色背景
+@property (nonatomic,strong) UIView *bgView;
 
 
-//选中按钮
+///选中按钮
 @property (nonatomic,retain) UIButton *selectBtn;
-//显示照片
+///显示图片
 @property (nonatomic,retain) UIImageView *imageView_cell;
-//商品名
+///商品名
 @property (nonatomic,retain) UILabel *nameLabel;
-//尺寸
+///尺寸
 @property (nonatomic,retain) UILabel *sizeLabel;
-//价格
+///价格
 @property (nonatomic,retain) UILabel *productPrice;
-//价格
-//@property (nonatomic,retain) UILabel *priceLabel;
-
-
+///加按钮
+@property (nonatomic,strong) UIButton *addBtn;
+///减按钮
+@property (nonatomic,strong) UIButton *cutBtn;
+///删除按钮
+@property (nonatomic,strong) UIButton *deleteBtn;
 
 
 
 /**
- *  @author LQQ, 16-02-18 11:02:39
- *
+ 
  *  刷新cell
  *
  *  @param model cell数据模型

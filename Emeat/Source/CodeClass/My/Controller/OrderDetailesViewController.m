@@ -35,7 +35,8 @@
 @property (nonatomic,assign) NSInteger status;
 ///支付方式
 @property (nonatomic,assign) NSInteger paymentType;
-
+///财务是否确认
+@property (nonatomic,assign) NSInteger financeConfirm;
 
 ///打款凭证图片数组
 @property (nonatomic,strong)  NSMutableArray *monetProveMarray;
@@ -125,6 +126,7 @@
             OrderModel *footModel = [OrderModel yy_modelWithJSON:returnData[@"data"]];
             self.status = footModel.status;
             self.paymentType = footModel.paymentType;
+            self.financeConfirm = footModel.financeConfirm;
             [self.footViewOrderInfoMarray addObject:footModel];
             [self.view addSubview:self.tableView];
             [self.view addSubview:self.orderInfoBottomView];////////
@@ -445,6 +447,31 @@
     
     if (self.status == 10)////待支付
     {
+        if (self.paymentType == 12) {//线下打款上传打款凭证
+            
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 1)];
+            lineView.backgroundColor = RGB(238, 238, 238, 1);
+            [self.orderInfoBottomView addSubview:lineView];
+            [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
+            [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
+            self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
+            self.orderInfoBottomView.leftBottomBtn.tag = 40;
+            [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
+            self.orderInfoBottomView.rightBottomBtn.tag = 40;
+            
+            DLog(@"线下===========打款");
+            
+        }else{//其余线上支付
+            
+            DLog(@"线上------------打款");
+          
+
+        
+        
+        
+       ///
+        
+        
         [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
         [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
 
@@ -549,23 +576,41 @@
         }];
         
         [self setTableViewFrames];
-
-    }
-    else  if (self.status == 50 || self.status == 40 || self.status == 46)///待发货(待确认)
-    {
-        if (self.paymentType == 11) {//线下打款
-       
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 1)];
-        lineView.backgroundColor = RGB(238, 238, 238, 1);
-        [self.orderInfoBottomView addSubview:lineView];
-        [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
-        [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
-        self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
-        self.orderInfoBottomView.leftBottomBtn.tag = 40;
-        [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
-        self.orderInfoBottomView.rightBottomBtn.tag = 40;
             
-            DLog(@"线下===========打款");
+        }
+            
+    }else  if (self.status == 50 || self.status == 40 || self.status == 46)///待发货(待确认)
+    {
+        
+        if (self.paymentType == 12) {//线下打款上传打款凭证
+            if (self.financeConfirm == 1) {///=1的时候不能上传打款凭证
+                
+                [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
+                [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.equalTo(self.orderInfoBottomView);
+                    make.height.equalTo(@44);
+                    make.bottom.equalTo(self.orderInfoBottomView.mas_bottom).with.offset(0);
+                }];
+                [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
+                [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
+                self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
+                self.orderInfoBottomView.leftBottomBtn.tag = 40;
+            }else{///上传打款凭证
+                
+                UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 1)];
+                lineView.backgroundColor = RGB(238, 238, 238, 1);
+                [self.orderInfoBottomView addSubview:lineView];
+                [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
+                [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
+                self.orderInfoBottomView.leftBottomBtn.backgroundColor = [UIColor whiteColor];
+                self.orderInfoBottomView.leftBottomBtn.tag = 40;
+                [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
+                self.orderInfoBottomView.rightBottomBtn.tag = 40;
+                
+                DLog(@"线下===========打款");
+            }
+       
+       
             
         }else{//其余线上支付
             
@@ -711,22 +756,17 @@
         CGSize strSize = [orderModel.orderComment boundingRectWithSize:CGSizeMake(kWidth-30, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
       
         
-     if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46){
-         if (orderModel.paymentType == 11){
+     if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46 || orderModel.status == 10){
+         if (orderModel.paymentType == 12){
              ///线下打款方式
              return 282*kScale+strSize.height + 104*kScale;
          }else{
              return 282*kScale+strSize.height ;
-             
          }
 
      }else{
-         
-         
          return 282*kScale+strSize.height ;
-
      }
-  
         
     }else{
     return 0;

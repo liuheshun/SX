@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+
+typedef void(^ReturnBlock)(BOOL isOpen);
 
 @interface GlobalHelper : NSObject
 +(GlobalHelper*)shareInstance;
@@ -39,5 +42,6 @@
 ///我的订单 先加载所有订单问题暂时解决
 @property (nonatomic,strong) NSString *isSelectFirstAllOrder;
 
+-(void)openLocationServiceWithBlock:(ReturnBlock)returnBlock;
 
 @end

@@ -23,7 +23,7 @@
     self.topImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:config.imageString]];
     [self addSubview:self.topImageView];
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self);
+        make.top.equalTo(self.mas_top).with.offset(30*kScale + LL_TabbarSafeBottomMargin);
         make.left.equalTo(self);
         make.width.equalTo(self);
         make.height.equalTo(@(187*kScale));
@@ -49,6 +49,16 @@
 
     self.titleLabel.backgroundColor = [UIColor whiteColor];
     CGFloat titleHeight = [GetWidthAndHeightOfString getHeightForText:self.titleLabel width:WIDTH(self)-30*kScale]+5;
+    if (LL_iPhoneX) {
+        if (titleHeight > 330*kScale) {
+            titleHeight = 330*kScale;
+        }
+    }else{
+        if (titleHeight > 270*kScale) {
+            titleHeight = 270*kScale;
+        }
+        
+    }
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.midBgView.mas_top).with.offset(5*kScale);
