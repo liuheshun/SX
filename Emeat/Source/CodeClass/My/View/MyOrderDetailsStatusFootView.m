@@ -42,29 +42,94 @@
 
 -(void)configOrderDetailsFootViewWithModel:(OrderModel*)model configMoneyProve:(NSMutableArray*)imageArray isShow:(BOOL)isShow{
     
+    ////打款凭证
+    if (isShow == NO) {
+        
+    }else if (isShow == YES){
+        
+        __block UIView *lastView = nil;
+        for (int i = 0; i < imageArray.count; i++) {
+            
+            NSString *str = imageArray[i];
+            if (![str containsString:@"."]) {
+                
+            }else{
+                
+                
+                UIImageView *imv = [[UIImageView alloc] init];
+                [self.footBottomView addSubview:imv];
+                [imv mas_makeConstraints:^(MASConstraintMaker *make) {
+                    if (i == 0) {
+                        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+                        
+                    }else{
+                        make.left.equalTo(lastView.mas_right).with.offset(15*kScale);
+                        
+                    }
+                    make.top.equalTo(self.arriveTime.mas_bottom).with.offset(18);
+                    make.width.equalTo(@(70*kScale));
+                    make.height.equalTo(@(50*kScale));
+                    
+                }];
+                
+                [imv sd_setImageWithURL:[NSURL URLWithString:imageArray[i]]];
+                //imv.image = [UIImage imageNamed:@"loginWeixin"];
+                lastView = imv;
+                self.proveImage = imv;
+                self.proveImage.userInteractionEnabled = YES;
+                
+               
+            }
+        }
+        
+    }
     if (model.status == 10)////待支付
     {
         self.orderPayStatus.text = @"需支付";
-        
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.orderTime.mas_bottom).with.offset(18);
+
+            
+        }];
         
     }
     else  if (model.status == 50 || model.status == 40 || model.status == 46)///待发货(待确认)
     {
         self.orderPayStatus.text = @"已支付";
-        if (model.paymentType == 12) {//线下打款 
-            
-        }
-        else
-        {
+//        if (model.paymentType == 12) {//线下打款
+//
+//        }
+//        else
+//        {
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
-        }
-        
+       // }
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.payTime.mas_bottom).with.offset(18);
+            
+            
+        }];
     }
     else if (model.status == 60)///配送中
     {
         self.orderPayStatus.text = @"已支付";
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.sendTime.mas_bottom).with.offset(18);
+            
+            
+        }];
+    }else if (model.status == 70)///待收货
+    {
+        self.orderPayStatus.text = @"已支付";
+        self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
+        self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
+        self.arriveTime.text =  [NSString stringWithFormat:@"送达时间 : %@" , model.receiveTime];
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.arriveTime.mas_bottom).with.offset(18);
+            
+            
+        }];
         
     }
     else if (model.status == 120)///待核验 (退货中)
@@ -73,6 +138,11 @@
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
         self.arriveTime.text =  [NSString stringWithFormat:@"申请退款 : %@" , model.endTime];
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.arriveTime.mas_bottom).with.offset(18);
+            
+            
+        }];
     }
     else if (model.status == 140)///已退货
     {
@@ -81,6 +151,10 @@
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
         self.arriveTime.text =  [NSString stringWithFormat:@"申请退款 : %@" , model.endTime];
         self.cancelTime.text = [NSString stringWithFormat:@"退款时间 : %@" , model.endTime];
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.cancelTime.mas_bottom).with.offset(18);
+            
+        }];
     }
     else if (model.status == 20)///取消退货
     {
@@ -89,6 +163,10 @@
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
         self.arriveTime.text =  [NSString stringWithFormat:@"申请退款 : %@" , model.endTime];
         self.cancelTime.text = [NSString stringWithFormat:@"取消时间 : %@" , model.endTime];
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.cancelTime.mas_bottom).with.offset(18);
+            
+        }];
         
     }else if (model.status == 80)///已完成
     {
@@ -96,7 +174,10 @@
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
         self.arriveTime.text =  [NSString stringWithFormat:@"送达时间 : %@" , model.receiveTime];
-        
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.arriveTime.mas_bottom).with.offset(18);
+            
+        }];
 
     }
     else if (model.status == 0)///已取消
@@ -110,7 +191,10 @@
             self.orderPayStatus.text = @"需支付";
 
         }
-
+        [self.proveImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.orderTime.mas_bottom).with.offset(18);
+            
+        }];
     }
     
 
@@ -139,58 +223,7 @@
     
     
     
-    ////打款凭证
-    if (isShow == NO) {
-        
-    }else if (isShow == YES){
-        
-        __block UIView *lastView = nil;
-        for (int i = 0; i < imageArray.count; i++) {
-            
-            NSString *str = imageArray[i];
-            if (![str containsString:@"."]) {
-
-            }else{
-            
-            
-            UIImageView *imv = [[UIImageView alloc] init];
-            [self.footBottomView addSubview:imv];
-            [imv mas_makeConstraints:^(MASConstraintMaker *make) {
-                if (i == 0) {
-                    make.left.equalTo(self.mas_left).with.offset(15*kScale);
-                    
-                }else{
-                    make.left.equalTo(lastView.mas_right).with.offset(15*kScale);
-                    
-                }
-                make.top.equalTo(self.orderTime.mas_bottom).with.offset(18);
-                make.width.equalTo(@(70*kScale));
-                make.height.equalTo(@(50*kScale));
-                
-            }];
-            
-            [imv sd_setImageWithURL:[NSURL URLWithString:imageArray[i]]];
-            //imv.image = [UIImage imageNamed:@"loginWeixin"];
-            lastView = imv;
-            self.proveImage = imv;
-            self.proveImage.userInteractionEnabled = YES;
-            
-//             self.deleteImvBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//            [lastView addSubview: self.deleteImvBtn ];
-//            [ self.deleteImvBtn  setImage:[UIImage imageNamed:@"delete"] forState:0];
-//            [ self.deleteImvBtn  mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.right.equalTo(lastView.mas_right).with.offset(-3*kScale);
-//                make.top.equalTo(lastView.mas_top).with.offset(3*kScale);
-//                make.width.height.equalTo(@(15*kScale));
-//                
-//            }];
-//
-//            self.deleteImvBtn.tag = i;
-//            [self.deleteImvBtn addTarget:self action:@selector(deleteImvBtns:) forControlEvents:1];
-        }
-        }
-        
-    }
+  
     
 }
 
