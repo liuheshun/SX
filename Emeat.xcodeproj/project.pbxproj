@@ -149,6 +149,7 @@
 		16EE103D1FECD6970099DA91 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE103C1FECD6970099DA91 /* AboutUsViewController.m */; };
 		16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE103F1FECD7080099DA91 /* SuggestionFeedbackViewController.m */; };
 		16F0AF46207F9AE10093FE7D /* MyHeadLonginOutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */; };
+		16F3A3B720B7DFB300ACDED8 /* MessageCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F3A3B620B7DFB300ACDED8 /* MessageCenterViewController.m */; };
 		16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB31371FAC5D9D00049580 /* AppDelegate.m */; };
 		16FB313E1FAC5D9D00049580 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16FB313C1FAC5D9D00049580 /* Main.storyboard */; };
 		16FB31401FAC5D9D00049580 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16FB313F1FAC5D9D00049580 /* Assets.xcassets */; };
@@ -447,6 +448,8 @@
 		16EE103F1FECD7080099DA91 /* SuggestionFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuggestionFeedbackViewController.m; sourceTree = "<group>"; };
 		16F0AF44207F9AE10093FE7D /* MyHeadLonginOutView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyHeadLonginOutView.h; sourceTree = "<group>"; };
 		16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyHeadLonginOutView.m; sourceTree = "<group>"; };
+		16F3A3B520B7DFB300ACDED8 /* MessageCenterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCenterViewController.h; sourceTree = "<group>"; };
+		16F3A3B620B7DFB300ACDED8 /* MessageCenterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCenterViewController.m; sourceTree = "<group>"; };
 		16FB31331FAC5D9D00049580 /* Emeat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emeat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16FB31361FAC5D9D00049580 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		16FB31371FAC5D9D00049580 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -731,6 +734,7 @@
 		16CFD7221FB2A6F20015F2C1 /* CodeClass */ = {
 			isa = PBXGroup;
 			children = (
+				16F3A3B420B7DF7A00ACDED8 /* PushMessage */,
 				165581042008F86500F33D6B /* PaySDK */,
 				16D950C31FF3752100DBC7B8 /* Login */,
 				16CFD72C1FB2EA140015F2C1 /* HomePage */,
@@ -1116,6 +1120,15 @@
 			path = YouLikeView;
 			sourceTree = "<group>";
 		};
+		16F3A3B420B7DF7A00ACDED8 /* PushMessage */ = {
+			isa = PBXGroup;
+			children = (
+				16F3A3B520B7DFB300ACDED8 /* MessageCenterViewController.h */,
+				16F3A3B620B7DFB300ACDED8 /* MessageCenterViewController.m */,
+			);
+			path = PushMessage;
+			sourceTree = "<group>";
+		};
 		16FB312A1FAC5D9D00049580 = {
 			isa = PBXGroup;
 			children = (
@@ -1410,6 +1423,7 @@
 			files = (
 				16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */,
 				16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */,
+				16F3A3B720B7DFB300ACDED8 /* MessageCenterViewController.m in Sources */,
 				162F96EE205765AA004EA49F /* SGPageContentScrollView.m in Sources */,
 				16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */,
 				16CE1EE22003611000E919C7 /* AF_MainScreeningViewController.m in Sources */,
