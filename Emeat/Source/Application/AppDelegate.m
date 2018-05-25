@@ -46,8 +46,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     //
     
     
-    //我是汉字赛鲜
-    //
+    
     //开启网络监测
     [GLobalRealReachability startNotifier];
     //微信注册
