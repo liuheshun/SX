@@ -33,6 +33,8 @@
 
 ///多规格
 @property (nonatomic,strong) NSMutableArray *specsListMarray;
+///头部高度
+@property (nonatomic,assign) CGFloat headViewHeiht;
 
 
 @end
@@ -111,7 +113,9 @@
             if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
                 
                 HomePageModel *bannerModel = [HomePageModel yy_modelWithJSON:returnData[@"data"]];
-                
+               
+                CGSize r = [bannerModel.commodityDesc boundingRectWithSize:CGSizeMake(kWidth-30*kScale, 1000*kScale) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
+                self.headViewHeiht = (650)*kScale +r.height;
                 if (bannerModel) {
                     [self.headDataArray addObject:bannerModel];
                     self.bannerDataArray = [NSMutableArray arrayWithArray:[bannerModel.commodityBanner componentsSeparatedByString:@","]];
@@ -135,7 +139,7 @@
                     [self.view addSubview:self.bottomView];
                     [self setBottomViewFrame];
                     
-                    [self setButtonBadgeValue:self.bottomView.cartBtn badgeValue:[NSString stringWithFormat:@"%ld",[GlobalHelper shareInstance].shoppingCartBadgeValue ] badgeOriginX:MaxX(self.bottomView.cartBtn.imageView)-5 badgeOriginY:Y(self.bottomView.cartBtn.imageView)-12];
+                    [self setButtonBadgeValue:self.bottomView.cartBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)[GlobalHelper shareInstance].shoppingCartBadgeValue ] badgeOriginX:MaxX(self.bottomView.cartBtn.imageView)-5 badgeOriginY:Y(self.bottomView.cartBtn.imageView)-12];
                     
                     [self.tableView reloadData];
                 }
@@ -258,7 +262,6 @@
     //手动计算cell
     CGFloat imgHeight = image.size.height * [UIScreen mainScreen].bounds.size.width / image.size.width;
     model.cellHeight = imgHeight;
-    DLog(@"图片高度详情=====%f" ,model.cellHeight);
 
     return imgHeight;
   
@@ -266,14 +269,15 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-        return (426+55+150+60)*kScale;
+
+        return self.headViewHeiht;
     }
     return 15;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-            self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, (426+55+150+60)*kScale)];
+            self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, self.headViewHeiht)];
 //            [self.headView setSDCycleScrollView:self.bannerDataArray];
         
         
@@ -308,7 +312,7 @@
 
         self.headView.returnSelectIndex = ^(NSInteger selectIndex) {
             HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[selectIndex];
-            weakSelf.detailsId = [NSString stringWithFormat:@"%ld" ,model.commodityId] ;
+            weakSelf.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId] ;
             [weakSelf requsetDetailsData];
 
         };

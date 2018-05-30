@@ -44,7 +44,7 @@
     
     self.nameLab.text = model.commodityName;
     self.descLab.text = model.commodityDesc;
-    CGFloat hDesc =   [GetWidthAndHeightOfString getHeightForText:self.descLab width:(kWidth-30)];
+    CGFloat hDesc =   [GetWidthAndHeightOfString getHeightForText:self.descLab width:(kWidth-30*kScale)];
     
     [self.descLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(hDesc));
@@ -69,7 +69,7 @@
     
     
     
-    CGFloat wPrice =   [GetWidthAndHeightOfString getWidthForText:self.weightLab height:20] +5;
+    CGFloat wPrice =   [GetWidthAndHeightOfString getWidthForText:self.weightLab height:20*kScale] +5*kScale;
     [self.weightLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(wPrice));
     }];
@@ -115,14 +115,14 @@
     [self.nameLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
         make.top.equalTo(self.mas_top).with.offset(330*kScale);
-        make.width.equalTo(@(kWidth -30));
+        make.width.equalTo(@(kWidth -30*kScale));
         make.height.equalTo(@(17*kScale));
     }];
     
     [self.descLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
         make.top.equalTo(self.nameLab.mas_bottom).with.offset(10*kScale);
-        make.width.equalTo(@(kWidth -30));
+        make.width.equalTo(@(kWidth -30*kScale));
         make.height.equalTo(@(13*kScale));
     }];
     [self.pricelab mas_makeConstraints:^(MASConstraintMaker *make) {
