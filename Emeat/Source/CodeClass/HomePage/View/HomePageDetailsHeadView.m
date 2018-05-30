@@ -15,43 +15,30 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
+        [self addSubview:self.nameLab];
+        [self addSubview:self.descLab];
+        [self addSubview:self.pricelab];
+        [self addSubview:self.weightLab];
+        [self addSubview:self.noticeBtn];
+        [self addSubview:self.lineView];
+        [self addSubview:self.goodsDetailsBtn];
         
+        //[self addSubview:self.pingjiaDetailsBtn];
+        //[self addSubview:self.lineleftView];
+        //[self addSubview:self.lineRightView];
+        [self addSubview:self.countryLab];
+        [self addSubview:self.partLab];
+        [self addSubview:self.standardsLab];
+        [self addSubview:self.breedLab];
+        [self addSubview:self.environmentLab];
+        [self addSubview:self.brandLab];
+        
+        [self setMainViewFrame];
     }
     return self;
 }
 
--(void)setSDCycleScrollView:(NSArray*)imvURLArray{
 
-    
-    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 300*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"商品主图加载"]];   //placeholder
-    cycleScrollView.imageURLStringsGroup = imvURLArray;
-    cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    cycleScrollView.showPageControl = YES;//是否显示分页控件
-    cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
-    [self addSubview:cycleScrollView];
-    self.cycleScrollView = cycleScrollView;
-  
-    [self addSubview:self.nameLab];
-    [self addSubview:self.descLab];
-    [self addSubview:self.pricelab];
-    [self addSubview:self.weightLab];
-    [self addSubview:self.noticeBtn];
-    [self addSubview:self.lineView];
-    [self addSubview:self.goodsDetailsBtn];
-    
-//    [self addSubview:self.pingjiaDetailsBtn];
-//    [self addSubview:self.lineleftView];
-//    [self addSubview:self.lineRightView];
-    [self addSubview:self.countryLab];
-    [self addSubview:self.partLab];
-    [self addSubview:self.standardsLab];
-    [self addSubview:self.breedLab];
-    [self addSubview:self.environmentLab];
-    [self addSubview:self.brandLab];
-    
-    [self setMainViewFrame];
-    
-}
 
 -(void)configHeadViewWithModel:(HomePageModel*)model{
     
@@ -64,18 +51,25 @@
     }];
     
     self.pricelab.text = [NSString stringWithFormat:@"¥%.2f元/kg" ,(float)model.unitPrice/100];
-
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.pricelab.text];
     
     [string addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:NSMakeRange(0, string.length-4)];
     
     [string addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:NSMakeRange(string.length-4, string.length - (string.length-4))];
     self.pricelab.attributedText = string;
-
     self.weightLab.text = model.size2;
     
-    CGFloat wPrice =   [GetWidthAndHeightOfString getWidthForText:self.weightLab height:20] +5;
+//    CGRect moreSpecificationsBtnRect = self.moreSpecificationsBgView.frame;
+//    moreSpecificationsBtnRect.origin.y = 408+hDesc;
+//    self.moreSpecificationsBgView.frame = moreSpecificationsBtnRect;
+//
+    [self.moreSpecificationsBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.pricelab.mas_bottom).with.offset(10*kScale);
+    }];
     
+    
+    
+    CGFloat wPrice =   [GetWidthAndHeightOfString getWidthForText:self.weightLab height:20] +5;
     [self.weightLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(wPrice));
     }];
@@ -91,10 +85,29 @@
     self.breedLab.text = [NSString stringWithFormat:@"品种: %@" ,model.varieties];
     self.environmentLab.text = [NSString stringWithFormat:@"存储条件: %@" ,model.storageConditions];
     self.brandLab.text = [NSString stringWithFormat:@"品牌: %@" ,model.brand];
-
-    //model.headViewHeight = 426+55+150-13+hDesc;
+    model.headViewHeight = 426+55+150-13+hDesc;
+   
+    
 }
 
+-(void)moreSpecificationsBtnAction:(UIButton*)btn{
+    if ([self respondsToSelector:@selector(returnSelectIndex)]) {
+        DLog(@"ttttttttt========= %ld" , btn.tag);
+        btn.selected = !btn.selected;
+        if (btn.selected == YES) {
+            self.moreSpecificationsBtn.layer.borderColor = RGB(236, 31, 35, 1).CGColor;
+            self.moreSpecificationsBtn.layer.borderWidth = 1;
+            self.moreSpecificationslabel1.textColor =  RGB(236, 31, 35, 1);
+            self.moreSpecificationslabel2.textColor =  RGB(236, 31, 35, 1);
+        }else{
+            self.moreSpecificationslabel1.textColor =  RGB(136, 136, 136, 1);
+            self.moreSpecificationslabel2.textColor =  RGB(136, 136, 136, 1);
+            self.moreSpecificationsBtn.layer.borderColor = RGB(191, 191, 191, 1).CGColor;
+            self.moreSpecificationsBtn.layer.borderWidth = 1;
+        }
+        self.returnSelectIndex(btn.tag);
+    }
+}
 
 
 
@@ -118,16 +131,78 @@
         make.width.equalTo(@(kWidth -30*kScale));
         make.height.equalTo(@(20*kScale));
     }];
+    
+    self.moreSpecificationsBgView = [[UIView alloc] init];
+    [self addSubview:self.moreSpecificationsBgView];
+    [self.moreSpecificationsBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).with.offset(0*kScale);
+        make.top.equalTo(self.pricelab.mas_bottom).with.offset(10*kScale);
+        make.width.equalTo(@(kWidth));
+        make.height.equalTo(@(40*kScale));
+    }];
+    
+    
+    NSInteger arrayCount = [GlobalHelper shareInstance].specsListMarray.count ;
+    if ([GlobalHelper shareInstance].specsListMarray.count >6) {
+        arrayCount = 6;
+    }
+    for (int i = 0; i < arrayCount; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.moreSpecificationsBgView addSubview:btn];
+        btn.frame = CGRectMake(15*kScale+55*i*kScale, 0, 40*kScale, 40*kScale);
+        btn.backgroundColor = [UIColor whiteColor];
+        btn.tag = i;
+        [btn addTarget:self action:@selector(moreSpecificationsBtnAction:) forControlEvents:1];
+
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 3*kScale, WIDTH(btn), HEIGHT(btn)/2-3*kScale)];
+        [btn addSubview:label1];
+        
+        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0, HEIGHT(btn)/2, WIDTH(btn), HEIGHT(btn)/2)];
+        [btn addSubview:label2];
+        label1.font = [UIFont systemFontOfSize:12.0f*kScale];
+        label2.font = [UIFont systemFontOfSize:12.0f*kScale];
+        label1.textAlignment = NSTextAlignmentCenter;
+        label2.textAlignment = NSTextAlignmentCenter;
+        label1.textColor =  RGB(136, 136, 136, 1);
+        label2.textColor =  RGB(136, 136, 136, 1);
+        btn.layer.borderColor = RGB(191, 191, 191, 1).CGColor;
+        btn.layer.borderWidth = 1;
+        
+        HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[i];
+        //3.分隔字符串
+        NSString *string = model.specs;
+        
+        NSArray *array = [string componentsSeparatedByString:@"/"]; //从字符A中分隔成2个元素的数组
+        NSLog(@"ssss==sarray:%@",array); //结果是adfsfsfs和dfsdf
+        label1.text =[NSString stringWithFormat:@"%@/" ,[array firstObject]];
+        label2.text = [NSString stringWithFormat:@"%@" ,[array lastObject]];
+        
+        if (model.commodityId == [[GlobalHelper shareInstance].homePageDetailsId integerValue]) {
+            btn.layer.borderColor = RGB(236, 31, 35, 1).CGColor;
+            btn.layer.borderWidth = 1;
+            label1.textColor =  RGB(236, 31, 35, 1);
+            label2.textColor =  RGB(236, 31, 35, 1);
+        }
+        
+        
+        self.moreSpecificationsBtn = btn;
+        self.moreSpecificationslabel1 = label1;
+        self.moreSpecificationslabel2 = label2;
+    }
+    
+   
+    
+    
     [self.weightLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.pricelab.mas_bottom).with.offset(10*kScale);
+        make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(10*kScale);
         make.width.equalTo(@(65*kScale));
         make.height.equalTo(@(20*kScale));
     }];
     
     [self.noticeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.weightLab.mas_right).with.offset(5*kScale);
-        make.top.equalTo(self.pricelab.mas_bottom).with.offset(0);
+        make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(0);
         make.width.equalTo(@(40*kScale));
         make.height.equalTo(@(40*kScale));
     }];

@@ -10,14 +10,10 @@
 
 typedef void(^changeSelectStyleBlock)(void);
 
-@interface HomePageDetailsHeadView : UIView<SDCycleScrollViewDelegate>
-//轮播图
-@property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
+typedef void(^ReturnSelectIndex)(NSInteger selectIndex);
 
+@interface HomePageDetailsHeadView : UIView
 
--(void)setSDCycleScrollView:(NSArray*)imvURLArray;
-//商品图片
-@property (nonatomic,strong) UIImageView *mainImv;
 //商品名字
 @property (nonatomic,strong) UILabel *nameLab;
 //商品描述
@@ -28,6 +24,15 @@ typedef void(^changeSelectStyleBlock)(void);
 @property (nonatomic,strong) UILabel *pricelab;
 //提示说明
 @property (nonatomic,strong) UIButton *noticeBtn;
+///多规格重量
+@property (nonatomic,strong) UIButton *moreSpecificationsBtn;
+@property (nonatomic,strong) UIView *moreSpecificationsBgView;
+///规格重量
+@property (nonatomic,strong) UILabel *moreSpecificationslabel1;
+///规格重量单位
+@property (nonatomic,strong) UILabel *moreSpecificationslabel2;
+
+@property (nonatomic,copy) ReturnSelectIndex returnSelectIndex;
 
 
 //商品详情按钮

@@ -19,6 +19,11 @@
 ///商品总数量
 @property (nonatomic,assign) NSInteger total;//(total/pageSize = pages)
 
+///多规格商品ID
+@property (nonatomic,assign) NSInteger  commodityId;
+///规格详情
+@property (nonatomic,strong) NSString *specs;
+
 ///商品id
 @property (nonatomic,assign) NSInteger id;
 ///轮播图banner

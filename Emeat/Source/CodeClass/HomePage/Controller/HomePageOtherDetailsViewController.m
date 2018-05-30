@@ -8,6 +8,8 @@
 
 #import "HomePageOtherDetailsViewController.h"
 
+#import "HomePageDetailsViewController.h"
+
 @interface HomePageOtherDetailsViewController ()<UIWebViewDelegate>
 
 @end
@@ -25,6 +27,7 @@
     
     webView.scalesPageToFit = YES;//自动对页面进行缩放以适应屏幕
     webView.detectsPhoneNumbers = YES;//自动检测网页上的电话号码，单击可以拨打
+    webView.delegate = self;
     [self.view addSubview:webView];
     
     NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
@@ -34,9 +37,47 @@
 }
 
 
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+      NSString *tit = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];//获取当前页面的title
+    DLog(@"标题 ==== == == = == = == ==== %@" ,tit);
+    self.navItem.title = tit;
 
+}
 
-
+#pragma mark = webview 代理方法
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    
+    NSString *requestString = [[request URL] absoluteString];
+    DLog(@"webView========== %@" ,requestString);
+    if ([requestString rangeOfString:@"SP"].location != NSNotFound){
+        
+        
+        
+        NSArray *array = [requestString componentsSeparatedByString:@"SP"]; //从字符A中分隔成2个元素的数组
+        HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        VC.fromBaner = @"1";
+        VC.detailsId = [NSString stringWithFormat:@"SP%@" ,[array lastObject]];
+        [self.navigationController pushViewController:VC animated:YES];
+        
+        return NO;
+        
+    }else if ([requestString rangeOfString:@"999"].location != NSNotFound){
+        
+        return  YES;
+        
+    }else {
+        
+//        NSString *jsStr = [NSString stringWithFormat:@"getCount()"];
+//        NSString *a=   [self.myWebView stringByEvaluatingJavaScriptFromString:jsStr];
+//        if ([a isEqualToString:@"1"]) {
+//            self.attendPeople = @"1";
+//        }
+        return YES;
+    }
+   
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

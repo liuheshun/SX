@@ -724,7 +724,6 @@
         HomePageModel *model = self.bannerMarray[index];
         
         DLog(@"轮播图详情页======= %@" ,model.bannerUrl);
-
         
         if ([model.bannerUrl containsString:@"SP"]) {
             VC.fromBaner = @"1";

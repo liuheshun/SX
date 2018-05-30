@@ -22,7 +22,8 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 ///选择的地址
 @property (nonatomic,strong) NSString *selectAddressString;
 
-
+@property (nonatomic,strong) NSMutableArray *specsListMarray;
+@property (nonatomic,strong) NSString *homePageDetailsId;
 
 ///空状态view
 -(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView;

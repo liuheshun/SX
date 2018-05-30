@@ -1,4 +1,4 @@
-//
+  //
 //  HomePageDetailsViewController.m
 //  Emeat
 //
@@ -13,7 +13,9 @@
 #import "LoginViewController.h"
 #import "HomePageDetailsBuyNoticeView.h"
 #import "HomePageShoppingDetailsTableViewCell.h"
-@interface HomePageDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface HomePageDetailsViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
+//轮播图
+@property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
 
 @property (nonatomic,strong) UITableView *tableView;
 
@@ -26,8 +28,11 @@
 ///详情图片数据源
 @property (nonatomic,strong) NSMutableArray *detailsDataArray;
 
-///规格
+///商品详情
 @property (nonatomic,strong) NSMutableArray *headDataArray;
+
+///多规格
+@property (nonatomic,strong) NSMutableArray *specsListMarray;
 
 
 @end
@@ -55,7 +60,10 @@
     self.navItem.title = @"商品详情";
     [self showNavBarItemRight];
     isClickGoods = YES;
-   
+//    self.bannerDataArray = [NSMutableArray array];
+//    self.detailsDataArray = [NSMutableArray array];
+//    self.headDataArray = [NSMutableArray array];
+//    self.specsListMarray = [NSMutableArray array];
     [self requsetDetailsData];
     [self showNavBarLeftItem ];
   
@@ -63,21 +71,10 @@
 
 
 -(void)showNavBarLeftItem{
-    //    NSArray *viewcontrollers=self.navigationController.viewControllers;
-    //    if (viewcontrollers.count>1) {
-    //        if ([viewcontrollers objectAtIndex:viewcontrollers.count-1]==self) {
-    //            //push方式 判断页面是否存在push
-    //创建一个左边按钮
+    
     self.leftButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"fanhui"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(leftItemAction)];
     [self.navBar pushNavigationItem:self.navItem animated:NO];
     [self.navItem setLeftBarButtonItem:self.leftButton];
-    
-    //        }
-    //    }
-    //    else{
-    //        //present方式
-    //    }
-    
     
     
 }
@@ -90,11 +87,6 @@
 }
 
 
-
-
-
-
-
 #pragma mark = 商品详情数据
 
 -(void)requsetDetailsData{
@@ -102,6 +94,7 @@
     self.bannerDataArray = [NSMutableArray array];
     self.detailsDataArray = [NSMutableArray array];
     self.headDataArray = [NSMutableArray array];
+    self.specsListMarray = [NSMutableArray array];
     NSString *str;
     if ([self.fromBaner isEqualToString:@"1"]) {////来自banner
         str = [NSString stringWithFormat:@"%@/mobile/commodity/commodityDeatilByCode?commodityCode=%@" ,baseUrl ,self.detailsId];
@@ -130,6 +123,13 @@
                         detailsModel.commodityDetail = imvString;
                         [self.detailsDataArray addObject:detailsModel];
                     }
+                    
+                    for (NSDictionary *specsListDic in returnData[@"data"][@"specsList"]) {
+                        HomePageModel *specsListModel = [HomePageModel yy_modelWithJSON:specsListDic];
+                        [self.specsListMarray addObject:specsListModel];
+                    }
+                    [GlobalHelper shareInstance].specsListMarray = self.specsListMarray;
+                    [GlobalHelper shareInstance].homePageDetailsId = self.detailsId;
                     [SVProgressHUD dismiss];
                     [self.view addSubview:self.tableView];
                     [self.view addSubview:self.bottomView];
@@ -254,9 +254,7 @@
     if (!image) {
         
         image = [UIImage imageNamed:@"small_placeholder"];
-
     }
-    
     //手动计算cell
     CGFloat imgHeight = image.size.height * [UIScreen mainScreen].bounds.size.width / image.size.width;
     model.cellHeight = imgHeight;
@@ -268,15 +266,27 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-        return (426+55+150)*kScale;
+        return (426+55+150+60)*kScale;
     }
     return 15;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-            self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, (426+55+150)*kScale)];
-            [self.headView setSDCycleScrollView:self.bannerDataArray];
+            self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, (426+55+150+60)*kScale)];
+//            [self.headView setSDCycleScrollView:self.bannerDataArray];
+        
+        
+        SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 300*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"商品主图加载"]];   //placeholder
+        cycleScrollView.imageURLStringsGroup = self.bannerDataArray;
+        cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
+        cycleScrollView.showPageControl = YES;//是否显示分页控件
+        cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
+        [self.headView addSubview:cycleScrollView];
+        self.cycleScrollView = cycleScrollView;
+        
+        
+        
         if (self.headDataArray.count!=0) {
             HomePageModel *model = self.headDataArray[section];
             [self.headView configHeadViewWithModel:model];
@@ -286,23 +296,27 @@
             
             __weak __typeof(self) weakSelf = self;
             self.headView.changeGoodsDetailsBlock = ^{
-                
                 isClickGoods = YES;
                 [weakSelf.tableView reloadData];
             };
             
             self.headView.changeCommentDetailsBlock = ^{
-                
                 isClickGoods = NO;
                 [weakSelf.tableView reloadData];
             };
-    
         
+
+        self.headView.returnSelectIndex = ^(NSInteger selectIndex) {
+            HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[selectIndex];
+            weakSelf.detailsId = [NSString stringWithFormat:@"%ld" ,model.commodityId] ;
+            [weakSelf requsetDetailsData];
+
+        };
         self.headView.backgroundColor = [UIColor whiteColor];
         return self.headView;
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15)];
-    view.backgroundColor = [UIColor redColor];
+    view.backgroundColor = [UIColor whiteColor];
     return view;
 }
 
@@ -340,7 +354,7 @@
         cell1 = [[HomePageShoppingDetailsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"shoppingDetails_cell"];
         
         [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
-        cell1.backgroundColor = [UIColor orangeColor];
+        cell1.backgroundColor = [UIColor whiteColor];
         
     }
     if (self.detailsDataArray.count!=0) {
@@ -352,6 +366,11 @@
     return cell1;
     }
 }
+
+
+
+
+
 
 #pragma mark  = 点击事件
 

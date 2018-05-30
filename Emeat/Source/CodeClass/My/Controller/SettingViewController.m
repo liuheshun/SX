@@ -71,6 +71,12 @@
             }
            
         }
+        case 2:
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@" ,appStoreURL]]];
+            DLog(@"版本更新");
+            break;
+        }
         default:
             break;
     }
@@ -114,8 +120,12 @@
 
 
 -(void)setUI{
-    NSArray *textArray = @[@"关于我们" ,@"意见反馈"];
-    for (int i = 0; i < 2; i ++) {
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *currentAppVersion = infoDic[@"CFBundleShortVersionString"];
+    DLog(@"当前版本== %@" , currentAppVersion);
+    currentAppVersion = [NSString stringWithFormat:@"版本更新 (当前版本V%@)" ,currentAppVersion];
+    NSArray *textArray = @[@"关于我们" ,@"意见反馈" ,currentAppVersion];
+    for (int i = 0; i < textArray.count; i ++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.view addSubview:btn];
         [btn setTitle:textArray[i] forState:0];
