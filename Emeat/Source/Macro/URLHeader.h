@@ -14,10 +14,10 @@
 #define appStoreURL @"https://itunes.apple.com/cn/app/%E8%B5%9B%E9%B2%9C/id1364356601?mt=8"
 
 ////URL:
-#define baseUrl @"http://beta.cyberfresh.cn/m"
-#define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
+#define baseUrl @"http://admin.cyberfresh.cn/m"
+#define loginBaseUrl @"http://admin.cyberfresh.cn/cas"
 ///设置的
-#define setbaseUrl @"http://beta.cyberfresh.cn"
+#define setbaseUrl @"http://admin.cyberfresh.cn"
 
 
 //
