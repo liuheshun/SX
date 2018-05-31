@@ -92,8 +92,9 @@
 
 -(void)moreSpecificationsBtnAction:(UIButton*)btn{
     if ([self respondsToSelector:@selector(returnSelectIndex)]) {
-        DLog(@"ttttttttt========= %ld" , btn.tag);
+       
         btn.selected = !btn.selected;
+       
         if (btn.selected == YES) {
             self.moreSpecificationsBtn.layer.borderColor = RGB(236, 31, 35, 1).CGColor;
             self.moreSpecificationsBtn.layer.borderWidth = 1;
@@ -104,6 +105,7 @@
             self.moreSpecificationslabel2.textColor =  RGB(136, 136, 136, 1);
             self.moreSpecificationsBtn.layer.borderColor = RGB(191, 191, 191, 1).CGColor;
             self.moreSpecificationsBtn.layer.borderWidth = 1;
+
         }
         self.returnSelectIndex(btn.tag);
     }
@@ -173,17 +175,16 @@
         NSString *string = model.specs;
         
         NSArray *array = [string componentsSeparatedByString:@"/"]; //从字符A中分隔成2个元素的数组
-        NSLog(@"ssss==sarray:%@",array); //结果是adfsfsfs和dfsdf
         label1.text =[NSString stringWithFormat:@"%@/" ,[array firstObject]];
         label2.text = [NSString stringWithFormat:@"%@" ,[array lastObject]];
-        
+       
         if (model.commodityId == [[GlobalHelper shareInstance].homePageDetailsId integerValue]) {
+            btn.userInteractionEnabled = NO;
             btn.layer.borderColor = RGB(236, 31, 35, 1).CGColor;
             btn.layer.borderWidth = 1;
             label1.textColor =  RGB(236, 31, 35, 1);
             label2.textColor =  RGB(236, 31, 35, 1);
         }
-        
         
         self.moreSpecificationsBtn = btn;
         self.moreSpecificationslabel1 = label1;

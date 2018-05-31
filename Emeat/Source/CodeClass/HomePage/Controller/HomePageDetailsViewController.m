@@ -113,7 +113,8 @@
             if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
                 
                 HomePageModel *bannerModel = [HomePageModel yy_modelWithJSON:returnData[@"data"]];
-               
+                [GlobalHelper shareInstance].homePageDetailsId = [NSString stringWithFormat:@"%ld" ,bannerModel.id];
+
                 CGSize r = [bannerModel.commodityDesc boundingRectWithSize:CGSizeMake(kWidth-30*kScale, 1000*kScale) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
                 self.headViewHeiht = (650)*kScale +r.height;
                 if (bannerModel) {
@@ -133,8 +134,6 @@
                         [self.specsListMarray addObject:specsListModel];
                     }
                     [GlobalHelper shareInstance].specsListMarray = self.specsListMarray;
-                    [GlobalHelper shareInstance].homePageDetailsId = self.detailsId;
-                    [SVProgressHUD dismiss];
                     [self.view addSubview:self.tableView];
                     [self.view addSubview:self.bottomView];
                     [self setBottomViewFrame];
@@ -147,12 +146,15 @@
             }else{
                 [self alertMessage:returnData[@"msg"] willDo:nil];
             }            
-            
+        [SVProgressHUD dismiss];
+
         } failureBlock:^(NSError *error) {
             
-            
+            [SVProgressHUD dismiss];
+
         } showHUD:NO];
-        
+    [SVProgressHUD show];
+
 
 }
 
@@ -313,6 +315,7 @@
         self.headView.returnSelectIndex = ^(NSInteger selectIndex) {
             HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[selectIndex];
             weakSelf.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId] ;
+            weakSelf.fromBaner = @"0"; ///此处不能传sp的ID
             [weakSelf requsetDetailsData];
 
         };
