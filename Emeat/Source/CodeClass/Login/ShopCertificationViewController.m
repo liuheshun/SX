@@ -126,7 +126,7 @@
     [MHAsiNetworkHandler startMonitoring];
     NSString *url;
     if ([self.isRemakeShopCerific isEqualToString:@"1"]) {//重新认证
-        [dic1 setValue:[NSString stringWithFormat:@"%ld" ,self.shopCertifiMyModel.storeId] forKey:@"id"];
+        [dic1 setValue:[NSString stringWithFormat:@"%ld" ,(long)self.shopCertifiMyModel.storeId] forKey:@"id"];
         url = [NSString stringWithFormat:@"%@/auth/mobile/store/updateStore" ,baseUrl];
     }else{
         url = [NSString stringWithFormat:@"%@/auth/mobile/store/newStore" ,baseUrl];

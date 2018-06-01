@@ -182,7 +182,8 @@
                     [self.shopCertifiMarray addObject:model1];
                 }else{
                     //清空认证信息 ,不能重新认证店铺,需新增
-                    
+                    [self.shopCertifiMarray removeAllObjects];
+
                 }
                 
             }else{
@@ -381,10 +382,11 @@
         VC.isRemakeShopCerific = @"1";
         VC.shopCertifiMyModel = [self.shopCertifiMarray firstObject];
         [self.navigationController pushViewController:VC animated:YES];
-    }else{
+    }else{                    [self.shopCertifiMarray removeAllObjects];
+
         //首次认证
         ShopCertificationViewController *VC = [ShopCertificationViewController new];
-        VC.isRemakeShopCerific = @"1";
+        VC.isRemakeShopCerific = @"0";
         VC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:VC animated:YES];
 
