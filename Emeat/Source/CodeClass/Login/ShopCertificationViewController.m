@@ -296,10 +296,15 @@
         VC.returnSearchAddressBlock = ^(Location *location) {
             
             if ([location.administrativeArea isEqualToString:location.city]) {//判断是否为直辖市
-                weakSelf.shopCeritficationView.textFieldCity.text = [NSString stringWithFormat:@"%@%@%@" ,location.city,location.subLocality,location.name];
-                //                weakSelf.ShopAddress = location.city;
+                NSString *s = [NSString stringWithFormat:@"%@%@%@" ,location.city,location.subLocality,location.name];
+                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+                weakSelf.shopCeritficationView.textFieldCity.text = s;
+                // weakSelf.ShopAddress = location.city;
             }else{
-                weakSelf.shopCeritficationView.textFieldCity.text = [NSString stringWithFormat:@"%@%@%@%@" ,location.administrativeArea ,location.city,location.subLocality ,location.name];
+                
+                NSString *s = [NSString stringWithFormat:@"%@%@%@%@" ,location.administrativeArea ,location.city,location.subLocality ,location.name];
+                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+                weakSelf.shopCeritficationView.textFieldCity.text = s;
                 
                 //                weakSelf.ShopAddress = location.administrativeArea;
             }

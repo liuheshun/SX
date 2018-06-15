@@ -446,6 +446,7 @@
 		16EE103C1FECD6970099DA91 /* AboutUsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		16EE103E1FECD7080099DA91 /* SuggestionFeedbackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuggestionFeedbackViewController.h; sourceTree = "<group>"; };
 		16EE103F1FECD7080099DA91 /* SuggestionFeedbackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuggestionFeedbackViewController.m; sourceTree = "<group>"; };
+		16F01D1A20CA67CC00AA7E71 /* Emeat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emeat.entitlements; sourceTree = "<group>"; };
 		16F0AF44207F9AE10093FE7D /* MyHeadLonginOutView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyHeadLonginOutView.h; sourceTree = "<group>"; };
 		16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyHeadLonginOutView.m; sourceTree = "<group>"; };
 		16F3A3B520B7DFB300ACDED8 /* MessageCenterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCenterViewController.h; sourceTree = "<group>"; };
@@ -1154,6 +1155,7 @@
 		16FB31351FAC5D9D00049580 /* Emeat */ = {
 			isa = PBXGroup;
 			children = (
+				16F01D1A20CA67CC00AA7E71 /* Emeat.entitlements */,
 				16CFD7201FB2A6F20015F2C1 /* Source */,
 			);
 			path = Emeat;
@@ -1292,6 +1294,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -1714,6 +1719,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-1";
+				CODE_SIGN_ENTITLEMENTS = Emeat/Emeat.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
@@ -1814,6 +1820,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-1";
+				CODE_SIGN_ENTITLEMENTS = Emeat/Emeat.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;

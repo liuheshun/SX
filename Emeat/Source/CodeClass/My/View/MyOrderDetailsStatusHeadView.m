@@ -39,6 +39,7 @@
 
 -(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel{
     DLog(@"sssssssssssssssss=========== 状态码= %ld  周期性用户码 = %ld" ,orderModel.status , orderModel.periodic);
+    
     if (orderModel.status == 10){
         self.orderStatusLab.text = @"待支付";
         self.orderStatusDetailsLab.text = @"订单提交成功,等待用户支付";
@@ -48,7 +49,7 @@
             
             
             [self addSubview:self.myOrderDetailsStatusAccountHeadView];
-            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            [self.sendBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_left).with.offset(0);
                 make.top.equalTo(self.myOrderDetailsStatusAccountHeadView.mas_bottom).with.offset(20*kScale);
                 make.right.equalTo(self.mas_right).with.offset(0);
@@ -57,7 +58,7 @@
             
         }else {
             
-            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            [self.sendBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_left).with.offset(0);
                 make.top.equalTo(self.statusBgImv.mas_bottom).with.offset(10*kScale);
                 make.right.equalTo(self.mas_right).with.offset(0);
@@ -79,7 +80,7 @@
             
             
             [self addSubview:self.myOrderDetailsStatusAccountHeadView];
-            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            [self.sendBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_left).with.offset(0);
                 make.top.equalTo(self.myOrderDetailsStatusAccountHeadView.mas_bottom).with.offset(20*kScale);
                 make.right.equalTo(self.mas_right).with.offset(0);
@@ -88,7 +89,7 @@
             
         }else {
             
-            [self.sendBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            [self.sendBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_left).with.offset(0);
                 make.top.equalTo(self.statusBgImv.mas_bottom).with.offset(10*kScale);
                 make.right.equalTo(self.mas_right).with.offset(0);

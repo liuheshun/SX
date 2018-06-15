@@ -33,6 +33,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     totalPage = 1;
+    [self.tableView.mj_footer endRefreshing];
 
     [self requestDataWithTotalPage:totalPage];
 

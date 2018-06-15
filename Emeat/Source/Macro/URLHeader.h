@@ -14,9 +14,9 @@
 #define appStoreURL @"https://itunes.apple.com/cn/app/%E8%B5%9B%E9%B2%9C/id1364356601?mt=8"
 
 ////URL:
-#define baseUrl @"http://admin.cyberfresh.cn/m"
-#define loginBaseUrl @"http://admin.cyberfresh.cn/cas"
-///设置的
+#define baseUrl @"http://beta.cyberfresh.cn/m"
+#define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
+//设置的
 #define setbaseUrl @"http://admin.cyberfresh.cn"
 
 
@@ -26,9 +26,9 @@
 //#define loginBaseUrl @"http://192.168.0.141/cas"
 
 ////URL:本地
-//#define baseUrl @"http://192.168.0.194/m"
 //#define loginBaseUrl @"http://192.168.0.194/cas"
-//
+//#define baseUrl @"http://192.168.0.194/m"
+
 
 ///获取版本号
 ///http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1

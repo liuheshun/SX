@@ -486,7 +486,6 @@
  
         ///20分钟
         DLog(@"sdfffffffffffffffff============ %f" ,timeInterval);
-
         timeInterval = 20*60 - timeInterval;
         if (timeInterval >0) {
             
@@ -552,7 +551,7 @@
         else
         {
             //取消订单
-            [self requsetCancelOrderData];
+           // [self requsetCancelOrderData];
         }
         
  
