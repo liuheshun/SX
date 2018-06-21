@@ -70,6 +70,8 @@
     [self.addressDic setValuesForKeysWithDictionary:checkDic];
     
     DLog(@"地址详细字典======== ==== %@" ,self.addressDic);
+    [self.addressDic setValue:@"ios" forKey:@"mtype"];
+
     NSString *url;
     if (_isCanRemove == NO) {
         //DLog(@"更新地址");
@@ -195,16 +197,23 @@
         VC.returnSearchAddressBlock = ^(Location *location) {
             
             if ([location.administrativeArea isEqualToString:location.city]) {//判断是否为直辖市
-                 weakSelf.addNewAddressView.textFieldCity.text = [NSString stringWithFormat:@"%@%@" ,location.city,location.subLocality];
+                NSString *s = [NSString stringWithFormat:@"%@%@" ,location.city,location.subLocality];
+                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+                 weakSelf.addNewAddressView.textFieldCity.text = s;
                 weakSelf.receiverProvince = location.city;
             }else{
-            weakSelf.addNewAddressView.textFieldCity.text = [NSString stringWithFormat:@"%@%@%@" ,location.administrativeArea ,location.city,location.subLocality];
+                NSString *s = [NSString stringWithFormat:@"%@%@%@" ,location.administrativeArea ,location.city,location.subLocality];
+                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+            weakSelf.addNewAddressView.textFieldCity.text = s;
                 
                 weakSelf.receiverProvince = location.administrativeArea;
             }
-            weakSelf.addNewAddressView.textFieldSubstreet.text = [NSString stringWithFormat:@"%@%@",location.thoroughfare ,location.name];
             
-            weakSelf.receiverProvince = [NSString stringWithFormat:@"%@,%@" ,weakSelf.addNewAddressView.textFieldCity.text ,weakSelf.addNewAddressView.textFieldSubstreet.text ];
+            NSString *s = [NSString stringWithFormat:@"%@%@",location.thoroughfare ,location.name];
+            s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+            weakSelf.addNewAddressView.textFieldSubstreet.text = s;
+            
+            weakSelf.receiverProvince = [[NSString stringWithFormat:@"%@,%@" ,weakSelf.addNewAddressView.textFieldCity.text ,weakSelf.addNewAddressView.textFieldSubstreet.text ] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];
            
         };
         [weakSelf.navigationController pushViewController:VC animated:YES];

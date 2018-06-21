@@ -383,6 +383,8 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
     
     [dic setObject:@"1" forKey:@"quatity"];
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         //
@@ -486,6 +488,7 @@
 
     [dic setObject:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setObject:@"1" forKey:@"quatity"];
+    [dic setValue:@"ios" forKey:@"mtype"];
 
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/update" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
 
@@ -529,6 +532,8 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"commodityId"];
 
     [dic setObject:@"1" forKey:@"quatity"];
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {

@@ -94,6 +94,8 @@
         //[dic setValue :[user valueForKey:@"shoppingId"] forKey:@"shippingId"];
         [dic setValue:self.shoppingId forKey:@"shippingId"];
         [dic setValue:self.conmmentStr forKey:@"comment"];
+        [dic setValue:@"ios" forKey:@"mtype"];
+
         DLog(@"q确认订单信息 dic == %@" ,dic);
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

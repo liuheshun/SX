@@ -551,7 +551,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     [dic setValue:curTime forKey:@"curTime"];
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
 #pragma mark---------------------------------需要更改productID--------------------------------
     
     //[dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"productId"];
@@ -659,7 +659,8 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     
     [dic setObject:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setObject:@"-1" forKey:@"quatity"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/update" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -712,7 +713,8 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     [dic setValue:curTime forKey:@"curTime"];
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/get_cart_product_count" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
@@ -768,7 +770,8 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     //    [dic setObject:@"7" forKey:@"userId"];
     [dic setObject:[NSString stringWithFormat:@"%ld",productId] forKey:@"commodityIds"];
     //http://192.168.0.124:8080/cart/delete_product?userId=7&productIds=111
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/delete_product", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         

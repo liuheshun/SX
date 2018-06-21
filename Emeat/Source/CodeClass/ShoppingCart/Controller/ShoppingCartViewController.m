@@ -233,6 +233,8 @@
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"获取订单信息 dic == %@" ,dic);
     NSMutableArray *orderListMarray = [NSMutableArray array];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -290,6 +292,7 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setObject:commodityId forKey:@"commodityId"];
+    [dic setValue:@"ios" forKey:@"mtype"];
 
     ///商品
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/select" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -347,7 +350,8 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setObject:commodityId forKey:@"commodityId"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
    
     //[dic setObject:productIds forKey:@"productIds"];
 
@@ -423,7 +427,8 @@
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     //[dic setObject:productIds forKey:@"productIds"];
     
@@ -482,7 +487,8 @@
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     ///商品
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/select_all" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"全部选中商品结算=== %@   %@" ,returnData[@"msg"] , returnData);
@@ -561,6 +567,8 @@
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/list" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         [self.ShoppingListDataMarray removeAllObjects];
 
@@ -664,7 +672,8 @@
     
     [dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"commodityId"];
     [dic setObject:@"1" forKey:@"quatity"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"猜你喜欢====dic====%@   %ld" ,dic ,productId);
     
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -714,7 +723,8 @@
     [dic setObject:ticket forKey:@"ticket"];
 //    [dic setObject:@"7" forKey:@"userId"];
     [dic setObject:[NSString stringWithFormat:@"%ld",productId] forKey:@"commodityIds"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/delete_product", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"删除 == %@" , returnData);
@@ -776,7 +786,8 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setValue:[NSString stringWithFormat:@"%ld" ,quatity] forKey:@"quatity"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/update" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"购物车加减购物车===%@" ,returnData);

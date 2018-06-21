@@ -103,6 +103,8 @@
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:@"60" forKey:@"status"];
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"待收货 ============ %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 

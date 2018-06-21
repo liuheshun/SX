@@ -121,7 +121,8 @@
     [dic1 setValue:self.ShopInviteCode forKey:@"userName"];
     //    ///
     //    [dic1 setValue:@"0" forKey:@"isDeleted"];
-    
+    [dic1 setValue:@"ios" forKey:@"mtype"];
+
     //parentId=0
     [MHAsiNetworkHandler startMonitoring];
     NSString *url;

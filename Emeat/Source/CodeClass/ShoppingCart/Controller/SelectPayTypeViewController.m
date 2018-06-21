@@ -291,6 +291,7 @@
     [dic setValue:payId forKey:@"payId"];
     [dic setValue:@" " forKey:@"bankType"];
     [dic setValue:@" " forKey:@"transactionType"];
+    [dic setValue:@"ios" forKey:@"mtype"];
 
     DLog(@"周期性付款====== dic == %@ 订单号===%@  支付方式==== %@ " ,dic , self.orderNo ,self.selectPayType );
 
@@ -430,7 +431,8 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:orderNo forKey:@"orderNo"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
     ///auth/order/mpayed
     

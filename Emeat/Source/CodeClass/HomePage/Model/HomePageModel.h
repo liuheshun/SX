@@ -12,7 +12,6 @@
 
 @interface HomePageModel : NSObject<YYModel>
 ///默认商品分页数
-
 @property (nonatomic,assign) NSInteger pages;
 ///每页展示的商品数量
 @property (nonatomic,assign) NSInteger pageSize;

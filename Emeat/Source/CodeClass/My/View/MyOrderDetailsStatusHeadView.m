@@ -132,7 +132,7 @@
         [self.statusImv setImage:[UIImage imageNamed:@"yiwancheng"] forState:0];
 
         
-    }else if (orderModel.status == 0){
+    }else if (orderModel.status == 0 || orderModel.status == 51 || orderModel.status == 52){
         self.orderStatusLab.text = @"已取消";
         self.orderStatusDetailsLab.text = @"用户已取消订单";
         

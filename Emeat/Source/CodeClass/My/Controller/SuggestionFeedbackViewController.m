@@ -59,6 +59,7 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.conmmentString forKey:@"feedBack"];
+    [dic setValue:@"ios" forKey:@"mtype"];
 
     DLog(@"反馈=== %@" ,dic);
     

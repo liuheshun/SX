@@ -17,7 +17,7 @@
 #define baseUrl @"http://beta.cyberfresh.cn/m"
 #define loginBaseUrl @"http://beta.cyberfresh.cn/cas"
 //设置的
-#define setbaseUrl @"http://admin.cyberfresh.cn"
+#define setbaseUrl @"http://beta.cyberfresh.cn"
 
 
 //

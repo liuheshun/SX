@@ -93,7 +93,8 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -168,7 +169,8 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     DLog(@"取消订单dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -209,7 +211,8 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     DLog(@"确认收货dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/confirm" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -324,7 +327,8 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     [SVProgressHUD showProgress:-1 status:@"正在上传,请稍等."];
    NSString* path = [[NSString stringWithFormat:@"%@/auth/order/upVoucher" ,baseUrl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -678,7 +682,7 @@
         [self resetTableViewFrames];
 
     }
-    else if (self.status == 0)///已取消
+    else if (self.status == 0 || self.status == 51 || self.status == 52)///已取消
     {
         [self.orderInfoBottomView removeFromSuperview];
         [self resetTableViewFrames];
@@ -847,7 +851,8 @@
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:imageString forKey:@"images"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/modificationVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -945,14 +950,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

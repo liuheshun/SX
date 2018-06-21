@@ -129,7 +129,8 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:orderNo forKey:@"orderNo"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

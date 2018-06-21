@@ -138,6 +138,8 @@
         [dic setValue:checkSum forKey:@"checkSum"];
         [dic setValue:ticket forKey:@"ticket"];
         [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
+        [dic setValue:@"ios" forKey:@"mtype"];
+
         DLog(@"2我的接口=== %@" ,dic);
         [MHAsiNetworkHandler startMonitoring];
         
@@ -258,7 +260,8 @@
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
-    
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     //使用日期生成图片名称
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyyMMddHHmmss";
@@ -355,6 +358,8 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:userNameString forKey:@"nickname"];
+    [dic setValue:@"ios" forKey:@"mtype"];
+
     DLog(@"修改用户昵称dic==== %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 
