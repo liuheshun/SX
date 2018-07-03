@@ -49,14 +49,23 @@
     [self.descLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(hDesc));
     }];
+    if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
+        self.pricelab.text =[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100];
+    }else{
+        self.pricelab.text =[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100];
+    }
+//    self.pricelab.text = [NSString stringWithFormat:@"¥%.2f元/kg" ,(float)model.unitPrice/100];
     
-    self.pricelab.text = [NSString stringWithFormat:@"¥%.2f元/kg" ,(float)model.unitPrice/100];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.pricelab.text];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.pricelab.text];
+    NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.unitPrice/100]];
+    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+
+    self.pricelab.attributedText = str;
     
-    [string addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:NSMakeRange(0, string.length-4)];
     
-    [string addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:NSMakeRange(string.length-4, string.length - (string.length-4))];
-    self.pricelab.attributedText = string;
+    
+    
+    
     self.weightLab.text = model.size2;
     
 //    CGRect moreSpecificationsBtnRect = self.moreSpecificationsBgView.frame;
@@ -328,7 +337,7 @@
     if (!_pricelab) {
         _pricelab = [[UILabel alloc] init];
         _pricelab.font = [UIFont systemFontOfSize:17.0f*kScale];
-        _pricelab.textColor = RGB(236, 31, 35, 1);
+        _pricelab.textColor = RGB(136, 136, 136, 1);
         
     }
     return _pricelab;

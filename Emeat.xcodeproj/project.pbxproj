@@ -48,6 +48,13 @@
 		165581152008F8D100F33D6B /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1655810D2008F8D100F33D6B /* README.txt */; };
 		165629BD20A051A8002D6EC8 /* VersionUpdateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 165629BC20A051A8002D6EC8 /* VersionUpdateView.m */; };
 		165629C020A05715002D6EC8 /* HWPopTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 165629BF20A05714002D6EC8 /* HWPopTool.m */; };
+		165BCC9F20E1F6C6006883FB /* InvoiceHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCC9E20E1F6C6006883FB /* InvoiceHistoryViewController.m */; };
+		165BCCA220E215A8006883FB /* InvoiceHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCA120E215A8006883FB /* InvoiceHistoryTableViewCell.m */; };
+		165BCCA520E2214E006883FB /* InvoiceHistoryDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCA420E2214E006883FB /* InvoiceHistoryDetailsViewController.m */; };
+		165BCCA820E2320B006883FB /* InvoiceListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCA720E2320B006883FB /* InvoiceListModel.m */; };
+		165BCCAB20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCAA20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m */; };
+		165BCCAE20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCAD20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m */; };
+		165BCCB120E35D82006883FB /* InvoiceDetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCB020E35D82006883FB /* InvoiceDetailsModel.m */; };
 		166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166DACF71FC6B9F500119444 /* HomePageNavView.m */; };
 		1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */; };
 		1679D1BE204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */; };
@@ -79,6 +86,17 @@
 		16901CFE1FDE6A0A0080762A /* MyAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901CFD1FDE6A0A0080762A /* MyAddressView.m */; };
 		16901D421FDF97360080762A /* SearchLocationAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901D411FDF97360080762A /* SearchLocationAddressViewController.m */; };
 		16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */; };
+		16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992A20DB8B7E00D9F101 /* InvoiceListViewController.m */; };
+		16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992D20DB909100D9F101 /* InvoiceListTableViewCell.m */; };
+		16B0993120DBAA2A00D9F101 /* InvoiceListBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0993020DBAA2A00D9F101 /* InvoiceListBottomView.m */; };
+		16B0993420DC94A900D9F101 /* SelectInvoiceTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0993320DC94A900D9F101 /* SelectInvoiceTypesViewController.m */; };
+		16B0993720DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0993620DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m */; };
+		16B0993A20DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0993920DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m */; };
+		16B0993D20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0993C20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m */; };
+		16B0994020E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0993F20E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m */; };
+		16B0994320E1D1FD00D9F101 /* InvoicePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0994220E1D1FD00D9F101 /* InvoicePreviewView.m */; };
+		16B0994620E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0994520E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m */; };
+		16B0994920E1EC9A00D9F101 /* InvoiceSubmitResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0994820E1EC9A00D9F101 /* InvoiceSubmitResultsView.m */; };
 		16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E0201337BF00C4642C /* LDImagePicker.m */; };
 		16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E2201337BF00C4642C /* VPImageCropperViewController.m */; };
 		16B750E82013386E00C4642C /* LDActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B750E72013386E00C4642C /* LDActionSheet.m */; };
@@ -252,6 +270,20 @@
 		165629BC20A051A8002D6EC8 /* VersionUpdateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VersionUpdateView.m; sourceTree = "<group>"; };
 		165629BE20A05714002D6EC8 /* HWPopTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWPopTool.h; sourceTree = "<group>"; };
 		165629BF20A05714002D6EC8 /* HWPopTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWPopTool.m; sourceTree = "<group>"; };
+		165BCC9D20E1F6C6006883FB /* InvoiceHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceHistoryViewController.h; sourceTree = "<group>"; };
+		165BCC9E20E1F6C6006883FB /* InvoiceHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceHistoryViewController.m; sourceTree = "<group>"; };
+		165BCCA020E215A8006883FB /* InvoiceHistoryTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceHistoryTableViewCell.h; sourceTree = "<group>"; };
+		165BCCA120E215A8006883FB /* InvoiceHistoryTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceHistoryTableViewCell.m; sourceTree = "<group>"; };
+		165BCCA320E2214D006883FB /* InvoiceHistoryDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = InvoiceHistoryDetailsViewController.h; path = "/Users/w/Desktop/赛鲜/Emeat/Source/CodeClass/My/Controller/InvoiceViewController/InvoiceHistoryDetailsViewController.h"; sourceTree = "<absolute>"; };
+		165BCCA420E2214E006883FB /* InvoiceHistoryDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = InvoiceHistoryDetailsViewController.m; path = "/Users/w/Desktop/赛鲜/Emeat/Source/CodeClass/My/Controller/InvoiceViewController/InvoiceHistoryDetailsViewController.m"; sourceTree = "<absolute>"; };
+		165BCCA620E2320B006883FB /* InvoiceListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListModel.h; sourceTree = "<group>"; };
+		165BCCA720E2320B006883FB /* InvoiceListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceListModel.m; sourceTree = "<group>"; };
+		165BCCA920E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceHistoryDetailsTableViewCell.h; sourceTree = "<group>"; };
+		165BCCAA20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceHistoryDetailsTableViewCell.m; sourceTree = "<group>"; };
+		165BCCAC20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceHistoryCheckOrderViewController.h; sourceTree = "<group>"; };
+		165BCCAD20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceHistoryCheckOrderViewController.m; sourceTree = "<group>"; };
+		165BCCAF20E35D82006883FB /* InvoiceDetailsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceDetailsModel.h; sourceTree = "<group>"; };
+		165BCCB020E35D82006883FB /* InvoiceDetailsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceDetailsModel.m; sourceTree = "<group>"; };
 		166DACF61FC6B9F500119444 /* HomePageNavView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageNavView.h; sourceTree = "<group>"; };
 		166DACF71FC6B9F500119444 /* HomePageNavView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageNavView.m; sourceTree = "<group>"; };
 		1679D1B3204D249A009C2E25 /* MyAddressTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAddressTableViewCell.h; sourceTree = "<group>"; };
@@ -309,6 +341,28 @@
 		16901D411FDF97360080762A /* SearchLocationAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLocationAddressViewController.m; sourceTree = "<group>"; };
 		16AA64F5208DBCA0001496E8 /* MMMyCustomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMMyCustomView.h; sourceTree = "<group>"; };
 		16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMMyCustomView.m; sourceTree = "<group>"; };
+		16B0992920DB8B7E00D9F101 /* InvoiceListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListViewController.h; sourceTree = "<group>"; };
+		16B0992A20DB8B7E00D9F101 /* InvoiceListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceListViewController.m; sourceTree = "<group>"; };
+		16B0992C20DB909100D9F101 /* InvoiceListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListTableViewCell.h; sourceTree = "<group>"; };
+		16B0992D20DB909100D9F101 /* InvoiceListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceListTableViewCell.m; sourceTree = "<group>"; };
+		16B0992F20DBAA2A00D9F101 /* InvoiceListBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListBottomView.h; sourceTree = "<group>"; };
+		16B0993020DBAA2A00D9F101 /* InvoiceListBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceListBottomView.m; sourceTree = "<group>"; };
+		16B0993220DC94A900D9F101 /* SelectInvoiceTypesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectInvoiceTypesViewController.h; sourceTree = "<group>"; };
+		16B0993320DC94A900D9F101 /* SelectInvoiceTypesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectInvoiceTypesViewController.m; sourceTree = "<group>"; };
+		16B0993520DC9F2500D9F101 /* SelectInvoiceTypesHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectInvoiceTypesHeadView.h; sourceTree = "<group>"; };
+		16B0993620DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectInvoiceTypesHeadView.m; sourceTree = "<group>"; };
+		16B0993820DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectInvoiceTypesDetailsTableViewCell.h; sourceTree = "<group>"; };
+		16B0993920DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectInvoiceTypesDetailsTableViewCell.m; sourceTree = "<group>"; };
+		16B0993B20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectInvoiceTypesReceiveAddressTableViewCell.h; sourceTree = "<group>"; };
+		16B0993C20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectInvoiceTypesReceiveAddressTableViewCell.m; sourceTree = "<group>"; };
+		16B0993E20E0E98E00D9F101 /* SpecialInvoiceTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialInvoiceTableViewCell.h; sourceTree = "<group>"; };
+		16B0993F20E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialInvoiceTableViewCell.m; sourceTree = "<group>"; };
+		16B0994120E1D1FD00D9F101 /* InvoicePreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoicePreviewView.h; sourceTree = "<group>"; };
+		16B0994220E1D1FD00D9F101 /* InvoicePreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoicePreviewView.m; sourceTree = "<group>"; };
+		16B0994420E1EA6000D9F101 /* InvoiceSubmitResultsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceSubmitResultsViewController.h; sourceTree = "<group>"; };
+		16B0994520E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceSubmitResultsViewController.m; sourceTree = "<group>"; };
+		16B0994720E1EC9A00D9F101 /* InvoiceSubmitResultsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceSubmitResultsView.h; sourceTree = "<group>"; };
+		16B0994820E1EC9A00D9F101 /* InvoiceSubmitResultsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceSubmitResultsView.m; sourceTree = "<group>"; };
 		16B750DF201337BF00C4642C /* LDImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LDImagePicker.h; sourceTree = "<group>"; };
 		16B750E0201337BF00C4642C /* LDImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LDImagePicker.m; sourceTree = "<group>"; };
 		16B750E1201337BF00C4642C /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
@@ -661,6 +715,45 @@
 			path = DDSearchManager;
 			sourceTree = "<group>";
 		};
+		16B0992820DB8AC500D9F101 /* InvoiceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				16B0992920DB8B7E00D9F101 /* InvoiceListViewController.h */,
+				16B0992A20DB8B7E00D9F101 /* InvoiceListViewController.m */,
+				16B0993220DC94A900D9F101 /* SelectInvoiceTypesViewController.h */,
+				16B0993320DC94A900D9F101 /* SelectInvoiceTypesViewController.m */,
+				16B0994420E1EA6000D9F101 /* InvoiceSubmitResultsViewController.h */,
+				16B0994520E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m */,
+				165BCC9D20E1F6C6006883FB /* InvoiceHistoryViewController.h */,
+				165BCC9E20E1F6C6006883FB /* InvoiceHistoryViewController.m */,
+				165BCCA320E2214D006883FB /* InvoiceHistoryDetailsViewController.h */,
+				165BCCA420E2214E006883FB /* InvoiceHistoryDetailsViewController.m */,
+				165BCCAC20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.h */,
+				165BCCAD20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m */,
+				16B0992C20DB909100D9F101 /* InvoiceListTableViewCell.h */,
+				16B0992D20DB909100D9F101 /* InvoiceListTableViewCell.m */,
+				16B0992F20DBAA2A00D9F101 /* InvoiceListBottomView.h */,
+				16B0993020DBAA2A00D9F101 /* InvoiceListBottomView.m */,
+				16B0993520DC9F2500D9F101 /* SelectInvoiceTypesHeadView.h */,
+				16B0993620DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m */,
+				16B0994120E1D1FD00D9F101 /* InvoicePreviewView.h */,
+				16B0994220E1D1FD00D9F101 /* InvoicePreviewView.m */,
+				16B0993820DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.h */,
+				16B0993920DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m */,
+				16B0993E20E0E98E00D9F101 /* SpecialInvoiceTableViewCell.h */,
+				16B0993F20E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m */,
+				16B0993B20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.h */,
+				16B0993C20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m */,
+				16B0994720E1EC9A00D9F101 /* InvoiceSubmitResultsView.h */,
+				16B0994820E1EC9A00D9F101 /* InvoiceSubmitResultsView.m */,
+				165BCCA020E215A8006883FB /* InvoiceHistoryTableViewCell.h */,
+				165BCCA120E215A8006883FB /* InvoiceHistoryTableViewCell.m */,
+				165BCCA920E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.h */,
+				165BCCAA20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m */,
+			);
+			path = InvoiceViewController;
+			sourceTree = "<group>";
+		};
 		16B750DE201337BF00C4642C /* LDImagePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -993,6 +1086,7 @@
 			children = (
 				162F96F220577DDB004EA49F /* ZJScrollPageView */,
 				162F96DE205765A9004EA49F /* SGPagingView */,
+				16B0992820DB8AC500D9F101 /* InvoiceViewController */,
 				1683BD6B1FB005AC0043CA23 /* MyViewController.h */,
 				1683BD6C1FB005AC0043CA23 /* MyViewController.m */,
 				16901CF61FDAD8E70080762A /* MyOrderViewController.h */,
@@ -1036,6 +1130,10 @@
 				16DF76D3201B309100078F10 /* MyAddressModel.m */,
 				16DF76D5201EDD8C00078F10 /* OrderModel.h */,
 				16DF76D6201EDD8C00078F10 /* OrderModel.m */,
+				165BCCA620E2320B006883FB /* InvoiceListModel.h */,
+				165BCCA720E2320B006883FB /* InvoiceListModel.m */,
+				165BCCAF20E35D82006883FB /* InvoiceDetailsModel.h */,
+				165BCCB020E35D82006883FB /* InvoiceDetailsModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1391,6 +1489,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Emeat/Pods-Emeat-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				"${PODS_ROOT}/MOFSPickerManager/MOFSPickerManagerDemo/MOFSPickerManager/province_data.xml",
 				"${PODS_ROOT}/PYSearch/PYSearch/PYSearch.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
@@ -1433,6 +1532,8 @@
 				16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */,
 				16CE1EE22003611000E919C7 /* AF_MainScreeningViewController.m in Sources */,
 				16CE1EE32003611000E919C7 /* AF_ScreeningViewController.h in Sources */,
+				165BCCA820E2320B006883FB /* InvoiceListModel.m in Sources */,
+				16B0993A20DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m in Sources */,
 				16CE1EE42003611000E919C7 /* AF_ScreeningViewController.m in Sources */,
 				16CE1EE52003611000E919C7 /* AXPriceRangeCell.h in Sources */,
 				162F970B20577DDC004EA49F /* ZJScrollPageView.m in Sources */,
@@ -1464,6 +1565,7 @@
 				1646C3381FCBF1BB000552A1 /* HomePageModel.m in Sources */,
 				16DC91E3200F655F003C25BE /* PurchaseCarAnimationTool.m in Sources */,
 				1646C32F1FC801A6000552A1 /* HomePageNavSortTableViewCell.m in Sources */,
+				16B0994020E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m in Sources */,
 				162F970720577DDC004EA49F /* ZJContentView.m in Sources */,
 				1681305A1FC54DF30045207E /* HomePageDetailsBottomView.m in Sources */,
 				1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */,
@@ -1489,6 +1591,7 @@
 				16901CEC1FD8EEE50080762A /* AddNewAddressView.m in Sources */,
 				16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */,
 				16EE102B1FE199D90099DA91 /* AfterServiceViewController.m in Sources */,
+				16B0994320E1D1FD00D9F101 /* InvoicePreviewView.m in Sources */,
 				16CFD7711FBEB6510015F2C1 /* YouLikeCollectionHeadView.m in Sources */,
 				162F970A20577DDC004EA49F /* ZJScrollSegmentView.m in Sources */,
 				16901C9A1FD58E540080762A /* CurrentAddressView.m in Sources */,
@@ -1496,7 +1599,12 @@
 				16901CF81FDAD8E70080762A /* MyOrderViewController.m in Sources */,
 				162F970920577DDC004EA49F /* ZJSegmentStyle.m in Sources */,
 				16901D421FDF97360080762A /* SearchLocationAddressViewController.m in Sources */,
+				165BCCA520E2214E006883FB /* InvoiceHistoryDetailsViewController.m in Sources */,
+				16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */,
 				16CFD7591FB9297C0015F2C1 /* ConfirmOrderInfoAddressHeadView.m in Sources */,
+				165BCCB120E35D82006883FB /* InvoiceDetailsModel.m in Sources */,
+				16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */,
+				16B0993420DC94A900D9F101 /* SelectInvoiceTypesViewController.m in Sources */,
 				1681304E1FC2955F0045207E /* HomePageTableViewCell.m in Sources */,
 				16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */,
 				16CFD7651FBAECA30015F2C1 /* MyTableViewCell.m in Sources */,
@@ -1506,11 +1614,15 @@
 				16E27F30207E006B00F82F9D /* UserAgreementViewController.m in Sources */,
 				16CFD75F1FBAB4B40015F2C1 /* MyHeadView.m in Sources */,
 				16901C9D1FD5A5B40080762A /* GetWidthAndHeightOfString.m in Sources */,
+				165BCC9F20E1F6C6006883FB /* InvoiceHistoryViewController.m in Sources */,
 				16CFD74D1FB5496A0015F2C1 /* ConfirmOrderInfoTableViewCell.m in Sources */,
+				16B0993120DBAA2A00D9F101 /* InvoiceListBottomView.m in Sources */,
 				162F96EF205765AA004EA49F /* SGPageContentView.m in Sources */,
+				16B0993720DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m in Sources */,
 				16901C961FD5326B0080762A /* AddNewAddressViewController.m in Sources */,
 				16DC91FD20130A56003C25BE /* MHNetworkManager.m in Sources */,
 				16EE100E1FE167860099DA91 /* WaitReceiveViewController.m in Sources */,
+				165BCCA220E215A8006883FB /* InvoiceHistoryTableViewCell.m in Sources */,
 				16CFD75C1FB97E200015F2C1 /* SHLBaseViewController.m in Sources */,
 				16CFD73E1FB2EFEB0015F2C1 /* ShoppingCartBottomView.m in Sources */,
 				16EE10081FE167480099DA91 /* AllOrderViewController.m in Sources */,
@@ -1535,7 +1647,9 @@
 				1683BD6A1FB0054E0043CA23 /* ShoppingCartViewController.m in Sources */,
 				16901C931FD4FB220080762A /* SelectAddressViewController.m in Sources */,
 				162F970620577DDC004EA49F /* UIViewController+ZJScrollPageController.m in Sources */,
+				16B0994620E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m in Sources */,
 				16EE10341FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.m in Sources */,
+				16B0994920E1EC9A00D9F101 /* InvoiceSubmitResultsView.m in Sources */,
 				16DC920420130BDE003C25BE /* MBProgressHUD+Add.m in Sources */,
 				16FC44432029B83C00B95546 /* NSString+textFieldCategory.m in Sources */,
 				16EE100B1FE167660099DA91 /* WaitPayViewController.m in Sources */,
@@ -1548,9 +1662,12 @@
 				16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */,
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,
+				16B0993D20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m in Sources */,
 				1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */,
 				168130571FC3C1210045207E /* HomePageCommentDetailsTableViewCell.m in Sources */,
 				16CFD7531FB595270015F2C1 /* ConfirmOrderInfoBottomView.m in Sources */,
+				165BCCAB20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m in Sources */,
+				165BCCAE20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m in Sources */,
 				16CFD7621FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m in Sources */,
 				16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */,
 				16B750E82013386E00C4642C /* LDActionSheet.m in Sources */,

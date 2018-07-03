@@ -39,6 +39,7 @@ typedef void(^LQQCartBlock)(BOOL select);
  *  数量改变的回调
  */
 typedef void(^LQQNumChange)(void);
+
 @interface ShoppingCartTableViewCell : UITableViewCell
 
 //数量

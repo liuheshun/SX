@@ -16,11 +16,12 @@
 #import "WaitCommentViewController.h"
 #import "AfterSaleViewController.h"
 #import "ZJScrollPageView.h"
+#import "InvoiceListViewController.h"
+
+
 @interface MyOrderViewController ()<ZJScrollPageViewDelegate>
 @property (nonatomic, strong) SGPageTitleView *pageTitleView;
 @property (nonatomic, strong) SGPageContentView *pageContentView;
-
-
 @property(strong, nonatomic)NSArray<NSString *> *titles;
 @property(strong, nonatomic)NSArray<UIViewController<ZJScrollPageViewChildVcDelegate> *> *childVcs;
 
@@ -36,9 +37,21 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor orangeColor];
     self.navItem.title = @"我的订单";
-    //[self setupPageView];
+   
     [self setMainView];
 }
+
+-(void)rightBtnClickAction{
+    __weak __typeof(self) weakSelf = self;
+
+    [self setRightItemBlockAction:^{
+        DLog(@"开发票");
+        InvoiceListViewController *VC = [InvoiceListViewController new];
+        [weakSelf.navigationController pushViewController:VC animated:YES];
+    }];
+}
+
+
 
 -(void)setMainView{
     //必要的设置, 如果没有设置可能导致内容显示不正常
@@ -107,6 +120,13 @@
 
 - (void)scrollPageController:(UIViewController *)scrollPageController childViewControllDidAppear:(UIViewController *)childViewController forIndex:(NSInteger)index{
     
+    if (index != 0) {
+        self.navItem.rightBarButtonItem= nil;
+    }else{
+        self.rightButtonTitle = @"开发票";
+        [self showNavBarItemRight];
+        [self rightBtnClickAction];
+    }
 }
 
 

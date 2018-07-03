@@ -58,8 +58,11 @@
     header.lastUpdatedTimeLabel.hidden = YES;
     //[self.tableView.mj_header beginRefreshing];
     //上拉加载
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
-    self.tableView.mj_footer.automaticallyHidden = YES;
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        // 加载旧的数据，加载旧的未显示的数据
+        [self footerRereshing];
+    }];
+    
 }
 
 

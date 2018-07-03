@@ -428,7 +428,7 @@
         make.top.equalTo(self.footTopBgView.mas_bottom).with.offset(10*kScale);
         make.left.equalTo(self.mas_left).with.offset(0);
         make.width.equalTo(self);
-        make.height.equalTo(@(177*kScale + 55*kScale));
+        make.height.equalTo(@(177*kScale + 55*kScale+20*kScale));
     }];
     
     [self.orderInfoLab mas_makeConstraints:^(MASConstraintMaker *make) {

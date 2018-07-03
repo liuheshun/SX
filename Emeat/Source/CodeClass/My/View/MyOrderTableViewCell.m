@@ -27,21 +27,52 @@
 
 
 
-////接收数据
-//-(void)getHomeArray:(NSArray *)homeArray
-//{
-//    self.HomeArray = homeArray;
-//
-//
-//
-//}
-
-
 -(void)configWithOrderModel:(OrderModel*)model{
 
     self.orderTimeLab.text = model.createOrderTime;
-    self.orderStated.text = model.statusDesc;
+//    self.orderStated.text = model.statusDesc;
     self.orderDetailsLab.text =[NSString stringWithFormat:@"共%@件商品,总计¥%@" ,model.productAmount,model.payment];
+    
+    
+    
+    if (model.status == 10){
+        self.orderStated.text = @"待支付";
+        
+        
+    }else  if (model.status == 50 || model.status == 40 || model.status == 46){
+        self.orderStated.text = @"待确认";
+        
+    }else if (model.status == 60){
+        self.orderStated.text = @"配送中";
+        
+    }else if (model.status == 70){
+        self.orderStated.text = @"待收货";
+       
+    }else if (model.status == 120){
+        self.orderStated.text = @"待核验";
+    
+    }else if (model.status == 140){
+        self.orderStated.text = @"已退货";
+        
+    }else if (model.status == 20){
+        self.orderStated.text = @"取消退货";
+       
+    }else if (model.status == 80){
+        self.orderStated.text = @"已完成";
+        
+        
+    }else if (model.status == 0 || model.status == 51 || model.status == 52){
+        self.orderStated.text = @"已取消";
+      
+    }
+
+    
+    
+    
+    
+    
+    
+    
     
 }
 
@@ -138,7 +169,7 @@
     [self.orderStated mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).with.offset(-15*kScale);
         make.top.equalTo(self.mas_top).with.offset(10*kScale);
-        make.width.equalTo(@(45*kScale));
+        make.width.equalTo(@(70*kScale));
         make.height.equalTo(@(20*kScale));
     }];
     

@@ -18,6 +18,9 @@
 ///数据总条数
 @property (nonatomic,assign) NSInteger total;//(total/pageSize = pages)
 
+////////
+@property (nonatomic,strong) NSString *sectionStr;
+
 
 ///"orderNo": 1517484534250197011,        订单号
 @property (nonatomic,strong) NSString *orderNo;
@@ -34,7 +37,6 @@
 ///单个商品总价
 @property (nonatomic,strong) NSString *totalPrice;
 /// 下单时间
-
 @property (nonatomic,strong) NSString *createOrderTime;
 
 
@@ -122,6 +124,8 @@
 ///订单关闭时间
 @property (nonatomic,strong) NSString * closeTime;
 
+////
+@property (nonatomic,strong) NSString *priceTypes;
 
 
 ///退货原因

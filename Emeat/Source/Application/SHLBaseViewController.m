@@ -168,13 +168,11 @@
     [self.navBar pushNavigationItem:self.navItem animated:NO];
     [self.navItem setRightBarButtonItem:self.rightButton];
     
-    [self.navItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f],NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateNormal];
+    [self.navItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0f*kScale],NSForegroundColorAttributeName:RGB(136, 136, 136, 1)} forState:UIControlStateNormal];
+    
+  
+    
 
-    
-    
-   // [self.navBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f*kScale],NSForegroundColorAttributeName:[UIColor blackColor]}];
-
-    
 }
 
 

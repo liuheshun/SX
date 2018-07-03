@@ -56,6 +56,7 @@
 #import "RealReachability.h"
 #import "MMAlertView.h"
 #import "MMMyCustomView.h"
+#import "InvoiceDetailsModel.h"
 
 
 
@@ -67,6 +68,9 @@
 #import "MyAddressModel.h"
 #import "OrderModel.h"
 #import "ZJScrollPageView.h"
+
+
+
 
 
 //支付相关

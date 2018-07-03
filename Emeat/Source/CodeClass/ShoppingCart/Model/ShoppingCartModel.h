@@ -74,4 +74,8 @@
 @property (nonatomic,assign) NSInteger postage;
 
 
+///商品状态
+@property (nonatomic,strong) NSString *priceTypes;
+
+
 @end

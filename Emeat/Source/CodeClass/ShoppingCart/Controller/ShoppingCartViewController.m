@@ -851,7 +851,6 @@
             
         }
         
-       // [myTableView reloadData];
     }
   
 }
@@ -1013,6 +1012,7 @@
     
     if (indexPath.section == 0) {
         NSString *Identifier = [NSString stringWithFormat:@"cellID_shop%ld" ,indexPath.row];
+        
     ShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID_shop"];
     if (!cell) {
         cell = [[ShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID_shop"];
@@ -1059,12 +1059,7 @@
             if (count>1)
             {
                 [self cutCartPostDataWithProductId:model.commodityId quatity:-1 CartStyle:@"0" shoppingTableViewCell:weakCell ShoppingCartModel:model NSIndexPath:indexPath];
-            }
-            else
-            {
-            
-               
-               
+            }else{
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     ///删除整个商品

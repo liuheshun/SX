@@ -26,4 +26,6 @@ target 'Emeat' do
 
 pod 'MMPopupView'
 
+pod 'MOFSPickerManager'
+
 end

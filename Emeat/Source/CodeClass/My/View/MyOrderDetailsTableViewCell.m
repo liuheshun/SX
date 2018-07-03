@@ -30,8 +30,20 @@
     
     [self.orderImv sd_setImageWithURL:[NSURL URLWithString:orderModel.productImage] placeholderImage:[UIImage imageNamed:@"small_placeholder"]];
     self.orderName.text = orderModel.productName;
-    self.orderPrices.text = [NSString stringWithFormat:@"¥ %@元/kg" ,orderModel.currentUnitPrice];
+//    self.orderPrices.text = [NSString stringWithFormat:@"¥ %@元/kg" ,orderModel.currentUnitPrice];
     self.orderCount.text = [NSString stringWithFormat:@"x %@" ,orderModel.quantity];
+    
+    
+    
+    if ([orderModel.priceTypes isEqualToString:@"WEIGHT"]) {
+        self.orderPrices.text =[NSString stringWithFormat:@"%@元/kg",orderModel.currentUnitPrice];
+    }else{
+        self.orderPrices.text =[NSString stringWithFormat:@"%@/件",orderModel.currentUnitPrice];
+    }
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.orderPrices.text];
+    NSRange range1 = [[str string] rangeOfString:orderModel.currentUnitPrice];
+    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+    self.orderPrices.attributedText = str;
     
     
 }
@@ -99,7 +111,7 @@
         _orderPrices = [[UILabel alloc] init];
         _orderPrices.textAlignment = NSTextAlignmentLeft;
         _orderPrices.font = [UIFont systemFontOfSize:12.0f];
-        _orderPrices.textColor = RGB(231, 35, 36, 1);
+        _orderPrices.textColor = RGB(136, 136, 136, 1);
         
     }
     return _orderPrices;

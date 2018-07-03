@@ -403,20 +403,6 @@
     return imageData;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  *  获取当天的年月日的字符串
  *  这里测试用
@@ -795,12 +781,12 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 269*kScale+10*kScale+55*kScale;
+    return 269*kScale+10*kScale+55*kScale+20*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
    
-    self.myOrderDetailsStatusFootView = [[MyOrderDetailsStatusFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 269*kScale+10*kScale)];
+    self.myOrderDetailsStatusFootView = [[MyOrderDetailsStatusFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 269*kScale+10*kScale+20*kScale)];
     self.myOrderDetailsStatusFootView.backgroundColor = RGB(238, 238, 238, 1);
     if (self.footViewOrderInfoMarray.count != 0)
     {

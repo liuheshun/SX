@@ -20,7 +20,10 @@
 #define setbaseUrl @"http://beta.cyberfresh.cn"
 
 
-//
+///wangxiaoyang
+#define WbaseUrl @"http://192.168.0.153/m"
+
+
 ////URL:本地
 //#define baseUrl @"http://192.168.0.141/m"
 //#define loginBaseUrl @"http://192.168.0.141/cas"

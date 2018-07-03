@@ -68,13 +68,18 @@
     
     [self.imageView_cell sd_setImageWithURL:[NSURL URLWithString:model.mainImage]];
     self.nameLabel.text = model.productName;
-    self.productPrice.text =[NSString stringWithFormat:@"¥ %@元/kg" ,model.productPrice] ;
+//    self.productPrice.text =[NSString stringWithFormat:@"¥ %@元/kg" ,model.productPrice] ;
     
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.productPrice.text];
-    [string addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:NSMakeRange(0, string.length-4)];
-    [string addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:NSMakeRange(string.length-4, string.length - (string.length-4))];
     
-    self.productPrice.attributedText = string;
+    if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
+        self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.productPrice];
+    }else{
+        self.productPrice.text =[NSString stringWithFormat:@"%@/件",model.productPrice];
+    }
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.productPrice.text];
+    NSRange range1 = [[str string] rangeOfString:model.productPrice];
+    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+    self.productPrice.attributedText = str;
   
     self.numberLabel.text = [NSString stringWithFormat:@"%ld",(long)model.quatity];
     self.sizeLabel.text = model.productSize;
@@ -177,7 +182,7 @@
     //价格
     self.productPrice = [[UILabel alloc]init];
     self.productPrice.font = [UIFont systemFontOfSize:15.0f*kScale];
-    self.productPrice.textColor =RGBCOLOR(236, 31, 35);
+    self.productPrice.textColor =RGBCOLOR(136, 136, 136);
     //    self.dateLabel.text = @"2015-12-03 17:49";
     [self.bgView  addSubview:self.productPrice];
     
