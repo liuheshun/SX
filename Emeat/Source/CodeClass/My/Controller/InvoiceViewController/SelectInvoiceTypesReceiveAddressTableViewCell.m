@@ -53,15 +53,8 @@
     
     self.receiverTextField.text = model.invoiceReceiver;
     self.receiverPhoneNumTextField.text = model.invoiceReceiverPhone;
-    
-
-    
-    NSArray *array = [model.invoiceReceiverAddress componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
-    if (array.count !=0) {
-        self.receiverAddressTextField.text = [array firstObject];
-        self.receiverDetailsAddressTextField.text = [array lastObject];
-    }
-   
+    self.receiverAddressTextField.text =  model.invoiceReceiverAddress;
+    self.receiverDetailsAddressTextField.text =  model.invoiceReceiverDetailsAddress;   
     self.sendFreeTextField.enabled = NO;
     
     
@@ -88,7 +81,7 @@
             make.left.equalTo(self.mas_left).offset(15*kScale);
             make.right.equalTo(self.mas_right).with.offset(-15*kScale);
             make.height.equalTo(@(1*kScale));
-            make.top.equalTo(self.receiverLab.mas_bottom).with.offset(41*i );
+            make.top.equalTo(self.receiverLab.mas_bottom).with.offset(41*kScale*i+1*kScale );
             
         }];
         

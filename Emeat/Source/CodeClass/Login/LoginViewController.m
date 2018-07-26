@@ -50,9 +50,11 @@
     [dic setObject:nonce forKey:@"nonce"];
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"获取ticket== %@" ,dic);
     
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/mobile/getticket.html" ,loginBaseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/getticket.html" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"ticker=== %@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
             NSString *ticket = returnData[@"ticket"];
@@ -86,9 +88,11 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString * phoneNum = [user valueForKey:@"phoneNum"];
     [dic setObject:phoneNum forKey:@"phone"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"获取验证码== %@" ,dic);
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/mobile/sendSmsByPhone" ,loginBaseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/sendSmsByPhone" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"code=== %@" ,returnData);
       
         
@@ -114,10 +118,11 @@
     [dic setValue:[user valueForKey:@"ticket"] forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"phoneNum"] forKey:@"phone"];
     [dic setValue:[user valueForKey:@"code"] forKey:@"code"];
-    
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"获取登陆tttt== === %@" ,dic);
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/mobile/doLogin" ,loginBaseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/doLogin" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"denglu 登陆== === %@  "   , returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
    
@@ -126,11 +131,11 @@
             
             [user setValue:@"1" forKey:@"isLoginState"];
             NSDictionary *data = returnData[@"data"];
-            if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {//未认证
+            if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
                 //
                 [self.navigationController popViewControllerAnimated:YES];
 
-            }else{
+            }else{//未认证
                 [self.navigationController pushViewController:[ShopCertificationViewController new] animated:YES];
             }
             
@@ -238,20 +243,20 @@
 #pragma mark == 微信登陆
 -(void)wechatBtnLoginAction{
     
+//
+//    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+//    [self.navigationController pushViewController:VC animated:YES];
     
-    ShopCertificationViewController *VC = [ShopCertificationViewController new];
-    [self.navigationController pushViewController:VC animated:YES];
     
     
-//    
-//    if (![WXApi isWXAppInstalled]) {
-//        [self alertMessage:@"请安装微信客户端进行使用" willDo:nil];
-//    }else{
-//        SendAuthReq *req =[[SendAuthReq alloc ] init];
-//        req.scope = @"snsapi_userinfo"; // 此处不能随意改
-//        req.state = @"123"; // 这个貌似没影响
-//        [WXApi sendReq:req];
-//    }
+    if (![WXApi isWXAppInstalled]) {
+        [self alertMessage:@"请安装微信客户端进行使用" willDo:nil];
+    }else{
+        SendAuthReq *req =[[SendAuthReq alloc ] init];
+        req.scope = @"snsapi_userinfo"; // 此处不能随意改
+        req.state = @"123"; // 这个貌似没影响
+        [WXApi sendReq:req];
+    }
 }
 
 #pragma mark = 用户协议

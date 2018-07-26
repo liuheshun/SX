@@ -111,12 +111,12 @@
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:@"10" forKey:@"status"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"待付款 ============ %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/queryByStatus?currentPage=%ld" , baseUrl ,(long)totalPage] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/queryByStatus?currentPage=%ld" , baseUrl ,(long)totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"待付款 订单=== %@" ,returnData);
         

@@ -94,11 +94,11 @@
         //[dic setValue :[user valueForKey:@"shoppingId"] forKey:@"shippingId"];
         [dic setValue:self.shoppingId forKey:@"shippingId"];
         [dic setValue:self.conmmentStr forKey:@"comment"];
-        [dic setValue:@"ios" forKey:@"mtype"];
+        [dic setValue:mTypeIOS forKey:@"mtype"];
 
         DLog(@"q确认订单信息 dic == %@" ,dic);
         
-        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
             DLog(@"创建确认订单=== %@   %@" ,returnData[@"msg"] , returnData);
             
             if ([returnData[@"status"] integerValue] == 200) {

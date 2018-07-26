@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MyOrderDetailsStatusAccountHeadView.h"
 
-@interface MyOrderDetailsStatusHeadView : UIView
+#import "JHGridView.h"
+#import "TestObject.h"
+
+@interface MyOrderDetailsStatusHeadView : UIView<JHGridViewDelegate>
 ///周期性用户view
 @property (nonatomic,strong) MyOrderDetailsStatusAccountHeadView  *myOrderDetailsStatusAccountHeadView;
 
@@ -29,7 +32,7 @@
 //配送信息
 @property (nonatomic,strong) UIView *sendBgView;
 @property (nonatomic,strong) UILabel *sendInfoLab;
-@property (nonatomic,strong) UILabel *sendAddressLab;
+@property (nonatomic,strong) UIButton *sendAddressBtn;
 @property (nonatomic,strong) UILabel *orderNameLab;
 @property (nonatomic,strong) UILabel *orderPhoneNumerLab;
 @property (nonatomic,strong) UILabel *orderAddressLab;
@@ -37,10 +40,17 @@
 @property (nonatomic,strong) UIView *orderCommentBgView;
 ///备注信息
 @property (nonatomic,strong) UILabel *orderCommentLab;
+///备注图标
+@property (nonatomic,strong) UIButton *orderCommentBtn;
+
 ///备注信息
 @property (nonatomic,strong) UILabel *orderCommentDetailsLab;
 
 
+///配送明细
+@property (nonatomic,strong) UIView *sendDetailsBgView;
+
+@property (nonatomic,strong) UILabel *sendDetailsLab;
 
 
 //商品信息标签
@@ -49,7 +59,7 @@
 
 
 
--(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel;
+-(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel OutBoundProductNameMarray:(NSMutableArray*)nameMarray OutBoundProductSizeMarray:(NSMutableArray*)sizeMarray OutBoundProductCountMarray:(NSMutableArray*)countMarray;
 
 
 

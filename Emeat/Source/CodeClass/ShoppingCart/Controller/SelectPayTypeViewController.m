@@ -291,11 +291,11 @@
     [dic setValue:payId forKey:@"payId"];
     [dic setValue:@" " forKey:@"bankType"];
     [dic setValue:@" " forKey:@"transactionType"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"周期性付款====== dic == %@ 订单号===%@  支付方式==== %@ " ,dic , self.orderNo ,self.selectPayType );
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/payInfo/pay" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/payInfo/pay" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"周期性付款信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         self.returnData = [NSDictionary dictionaryWithDictionary:returnData];
@@ -416,73 +416,85 @@
 
 #pragma mark === 请求订单详情 校验订单状态是否支付成功
 -(void)requsetOrderDetailsData:(NSString*)orderNo{
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setObject:secret forKey:@"secret"];
-    [dic setObject:nonce forKey:@"nonce"];
-    [dic setObject:curTime forKey:@"curTime"];
-    [dic setObject:checkSum forKey:@"checkSum"];
-    [dic setObject:ticket forKey:@"ticket"];
-    [dic setValue:orderNo forKey:@"orderNo"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
 
-    DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
-    ///auth/order/mpayed
-    
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/mpayed" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
+    [SVProgressHUD show];
+
+    [SVProgressHUD setBackgroundColor:RGB(136, 136, 136, 1)];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        if ([returnData[@"status"] integerValue] == 200)
-        {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSString *ticket = [user valueForKey:@"ticket"];
+        NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+        NSString *nonce = [self ret32bitString];//随机数
+        NSString *curTime = [self dateTransformToTimeSp];
+        NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+        
+        [dic setObject:secret forKey:@"secret"];
+        [dic setObject:nonce forKey:@"nonce"];
+        [dic setObject:curTime forKey:@"curTime"];
+        [dic setObject:checkSum forKey:@"checkSum"];
+        [dic setObject:ticket forKey:@"ticket"];
+        [dic setValue:orderNo forKey:@"orderNo"];
+        [dic setValue:mTypeIOS forKey:@"mtype"];
+        
+        DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
+        ///auth/order/mpayed
+        
+        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/mpayed" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+            DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
             
-            OrderModel *model = [OrderModel yy_modelWithJSON:returnData[@"data"]];
-            if (model.status == 40) {//已付款 , 订单支付成功
-
-                MMPopupItemHandler block = ^(NSInteger index){
-                    if (index == 0) {
-
-                        OrderDetailesViewController *VC = [OrderDetailesViewController new];
-                        VC.orderNo = model.orderNo;
-                        VC.fromPayVC = @"1";
-                        [self.navigationController pushViewController:VC animated:YES];
-                        
-                    }
-                };
-                NSArray *items = @[MMItemMake(@"查看订单详情", MMItemTypeNormal, block),];
+            if ([returnData[@"status"] integerValue] == 200)
+            {
                 
-                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"恭喜您,支付成功!" detail:@"工作人员正在为您安排发货,请耐心等待 " items:items];
-                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
-                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
-                [alertView show];
-                
-               
-                
-            }else{//支付不成功
-                
-                MMPopupItemHandler block = ^(NSInteger index){
+                OrderModel *model = [OrderModel yy_modelWithJSON:returnData[@"data"]];
+                if (model.status == 50) {//已付款 , 订单支付成功
                     
-                };
-                NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
+                    MMPopupItemHandler block = ^(NSInteger index){
+                        if (index == 0) {
+                            
+                            OrderDetailesViewController *VC = [OrderDetailesViewController new];
+                            VC.orderNo = model.orderNo;
+                            VC.fromPayVC = @"1";
+                            [self.navigationController pushViewController:VC animated:YES];
+                            
+                        }
+                    };
+                    NSArray *items = @[MMItemMake(@"查看订单详情", MMItemTypeNormal, block),];
+                    
+                    MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"恭喜您,支付成功!" detail:@"工作人员正在为您安排发货,请耐心等待 " items:items];
+                    alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                    [alertView show];
+                    
+                    
+                    
+                }else{//支付不成功
+                    
+                    MMPopupItemHandler block = ^(NSInteger index){
+                        
+                    };
+                    NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
+                    
+                    MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"支付失败" detail:@"订单支付失败，请稍后到我的订单详情中查看,或者与工作人员联系，客服热线4001106111" items:items];
+                    alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                    alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                    [alertView show];
+                }
                 
-                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"支付失败" detail:@"订单支付失败，请稍后到我的订单详情中查看,或者与工作人员联系，客服热线4001106111" items:items];
-                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
-                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
-                [alertView show];
             }
-            
-        }
+            [SVProgressHUD dismiss];
+
+        } failureBlock:^(NSError *error) {
+            DLog(@"获取订单信息err0r=== %@  " ,error);
+            [SVProgressHUD dismiss];
+        } showHUD:NO];
         
-    } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
-        [SVProgressHUD dismiss];
-    } showHUD:NO];
+        
+    });
+
+    
     
 }
 

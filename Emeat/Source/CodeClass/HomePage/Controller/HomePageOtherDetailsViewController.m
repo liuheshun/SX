@@ -11,10 +11,30 @@
 #import "HomePageDetailsViewController.h"
 
 @interface HomePageOtherDetailsViewController ()<UIWebViewDelegate>
+@property (nonatomic,strong) UIWebView *webView;
 
 @end
 
 @implementation HomePageOtherDetailsViewController
+
+-(void)viewWillAppear:(BOOL)animated{
+    
+    //获取通知中心单例对象
+    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+    //添加当前类对象为一个观察者
+    [center addObserver:self selector:@selector(InfoNotificationAction:) name:@"refreshControllerWithNotification" object:nil];
+    [self setWebView];
+    
+}
+-(void)InfoNotificationAction:(NSNotification*)notification{
+    DLog(@"use == %@" , notification.userInfo)
+    self.detailsURL =  notification.userInfo[@"detailsURL"];
+    [self setWebView];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshControllerWithNotification" object:nil];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,17 +43,21 @@
     self.navItem.title = @"详情";
     self.view.backgroundColor = RGB(238, 238, 238, 1);
 
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight-kBarHeight-LL_TabbarSafeBottomMargin)];
+   
+
+}
+
+-(void)setWebView{
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight-kBarHeight-LL_TabbarSafeBottomMargin)];
     
-    webView.scalesPageToFit = YES;//自动对页面进行缩放以适应屏幕
-    webView.detectsPhoneNumbers = YES;//自动检测网页上的电话号码，单击可以拨打
-    webView.delegate = self;
-    [self.view addSubview:webView];
+    self.webView.scalesPageToFit = YES;//自动对页面进行缩放以适应屏幕
+    self.webView.detectsPhoneNumbers = YES;//自动检测网页上的电话号码，单击可以拨打
+    self.webView.delegate = self;
+    [self.view addSubview:self.webView];
     
     NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
     NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
-    [webView loadRequest:request];//加载
-
+    [self.webView loadRequest:request];//加载
 }
 
 
@@ -77,6 +101,11 @@
     }
    
     
+}
+
+
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+    DLog(@"error=========%@" ,error);
 }
 
 - (void)didReceiveMemoryWarning {

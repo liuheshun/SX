@@ -42,6 +42,16 @@
 @property (nonatomic,strong)  NSMutableArray *monetProveMarray;
 ///是否周期性付款
 @property (nonatomic,assign) NSInteger period;
+////出库明细高度
+@property (nonatomic,assign) CGFloat OutboundDetailsHeight;
+
+///出库商品名称
+@property (nonatomic,strong) NSMutableArray *outBoundProductNameMarray;
+///出库商品重量
+@property (nonatomic,strong) NSMutableArray *outBoundProductSizeMarray;
+///出库商品配送数量
+@property (nonatomic,strong) NSMutableArray *outBoundProductCountMarray;
+
 
 
 @end
@@ -69,12 +79,16 @@
 }
 
 
-#pragma mark =====订单详情
+#pragma mark ============================订单详情
 
 -(void)requsetOrderDetailsData{
     self.productMarray = [NSMutableArray array];
     self.headViewSendAddressMarray = [NSMutableArray array];
     self.footViewOrderInfoMarray = [NSMutableArray array];
+    self.outBoundProductNameMarray = [NSMutableArray array];
+    self.outBoundProductSizeMarray = [NSMutableArray array];
+    self.outBoundProductCountMarray = [NSMutableArray array];
+
     [self.productMarray removeAllObjects];
     [self.headViewSendAddressMarray removeAllObjects];
     [self.footViewOrderInfoMarray removeAllObjects];
@@ -93,16 +107,18 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"订单详情===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
             [SVProgressHUD dismiss];
+            
+            
             
             MyAddressModel *addressModel = [MyAddressModel yy_modelWithJSON:returnData[@"data"][@"shippingVo"]];
          ////////下面此处出现脏数据的时候 会有问题
@@ -124,10 +140,35 @@
                 [self.productMarray addObject:orderModel];
             }
             
+            for (NSMutableDictionary *proDic in returnData[@"data"][@"orderItemDetail"]) {///出库商品信息数据
+                
+                OrderModel *orderModel = [OrderModel yy_modelWithJSON:proDic];
+                
+               
+                
+                [self.outBoundProductNameMarray addObject:orderModel.productName];
+                [self.outBoundProductSizeMarray addObject:orderModel.size];
+                [self.outBoundProductCountMarray addObject:[NSString stringWithFormat:@"%ld" ,orderModel.count]];
+            }
+        
             OrderModel *footModel = [OrderModel yy_modelWithJSON:returnData[@"data"]];
             self.status = footModel.status;
+            NSString *outCount =[NSString stringWithFormat:@"%ld" ,footModel.outCount];
+            [self.outBoundProductNameMarray addObject:@""];
+            [self.outBoundProductSizeMarray addObject:@"总计"];
+            [self.outBoundProductCountMarray addObject:outCount];
+            self.OutboundDetailsHeight = 70*kScale +(self.outBoundProductNameMarray.count +1) *43*kScale + (self.outBoundProductNameMarray.count +1)*1*kScale;
+
+            
             self.paymentType = footModel.paymentType;
             self.financeConfirm = footModel.financeConfirm;
+            footModel.activitySum = [returnData[@"data"][@"orderMoney"][@"activitySum"]integerValue];
+            footModel.returnSum = [returnData[@"data"][@"orderMoney"][@"returnSum"] integerValue];
+            
+            footModel.netPrice = [returnData[@"data"][@"orderMoney"][@"netPrice"] integerValue];
+
+            footModel.returnMoneySum = [returnData[@"data"][@"orderMoney"][@"returnMoneySum"] integerValue];
+
             [self.footViewOrderInfoMarray addObject:footModel];
             [self.view addSubview:self.tableView];
             [self.view addSubview:self.orderInfoBottomView];////////
@@ -169,11 +210,11 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     
     DLog(@"取消订单dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"取消订单===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         if ([returnData[@"status"] integerValue] == 200){
             ///取消订单后 刷新数据
@@ -211,11 +252,11 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     
     DLog(@"确认收货dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/confirm" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/confirm" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"确认收货===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
@@ -327,10 +368,10 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     [SVProgressHUD showProgress:-1 status:@"正在上传,请稍等."];
-   NSString* path = [[NSString stringWithFormat:@"%@/auth/order/upVoucher" ,baseUrl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+   NSString* path = [[NSString stringWithFormat:@"%@/m/auth/order/upVoucher" ,baseUrl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer.timeoutInterval = 10;
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json", @"text/plain", @"text/html", nil];
@@ -621,7 +662,7 @@
 
 
     }
-    else if (self.status == 60)///配送中
+    else if (self.status == 60 || self.status == 55)///配送中
     {
 
         [self.orderInfoBottomView removeFromSuperview];
@@ -733,7 +774,7 @@
     return self.productMarray.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 75;
+    return 75*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -741,24 +782,38 @@
     if (self.footViewOrderInfoMarray.count != 0) {
         
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
-        
-        CGSize strSize = [orderModel.orderComment boundingRectWithSize:CGSizeMake(kWidth-30, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
       
-        
+        CGSize strSize = [orderModel.orderComment boundingRectWithSize:CGSizeMake(kWidth-30*kScale, 1000) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
+        if (orderModel.orderComment.length == 0) {
+            strSize.height = 0;
+        }
+        DLog(@"---------------------------== %f" ,strSize.height);
+        DLog(@"---------------------------== %f" ,ceil(strSize.height) +1);
+
+
      if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46 || orderModel.status == 10){
          if (orderModel.paymentType == 12){
              ///线下打款方式
-             return 282*kScale+strSize.height + 104*kScale;
+             return 282*kScale + ceil(strSize.height) +1 + 104*kScale + 45*kScale+20*kScale;
          }else{
-             return 282*kScale+strSize.height ;
+             return 282*kScale + ceil(strSize.height)+1+ 45*kScale +10*kScale;
          }
 
-     }else{
-         return 282*kScale+strSize.height ;
+     }else if (orderModel.status == 60 || orderModel.status == 70|| orderModel.status == 80){
+         if (orderModel.orderComment.length !=0) {
+              return 282*kScale + ceil(strSize.height)+1 +20*kScale+ self.OutboundDetailsHeight+ 45*kScale;
+         }else{
+         return 282*kScale + ceil(strSize.height)+1 +5*kScale+ self.OutboundDetailsHeight+ 45*kScale;
+    
+         }
+     }
+     
+     else{
+         return 282*kScale + ceil(strSize.height)+1 + 45*kScale+20*kScale;
      }
         
     }else{
-    return 0;
+    return 0.1;
     }
 }
 
@@ -773,7 +828,7 @@
         
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
         
-        [self.myOrderDetailsStatusHeadView configAddressWithModel:addressModel orderModel:orderModel];
+        [self.myOrderDetailsStatusHeadView configAddressWithModel:addressModel orderModel:orderModel OutBoundProductNameMarray:self.outBoundProductNameMarray OutBoundProductSizeMarray:self.outBoundProductSizeMarray OutBoundProductCountMarray:self.outBoundProductCountMarray];
         
     }
   
@@ -781,6 +836,20 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    
+    
+    if (self.footViewOrderInfoMarray.count != 0) {
+        
+        OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
+        if (orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
+            return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale;
+
+        }else{
+            return 269*kScale+10*kScale+55*kScale+20*kScale;
+
+        }
+    }
+    
     return 269*kScale+10*kScale+55*kScale+20*kScale;
 }
 
@@ -837,11 +906,11 @@
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:imageString forKey:@"images"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"获取ticket== %@" ,dic);
     
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/modificationVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/modificationVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[NSString stringWithFormat:@"%@" ,returnData[@"status"]] isEqualToString:@"200"]) {
             
             

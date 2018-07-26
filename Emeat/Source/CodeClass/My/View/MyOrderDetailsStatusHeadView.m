@@ -20,7 +20,7 @@
         
         [self addSubview:self.sendBgView];
         [self.sendBgView addSubview:self.sendInfoLab];
-        [self.sendBgView addSubview:self.sendAddressLab];
+        [self.sendBgView addSubview:self.sendAddressBtn];
         [self.sendBgView addSubview:self.orderNameLab];
         [self.sendBgView addSubview:self.orderPhoneNumerLab];
         [self.sendBgView addSubview:self.orderAddressLab];
@@ -28,7 +28,8 @@
         [self addSubview:self.orderCommentBgView];
         [self.orderCommentBgView addSubview:self.orderCommentLab];
         [self.orderCommentBgView addSubview:self.orderCommentDetailsLab];
-        
+        [self.orderCommentBgView addSubview:self.orderCommentBtn];
+
         [self addSubview:self.goodsBgView];
         [self.goodsBgView addSubview:self.goodsLab];
         [self setMainViewFrame];
@@ -37,7 +38,7 @@
     return self;
 }
 
--(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel{
+-(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel OutBoundProductNameMarray:(NSMutableArray *)nameMarray OutBoundProductSizeMarray:(NSMutableArray *)sizeMarray OutBoundProductCountMarray:(NSMutableArray *)countMarray{
     DLog(@"sssssssssssssssss=========== 状态码= %ld  周期性用户码 = %ld" ,orderModel.status , orderModel.periodic);
     
     if (orderModel.status == 10){
@@ -100,7 +101,7 @@
         
         
 
-    }else if (orderModel.status == 60){
+    }else if (orderModel.status == 60 || orderModel.status == 55){
           self.orderStatusLab.text = @"配送中";
         self.orderStatusDetailsLab.text = @"商家已发货,正在配送中";
         [self.statusImv setImage:[UIImage imageNamed:@"peisongzhong"] forState:0];
@@ -138,7 +139,9 @@
         
         [self.statusImv setImage:[UIImage imageNamed:@"quxiaotuihuo"] forState:0];
     }
-
+    
+    
+    
     ///配送地址
     self.orderNameLab.text = addressModel.receiverName;
     self.orderPhoneNumerLab.text =[NSString stringWithFormat:@"%ld",addressModel.receiverPhone] ;
@@ -147,27 +150,83 @@
     
     ///备注信息
     self.orderCommentDetailsLab.text = orderModel.orderComment;
- 
-    CGFloat orderCommentDetailsLabHeight = [GetWidthAndHeightOfString getHeightForText:self.orderCommentDetailsLab width:kWidth-30*kScale];
     
-    [self.orderCommentBgView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@(40*kScale + orderCommentDetailsLabHeight));
-    }];
-    [self.orderCommentDetailsLab mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@(orderCommentDetailsLabHeight));
-    }];
+    CGFloat orderCommentDetailsLabHeight = [GetWidthAndHeightOfString getHeightForText:self.orderCommentDetailsLab width:kWidth-52*kScale];
+    
    
+    [self.orderCommentDetailsLab mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(ceil (orderCommentDetailsLabHeight)+1));
+    }];
+    [self.orderCommentBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(85*kScale +ceil (orderCommentDetailsLabHeight)+1));
+    }];
     
+//    self.orderCommentBgView.backgroundColor = [UIColor cyanColor];
     
     [self.goodsBgView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
-        make.top.equalTo(self.orderCommentBgView.mas_bottom).with.offset(10*kScale);
+        make.bottom.equalTo(self.mas_bottom).with.offset(0*kScale);
         make.width.equalTo(@(kWidth));
         make.height.equalTo(@(40*kScale));
     }];
     
     
-    orderModel.orderDeatailsCommentHeight = orderCommentDetailsLabHeight;
+    orderModel.orderDeatailsCommentHeight = ceil (orderCommentDetailsLabHeight)+1;
+    
+    DLog(@"gggggggggggggggggggggggg=========%f" ,ceil (orderCommentDetailsLabHeight)+1);
+    
+    
+    
+    
+    
+    if (orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
+
+        [self addSubview:self.sendDetailsBgView];
+        [self.sendDetailsBgView addSubview:self.sendDetailsLab];
+        
+        [self.sendDetailsBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.mas_left).with.offset(0*kScale);
+            make.top.equalTo(self.orderCommentBgView.mas_bottom).with.offset(10*kScale);
+            make.right.equalTo(self.mas_right).with.offset(0*kScale);
+            make.height.equalTo(@(70*kScale +(nameMarray.count +1) *43*kScale + (nameMarray.count +1)*1*kScale));
+        }];
+        
+        [self.sendDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.mas_left).with.offset(15*kScale);
+            make.top.equalTo(self.sendDetailsBgView.mas_top).with.offset(15*kScale);
+            make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+            make.height.equalTo(@(15*kScale));
+        }];
+        
+        JHGridView *gridView = [[JHGridView alloc] initWithFrame:CGRectMake(15*kScale, 44*kScale, kWidth-30*kScale, ( nameMarray.count +1) *43*kScale + ( nameMarray.count +1)*1*kScale)];
+        
+        gridView.delegate = self;
+        
+        NSMutableArray *array = [NSMutableArray array];
+        for (int i = 0; i<nameMarray.count; i++) {
+        [array addObject:[[TestObject alloc] initWithName:nameMarray[i] Sex:sizeMarray[i] Number:countMarray[i] Address:@"sdfabfsakjbakf" Birthday:@"1996-06-14"]];
+        }
+        
+ 
+        [gridView setTitles:@[@"品名",
+                              @"实际重量",
+                              @"配送数量",
+                             ]
+                 andObjects:array withTags:@[@"name",@"sex",@"number"]];
+        [self.sendDetailsBgView addSubview:gridView];
+        
+        
+        [self.goodsBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self);
+            make.top.equalTo(self.sendDetailsBgView.mas_bottom).with.offset(10*kScale);
+            make.width.equalTo(@(kWidth));
+            make.height.equalTo(@(40*kScale));
+        }];
+        
+        
+        
+    }
+
 }
 
 
@@ -246,18 +305,13 @@
     return _sendInfoLab;
 }
 
--(UILabel *)sendAddressLab{
-    if (!_sendAddressLab) {
-        _sendAddressLab = [[UILabel alloc] init];
-        _sendAddressLab.textAlignment = NSTextAlignmentLeft;
-        _sendAddressLab.font = [UIFont systemFontOfSize:12.0f*kScale];
-        _sendAddressLab.text  = @"配送地址";
-        _sendAddressLab.textColor = RGB(51, 51, 51, 1);
-
+-(UIButton *)sendAddressBtn{
+    if (!_sendAddressBtn) {
+        _sendAddressBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_sendAddressBtn setImage:[UIImage imageNamed:@"配送信息"] forState:0];
     }
-    return _sendAddressLab;
+    return _sendAddressBtn;
 }
-
 
 
 -(UILabel *)orderNameLab{
@@ -319,7 +373,38 @@
     return _orderCommentDetailsLab;
 }
 
+-(UIButton *)orderCommentBtn{
+    if (!_orderCommentBtn) {
+        _orderCommentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_orderCommentBtn setImage:[UIImage imageNamed:@"备注信息"] forState:0];
+    }
+    return _orderCommentBtn;
+}
 
+////配送明细
+
+
+
+-(UIView *)sendDetailsBgView{
+    if (!_sendDetailsBgView) {
+        _sendDetailsBgView = [[UIView alloc] init];
+        _sendDetailsBgView.backgroundColor = [UIColor whiteColor];
+    }
+    return _sendDetailsBgView;
+}
+
+
+-(UILabel *)sendDetailsLab{
+    if (!_sendDetailsLab) {
+        _sendDetailsLab = [[UILabel alloc] init];
+        _sendDetailsLab.textAlignment = NSTextAlignmentLeft;
+        _sendDetailsLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _sendDetailsLab.text  = @"配送明细";
+        _sendDetailsLab.textColor = RGB(51, 51, 51, 1);
+        
+    }
+    return _sendDetailsLab;
+}
 
 
 
@@ -385,44 +470,44 @@
     
     [self.sendInfoLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.sendBgView.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.sendBgView.mas_top).with.offset(22*kScale);
+        make.top.equalTo(self.sendBgView.mas_top).with.offset(18*kScale);
         make.width.equalTo(@(75*kScale));
         make.height.equalTo(@ (15*kScale));
     }];
-    [self.sendAddressLab mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.sendAddressBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.sendBgView.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.sendInfoLab.mas_bottom).with.offset(20*kScale);
-        make.width.equalTo(@(75*kScale));
-        make.height.equalTo(@(15*kScale));
+        make.top.equalTo(self.sendInfoLab.mas_bottom).with.offset(22*kScale);
+        make.width.equalTo(@(22*kScale));
+        make.height.equalTo(@(22*kScale));
     }];
     [self.orderNameLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.sendInfoLab.mas_right).with.offset(15*kScale);
-        make.top.equalTo(self.sendInfoLab);
+        make.left.equalTo(self.sendAddressBtn.mas_right).with.offset(15*kScale);
+        make.top.equalTo(self.sendInfoLab.mas_bottom).with.offset(15*kScale);
         make.width.equalTo(@(80*kScale));
         make.height.equalTo(@(12*kScale));
     }];
     
     [self.orderPhoneNumerLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.orderNameLab.mas_right).with.offset(15*kScale);
-        make.top.equalTo(self.sendInfoLab);
+        make.top.equalTo(self.orderNameLab);
         make.right.equalTo(self.mas_right).with.offset(-15*kScale);
         make.height.equalTo(@(12*kScale));
     }];
     
     [self.orderAddressLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.orderNameLab);
-        make.top.equalTo(self.sendAddressLab);
+        make.bottom.equalTo(self.sendAddressBtn);
         make.width.equalTo(@(270*kScale));
         make.height.equalTo(@(12*kScale));
     }];
     
-    
+    ///备注frame
     
     [self.orderCommentBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
         make.top.equalTo(self.sendBgView.mas_bottom).with.offset(10*kScale);
         make.width.equalTo(@(kWidth));
-        make.height.equalTo(@(40*kScale));
+        make.height.equalTo(@(85*kScale));
     }];
     
     [self.orderCommentLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -433,13 +518,26 @@
         
     }];
     
-    [self.orderCommentDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.orderCommentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.orderCommentBgView.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.orderCommentLab.mas_bottom).with.offset(5*kScale);
-        make.width.equalTo(@(kWidth-30*kScale));
+        make.top.equalTo(self.orderCommentLab.mas_bottom).with.offset(20*kScale);
+        make.width.equalTo(@(22*kScale));
+        make.height.equalTo(@(22*kScale));
+        
+    }];
+    
+    
+    
+    [self.orderCommentDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.orderCommentBtn.mas_right).with.offset(15*kScale);
+        make.top.equalTo(self.orderCommentLab.mas_bottom).with.offset(20*kScale);
+        make.right.equalTo(self.orderCommentBgView.mas_right).with.offset(-15*kScale);
         make.height.equalTo(@(15*kScale));
         
     }];
+    
+    
+   
     
     
     
@@ -447,7 +545,7 @@
     
     [self.goodsBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
-        make.top.equalTo(self.orderCommentBgView.mas_bottom).with.offset(10*kScale);
+        make.bottom.equalTo(self.mas_bottom).with.offset(0*kScale);
         make.width.equalTo(@(kWidth));
         make.height.equalTo(@(40*kScale));
     }];
@@ -462,6 +560,47 @@
     
 }
 
+- (void)didSelectRowAtGridIndex:(GridIndex)gridIndex{
+    NSLog(@"selected at\ncol:%ld -- row:%ld", gridIndex.col, gridIndex.row);
+}
+
+- (BOOL)isTitleFixed{
+    return NO;
+}
+
+- (CGFloat)widthForColAtIndex:(long)index{
+    
+    return 115*kScale;
+}
+
+//- (CGFloat)heightForRowAtIndex:(long)index{
+//    return 30*kScale;
+//}
+
+
+- (UIColor *)backgroundColorForTitleAtIndex:(long)index{
+    return [UIColor whiteColor];
+}
+
+- (UIColor *)backgroundColorForGridAtGridIndex:(GridIndex)gridIndex{
+    
+        return [UIColor whiteColor];
+
+}
+
+- (UIColor *)textColorForTitleAtIndex:(long)index{
+   
+        return RGB(51, 51, 51, 1);
+
+}
+
+- (UIColor *)textColorForGridAtGridIndex:(GridIndex)gridIndex{
+    return RGB(136, 136, 136, 1);
+}
+
+- (UIFont *)fontForTitleAtIndex:(long)index{
+    return [UIFont systemFontOfSize:13*kScale];
+}
 
 
 

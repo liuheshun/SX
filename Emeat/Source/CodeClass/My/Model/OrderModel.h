@@ -127,6 +127,22 @@
 ////
 @property (nonatomic,strong) NSString *priceTypes;
 
+///    private BigDecimal activitySum;//总活动返款
+@property (nonatomic,assign) NSInteger activitySum;
+///    private BigDecimal returnSum;//总差额返款
+@property (nonatomic,assign) NSInteger returnSum;
+///    private BigDecimal returnMoneySum;//总返款
+@property (nonatomic,assign) NSInteger returnMoneySum;
+///    private BigDecimal netPrice;//净总价
+@property (nonatomic,assign) NSInteger netPrice;
+///private String size;//实际出库规格
+@property (nonatomic,strong) NSString *size;
+
+///private Integer count;//数量
+@property (nonatomic,assign) NSInteger count;
+///outCount //出库总量
+@property (nonatomic,assign) NSInteger outCount;
+
 
 ///退货原因
 //@property (nonatomic,strong) NSString * refundReason;

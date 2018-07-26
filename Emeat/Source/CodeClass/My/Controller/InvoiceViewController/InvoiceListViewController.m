@@ -62,10 +62,15 @@
     self.invoiceShowMarray = [NSMutableArray array];
     self.secionMarray = [NSMutableArray array];
     [self showNavBarItemRight];
-    [self setupRefresh];
-    
+
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self setupRefresh];
+    self.bottomView.priceLabel.text = @"¥:0.00";
+    [self.idMarray removeAllObjects];
+
+}
 
 
 - (void)setupRefresh{
@@ -127,12 +132,12 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dic = [self checkoutData];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"customerId"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)currentPage] forKey:@"currentPage"];
     
     DLog(@"发票列表接口验证== %@" ,dic );
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/queryNoInvoiceOrders" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryNoInvoiceOrders" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"发票列表== jeikou == %@ " ,returnData);
 
@@ -169,7 +174,7 @@
                         NSString *netPrice = dic[@"orderMoney"][@"netPrice"];
                         firstModel.Id = Id;
                         firstModel.netPrice = [netPrice integerValue];
-                        firstModel.checkStated = 0;
+//                        firstModel.checkStated = 0;
                         
                         firstModel.pages = pages;
                         firstModel.pageSize = pageSize;
@@ -177,10 +182,7 @@
                         firstModel.sectionString = str2;
                         [self.invoiceListMarray addObject:firstModel];
                         
-                        
-                        
-                        
-                        
+                       
                         DLog(@"选中的ID===%@" ,Id);
                         
                         NSMutableArray *Marray = [NSMutableArray array];
@@ -200,50 +202,10 @@
                             [Marray addObject:model.productImage];
                         }
                         [self.invoiceImageListMarray addObject:Marray];
+                        DLog(@"发票列表请求数据图片=== %ld" ,self.invoiceImageListMarray.count);
                     }
                     
-                    
-                    NSMutableArray *array = [NSMutableArray arrayWithArray:self.invoiceListMarray];
-                    
-                    NSMutableArray *dateMutablearray = [@[] mutableCopy];
-                    for (int i = 0; i < array.count; i ++) {
-                        
-                        InvoiceListModel *string = array[i];
-                        
-                        NSMutableArray *tempArray = [@[] mutableCopy];
-                        
-                        [tempArray addObject:string];
-                        
-                        for (int j = i+1; j < array.count; j ++) {
-                            
-                            InvoiceListModel *jstring = array[j];
-                            
-                            if([string.sectionString isEqualToString:jstring.sectionString]){
-                                
-                                [tempArray addObject:jstring];
-                                
-                                [array removeObjectAtIndex:j];
-                                j -= 1;
-                                
-                            }
-                            
-                        }
-                        
-                        [dateMutablearray addObject:tempArray];
-                        
-                    }
-                    
-                    self.secionMarray = [NSMutableArray arrayWithArray:dateMutablearray];
-                    NSLog(@"dateMutable:%@",self.secionMarray);
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                  
+ 
                     [[GlobalHelper shareInstance] removeEmptyView];
                     [self.tableView reloadData];
                 //
@@ -266,10 +228,12 @@
 -(void)requestNextInvoiceInfoData:(NSString*)orderIdStr{
     NSDictionary *dic = [self checkoutData];
     [dic setValue:orderIdStr forKey:@"orderIdStr"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"选择下一步开具发票== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/transOidsAndRecInv" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/transOidsAndRecInv" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"选择下一步开具发票data== jeikou == %@ " ,returnData);
 
         if ([returnData[@"status"] integerValue] == 200) {
@@ -322,10 +286,12 @@
    
     NSDictionary *dic = [self checkoutData];
     [dic setValue:orderIdStr forKey:@"orderIdStr"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"选中发票== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/countMoney" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/countMoney" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
       
         DLog(@"选中发票data== jeikou == %@ " ,returnData);
 
@@ -357,8 +323,10 @@
     NSDictionary *dic = [self checkoutData];
     DLog(@"全选请求发票== %@" ,dic );
     [dic setValue:string forKey:@"checkNum"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/countAllMoney" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/countAllMoney" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"status"] integerValue] == 200) {
             
@@ -374,6 +342,8 @@
                 _bottomView.PayBtn.backgroundColor = RGB(220, 220, 220, 1);
                 _bottomView.PayBtn.userInteractionEnabled = NO;
             }
+            
+            
 
         }
         
@@ -426,8 +396,11 @@
 
 #pragma mark =下一步开具发票
 -(void)nextBtnClick{
-    
+    if ([self.invoiceTotalPrice floatValue] == 0) {
+        [SVProgressHUD showErrorWithStatus:@"开票金额需大于0元"];
+    }else{
     [self requestNextInvoiceInfoData:self.selectOrderIdString];
+    }
 }
 
 
@@ -555,7 +528,7 @@
     if (self.invoiceImageListMarray.count != 0) {
         InvoiceTableCellConfig *orderConfig = [InvoiceTableCellConfig myOrderTableCellConfig];
         orderConfig.orderImvArray = self.invoiceImageListMarray[indexPath.section];
-        DLog(@"-------------------------==cccccccc=== %ld" ,orderConfig.orderImvArray.count);
+        DLog(@"发票列表图片cc=== %ld" ,orderConfig.orderImvArray.count);
     }
     
     NSString *s = [NSString stringWithFormat:@"%ldcell",indexPath.section];

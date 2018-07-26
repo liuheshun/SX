@@ -145,23 +145,22 @@
     
     [dic setValue:self.invoicePreviewView.bankLabel.text forKey:@"invoiceCompanyBank"];
     [dic setValue:self.invoicePreviewView.bankAccountLabel.text forKey:@"invoiceCompanyBankAccount"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"保存发票信息== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/saveInvoice" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/saveInvoice" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200 ) {
-//            InvoiceSubmitResultsViewController *VC = [InvoiceSubmitResultsViewController new];
-//            [self.navigationController pushViewController:VC animated:YES];
-//
+            [self closeBtnAction];
+            
+            InvoiceSubmitResultsViewController *VC = [InvoiceSubmitResultsViewController new];
+            [self.navigationController pushViewController:VC animated:YES];
+            
         }else{
-            [SVProgressHUD showErrorWithStatus:@"error!=200"];
+            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        [self closeBtnAction];
-
-        InvoiceSubmitResultsViewController *VC = [InvoiceSubmitResultsViewController new];
-        [self.navigationController pushViewController:VC animated:YES];
-        
+       
         
         DLog(@"保存发票信息data== jeikou == %@ " ,returnData);
         
@@ -541,6 +540,11 @@
                 InvoiceDetailsModel *model = [self.invoiceShowMarray firstObject];
                 [self.specialInvoiceCell configWithModel:model];
             }
+            
+            
+            self.specialInvoiceCell.invoiceMoneyTextField.text = self.invoiceTotalPrices;
+
+            
             [self.specialInvoiceCell.invoiceLookUpTextField addTarget:self action:@selector(invoiceLookUpTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             
             [self.specialInvoiceCell.enioTextField addTarget:self action:@selector(enioTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];

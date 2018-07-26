@@ -129,11 +129,11 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:orderNo forKey:@"orderNo"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200)

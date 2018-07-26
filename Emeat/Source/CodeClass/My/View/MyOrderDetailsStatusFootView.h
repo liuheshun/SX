@@ -50,7 +50,12 @@ typedef void(^ReturnDeleteClickBlcok)(NSInteger clickIndex);
 
 @property (nonatomic,copy) ReturnDeleteClickBlcok returnDeleteClickBlcok;
 
-
+////重量返款差额
+@property (nonatomic,strong) UILabel *weightRebatesPrices;
+///活动返款额
+@property (nonatomic,strong) UILabel *activityRebatesPrices;
+///净总价
+@property (nonatomic,strong) UILabel *netPrices;
 
 
 

@@ -62,12 +62,12 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setObject:@"80" forKey:@"status"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"售后============ %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/queryByStatus" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/queryByStatus" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"售后 订单=== %@" ,returnData);
         

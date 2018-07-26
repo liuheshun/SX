@@ -39,15 +39,17 @@
     
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"开票历史订单== %@" ,dic );
     
-    NSMutableArray *Marray = [NSMutableArray array];
 
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/queryOrdersByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryOrdersByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
       DLog(@"开票历史订单详情数据======= %@" , returnData);
 
         if ([returnData[@"status"] integerValue] == 200) {
+            [self.invoiceImageListMarray removeAllObjects];
             if ([returnData[@"data"][@"list"] isKindOfClass:[NSArray class]]) {
                 
                 for (NSDictionary *dic in returnData[@"data"][@"list"]) {
@@ -80,11 +82,12 @@
                         DLog(@"选中的ID===%@" ,Id);
                         
                         
+                   
+                    NSMutableArray *Marray = [NSMutableArray array];
+                    for (NSDictionary *dicDetails in dic[@"orderItem"]) {
                         
-                        for (NSDictionary *dicDetails in dic[@"orderItem"]) {
-                            
-                            OrderModel *model = [OrderModel yy_modelWithJSON:dicDetails];
-                            NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.productImage componentsSeparatedByString:@","]];
+                        OrderModel *model = [OrderModel yy_modelWithJSON:dicDetails];
+                        NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.productImage componentsSeparatedByString:@","]];
                             if (mainImvMarray.count!=0) {
                                 model.productImage = [mainImvMarray firstObject];
                             }
@@ -99,7 +102,7 @@
                     }
                     
                     [self.tableView reloadData];
-                    DLog(@"发票列表== jeikou == %ld " ,self.invoiceListMarray.count);
+                    DLog(@"发票列表== jeikou == %ld " ,self.invoiceImageListMarray.count);
                     
                 
 
@@ -109,7 +112,6 @@
         }
         
         
-        DLog(@"开票历史详情数据== jeikou == %@ " ,returnData);
         
         
         
@@ -174,11 +176,15 @@
     if (self.invoiceImageListMarray.count != 0) {
         MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
         orderConfig.orderImvArray = self.invoiceImageListMarray[indexPath.section];
+        DLog(@"-------------------------==cccccccc=== %@" ,orderConfig.orderImvArray[0]);
+
         
     }
-    MyOrderTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"InvoiceHistoryCheckOrderView_cell"];
+    NSString *s = [NSString stringWithFormat:@"%ldInvoiceHistoryCheckOrderView_cell",indexPath.section];
+
+    MyOrderTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:s];
     if (cell1 == nil) {
-        cell1 = [[MyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvoiceHistoryCheckOrderView_cell"];
+        cell1 = [[MyOrderTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:s];
         
         [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
         cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -191,6 +197,10 @@
         OrderModel *model = self.invoiceListMarray[indexPath.section];
 //        totalPageCount = model.pages;
         [cell1 configWithOrderModel:model];
+        cell1.orderTimeLab.text = model.createTime;
+        cell1.orderStated.text = @"已完成";
+
+
         
     }
     return cell1;
@@ -220,7 +230,7 @@
 //
 //
 //    [MHAsiNetworkHandler startMonitoring];
-//    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/queryOrdersByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+//    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryOrdersByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
 //
 //        if ([returnData[@"status"] integerValue] == 200) {
 //

@@ -97,7 +97,7 @@
     
     self.orderTimeLab.text = model.createTime;
     self.orderStated.text = @"已完成";
-    self.orderDetailsLab.text = [NSString stringWithFormat:@"共%ld件商品, 总价:¥ %.2f" ,model.quantity , (CGFloat)model.netPrice/100];
+    self.orderDetailsLab.text = [NSString stringWithFormat:@"共%ld件商品, 可开票金额:¥ %.2f" ,model.quantity , (CGFloat)model.netPrice/100];
     
     if (model.checkStated == 0)
     {
@@ -157,7 +157,7 @@
 -(void)setOrderImvFrame{
     NSInteger arrayCount = 0;
     InvoiceTableCellConfig *orderConfig = [InvoiceTableCellConfig myOrderTableCellConfig];
-    DLog(@"ccccccccc=========== %ld" , orderConfig.orderImvArray.count);
+    DLog(@"发票列表图片=========== %ld" , orderConfig.orderImvArray.count);
 //    orderConfig.orderImvArray = @[@"1" , @"12" ,@"3" ,@"4"];
     if (orderConfig.orderImvArray.count >3) {
         arrayCount = 4;

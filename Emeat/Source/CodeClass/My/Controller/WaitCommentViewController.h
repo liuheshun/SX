@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZJScrollPageView.h"
 
 @interface WaitCommentViewController : SHLBaseViewController<ZJScrollPageViewChildVcDelegate>
 

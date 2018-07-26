@@ -20,19 +20,17 @@
 		160F29D220090D7C00F3295B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D120090D7C00F3295B /* SystemConfiguration.framework */; };
 		160F29D420090D8A00F3295B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D320090D8A00F3295B /* libz.tbd */; };
 		160F29D620090D9500F3295B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D520090D9500F3295B /* libc++.tbd */; };
+		16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC520FC2B290095E261 /* ActionSheetView.m */; };
+		16285FCC20FC2B290095E261 /* VerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC620FC2B290095E261 /* VerButton.m */; };
+		16285FCD20FC2B290095E261 /* ActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FCA20FC2B290095E261 /* ActionButton.m */; };
+		16285FD020FC374F0095E261 /* ShareImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FCF20FC374F0095E261 /* ShareImageViewController.m */; };
+		16285FD320FC3E050095E261 /* ShareImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD220FC3E050095E261 /* ShareImageView.m */; };
+		16285FD620FC82ED0095E261 /* ShareImageBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD520FC82ED0095E261 /* ShareImageBottomView.m */; };
 		162F96ED205765AA004EA49F /* UIView+SGPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E1205765A9004EA49F /* UIView+SGPagingView.m */; };
 		162F96EE205765AA004EA49F /* SGPageContentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E3205765A9004EA49F /* SGPageContentScrollView.m */; };
 		162F96EF205765AA004EA49F /* SGPageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E4205765A9004EA49F /* SGPageContentView.m */; };
 		162F96F0205765AA004EA49F /* SGPageTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E8205765A9004EA49F /* SGPageTitleView.m */; };
 		162F96F1205765AA004EA49F /* SGPageTitleViewConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E9205765A9004EA49F /* SGPageTitleViewConfigure.m */; };
-		162F970420577DDC004EA49F /* UIView+ZJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96F420577DDB004EA49F /* UIView+ZJFrame.m */; };
-		162F970520577DDC004EA49F /* ZJTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96F920577DDB004EA49F /* ZJTitleView.m */; };
-		162F970620577DDC004EA49F /* UIViewController+ZJScrollPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96FA20577DDB004EA49F /* UIViewController+ZJScrollPageController.m */; };
-		162F970720577DDC004EA49F /* ZJContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96FD20577DDB004EA49F /* ZJContentView.m */; };
-		162F970820577DDC004EA49F /* ZJCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96FE20577DDB004EA49F /* ZJCollectionView.m */; };
-		162F970920577DDC004EA49F /* ZJSegmentStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96FF20577DDB004EA49F /* ZJSegmentStyle.m */; };
-		162F970A20577DDC004EA49F /* ZJScrollSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970020577DDB004EA49F /* ZJScrollSegmentView.m */; };
-		162F970B20577DDC004EA49F /* ZJScrollPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F970120577DDB004EA49F /* ZJScrollPageView.m */; };
 		16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16311B0B20909FB1005B2277 /* JMHoledView.m */; };
 		1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA7F1FCE938900F7162C /* SortListSegmentView.m */; };
 		1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA821FCFA66200F7162C /* SortCheckView.m */; };
@@ -70,6 +68,14 @@
 		1683BD751FB03E300043CA23 /* homePageHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD741FB03E300043CA23 /* homePageHeadView.m */; };
 		1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD771FB18A0B0043CA23 /* ShoppingCartTableViewCell.m */; };
 		1683BD7B1FB18B670043CA23 /* ShoppingCartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD7A1FB18B670043CA23 /* ShoppingCartModel.m */; };
+		16885C582101C643008A6FB9 /* UIView+ZJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C482101C643008A6FB9 /* UIView+ZJFrame.m */; };
+		16885C592101C643008A6FB9 /* ZJTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C4D2101C643008A6FB9 /* ZJTitleView.m */; };
+		16885C5A2101C643008A6FB9 /* UIViewController+ZJScrollPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C4E2101C643008A6FB9 /* UIViewController+ZJScrollPageController.m */; };
+		16885C5B2101C643008A6FB9 /* ZJContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C512101C643008A6FB9 /* ZJContentView.m */; };
+		16885C5C2101C643008A6FB9 /* ZJCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C522101C643008A6FB9 /* ZJCollectionView.m */; };
+		16885C5D2101C643008A6FB9 /* ZJSegmentStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C532101C643008A6FB9 /* ZJSegmentStyle.m */; };
+		16885C5E2101C643008A6FB9 /* ZJScrollSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C542101C643008A6FB9 /* ZJScrollSegmentView.m */; };
+		16885C5F2101C643008A6FB9 /* ZJScrollPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C552101C643008A6FB9 /* ZJScrollPageView.m */; };
 		16901C931FD4FB220080762A /* SelectAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901C921FD4FB220080762A /* SelectAddressViewController.m */; };
 		16901C961FD5326B0080762A /* AddNewAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901C951FD5326B0080762A /* AddNewAddressViewController.m */; };
 		16901C9A1FD58E540080762A /* CurrentAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901C991FD58E540080762A /* CurrentAddressView.m */; };
@@ -85,6 +91,8 @@
 		16901CF81FDAD8E70080762A /* MyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901CF71FDAD8E70080762A /* MyOrderViewController.m */; };
 		16901CFE1FDE6A0A0080762A /* MyAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901CFD1FDE6A0A0080762A /* MyAddressView.m */; };
 		16901D421FDF97360080762A /* SearchLocationAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901D411FDF97360080762A /* SearchLocationAddressViewController.m */; };
+		1696BF1920EF269200BD9CD3 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696BF1820EF269200BD9CD3 /* NotificationService.m */; };
+		1696BF1D20EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1696BF1520EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */; };
 		16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992A20DB8B7E00D9F101 /* InvoiceListViewController.m */; };
 		16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992D20DB909100D9F101 /* InvoiceListTableViewCell.m */; };
@@ -103,6 +111,8 @@
 		16B86A542086E67E00A50614 /* ShopCertificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B86A532086E67E00A50614 /* ShopCertificationViewController.m */; };
 		16B86A572086E75000A50614 /* ShopCeritficationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B86A562086E75000A50614 /* ShopCeritficationView.m */; };
 		16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */; };
+		16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */; };
+		16C91DE320F8838E00B01F8B /* PhoneNumberCertificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */; };
 		16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1EDD2003603000E919C7 /* AF_BrandCell.h */; };
 		16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1ED82003602F00E919C7 /* AF_BrandCell.m */; };
 		16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1EDA2003603000E919C7 /* AF_MainScreeningViewController.h */; };
@@ -123,7 +133,6 @@
 		16CFD75C1FB97E200015F2C1 /* SHLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD75B1FB97E200015F2C1 /* SHLBaseViewController.m */; };
 		16CFD75F1FBAB4B40015F2C1 /* MyHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD75E1FBAB4B40015F2C1 /* MyHeadView.m */; };
 		16CFD7621FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD7611FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m */; };
-		16CFD7651FBAECA30015F2C1 /* MyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD7641FBAECA30015F2C1 /* MyTableViewCell.m */; };
 		16CFD76B1FBE7F930015F2C1 /* YouLikeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD76A1FBE7F930015F2C1 /* YouLikeTableViewCell.m */; };
 		16CFD76E1FBE910B0015F2C1 /* YouLikeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD76D1FBE910B0015F2C1 /* YouLikeCollectionViewCell.m */; };
 		16CFD7711FBEB6510015F2C1 /* YouLikeCollectionHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CFD7701FBEB6510015F2C1 /* YouLikeCollectionHeadView.m */; };
@@ -168,6 +177,8 @@
 		16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EE103F1FECD7080099DA91 /* SuggestionFeedbackViewController.m */; };
 		16F0AF46207F9AE10093FE7D /* MyHeadLonginOutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */; };
 		16F3A3B720B7DFB300ACDED8 /* MessageCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F3A3B620B7DFB300ACDED8 /* MessageCenterViewController.m */; };
+		16F77E6420FED7AD00E0D2DB /* JHGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F77E6320FED7AD00E0D2DB /* JHGridView.m */; };
+		16F77E6720FEE4E000E0D2DB /* TestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F77E6520FEE4E000E0D2DB /* TestObject.m */; };
 		16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FB31371FAC5D9D00049580 /* AppDelegate.m */; };
 		16FB313E1FAC5D9D00049580 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16FB313C1FAC5D9D00049580 /* Main.storyboard */; };
 		16FB31401FAC5D9D00049580 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16FB313F1FAC5D9D00049580 /* Assets.xcassets */; };
@@ -178,10 +189,18 @@
 		16FC44432029B83C00B95546 /* NSString+textFieldCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FC44422029B83C00B95546 /* NSString+textFieldCategory.m */; };
 		16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FF04E91FD4EA2200F8C280 /* Location.m */; };
 		16FF04F31FD4EDF900F8C280 /* RHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 16FF04F21FD4EDF900F8C280 /* RHLocation.m */; };
+		818280D73CEB1C3197511508 /* libPods-com.lxbox.Emeat.NotificationService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E5B32CDB8307E7614C4B08A /* libPods-com.lxbox.Emeat.NotificationService.a */; };
 		91A422FB6FD0AD8C1074F3B7 /* libPods-Emeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F29F714543D21E60DC237F3B /* libPods-Emeat.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1696BF1B20EF269200BD9CD3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16FB312B1FAC5D9D00049580 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1696BF1420EF269200BD9CD3;
+			remoteInfo = com.lxbox.Emeat.NotificationService;
+		};
 		16FB314C1FAC5D9D00049580 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 16FB312B1FAC5D9D00049580 /* Project object */;
@@ -198,7 +217,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1696BF2120EF269200BD9CD3 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1696BF1D20EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		09D37E3AA3CCF9DE7DF3AECE /* Pods-com.lxbox.Emeat.NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lxbox.Emeat.NotificationService.release.xcconfig"; path = "Pods/Target Support Files/Pods-com.lxbox.Emeat.NotificationService/Pods-com.lxbox.Emeat.NotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		160F29BC2009040800F3295B /* LHSPayManger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LHSPayManger.h; sourceTree = "<group>"; };
 		160F29BD2009040800F3295B /* LHSPayManger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LHSPayManger.m; sourceTree = "<group>"; };
 		160F29BF20090CF400F3295B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -213,6 +247,19 @@
 		160F29D120090D7C00F3295B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		160F29D320090D8A00F3295B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		160F29D520090D9500F3295B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		16285FC520FC2B290095E261 /* ActionSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetView.m; sourceTree = "<group>"; };
+		16285FC620FC2B290095E261 /* VerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerButton.m; sourceTree = "<group>"; };
+		16285FC720FC2B290095E261 /* ActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionButton.h; sourceTree = "<group>"; };
+		16285FC820FC2B290095E261 /* ActionSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetView.h; sourceTree = "<group>"; };
+		16285FC920FC2B290095E261 /* VerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerButton.h; sourceTree = "<group>"; };
+		16285FCA20FC2B290095E261 /* ActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionButton.m; sourceTree = "<group>"; };
+		16285FCE20FC374F0095E261 /* ShareImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareImageViewController.h; sourceTree = "<group>"; };
+		16285FCF20FC374F0095E261 /* ShareImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareImageViewController.m; sourceTree = "<group>"; };
+		16285FD120FC3E050095E261 /* ShareImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareImageView.h; sourceTree = "<group>"; };
+		16285FD220FC3E050095E261 /* ShareImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareImageView.m; sourceTree = "<group>"; };
+		16285FD420FC82ED0095E261 /* ShareImageBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareImageBottomView.h; sourceTree = "<group>"; };
+		16285FD520FC82ED0095E261 /* ShareImageBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareImageBottomView.m; sourceTree = "<group>"; };
+		162D6E1E20F5922C00292D7E /* com.lxbox.Emeat.NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.lxbox.Emeat.NotificationService.entitlements; sourceTree = "<group>"; };
 		162F96E0205765A9004EA49F /* UIView+SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SGPagingView.h"; sourceTree = "<group>"; };
 		162F96E1205765A9004EA49F /* UIView+SGPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SGPagingView.m"; sourceTree = "<group>"; };
 		162F96E3205765A9004EA49F /* SGPageContentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageContentScrollView.m; sourceTree = "<group>"; };
@@ -224,23 +271,6 @@
 		162F96EA205765A9004EA49F /* SGPageTitleViewConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageTitleViewConfigure.h; sourceTree = "<group>"; };
 		162F96EB205765A9004EA49F /* SGPageTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageTitleView.h; sourceTree = "<group>"; };
 		162F96EC205765A9004EA49F /* SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPagingView.h; sourceTree = "<group>"; };
-		162F96F320577DDB004EA49F /* ZJContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJContentView.h; sourceTree = "<group>"; };
-		162F96F420577DDB004EA49F /* UIView+ZJFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZJFrame.m"; sourceTree = "<group>"; };
-		162F96F520577DDB004EA49F /* ZJCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJCollectionView.h; sourceTree = "<group>"; };
-		162F96F620577DDB004EA49F /* ZJScrollSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollSegmentView.h; sourceTree = "<group>"; };
-		162F96F720577DDB004EA49F /* ZJScrollPageViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollPageViewDelegate.h; sourceTree = "<group>"; };
-		162F96F820577DDB004EA49F /* ZJSegmentStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJSegmentStyle.h; sourceTree = "<group>"; };
-		162F96F920577DDB004EA49F /* ZJTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTitleView.m; sourceTree = "<group>"; };
-		162F96FA20577DDB004EA49F /* UIViewController+ZJScrollPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZJScrollPageController.m"; sourceTree = "<group>"; };
-		162F96FB20577DDB004EA49F /* ZJScrollPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollPageView.h; sourceTree = "<group>"; };
-		162F96FC20577DDB004EA49F /* UIView+ZJFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZJFrame.h"; sourceTree = "<group>"; };
-		162F96FD20577DDB004EA49F /* ZJContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJContentView.m; sourceTree = "<group>"; };
-		162F96FE20577DDB004EA49F /* ZJCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJCollectionView.m; sourceTree = "<group>"; };
-		162F96FF20577DDB004EA49F /* ZJSegmentStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJSegmentStyle.m; sourceTree = "<group>"; };
-		162F970020577DDB004EA49F /* ZJScrollSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollSegmentView.m; sourceTree = "<group>"; };
-		162F970120577DDB004EA49F /* ZJScrollPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollPageView.m; sourceTree = "<group>"; };
-		162F970220577DDB004EA49F /* UIViewController+ZJScrollPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZJScrollPageController.h"; sourceTree = "<group>"; };
-		162F970320577DDB004EA49F /* ZJTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTitleView.h; sourceTree = "<group>"; };
 		16311B0A20909FB1005B2277 /* JMHoledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMHoledView.h; sourceTree = "<group>"; };
 		16311B0B20909FB1005B2277 /* JMHoledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMHoledView.m; sourceTree = "<group>"; };
 		1643DA7E1FCE938900F7162C /* SortListSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortListSegmentView.h; sourceTree = "<group>"; };
@@ -314,6 +344,23 @@
 		1683BD771FB18A0B0043CA23 /* ShoppingCartTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartTableViewCell.m; sourceTree = "<group>"; };
 		1683BD791FB18B670043CA23 /* ShoppingCartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartModel.h; sourceTree = "<group>"; };
 		1683BD7A1FB18B670043CA23 /* ShoppingCartModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartModel.m; sourceTree = "<group>"; };
+		16885C472101C643008A6FB9 /* ZJContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJContentView.h; sourceTree = "<group>"; };
+		16885C482101C643008A6FB9 /* UIView+ZJFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZJFrame.m"; sourceTree = "<group>"; };
+		16885C492101C643008A6FB9 /* ZJCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJCollectionView.h; sourceTree = "<group>"; };
+		16885C4A2101C643008A6FB9 /* ZJScrollSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollSegmentView.h; sourceTree = "<group>"; };
+		16885C4B2101C643008A6FB9 /* ZJScrollPageViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollPageViewDelegate.h; sourceTree = "<group>"; };
+		16885C4C2101C643008A6FB9 /* ZJSegmentStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJSegmentStyle.h; sourceTree = "<group>"; };
+		16885C4D2101C643008A6FB9 /* ZJTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTitleView.m; sourceTree = "<group>"; };
+		16885C4E2101C643008A6FB9 /* UIViewController+ZJScrollPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ZJScrollPageController.m"; sourceTree = "<group>"; };
+		16885C4F2101C643008A6FB9 /* ZJScrollPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJScrollPageView.h; sourceTree = "<group>"; };
+		16885C502101C643008A6FB9 /* UIView+ZJFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZJFrame.h"; sourceTree = "<group>"; };
+		16885C512101C643008A6FB9 /* ZJContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJContentView.m; sourceTree = "<group>"; };
+		16885C522101C643008A6FB9 /* ZJCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJCollectionView.m; sourceTree = "<group>"; };
+		16885C532101C643008A6FB9 /* ZJSegmentStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJSegmentStyle.m; sourceTree = "<group>"; };
+		16885C542101C643008A6FB9 /* ZJScrollSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollSegmentView.m; sourceTree = "<group>"; };
+		16885C552101C643008A6FB9 /* ZJScrollPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJScrollPageView.m; sourceTree = "<group>"; };
+		16885C562101C643008A6FB9 /* UIViewController+ZJScrollPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ZJScrollPageController.h"; sourceTree = "<group>"; };
+		16885C572101C643008A6FB9 /* ZJTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTitleView.h; sourceTree = "<group>"; };
 		16901C911FD4FB220080762A /* SelectAddressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectAddressViewController.h; sourceTree = "<group>"; };
 		16901C921FD4FB220080762A /* SelectAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectAddressViewController.m; sourceTree = "<group>"; };
 		16901C941FD5326B0080762A /* AddNewAddressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddNewAddressViewController.h; sourceTree = "<group>"; };
@@ -339,6 +386,10 @@
 		16901CFD1FDE6A0A0080762A /* MyAddressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyAddressView.m; sourceTree = "<group>"; };
 		16901D401FDF97360080762A /* SearchLocationAddressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLocationAddressViewController.h; sourceTree = "<group>"; };
 		16901D411FDF97360080762A /* SearchLocationAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLocationAddressViewController.m; sourceTree = "<group>"; };
+		1696BF1520EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = com.lxbox.Emeat.NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1696BF1720EF269200BD9CD3 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		1696BF1820EF269200BD9CD3 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		1696BF1A20EF269200BD9CD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16AA64F5208DBCA0001496E8 /* MMMyCustomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMMyCustomView.h; sourceTree = "<group>"; };
 		16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMMyCustomView.m; sourceTree = "<group>"; };
 		16B0992920DB8B7E00D9F101 /* InvoiceListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListViewController.h; sourceTree = "<group>"; };
@@ -375,6 +426,10 @@
 		16B86A562086E75000A50614 /* ShopCeritficationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCeritficationView.m; sourceTree = "<group>"; };
 		16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchIntroductionView.m; sourceTree = "<group>"; };
 		16BB3EF9207F500B00623045 /* LaunchIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchIntroductionView.h; sourceTree = "<group>"; };
+		16C91DDE20F8834800B01F8B /* PhoneNumberCertificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneNumberCertificationViewController.h; sourceTree = "<group>"; };
+		16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberCertificationViewController.m; sourceTree = "<group>"; };
+		16C91DE120F8838E00B01F8B /* PhoneNumberCertificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneNumberCertificationView.h; sourceTree = "<group>"; };
+		16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberCertificationView.m; sourceTree = "<group>"; };
 		16CE1ED62003602F00E919C7 /* AF_ScreeningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AF_ScreeningViewController.m; sourceTree = "<group>"; };
 		16CE1ED72003602F00E919C7 /* AXPriceRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AXPriceRangeCell.xib; sourceTree = "<group>"; };
 		16CE1ED82003602F00E919C7 /* AF_BrandCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AF_BrandCell.m; sourceTree = "<group>"; };
@@ -410,8 +465,6 @@
 		16CFD75E1FBAB4B40015F2C1 /* MyHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyHeadView.m; sourceTree = "<group>"; };
 		16CFD7601FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+ImageTitleSpaceing.h"; sourceTree = "<group>"; };
 		16CFD7611FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ImageTitleSpaceing.m"; sourceTree = "<group>"; };
-		16CFD7631FBAECA30015F2C1 /* MyTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTableViewCell.h; sourceTree = "<group>"; };
-		16CFD7641FBAECA30015F2C1 /* MyTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTableViewCell.m; sourceTree = "<group>"; };
 		16CFD7691FBE7F930015F2C1 /* YouLikeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YouLikeTableViewCell.h; sourceTree = "<group>"; };
 		16CFD76A1FBE7F930015F2C1 /* YouLikeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YouLikeTableViewCell.m; sourceTree = "<group>"; };
 		16CFD76C1FBE910B0015F2C1 /* YouLikeCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YouLikeCollectionViewCell.h; sourceTree = "<group>"; };
@@ -505,6 +558,10 @@
 		16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyHeadLonginOutView.m; sourceTree = "<group>"; };
 		16F3A3B520B7DFB300ACDED8 /* MessageCenterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCenterViewController.h; sourceTree = "<group>"; };
 		16F3A3B620B7DFB300ACDED8 /* MessageCenterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCenterViewController.m; sourceTree = "<group>"; };
+		16F77E6220FED7AD00E0D2DB /* JHGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHGridView.h; sourceTree = "<group>"; };
+		16F77E6320FED7AD00E0D2DB /* JHGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHGridView.m; sourceTree = "<group>"; };
+		16F77E6520FEE4E000E0D2DB /* TestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObject.m; sourceTree = "<group>"; };
+		16F77E6620FEE4E000E0D2DB /* TestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObject.h; sourceTree = "<group>"; };
 		16FB31331FAC5D9D00049580 /* Emeat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emeat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16FB31361FAC5D9D00049580 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		16FB31371FAC5D9D00049580 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -525,12 +582,22 @@
 		16FF04E91FD4EA2200F8C280 /* Location.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		16FF04F11FD4EDF800F8C280 /* RHLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RHLocation.h; sourceTree = "<group>"; };
 		16FF04F21FD4EDF900F8C280 /* RHLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RHLocation.m; sourceTree = "<group>"; };
+		2E5B32CDB8307E7614C4B08A /* libPods-com.lxbox.Emeat.NotificationService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-com.lxbox.Emeat.NotificationService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DA93680C058AEFB6FB446B /* Pods-Emeat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emeat.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emeat/Pods-Emeat.release.xcconfig"; sourceTree = "<group>"; };
 		62F18760B885639E4AB589C4 /* Pods-Emeat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emeat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emeat/Pods-Emeat.debug.xcconfig"; sourceTree = "<group>"; };
 		F29F714543D21E60DC237F3B /* libPods-Emeat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Emeat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F515A3CA62CF0682E368D1BD /* Pods-com.lxbox.Emeat.NotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lxbox.Emeat.NotificationService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-com.lxbox.Emeat.NotificationService/Pods-com.lxbox.Emeat.NotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1696BF1220EF269200BD9CD3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				818280D73CEB1C3197511508 /* libPods-com.lxbox.Emeat.NotificationService.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16FB31301FAC5D9D00049580 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -572,6 +639,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16285FC420FC2B290095E261 /* shareUIView */ = {
+			isa = PBXGroup;
+			children = (
+				16285FC520FC2B290095E261 /* ActionSheetView.m */,
+				16285FC620FC2B290095E261 /* VerButton.m */,
+				16285FC720FC2B290095E261 /* ActionButton.h */,
+				16285FC820FC2B290095E261 /* ActionSheetView.h */,
+				16285FC920FC2B290095E261 /* VerButton.h */,
+				16285FCA20FC2B290095E261 /* ActionButton.m */,
+			);
+			path = shareUIView;
+			sourceTree = "<group>";
+		};
 		162F96DE205765A9004EA49F /* SGPagingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -612,30 +692,6 @@
 				162F96EB205765A9004EA49F /* SGPageTitleView.h */,
 			);
 			path = SGPageTitle;
-			sourceTree = "<group>";
-		};
-		162F96F220577DDB004EA49F /* ZJScrollPageView */ = {
-			isa = PBXGroup;
-			children = (
-				162F96F320577DDB004EA49F /* ZJContentView.h */,
-				162F96F420577DDB004EA49F /* UIView+ZJFrame.m */,
-				162F96F520577DDB004EA49F /* ZJCollectionView.h */,
-				162F96F620577DDB004EA49F /* ZJScrollSegmentView.h */,
-				162F96F720577DDB004EA49F /* ZJScrollPageViewDelegate.h */,
-				162F96F820577DDB004EA49F /* ZJSegmentStyle.h */,
-				162F96F920577DDB004EA49F /* ZJTitleView.m */,
-				162F96FA20577DDB004EA49F /* UIViewController+ZJScrollPageController.m */,
-				162F96FB20577DDB004EA49F /* ZJScrollPageView.h */,
-				162F96FC20577DDB004EA49F /* UIView+ZJFrame.h */,
-				162F96FD20577DDB004EA49F /* ZJContentView.m */,
-				162F96FE20577DDB004EA49F /* ZJCollectionView.m */,
-				162F96FF20577DDB004EA49F /* ZJSegmentStyle.m */,
-				162F970020577DDB004EA49F /* ZJScrollSegmentView.m */,
-				162F970120577DDB004EA49F /* ZJScrollPageView.m */,
-				162F970220577DDB004EA49F /* UIViewController+ZJScrollPageController.h */,
-				162F970320577DDB004EA49F /* ZJTitleView.h */,
-			);
-			path = ZJScrollPageView;
 			sourceTree = "<group>";
 		};
 		16311B0920909FB1005B2277 /* NoviceUserGuideView */ = {
@@ -689,6 +745,30 @@
 			path = WechatSDK1.8.2;
 			sourceTree = "<group>";
 		};
+		16885C462101C643008A6FB9 /* ZJScrollPageView */ = {
+			isa = PBXGroup;
+			children = (
+				16885C472101C643008A6FB9 /* ZJContentView.h */,
+				16885C482101C643008A6FB9 /* UIView+ZJFrame.m */,
+				16885C492101C643008A6FB9 /* ZJCollectionView.h */,
+				16885C4A2101C643008A6FB9 /* ZJScrollSegmentView.h */,
+				16885C4B2101C643008A6FB9 /* ZJScrollPageViewDelegate.h */,
+				16885C4C2101C643008A6FB9 /* ZJSegmentStyle.h */,
+				16885C4D2101C643008A6FB9 /* ZJTitleView.m */,
+				16885C4E2101C643008A6FB9 /* UIViewController+ZJScrollPageController.m */,
+				16885C4F2101C643008A6FB9 /* ZJScrollPageView.h */,
+				16885C502101C643008A6FB9 /* UIView+ZJFrame.h */,
+				16885C512101C643008A6FB9 /* ZJContentView.m */,
+				16885C522101C643008A6FB9 /* ZJCollectionView.m */,
+				16885C532101C643008A6FB9 /* ZJSegmentStyle.m */,
+				16885C542101C643008A6FB9 /* ZJScrollSegmentView.m */,
+				16885C552101C643008A6FB9 /* ZJScrollPageView.m */,
+				16885C562101C643008A6FB9 /* UIViewController+ZJScrollPageController.h */,
+				16885C572101C643008A6FB9 /* ZJTitleView.h */,
+			);
+			path = ZJScrollPageView;
+			sourceTree = "<group>";
+		};
 		16901C971FD58D920080762A /* SelectAddressView */ = {
 			isa = PBXGroup;
 			children = (
@@ -713,6 +793,17 @@
 				16901CA41FD679A90080762A /* DDSearchObj.m */,
 			);
 			path = DDSearchManager;
+			sourceTree = "<group>";
+		};
+		1696BF1620EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				162D6E1E20F5922C00292D7E /* com.lxbox.Emeat.NotificationService.entitlements */,
+				1696BF1720EF269200BD9CD3 /* NotificationService.h */,
+				1696BF1820EF269200BD9CD3 /* NotificationService.m */,
+				1696BF1A20EF269200BD9CD3 /* Info.plist */,
+			);
+			path = com.lxbox.Emeat.NotificationService;
 			sourceTree = "<group>";
 		};
 		16B0992820DB8AC500D9F101 /* InvoiceViewController */ = {
@@ -855,6 +946,7 @@
 		16CFD7251FB2A6F20015F2C1 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				16285FC420FC2B290095E261 /* shareUIView */,
 				16311B0920909FB1005B2277 /* NoviceUserGuideView */,
 				16BB3EF7207F500B00623045 /* LaunchIntroduction */,
 				16B750E52013386E00C4642C /* LDActionSheet */,
@@ -963,6 +1055,8 @@
 				168130501FC2A5B90045207E /* HomePageDetailsViewController.m */,
 				1679D1BC204E7C3A009C2E25 /* HomePageOtherDetailsViewController.h */,
 				1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */,
+				16285FCE20FC374F0095E261 /* ShareImageViewController.h */,
+				16285FCF20FC374F0095E261 /* ShareImageViewController.m */,
 				1643DA841FCFE0FF00F7162C /* SeacherViewController.h */,
 				1643DA851FCFE0FF00F7162C /* SeacherViewController.m */,
 				16901C911FD4FB220080762A /* SelectAddressViewController.h */,
@@ -1003,6 +1097,10 @@
 				16DC91DE200F34BB003C25BE /* HomePageDetailsBuyNoticeView.m */,
 				16DF76DE2021D14100078F10 /* HomePageAddressNoticeView.h */,
 				16DF76DF2021D14100078F10 /* HomePageAddressNoticeView.m */,
+				16285FD120FC3E050095E261 /* ShareImageView.h */,
+				16285FD220FC3E050095E261 /* ShareImageView.m */,
+				16285FD420FC82ED0095E261 /* ShareImageBottomView.h */,
+				16285FD520FC82ED0095E261 /* ShareImageBottomView.m */,
 				16901C971FD58D920080762A /* SelectAddressView */,
 			);
 			path = View;
@@ -1065,8 +1163,6 @@
 				16CFD75E1FBAB4B40015F2C1 /* MyHeadView.m */,
 				16F0AF44207F9AE10093FE7D /* MyHeadLonginOutView.h */,
 				16F0AF45207F9AE10093FE7D /* MyHeadLonginOutView.m */,
-				16CFD7631FBAECA30015F2C1 /* MyTableViewCell.h */,
-				16CFD7641FBAECA30015F2C1 /* MyTableViewCell.m */,
 				16EE102F1FE269050099DA91 /* MyOrderTableViewCell.h */,
 				16EE10301FE269050099DA91 /* MyOrderTableViewCell.m */,
 				16EE10321FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.h */,
@@ -1077,6 +1173,7 @@
 				16E6B28120860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m */,
 				16EE10381FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.h */,
 				16EE10391FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m */,
+				16F77E6120FED7AD00E0D2DB /* JHGridView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1084,7 +1181,7 @@
 		16CFD73A1FB2ED540015F2C1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				162F96F220577DDB004EA49F /* ZJScrollPageView */,
+				16885C462101C643008A6FB9 /* ZJScrollPageView */,
 				162F96DE205765A9004EA49F /* SGPagingView */,
 				16B0992820DB8AC500D9F101 /* InvoiceViewController */,
 				1683BD6B1FB005AC0043CA23 /* MyViewController.h */,
@@ -1143,12 +1240,16 @@
 			children = (
 				16D950C41FF3755800DBC7B8 /* LoginViewController.h */,
 				16D950C51FF3755800DBC7B8 /* LoginViewController.m */,
+				16C91DDE20F8834800B01F8B /* PhoneNumberCertificationViewController.h */,
+				16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */,
 				16B86A522086E67E00A50614 /* ShopCertificationViewController.h */,
 				16B86A532086E67E00A50614 /* ShopCertificationViewController.m */,
 				16E27F2E207E006B00F82F9D /* UserAgreementViewController.h */,
 				16E27F2F207E006B00F82F9D /* UserAgreementViewController.m */,
 				16D950C71FF37B5E00DBC7B8 /* LoginView.h */,
 				16D950C81FF37B5E00DBC7B8 /* LoginView.m */,
+				16C91DE120F8838E00B01F8B /* PhoneNumberCertificationView.h */,
+				16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */,
 				16B86A552086E75000A50614 /* ShopCeritficationView.h */,
 				16B86A562086E75000A50614 /* ShopCeritficationView.m */,
 			);
@@ -1228,12 +1329,24 @@
 			path = PushMessage;
 			sourceTree = "<group>";
 		};
+		16F77E6120FED7AD00E0D2DB /* JHGridView */ = {
+			isa = PBXGroup;
+			children = (
+				16F77E6220FED7AD00E0D2DB /* JHGridView.h */,
+				16F77E6320FED7AD00E0D2DB /* JHGridView.m */,
+				16F77E6620FEE4E000E0D2DB /* TestObject.h */,
+				16F77E6520FEE4E000E0D2DB /* TestObject.m */,
+			);
+			path = JHGridView;
+			sourceTree = "<group>";
+		};
 		16FB312A1FAC5D9D00049580 = {
 			isa = PBXGroup;
 			children = (
 				16FB31351FAC5D9D00049580 /* Emeat */,
 				16FB314E1FAC5D9D00049580 /* EmeatTests */,
 				16FB31591FAC5D9D00049580 /* EmeatUITests */,
+				1696BF1620EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService */,
 				16FB31341FAC5D9D00049580 /* Products */,
 				83765CD22A298C817C120650 /* Pods */,
 				DF39680DD7317F2704F942A8 /* Frameworks */,
@@ -1246,6 +1359,7 @@
 				16FB31331FAC5D9D00049580 /* Emeat.app */,
 				16FB314B1FAC5D9D00049580 /* EmeatTests.xctest */,
 				16FB31561FAC5D9D00049580 /* EmeatUITests.xctest */,
+				1696BF1520EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1294,6 +1408,8 @@
 			children = (
 				62F18760B885639E4AB589C4 /* Pods-Emeat.debug.xcconfig */,
 				34DA93680C058AEFB6FB446B /* Pods-Emeat.release.xcconfig */,
+				F515A3CA62CF0682E368D1BD /* Pods-com.lxbox.Emeat.NotificationService.debug.xcconfig */,
+				09D37E3AA3CCF9DE7DF3AECE /* Pods-com.lxbox.Emeat.NotificationService.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1315,6 +1431,7 @@
 				160F29BF20090CF400F3295B /* libsqlite3.0.tbd */,
 				16901C9E1FD5C08D0080762A /* MapKit.framework */,
 				F29F714543D21E60DC237F3B /* libPods-Emeat.a */,
+				2E5B32CDB8307E7614C4B08A /* libPods-com.lxbox.Emeat.NotificationService.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1322,6 +1439,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1696BF1420EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1696BF1E20EF269200BD9CD3 /* Build configuration list for PBXNativeTarget "com.lxbox.Emeat.NotificationService" */;
+			buildPhases = (
+				A16789805CDA95298390BCD9 /* [CP] Check Pods Manifest.lock */,
+				1696BF1120EF269200BD9CD3 /* Sources */,
+				1696BF1220EF269200BD9CD3 /* Frameworks */,
+				1696BF1320EF269200BD9CD3 /* Resources */,
+				312D37ED4230DBC15EA6BCAB /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = com.lxbox.Emeat.NotificationService;
+			productName = com.lxbox.Emeat.NotificationService;
+			productReference = 1696BF1520EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		16FB31321FAC5D9D00049580 /* Emeat */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16FB315F1FAC5D9D00049580 /* Build configuration list for PBXNativeTarget "Emeat" */;
@@ -1332,10 +1468,12 @@
 				16FB31311FAC5D9D00049580 /* Resources */,
 				FAEED68EF61DE7E42CD2FB45 /* [CP] Embed Pods Frameworks */,
 				C2E00984354FEDA3E2D0D263 /* [CP] Copy Pods Resources */,
+				1696BF2120EF269200BD9CD3 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1696BF1C20EF269200BD9CD3 /* PBXTargetDependency */,
 			);
 			name = Emeat;
 			productName = Emeat;
@@ -1387,10 +1525,22 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = liuheshun;
 				TargetAttributes = {
+					1696BF1420EF269200BD9CD3 = {
+						CreatedOnToolsVersion = 9.4.1;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
 					16FB31321FAC5D9D00049580 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Maps.iOS = {
 								enabled = 1;
 							};
@@ -1427,11 +1577,19 @@
 				16FB31321FAC5D9D00049580 /* Emeat */,
 				16FB314A1FAC5D9D00049580 /* EmeatTests */,
 				16FB31551FAC5D9D00049580 /* EmeatUITests */,
+				1696BF1420EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1696BF1320EF269200BD9CD3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16FB31311FAC5D9D00049580 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1462,6 +1620,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		312D37ED4230DBC15EA6BCAB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-com.lxbox.Emeat.NotificationService/Pods-com.lxbox.Emeat.NotificationService-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		55A6421A70025569730F5278 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1474,6 +1647,24 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Emeat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A16789805CDA95298390BCD9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-com.lxbox.Emeat.NotificationService-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1521,6 +1712,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1696BF1120EF269200BD9CD3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1696BF1920EF269200BD9CD3 /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16FB312F1FAC5D9D00049580 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1531,12 +1730,12 @@
 				162F96EE205765AA004EA49F /* SGPageContentScrollView.m in Sources */,
 				16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */,
 				16CE1EE22003611000E919C7 /* AF_MainScreeningViewController.m in Sources */,
+				16885C5B2101C643008A6FB9 /* ZJContentView.m in Sources */,
 				16CE1EE32003611000E919C7 /* AF_ScreeningViewController.h in Sources */,
 				165BCCA820E2320B006883FB /* InvoiceListModel.m in Sources */,
 				16B0993A20DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m in Sources */,
 				16CE1EE42003611000E919C7 /* AF_ScreeningViewController.m in Sources */,
 				16CE1EE52003611000E919C7 /* AXPriceRangeCell.h in Sources */,
-				162F970B20577DDC004EA49F /* ZJScrollPageView.m in Sources */,
 				16CE1EE62003611000E919C7 /* AXPriceRangeCell.m in Sources */,
 				162F96F0205765AA004EA49F /* SGPageTitleView.m in Sources */,
 				16CE1EE72003611000E919C7 /* AXPriceRangeCell.xib in Sources */,
@@ -1551,6 +1750,8 @@
 				16901CA51FD67FF50080762A /* DDSearchManager.h in Sources */,
 				16901CA61FD67FF50080762A /* DDSearchManager.m in Sources */,
 				16901CF51FDAB9D80080762A /* OrderDetailesViewController.m in Sources */,
+				16885C5F2101C643008A6FB9 /* ZJScrollPageView.m in Sources */,
+				16F77E6420FED7AD00E0D2DB /* JHGridView.m in Sources */,
 				16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */,
 				16901CA71FD67FF50080762A /* DDSearchObj.h in Sources */,
 				16EE10171FE1683A0099DA91 /* AfterSaleViewController.m in Sources */,
@@ -1566,7 +1767,6 @@
 				16DC91E3200F655F003C25BE /* PurchaseCarAnimationTool.m in Sources */,
 				1646C32F1FC801A6000552A1 /* HomePageNavSortTableViewCell.m in Sources */,
 				16B0994020E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m in Sources */,
-				162F970720577DDC004EA49F /* ZJContentView.m in Sources */,
 				1681305A1FC54DF30045207E /* HomePageDetailsBottomView.m in Sources */,
 				1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */,
 				1683BD751FB03E300043CA23 /* homePageHeadView.m in Sources */,
@@ -1576,10 +1776,13 @@
 				16DF76D1201AF9CF00078F10 /* MyModel.m in Sources */,
 				16D950C91FF37B5E00DBC7B8 /* LoginView.m in Sources */,
 				16EE102E1FE19B670099DA91 /* SettingViewController.m in Sources */,
+				16285FD620FC82ED0095E261 /* ShareImageBottomView.m in Sources */,
+				16285FCD20FC2B290095E261 /* ActionButton.m in Sources */,
 				16CFD7411FB42C3E0015F2C1 /* ConfirmOrderInfoViewController.m in Sources */,
 				16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */,
 				1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */,
 				1683BD6D1FB005AC0043CA23 /* MyViewController.m in Sources */,
+				16885C5E2101C643008A6FB9 /* ZJScrollSegmentView.m in Sources */,
 				1683BD671FB004E20043CA23 /* HomePageViewController.m in Sources */,
 				16DC91E9200F7225003C25BE /* ShoppingCartTool.m in Sources */,
 				16901CF21FDA81500080762A /* SelectPayTypeViewController.m in Sources */,
@@ -1588,17 +1791,19 @@
 				168130511FC2A5B90045207E /* HomePageDetailsViewController.m in Sources */,
 				166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */,
 				16D677B32018570100318FAA /* HomePageShoppingDetailsTableViewCell.m in Sources */,
+				16885C5A2101C643008A6FB9 /* UIViewController+ZJScrollPageController.m in Sources */,
 				16901CEC1FD8EEE50080762A /* AddNewAddressView.m in Sources */,
 				16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */,
 				16EE102B1FE199D90099DA91 /* AfterServiceViewController.m in Sources */,
+				16885C5D2101C643008A6FB9 /* ZJSegmentStyle.m in Sources */,
 				16B0994320E1D1FD00D9F101 /* InvoicePreviewView.m in Sources */,
 				16CFD7711FBEB6510015F2C1 /* YouLikeCollectionHeadView.m in Sources */,
-				162F970A20577DDC004EA49F /* ZJScrollSegmentView.m in Sources */,
 				16901C9A1FD58E540080762A /* CurrentAddressView.m in Sources */,
 				16EE10251FE1915F0099DA91 /* MyAddressViewController.m in Sources */,
 				16901CF81FDAD8E70080762A /* MyOrderViewController.m in Sources */,
-				162F970920577DDC004EA49F /* ZJSegmentStyle.m in Sources */,
+				16C91DE320F8838E00B01F8B /* PhoneNumberCertificationView.m in Sources */,
 				16901D421FDF97360080762A /* SearchLocationAddressViewController.m in Sources */,
+				16285FD020FC374F0095E261 /* ShareImageViewController.m in Sources */,
 				165BCCA520E2214E006883FB /* InvoiceHistoryDetailsViewController.m in Sources */,
 				16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */,
 				16CFD7591FB9297C0015F2C1 /* ConfirmOrderInfoAddressHeadView.m in Sources */,
@@ -1607,8 +1812,6 @@
 				16B0993420DC94A900D9F101 /* SelectInvoiceTypesViewController.m in Sources */,
 				1681304E1FC2955F0045207E /* HomePageTableViewCell.m in Sources */,
 				16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */,
-				16CFD7651FBAECA30015F2C1 /* MyTableViewCell.m in Sources */,
-				162F970820577DDC004EA49F /* ZJCollectionView.m in Sources */,
 				16CFD7471FB43F820015F2C1 /* ConfirmOrderInfoPayTypeTableViewCell.m in Sources */,
 				1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */,
 				16E27F30207E006B00F82F9D /* UserAgreementViewController.m in Sources */,
@@ -1622,22 +1825,24 @@
 				16901C961FD5326B0080762A /* AddNewAddressViewController.m in Sources */,
 				16DC91FD20130A56003C25BE /* MHNetworkManager.m in Sources */,
 				16EE100E1FE167860099DA91 /* WaitReceiveViewController.m in Sources */,
+				16285FD320FC3E050095E261 /* ShareImageView.m in Sources */,
 				165BCCA220E215A8006883FB /* InvoiceHistoryTableViewCell.m in Sources */,
 				16CFD75C1FB97E200015F2C1 /* SHLBaseViewController.m in Sources */,
 				16CFD73E1FB2EFEB0015F2C1 /* ShoppingCartBottomView.m in Sources */,
 				16EE10081FE167480099DA91 /* AllOrderViewController.m in Sources */,
 				16DF76D4201B309100078F10 /* MyAddressModel.m in Sources */,
 				16DC91ED2010750C003C25BE /* BDImagePicker.m in Sources */,
+				16285FCC20FC2B290095E261 /* VerButton.m in Sources */,
 				16DC91FB20130A56003C25BE /* MHAsiNetworkHandler.m in Sources */,
 				16EE10311FE269050099DA91 /* MyOrderTableViewCell.m in Sources */,
+				16F77E6720FEE4E000E0D2DB /* TestObject.m in Sources */,
 				16DC91DF200F34BB003C25BE /* HomePageDetailsBuyNoticeView.m in Sources */,
 				16DC920520130BDE003C25BE /* MBProgressHUD.m in Sources */,
 				168130541FC2B2BF0045207E /* HomePageDetailsHeadView.m in Sources */,
-				162F970420577DDC004EA49F /* UIView+ZJFrame.m in Sources */,
 				16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */,
 				1646C3351FCBC4C9000552A1 /* AddOrCutShoppingCartView.m in Sources */,
 				160F29BE2009040800F3295B /* LHSPayManger.m in Sources */,
-				162F970520577DDC004EA49F /* ZJTitleView.m in Sources */,
+				16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */,
 				16EE10111FE167970099DA91 /* WaitSendViewController.m in Sources */,
 				16FB31461FAC5D9D00049580 /* main.m in Sources */,
 				16DC91FC20130A56003C25BE /* MHAsiNetworkItem.m in Sources */,
@@ -1645,8 +1850,8 @@
 				16FF04F31FD4EDF900F8C280 /* RHLocation.m in Sources */,
 				16DF76E02021D14100078F10 /* HomePageAddressNoticeView.m in Sources */,
 				1683BD6A1FB0054E0043CA23 /* ShoppingCartViewController.m in Sources */,
+				16885C592101C643008A6FB9 /* ZJTitleView.m in Sources */,
 				16901C931FD4FB220080762A /* SelectAddressViewController.m in Sources */,
-				162F970620577DDC004EA49F /* UIViewController+ZJScrollPageController.m in Sources */,
 				16B0994620E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m in Sources */,
 				16EE10341FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.m in Sources */,
 				16B0994920E1EC9A00D9F101 /* InvoiceSubmitResultsView.m in Sources */,
@@ -1664,9 +1869,12 @@
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,
 				16B0993D20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m in Sources */,
 				1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */,
+				16885C582101C643008A6FB9 /* UIView+ZJFrame.m in Sources */,
 				168130571FC3C1210045207E /* HomePageCommentDetailsTableViewCell.m in Sources */,
+				16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */,
 				16CFD7531FB595270015F2C1 /* ConfirmOrderInfoBottomView.m in Sources */,
 				165BCCAB20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m in Sources */,
+				16885C5C2101C643008A6FB9 /* ZJCollectionView.m in Sources */,
 				165BCCAE20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m in Sources */,
 				16CFD7621FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m in Sources */,
 				16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */,
@@ -1694,6 +1902,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1696BF1C20EF269200BD9CD3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1696BF1420EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService */;
+			targetProxy = 1696BF1B20EF269200BD9CD3 /* PBXContainerItemProxy */;
+		};
 		16FB314D1FAC5D9D00049580 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 16FB31321FAC5D9D00049580 /* Emeat */;
@@ -1726,6 +1939,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1696BF1F20EF269200BD9CD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F515A3CA62CF0682E368D1BD /* Pods-com.lxbox.Emeat.NotificationService.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = com.lxbox.Emeat.NotificationService/com.lxbox.Emeat.NotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YNJV896ZUF;
+				INFOPLIST_FILE = com.lxbox.Emeat.NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lxbox.Emeat.com-lxbox-Emeat-NotificationService";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		1696BF2020EF269200BD9CD3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09D37E3AA3CCF9DE7DF3AECE /* Pods-com.lxbox.Emeat.NotificationService.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = com.lxbox.Emeat.NotificationService/com.lxbox.Emeat.NotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YNJV896ZUF;
+				INFOPLIST_FILE = com.lxbox.Emeat.NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lxbox.Emeat.com-lxbox-Emeat-NotificationService";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		16FB315D1FAC5D9D00049580 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2037,6 +2290,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = EmeatTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = W.EmeatTests;
@@ -2051,6 +2305,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = EmeatTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = W.EmeatTests;
@@ -2064,6 +2319,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = EmeatUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = W.EmeatUITests;
@@ -2077,6 +2333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = EmeatUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = W.EmeatUITests;
@@ -2089,6 +2346,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1696BF1E20EF269200BD9CD3 /* Build configuration list for PBXNativeTarget "com.lxbox.Emeat.NotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1696BF1F20EF269200BD9CD3 /* Debug */,
+				1696BF2020EF269200BD9CD3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		16FB312E1FAC5D9D00049580 /* Build configuration list for PBXProject "Emeat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

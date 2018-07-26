@@ -79,7 +79,7 @@
             make.left.equalTo(self.mas_left).offset(15*kScale);
             make.right.equalTo(self.mas_right).with.offset(-15*kScale);
             make.height.equalTo(@(1*kScale));
-            make.top.equalTo(self.lookUpType.mas_bottom).with.offset(41*i );
+            make.top.equalTo(self.lookUpType.mas_bottom).with.offset(41*kScale*i+1*kScale);
             
         }];
         
@@ -357,7 +357,7 @@
         _invoiceContentTextField.font = [UIFont systemFontOfSize:12.0f*kScale];
         _invoiceContentTextField.textAlignment = NSTextAlignmentLeft;
         _invoiceContentTextField.textColor =  RGB(51, 51, 51, 1);
-        _invoiceContentTextField.placeholder = @"*根据相应订单商品明细生产";
+        _invoiceContentTextField.placeholder = @"*根据相应订单商品明细生成";
         _invoiceContentTextField.enabled = NO;
         
     }

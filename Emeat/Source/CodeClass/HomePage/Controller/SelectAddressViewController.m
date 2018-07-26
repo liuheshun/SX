@@ -123,9 +123,9 @@
     NSMutableDictionary *dic = [self checkoutData];
     self.myAddressArray = [NSMutableArray array];
     [self.myAddressArray removeAllObjects];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             for (NSDictionary *dic in returnData[@"data"]) {
                 MyAddressModel *addressModel = [MyAddressModel yy_modelWithJSON:dic];

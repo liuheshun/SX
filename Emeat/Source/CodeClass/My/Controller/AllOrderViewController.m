@@ -133,10 +133,10 @@
     [dic setValue:curTime forKey:@"curTime"];
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"所有的订单 ============ %@" ,dic);
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/order/list?currentPage=%ld" , baseUrl ,totalPage] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/list?currentPage=%ld" , baseUrl ,totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"所有的订单=== %@" ,returnData);
         

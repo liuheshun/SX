@@ -26,7 +26,7 @@
     webView.scalesPageToFit = YES;
     webView.detectsPhoneNumbers = YES;
     //如：http://dev.cyberfresh.cn/html/about_us.html
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/html/about_us.html" ,setbaseUrl]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/html/about_us.html" ,baseUrl]];
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];//加载
     

@@ -70,7 +70,7 @@
             make.left.equalTo(self.mas_left).offset(15*kScale);
             make.right.equalTo(self.mas_right).with.offset(-15*kScale);
             make.height.equalTo(@(1*kScale));
-            make.top.equalTo(self.lookUpType.mas_bottom).with.offset(41*i );
+            make.top.equalTo(self.lookUpType.mas_bottom).with.offset(41*kScale*i+1*kScale);
             
         }];
         

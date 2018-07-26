@@ -13,6 +13,8 @@
 #import "LoginViewController.h"
 #import "HomePageDetailsBuyNoticeView.h"
 #import "HomePageShoppingDetailsTableViewCell.h"
+#import "ActionSheetView.h"
+#import "ShareImageViewController.h"
 @interface HomePageDetailsViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
 //轮播图
 @property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
@@ -50,8 +52,25 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
     self.navigationController.navigationBarHidden = YES;
-
+    
+    //获取通知中心单例对象
+    NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
+    //添加当前类对象为一个观察者
+    [center addObserver:self selector:@selector(InfoNotificationAction:) name:@"refreshHomePageDetailsControllerWithNotification" object:nil];
+    
 }
+-(void)InfoNotificationAction:(NSNotification*)notification{
+    DLog(@"use == %@" , notification.userInfo)
+    self.detailsId =  notification.userInfo[@"detailsId"];
+    [self requsetDetailsData];
+    [self requestBadNumValue];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshHomePageDetailsControllerWithNotification" object:nil];
+}
+
+
 -(void)viewWillDisappear:(BOOL)animated{
     [SVProgressHUD dismiss];
 }
@@ -99,11 +118,11 @@
     self.specsListMarray = [NSMutableArray array];
     NSString *str;
     if ([self.fromBaner isEqualToString:@"1"]) {////来自banner
-        str = [NSString stringWithFormat:@"%@/mobile/commodity/commodityDeatilByCode?commodityCode=%@" ,baseUrl ,self.detailsId];
+        str = [NSString stringWithFormat:@"%@/m/mobile/commodity/commodityDeatilByCode?commodityCode=%@&mtype=%@" ,baseUrl ,self.detailsId,mTypeIOS];
     }
     else ///来自商品列表
     {
-        str = [NSString stringWithFormat:@"%@/mobile/commodity/commodityDeatil?id=%@" , baseUrl ,self.detailsId];
+        str = [NSString stringWithFormat:@"%@/m/mobile/commodity/commodityDeatil?id=%@&mtype=%@" , baseUrl ,self.detailsId,mTypeIOS];
     }
     
     DLog(@"详情接口==== %@" ,str);
@@ -128,6 +147,16 @@
                         detailsModel.commodityDetail = imvString;
                         [self.detailsDataArray addObject:detailsModel];
                     }
+                    
+                    
+                    
+                    self.productTitle = bannerModel.commodityName;
+                    self.productContent = bannerModel.commodityDesc;
+                    self.productImageURL = [self.bannerDataArray firstObject];
+                    self.productPrices = [NSString stringWithFormat:@"%ld" ,bannerModel.unitPrice];
+                    self.priceTypes = bannerModel.priceTypes;
+                    
+                    
                     
                     for (NSDictionary *specsListDic in returnData[@"data"][@"specsList"]) {
                         HomePageModel *specsListModel = [HomePageModel yy_modelWithJSON:specsListDic];
@@ -193,20 +222,123 @@
     [self.view addSubview:callWebview];
 }
 
+#pragma mark=====================链接分享============================
+
+-(void)linkingOfShare{
+    
+  
+    NSArray *titlearr = @[@"",@"微信好友",@"微信朋友圈",@""];
+    NSArray *imageArr = @[@"",@"微信",@"朋友圈",@""];
+    ActionSheetView *actionsheet  = [[ActionSheetView alloc] initWithShareHeadOprationWith:titlearr andImageArry:imageArr andProTitle:@"分享至" and:ShowTypeIsShareStyle];
+    actionsheet.otherBtnFont = 14.0f;
+    actionsheet.otherBtnColor = RGB(51, 51, 51, 1);
+    actionsheet.cancelBtnFont = 14.0f;
+    actionsheet.cancelBtnColor = RGB(51, 51, 51, 1);
+    
+    [actionsheet setBtnClick:^(NSInteger btnTag) {
+        
+        
+        if (btnTag ==0) {
+        }else if (btnTag ==1){
+            //分享到聊天
+            [self wxchatWebShare:WXSceneSession];
+        }else if (btnTag ==2){
+            //分享到朋友圈
+            [self wxchatWebShare:WXSceneTimeline];
+        }else if (btnTag == 3){
+        }
+        
+    }];
+    
+    [[UIApplication sharedApplication].keyWindow addSubview:actionsheet];
+}
+
+- (UIImage *)handleImageWithURLStr:(NSString *)imageURLStr {
+    
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLStr]];
+    NSData *newImageData = imageData;
+    // 压缩图片data大小
+    newImageData = UIImageJPEGRepresentation([UIImage imageWithData:newImageData scale:0.1], 0.1f);
+    UIImage *image = [UIImage imageWithData:newImageData];
+    
+    // 压缩图片分辨率(因为data压缩到一定程度后，如果图片分辨率不缩小的话还是不行)
+    CGSize newSize = CGSizeMake(200, 200);
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,(NSInteger)newSize.width, (NSInteger)newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+
+-(void)wxchatWebShare:(int)scene{
+    WXMediaMessage *message = [WXMediaMessage message];
+    message.title = self.productTitle;
+    message.description = self.productContent;
+    
+    [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
+    WXWebpageObject *webpageObject = [WXWebpageObject object];
+    webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail_demo.html?ds=%@" ,baseUrl,self.detailsId];
+    message.mediaObject = webpageObject;
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.bText = NO;
+    req.message = message;
+    req.scene = scene;
+    
+    [WXApi sendReq:req];
+    
+}
+
+
+
 -(void)shareRightItemAction{
     DLog(@"分享");
+    NSArray *titlearr = @[@"",@"链接",@"图片",@""];
+    NSArray *imageArr = @[@"",@"链接",@"图片",@""];
+    ActionSheetView *actionsheet  = [[ActionSheetView alloc] initWithShareHeadOprationWith:titlearr andImageArry:imageArr andProTitle:@"分享" and:ShowTypeIsShareStyle];
+    actionsheet.otherBtnFont = 14.0f;
+    actionsheet.otherBtnColor = RGB(51, 51, 51, 1);
+    actionsheet.cancelBtnFont = 14.0f;
+    actionsheet.cancelBtnColor = RGB(51, 51, 51, 1);
+    [actionsheet setBtnClick:^(NSInteger btnTag) {
+        
+        if (btnTag ==0) {
+            
+        }else if (btnTag ==1){
+            
+            [self linkingOfShare];//链接分享
+            
+        }else if (btnTag ==2){//图片分享
+            
+            ShareImageViewController *VC = [ShareImageViewController new];
+            VC.productTitle = self.productTitle;
+            VC.productContent = self.productContent;
+            VC.productImageURL = self.productImageURL;
+            VC.detailsId = self.detailsId;
+            VC.productPrices = self.productPrices;
+            VC.priceTypes = self.priceTypes;
+            [self.navigationController pushViewController:VC animated:YES];
+            
+        }else if (btnTag ==3){
+            
+        }
+        
+        
+    }];
+    
+    [[UIApplication sharedApplication].keyWindow addSubview:actionsheet];
 }
 
 
 -(void)showNavBarItemRight{
     
     UIBarButtonItem *connectRightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"kefu"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(connectRightItemAction)];
-   // UIBarButtonItem *shareRightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"fenxiang"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(shareRightItemAction)];
+    UIBarButtonItem *shareRightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"fenxiang"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(shareRightItemAction)];
     
     
     [self.navBar pushNavigationItem:self.navItem animated:NO];
-   // [self.navItem setRightBarButtonItems:[NSArray arrayWithObjects:shareRightItem ,connectRightItem, nil]];
-    [self.navItem setRightBarButtonItems:[NSArray arrayWithObjects: connectRightItem, nil]];
+    [self.navItem setRightBarButtonItems:[NSArray arrayWithObjects:shareRightItem ,connectRightItem, nil]];
+   // [self.navItem setRightBarButtonItems:[NSArray arrayWithObjects: connectRightItem, nil]];
 
     
     // [self.navBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0f*kScale],NSForegroundColorAttributeName:[UIColor blackColor]}];
@@ -495,10 +627,10 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"commodityId"];
     
     [dic setObject:@"1" forKey:@"quatity"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"加入购物车 ==== %@" , dic);
-    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {
        //     SVProgressHUD.minimumDismissTimeInterval = 2;
 //            SVProgressHUD.maximumDismissTimeInterval = 2;

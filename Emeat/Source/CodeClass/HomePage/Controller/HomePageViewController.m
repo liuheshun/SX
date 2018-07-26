@@ -56,6 +56,10 @@
 @property (nonatomic,strong) HomePageAddressNoticeView *addressNoticeView;
 ///地址提示视图 0不在配送范围内显示 , 1 在配送范围内不显示
 @property (nonatomic,strong) NSString *isShowNoticeView;
+///热搜标签数据
+@property (nonatomic,strong) NSMutableArray *hotSearchMarray;
+///历史搜索数据
+@property (nonatomic,strong) NSMutableArray *historySearchMarray;
 
 
 
@@ -101,11 +105,41 @@
     self.sortListMarray = [NSMutableArray array];
     self.dataArray = [NSMutableArray array];
     self.bannerMarray = [NSMutableArray array];
+    self.hotSearchMarray = [NSMutableArray array];
+    self.historySearchMarray = [NSMutableArray array];
     [self netWorkIsOnLine];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
 
    
+}
+
+
+#pragma mark ================================= 热门搜索数据
+-(void)requestHotSearchData{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSInteger usrId = [[user valueForKey:@"userId"] integerValue];
+    DLog(@"sous ==== url=== %@" , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld",baseUrl,usrId]);
+    
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId] params:nil successBlock:^(NSDictionary *returnData) {
+        
+        DLog(@"sous ==== %@ url=== %@" ,returnData , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId]);
+        if ([returnData[@"status"] integerValue] == 200) {
+            [self.hotSearchMarray addObjectsFromArray:returnData[@"data"][@"topSearchList"]];
+            [self.historySearchMarray addObjectsFromArray:returnData[@"data"][@"historyList"]];
+            DLog(@"====sss===== hotSearchMarray=== %@  historySearchMarray=%@" , returnData[@"data"][@"topSearchList"] , self.historySearchMarray);
+            
+          
+          //////////数据库搜索历史数据写到本地(暂时去掉)
+       //  [NSKeyedArchiver archiveRootObject:self.historySearchMarray toFile:PYSEARCH_SEARCH_HISTORY_CACHE_PATH];
+            
+           
+        }
+    } failureBlock:^(NSError *error) {
+        
+        DLog(@"%@" ,error);
+    } showHUD:NO];
+    
 }
 
 #pragma mark == 检查版本更新
@@ -117,7 +151,7 @@
 
 -(void)requestVersionUpdateData{
     //http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/appversion/index.jhtml?appType=2" ,baseUrl] params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/appversion/index.jhtml?appType=2&mtype=%@" ,baseUrl,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
         
         DLog(@"vvvvvvvvvvvv =====%@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
@@ -219,6 +253,7 @@
     ///更新购物车数量
     [self requestBadNumValue];
     
+    [self requestHotSearchData];
     ////
     
 
@@ -279,14 +314,15 @@
         
     };
    
-#pragma mark = 搜索商品
+#pragma mark ============================== 搜索商品
     
     
     self.navView.searchBtnBlock = ^{
     
         
-        NSArray *hotSeaches = @[@""];
-        
+        NSArray *hotSeaches = [NSArray array];
+        hotSeaches =  weakSelf.hotSearchMarray;
+        DLog(@"====sss===== %@" , hotSeaches);
         // 2. Create a search view controller
         
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品名称搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
@@ -298,7 +334,7 @@
             SeacherViewController *sVc = [[SeacherViewController alloc] init];
 
             searchViewController.searchResultController = sVc;
-
+            sVc.fromSortString = @"0";
             sVc.searchText = searchText;
             
 //   
@@ -310,11 +346,10 @@
         }];
         searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
 
-        searchViewController.showSearchHistory = NO;
-
-        searchViewController.showHotSearch = NO;
-
-
+        searchViewController.showSearchHistory = YES;
+        searchViewController.searchHistoryStyle = PYSearchHistoryStyleBorderTag;
+        searchViewController.showHotSearch = YES;
+//        searchViewController.searchHistories = weakSelf.hotSearchMarray;
         searchViewController.delegate = weakSelf;
         
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
@@ -331,7 +366,7 @@
     };
     
     
-#pragma makr = 选择地址
+#pragma makr ==============================  选择地址
     
     
     _navView.selectAddressBtnBlock = ^{
@@ -344,7 +379,7 @@
     //            VC.otherAddressArray = weakSelf.otherAddressArray;
     //
     
-#pragma mark= 选择地址接收传值
+#pragma mark============================== 选择地址接收传值
 
         VC.selectAddressBL = ^(Location *currentLocations) {//地址传值
         
@@ -448,7 +483,7 @@
 
 -(void)requsetHomPageBannerData{
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/banner/queryBannerForWeb" ,baseUrl] params:nil successBlock:^(NSDictionary *returnData) {        
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@" ,baseUrl ,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
          DLog(@"bannertu=====%@" ,returnData);
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
@@ -490,8 +525,8 @@
   
     [MHAsiNetworkHandler startMonitoring];
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/mobile/commodity/commodityShow?currentPage=%ld" , baseUrl , currentPage] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"商品列表== %@" ,returnData);
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/mobile/commodity/commodityShow?currentPage=%ld&mtype=%@" , baseUrl , currentPage,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
+        //DLog(@"商品列表== %@" ,returnData);
        
         NSInteger pages = [returnData[@"data"][@"page"][@"totalPage"] integerValue];
         NSInteger pageSize = [returnData[@"data"][@"page"][@"pageSize"] integerValue];
@@ -535,8 +570,8 @@
 -(void)requestSortListData{
     //[MHAsiNetworkHandler startMonitoring];
 
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/rightBanner" , baseUrl] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"标签=== %@" ,returnData);
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/rightBanner?mtype=%@" , baseUrl,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
+        //DLog(@"标签=== %@" ,returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.sortListMarray removeAllObjects];
 
@@ -704,6 +739,7 @@
     if (self.dataArray.count != 0) {
         HomePageModel *model = self.dataArray[indexPath.row];
         VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
+       
         [self.navigationController pushViewController:VC animated:YES];
     }
   
@@ -865,7 +901,8 @@
     if (scrollView == self.tableView) {
         if (scrollView.contentOffset.x == 0) {
           
-            CGFloat tableViewoffsetY = scrollView.contentOffset.y;            DLog(@"偏移量========= %f " ,tableViewoffsetY );
+            CGFloat tableViewoffsetY = scrollView.contentOffset.y;            //
+            //DLog(@"偏移量========= %f " ,tableViewoffsetY );
             CGFloat tempY = tableViewoffsetY;
             
             if ( tableViewoffsetY>=0 ) {

@@ -72,7 +72,11 @@
                         
                         make.top.equalTo(self.payTime.mas_bottom).with.offset(18*kScale);
 
-                    }else if (model.status == 60){
+                    }else if (model.status == 55){
+                        make.top.equalTo(self.payTime.mas_bottom).with.offset(18*kScale);
+                        
+                    }
+                    else if (model.status == 60){
                         make.top.equalTo(self.sendTime.mas_bottom).with.offset(18*kScale);
 
                     }else if (model.status == 70 || model.status == 120 || model.status == 80){
@@ -115,13 +119,18 @@
        // }
        
     }
-    else if (model.status == 60)///配送中
+    else if (model.status == 60 )///配送中
     {
         self.orderPayStatus.text = @"已支付";
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
       
-    }else if (model.status == 70)///待收货
+    }else if (model.status == 55){//////配送中(出库之后的状态,物流未发货)
+        self.orderPayStatus.text = @"已支付";
+        self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
+    }
+    
+    else if (model.status == 70)///待收货
     {
         self.orderPayStatus.text = @"已支付";
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
@@ -178,6 +187,72 @@
         
     }
     
+    if (model.status == 60 || model.status == 70 || model.status == 80) {
+        [self.footTopBgView addSubview:self.weightRebatesPrices];
+        [self.footTopBgView addSubview:self.activityRebatesPrices];
+        [self.footTopBgView addSubview:self.netPrices];
+
+        [self.weightRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+            make.top.equalTo(self.orderPayStatus.mas_bottom).with.offset(10*kScale);
+            make.height.equalTo(@(15*kScale));
+            
+        }];
+        
+        
+        [self.activityRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+            make.top.equalTo(self.weightRebatesPrices.mas_bottom).with.offset(10*kScale);
+            make.height.equalTo(@(15*kScale));
+            
+        }];
+        
+        [self.netPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+            make.top.equalTo(self.activityRebatesPrices.mas_bottom).with.offset(10*kScale);
+            make.height.equalTo(@(15*kScale));
+            
+        }];
+        
+        [self.footTopBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.mas_top).with.offset(0);
+            make.left.equalTo(self.mas_left).with.offset(0);
+            make.width.equalTo(self);
+            make.height.equalTo(@(93*kScale+80*kScale));
+        }];
+       
+        self.weightRebatesPrices.text = [NSString stringWithFormat:@"重量返款差额 ¥-%.2f" ,(float)model.returnSum/100];
+        
+        self.activityRebatesPrices.text = [NSString stringWithFormat:@"活动返款差额 ¥-%.2f" ,(float)model.activitySum/100];
+        self.netPrices.text = [NSString stringWithFormat:@"净总价 ¥%.2f" ,(float)model.netPrice/100];
+        
+        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:self.weightRebatesPrices.text];
+        NSRange range1 = [[str1 string] rangeOfString:@"重量返款差额"];
+        [str1 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range1];
+        self.weightRebatesPrices.attributedText = str1;
+        
+        
+        NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:self.activityRebatesPrices.text];
+        NSRange range2 = [[str2 string] rangeOfString:@"活动返款差额"];
+        [str2 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range2];
+        self.activityRebatesPrices.attributedText = str2;
+        
+        NSMutableAttributedString *str3 = [[NSMutableAttributedString alloc] initWithString:self.netPrices.text];
+        NSRange range3 = [[str3 string] rangeOfString:@"净总价"];
+        [str3 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range3];
+        self.netPrices.attributedText = str3;
+        
+        
+        
+        
+    }else{
+        [self.weightRebatesPrices removeFromSuperview];
+        [self.activityRebatesPrices removeFromSuperview];
+        [self.netPrices removeFromSuperview];
+    }
 
     
     self.orderAllPricesLab.text = @"商品总价";
@@ -276,7 +351,7 @@
         _orderPayStatus = [[UILabel alloc] init];
         _orderPayStatus.font = [UIFont systemFontOfSize:15.0f*kScale];
         _orderPayStatus.textAlignment = NSTextAlignmentRight;
-        _orderPayStatus.textColor = RGB(138, 138, 138, 1);
+        _orderPayStatus.textColor = RGB(51, 51, 51, 1);
     }
     return _orderPayStatus;
 }
@@ -367,6 +442,42 @@
     }
     return _cancelTime;
 }
+
+////
+
+-(UILabel *)weightRebatesPrices{
+    if (!_weightRebatesPrices) {
+        _weightRebatesPrices = [[UILabel alloc] init];
+        _weightRebatesPrices.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _weightRebatesPrices.textAlignment = NSTextAlignmentRight;
+        _weightRebatesPrices.textColor = RGB(236, 31, 35, 1);
+    }
+    return _weightRebatesPrices;
+}
+
+-(UILabel *)activityRebatesPrices{
+    if (!_activityRebatesPrices) {
+        _activityRebatesPrices = [[UILabel alloc] init];
+        _activityRebatesPrices.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _activityRebatesPrices.textAlignment = NSTextAlignmentRight;
+        _activityRebatesPrices.textColor = RGB(236, 31, 35, 1);
+    }
+    return _activityRebatesPrices;
+}
+
+-(UILabel *)netPrices{
+    if (!_netPrices) {
+        _netPrices = [[UILabel alloc] init];
+        _netPrices.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _netPrices.textAlignment = NSTextAlignmentRight;
+        _netPrices.textColor = RGB(236, 31, 35, 1);
+    }
+    return _netPrices;
+}
+
+
+
+
 
 -(void)setFootViewFrame{
     

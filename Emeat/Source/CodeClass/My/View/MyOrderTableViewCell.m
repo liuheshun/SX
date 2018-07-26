@@ -34,7 +34,6 @@
     self.orderDetailsLab.text =[NSString stringWithFormat:@"共%@件商品,总计¥%@" ,model.productAmount,model.payment];
     
     
-    
     if (model.status == 10){
         self.orderStated.text = @"待支付";
         
@@ -42,7 +41,7 @@
     }else  if (model.status == 50 || model.status == 40 || model.status == 46){
         self.orderStated.text = @"待确认";
         
-    }else if (model.status == 60){
+    }else if (model.status == 60 || model.status == 55){
         self.orderStated.text = @"配送中";
         
     }else if (model.status == 70){
@@ -65,15 +64,7 @@
         self.orderStated.text = @"已取消";
       
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
+  
 }
 
 

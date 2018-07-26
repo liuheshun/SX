@@ -44,6 +44,11 @@
 @property (nonatomic,strong) NSString *weightStr;
 
 
+///热搜标签数据
+@property (nonatomic,strong) NSMutableArray *hotSearchMarray;
+///历史搜索数据
+@property (nonatomic,strong) NSMutableArray *historySearchMarray;
+
 
 
 
@@ -70,6 +75,8 @@
     [self addSortAction];
     [self addChangeStatedBlockAction];
     self.checkMarray = [NSMutableArray array];
+    self.hotSearchMarray = [NSMutableArray array];
+    self.historySearchMarray = [NSMutableArray array];
 
     [self.homePageNavView.selectAddressBtn setTitle:self.currentLocation.name forState:0];
     CGFloat imageWidth = self.homePageNavView.selectAddressBtn.imageView.bounds.size.width;
@@ -82,6 +89,7 @@
 
     [self setupRefresh];
     [self requestCheckData];
+    [self requestHotSearchData];
 }
 
 
@@ -107,21 +115,21 @@
     totalPage=1;
     NSString *urlStr;
     if ([self.statusStringURL isEqualToString:@"0"]) {//价格
-        urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/ queryByCondition?positionId=%@&price=0&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
+        urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/ queryByCondition?positionId=%@&price=0&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
         urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self requestListData:urlStr totalPage:totalPage];
 
     }
     else if ([self.statusStringURL isEqualToString:@"1"])
     {
-        urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?positionId=%@&price=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
+        urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?positionId=%@&price=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
         urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self requestListData:urlStr totalPage:totalPage];
 
     }
     else if ([self.statusStringURL isEqualToString:@"2"])//销量
     {
-        urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?positionId=%@&sellNum=0&currentPage=%ld" ,baseUrl , self.ID  ,totalPage];
+        urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?positionId=%@&sellNum=0&currentPage=%ld" ,baseUrl , self.ID  ,totalPage];
         urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self requestListData:urlStr totalPage:totalPage];
 
@@ -129,12 +137,12 @@
     }
     else if ([self.statusStringURL isEqualToString:@"3"])
     {
-        urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?positionId=%@&sellNum=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
+        urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?positionId=%@&sellNum=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
         urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self requestListData:urlStr totalPage:totalPage];
 
     }else if ([self.statusStringURL isEqualToString:@"4"]){
-        urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?currentPage=%ld",baseUrl ,totalPage];
+        urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?currentPage=%ld",baseUrl ,totalPage];
         urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         
         [self confirmCheckAction:self.minPrices maxPrice:self.maxPrices countStr:self.counStr weightStr:self.weightStr kindStr:self.kindStr totalPage:totalPage URL:urlStr];
@@ -158,21 +166,21 @@
         
         NSString *urlStr;
         if ([self.statusStringURL isEqualToString:@"0"]) {//价格
-            urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/ queryByCondition?positionId=%@&price=0&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
+            urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/ queryByCondition?positionId=%@&price=0&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
             urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [self requestListData:urlStr totalPage:totalPage];
 
         }
         else if ([self.statusStringURL isEqualToString:@"1"])
         {
-            urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?positionId=%@&price=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
+            urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?positionId=%@&price=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
             urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [self requestListData:urlStr totalPage:totalPage];
 
         }
         else if ([self.statusStringURL isEqualToString:@"2"])//销量
         {
-            urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?positionId=%@&sellNum=0&currentPage=%ld" ,baseUrl , self.ID  ,totalPage];
+            urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?positionId=%@&sellNum=0&currentPage=%ld" ,baseUrl , self.ID  ,totalPage];
             urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [self requestListData:urlStr totalPage:totalPage];
 
@@ -180,12 +188,12 @@
         }
         else if ([self.statusStringURL isEqualToString:@"3"])
         {
-            urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?positionId=%@&sellNum=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
+            urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?positionId=%@&sellNum=1&currentPage=%ld" ,baseUrl , self.ID ,totalPage];
             urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             [self requestListData:urlStr totalPage:totalPage];
 
         }else if ([self.statusStringURL isEqualToString:@"4"]){
-            urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?currentPage=%ld",baseUrl ,totalPage];
+            urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?currentPage=%ld",baseUrl ,totalPage];
             urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             
             [self confirmCheckAction:self.minPrices maxPrice:self.maxPrices countStr:self.counStr weightStr:self.weightStr kindStr:self.kindStr totalPage:totalPage URL:urlStr];
@@ -268,7 +276,7 @@
     NSMutableArray *countryMarray = [NSMutableArray array];
     NSMutableArray *weightMarray = [NSMutableArray array];
     NSMutableArray *kindMarray = [NSMutableArray array];
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/weightOriginVarieties" ,baseUrl] params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/weightOriginVarieties?mtype=%@" ,baseUrl,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
         
         DLog(@"returnData筛选== %@" ,returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
@@ -306,6 +314,31 @@
 
 
 
+#pragma mark ================================= 热门搜索数据
+-(void)requestHotSearchData{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSInteger usrId = [[user valueForKey:@"userId"] integerValue];
+    DLog(@"sous ==== url=== %@" , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld",baseUrl,usrId]);
+    
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId] params:nil successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"status"] integerValue] == 200) {
+            [self.hotSearchMarray addObjectsFromArray:returnData[@"data"][@"topSearchList"]];
+            [self.historySearchMarray addObjectsFromArray:returnData[@"data"][@"historyList"]];
+            DLog(@"====sss===== hotSearchMarray=== %@  historySearchMarray=%@" , returnData[@"data"][@"topSearchList"] , self.historySearchMarray);
+            
+            
+            //////////数据库搜索历史数据写到本地(暂时去掉)
+            //  [NSKeyedArchiver archiveRootObject:self.historySearchMarray toFile:PYSEARCH_SEARCH_HISTORY_CACHE_PATH];
+            
+            
+        }
+    } failureBlock:^(NSError *error) {
+        
+        DLog(@"%@" ,error);
+    } showHUD:NO];
+    
+}
 
 
 -(void)addSortAction{
@@ -336,9 +369,10 @@
         [weakSelf.navigationController pushViewController:VC animated:YES];
     };
     
-#pragma mark =======搜索
+#pragma mark ===============================搜索
     self.homePageNavView.searchBtnBlock = ^{
-        NSArray *hotSeaches = @[@"Java", @"Python"];
+        NSArray *hotSeaches = [NSArray array];
+        hotSeaches =  weakSelf.hotSearchMarray;
         // 2. Create a search view controller
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品名称搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
             // Called when search begain.
@@ -364,11 +398,16 @@
             
             
         }];
-        searchViewController.showSearchHistory = NO;
-        searchViewController.showHotSearch = NO;
+        searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
         
+        searchViewController.showSearchHistory = YES;
+        searchViewController.searchHistoryStyle = PYSearchHistoryStyleBorderTag;
+        searchViewController.showHotSearch = YES;
+        //        searchViewController.searchHistories = weakSelf.hotSearchMarray;
         searchViewController.delegate = weakSelf;
+        
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+        
         // 5. Present a navigation controller
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchViewController];
         [weakSelf presentViewController:nav animated:YES completion:nil];
@@ -477,6 +516,8 @@
         DLog(@"checkStatedBlock");
         if (self.checkMarray.count != 0) {
             [weakSelf requestCheckData];
+            [weakSelf requestHotSearchData];
+
             [weakSelf setCheckMainFrame];
         }
         weakSelf.statusStringURL = @"4";
@@ -573,7 +614,7 @@
     self.weightStr = weightStr;
     self.kindStr = kindStr;
     totalPage = 1;
-    NSString * urlStr = [NSString stringWithFormat:@"%@/mobile/commodity/queryByCondition?currentPage=%ld",baseUrl ,totalPage];
+    NSString * urlStr = [NSString stringWithFormat:@"%@/m/mobile/commodity/queryByCondition?currentPage=%ld",baseUrl ,totalPage];
     [self confirmCheckAction:minPrices maxPrice:maxPrices countStr:couStr weightStr:weightStr kindStr:kindStr totalPage:totalPage URL:urlStr];
 }
 

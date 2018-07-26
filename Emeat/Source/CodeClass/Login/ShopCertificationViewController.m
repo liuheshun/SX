@@ -121,16 +121,16 @@
     [dic1 setValue:self.ShopInviteCode forKey:@"userName"];
     //    ///
     //    [dic1 setValue:@"0" forKey:@"isDeleted"];
-    [dic1 setValue:@"ios" forKey:@"mtype"];
+    [dic1 setValue:mTypeIOS forKey:@"mtype"];
 
     //parentId=0
     [MHAsiNetworkHandler startMonitoring];
     NSString *url;
     if ([self.isRemakeShopCerific isEqualToString:@"1"]) {//重新认证
         [dic1 setValue:[NSString stringWithFormat:@"%ld" ,(long)self.shopCertifiMyModel.storeId] forKey:@"id"];
-        url = [NSString stringWithFormat:@"%@/auth/mobile/store/updateStore" ,baseUrl];
+        url = [NSString stringWithFormat:@"%@/m/auth/mobile/store/updateStore" ,baseUrl];
     }else{
-        url = [NSString stringWithFormat:@"%@/auth/mobile/store/newStore" ,baseUrl];
+        url = [NSString stringWithFormat:@"%@/m/auth/mobile/store/newStore" ,baseUrl];
     }
     DLog(@"上传店铺信息dic==== %@      ====== %@" ,dic1 ,url);
     

@@ -155,25 +155,43 @@
     }
    
     NSString * urlStr ;
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSInteger userId = [[user valueForKey:@"userId"] integerValue];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
     if ([self.fromSortString isEqualToString:@"1"]) {///来自分类搜索
-        urlStr = [NSString stringWithFormat:@"%@/search/searchCommodityByPosition?commodityName=%@&currentPage=%ld&position=%@" ,baseUrl,searchText ,totalPage ,self.position];
-        urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        [dic setValue:[NSString stringWithFormat:@"%@" ,searchText] forKey:@"commodityName"];
+        [dic setValue:[NSString stringWithFormat:@"%ld" ,totalPage] forKey:@"currentPage"];
+        [dic setValue:self.position forKey:@"position"];
+        
+        [dic setValue:mTypeIOS forKey:@"mtype"];
+        [dic setValue:[NSString stringWithFormat:@"%ld" ,userId] forKey:@"customerId"];
+        
+        
+        urlStr = [NSString stringWithFormat:@"%@/m/search/searchCommodityByPosition" ,baseUrl];
+//        urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     }
     else
     {
-        urlStr = [NSString stringWithFormat:@"%@/search/searchCommodity?commodityName=%@&currentPage=%ld" ,baseUrl,searchText ,totalPage];
-        urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        
+        [dic setValue:searchText forKey:@"commodityName"];
+        [dic setValue:[NSString stringWithFormat:@"%ld" ,totalPage] forKey:@"currentPage"];
+        [dic setValue:mTypeIOS forKey:@"mtype"];
+        [dic setValue:[NSString stringWithFormat:@"%ld" ,userId] forKey:@"customerId"];
+        
+        urlStr = [NSString stringWithFormat:@"%@/m/search/searchCommodity" ,baseUrl];
+        //urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     }
    
-    DLog(@"商品搜索接口== %@" ,urlStr);
+    NSDictionary *dic1 = dic;
+    DLog(@"商品搜索接口== %@" ,dic1);
 
-    [MHNetworkManager getRequstWithURL:urlStr params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:urlStr params:dic1 successBlock:^(NSDictionary *returnData) {
         DLog(@"商品搜索列表== %@" ,returnData);
 
-        NSInteger pages = [returnData[@"data"][@"pages"] integerValue];
-        NSInteger pageSize = [returnData[@"data"][@"pageSize"] integerValue];
-        NSInteger total = [returnData[@"data"][@"total"] integerValue];
+        NSInteger pages = [returnData[@"data"][@"page"][@"totalPage"] integerValue];
+        NSInteger pageSize = [returnData[@"data"][@"page"][@"pageSize"] integerValue];
+        NSInteger total = [returnData[@"data"][@"page"][@"totalRecords"] integerValue];
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
@@ -383,10 +401,10 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
     
     [dic setObject:@"1" forKey:@"quatity"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"加入购物车 ==== %@" , dic);
-    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         //
         //        HomePageModel *modelq = [HomePageModel yy_modelWithJSON:returnData];
         //
@@ -488,9 +506,9 @@
 
     [dic setObject:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setObject:@"1" forKey:@"quatity"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
-    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/update" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/update" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
 
         DLog(@"减去购物车==  %@" ,returnData);
     } failureBlock:^(NSError *error) {
@@ -532,10 +550,10 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"commodityId"];
 
     [dic setObject:@"1" forKey:@"quatity"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"加入购物车 ==== %@" , dic);
-    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {
 //            SVProgressHUD.minimumDismissTimeInterval = 1;
 //            SVProgressHUD.maximumDismissTimeInterval = ;

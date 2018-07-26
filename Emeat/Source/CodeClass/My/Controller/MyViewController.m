@@ -138,12 +138,12 @@
         [dic setValue:checkSum forKey:@"checkSum"];
         [dic setValue:ticket forKey:@"ticket"];
         [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
-        [dic setValue:@"ios" forKey:@"mtype"];
+        [dic setValue:mTypeIOS forKey:@"mtype"];
 
         DLog(@"2我的接口=== %@" ,dic);
         [MHAsiNetworkHandler startMonitoring];
         
-        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
             
             DLog(@"2我的接口=== %@" ,returnData);
             if ([returnData[@"code"] isEqualToString:@"0404"] || [returnData[@"code"] isEqualToString:@"04"]) {
@@ -260,7 +260,7 @@
     [dic setValue:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     //使用日期生成图片名称
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -275,7 +275,7 @@
 
     [MHAsiNetworkHandler startMonitoring];
 
-    [MHNetworkManager uploadFileWithURL:[NSString stringWithFormat:@"%@/auth/user/updateHeadPic" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager uploadFileWithURL:[NSString stringWithFormat:@"%@/m/auth/user/updateHeadPic" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"头像返回======= %@",returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             
@@ -358,12 +358,12 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:userNameString forKey:@"nickname"];
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
     DLog(@"修改用户昵称dic==== %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/user/updateName" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/updateName" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"修改用户昵称==== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [SVProgressHUD showSuccessWithStatus:@"修改成功"];

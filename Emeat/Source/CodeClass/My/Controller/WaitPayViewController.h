@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZJScrollPageView.h"
 
 @interface WaitPayViewController : SHLBaseViewController<ZJScrollPageViewChildVcDelegate>
 

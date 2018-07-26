@@ -49,11 +49,13 @@
     
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"开票历史详情数据== %@" ,dic );
     
     
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/queryInvoiceById" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryInvoiceById" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"status"] integerValue] == 200) {
             if ([returnData[@"data"] isKindOfClass:[NSDictionary class]]) {
@@ -62,8 +64,7 @@
 
                 NSString *string = model.invoiceReceiverAddress;
                 
-                NSArray *array = [string componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
-                DLog(@"分割的地址=======%@ %@" , [array firstObject]  ,[array lastObject]);
+                NSArray *array = [string componentsSeparatedByString:@","];
                 model.invoiceReceiverAddress = [array firstObject];
                 model.invoiceReceiverDetailsAddress = [array lastObject];
                 self.invoiceStated = model.invoiceStatus;
@@ -99,11 +100,13 @@
     
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"开票订单数量== %@" ,dic );
     
     
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/queryOrderNumByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryOrderNumByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"status"] integerValue] == 200) {
             

@@ -55,6 +55,7 @@
     
     
     self.weightLab.text = model.size;
+    
     if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
          self.pricelab.text =[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100];
     }else{

@@ -50,9 +50,9 @@
 -(void)getMyAddressData{
     
     NSMutableDictionary *dic = [self checkoutData];    
-    [dic setValue:@"ios" forKey:@"mtype"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
 
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.addressDataMarray removeAllObjects];
 

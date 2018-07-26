@@ -24,8 +24,20 @@ target 'Emeat' do
 
    pod 'TZImagePickerController'
 
-pod 'MMPopupView'
+   pod 'MMPopupView'
 
-pod 'MOFSPickerManager'
+   pod 'MOFSPickerManager'
 
+   pod 'GTSDK', '2.2.0.0-noidfa'
+
+
+end
+
+
+
+
+
+target 'com.lxbox.Emeat.NotificationService' do
+    platform :ios, "10.0"
+    pod 'GTExtensionSDK'
 end

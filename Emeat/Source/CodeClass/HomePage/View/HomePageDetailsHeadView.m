@@ -66,7 +66,7 @@
     
     
     
-    self.weightLab.text = model.size2;
+    self.weightLab.text =[NSString stringWithFormat:@"非标商品默认按该规格下最大重量: %@计价后返差",model.size2] ;
     
 //    CGRect moreSpecificationsBtnRect = self.moreSpecificationsBgView.frame;
 //    moreSpecificationsBtnRect.origin.y = 408+hDesc;
@@ -205,14 +205,14 @@
     
     [self.weightLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(10*kScale);
+        make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(15*kScale);
         make.width.equalTo(@(65*kScale));
         make.height.equalTo(@(20*kScale));
     }];
     
     [self.noticeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.weightLab.mas_right).with.offset(5*kScale);
-        make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(0);
+        make.left.equalTo(self.weightLab.mas_right).with.offset(-5*kScale);
+        make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(5*kScale);
         make.width.equalTo(@(40*kScale));
         make.height.equalTo(@(40*kScale));
     }];

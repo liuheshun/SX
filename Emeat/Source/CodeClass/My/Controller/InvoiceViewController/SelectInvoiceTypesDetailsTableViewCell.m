@@ -152,6 +152,8 @@
             [self setMoreInfoMainFrame];
             [self setMoreLineView];
             
+            [_showMoreInfoBtn setImage:[UIImage imageNamed:@"展开"] forState:0];
+
             
         }else if (_isShowMoreInfo == 1){
             _isShowMoreInfo = 0;
@@ -166,6 +168,8 @@
             [self.noteLabel removeFromSuperview];
             [self.noteTextField removeFromSuperview];
             [self.lineView removeFromSuperview];
+            [_showMoreInfoBtn setImage:[UIImage imageNamed:@"收起"] forState:0];
+
         }
         
         self.isShowMoreInfoBlock(_isShowMoreInfo);
@@ -188,7 +192,7 @@
             make.left.equalTo(self.mas_left).offset(15*kScale);
             make.right.equalTo(self.mas_right).with.offset(-15*kScale);
             make.height.equalTo(@(1*kScale));
-            make.top.equalTo(self.companyPhoneNumLabel.mas_bottom).with.offset(41*i );
+            make.top.equalTo(self.companyPhoneNumLabel.mas_bottom).with.offset(41*kScale*i+1*kScale );
             
         }];
         
@@ -212,7 +216,7 @@
                 make.left.equalTo(self.mas_left).offset(15*kScale);
                 make.right.equalTo(self.mas_right).with.offset(-15*kScale);
                 make.height.equalTo(@(1*kScale));
-               make.top.equalTo(self.lookUpType.mas_bottom).with.offset(41*i );
+               make.top.equalTo(self.lookUpType.mas_bottom).with.offset(41*kScale*i+1*kScale);
  
             }];
 
@@ -527,7 +531,7 @@
         _invoiceContentTextField.font = [UIFont systemFontOfSize:12.0f*kScale];
         _invoiceContentTextField.textAlignment = NSTextAlignmentLeft;
         _invoiceContentTextField.textColor =  RGB(51, 51, 51, 1);
-        _invoiceContentTextField.placeholder = @"*根据相应订单商品明细生产";
+        _invoiceContentTextField.placeholder = @"*根据相应订单商品明细生成";
         _invoiceContentTextField.enabled = NO;
         
     }
@@ -576,7 +580,7 @@
 -(UIButton *)showMoreInfoBtn{
     if (!_showMoreInfoBtn) {
         _showMoreInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_showMoreInfoBtn setImage:[UIImage imageNamed:@"进入"] forState:0];
+        [_showMoreInfoBtn setImage:[UIImage imageNamed:@"收起"] forState:0];
         _showMoreInfoBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         _isShowMoreInfo = 0;
         [_showMoreInfoBtn addTarget:self action:@selector(showMoreInfoBtnAction) forControlEvents:1];

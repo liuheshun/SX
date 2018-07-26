@@ -82,9 +82,11 @@
     
     NSDictionary *dic = [self checkoutData];
     [dic setValue:[NSString stringWithFormat:@"%ld" , currentPage] forKey:@"currentPage"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+
     DLog(@"开票历史数据== %@" ,dic );
     [MHAsiNetworkHandler startMonitoring];
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/auth/appInvoice/queryInvoices" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryInvoices" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"status"] integerValue] == 200) {
             
@@ -116,12 +118,7 @@
                     
                      [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无开票订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView];
                 }
-                
-                
-                
-                
-               
-                
+    
                 
             }
           

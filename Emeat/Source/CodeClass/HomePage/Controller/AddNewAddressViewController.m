@@ -70,16 +70,16 @@
     [self.addressDic setValuesForKeysWithDictionary:checkDic];
     
     DLog(@"地址详细字典======== ==== %@" ,self.addressDic);
-    [self.addressDic setValue:@"ios" forKey:@"mtype"];
+    [self.addressDic setValue:mTypeIOS forKey:@"mtype"];
 
     NSString *url;
     if (_isCanRemove == NO) {
         //DLog(@"更新地址");
         [self.addressDic setValue:[NSString stringWithFormat:@"%ld" ,self.postMyAddressModel.id] forKey:@"id"];
-        url =[NSString stringWithFormat:@"%@/auth/shipping/update" ,baseUrl];
+        url =[NSString stringWithFormat:@"%@/m/auth/shipping/update" ,baseUrl];
     }else{
        // DLog(@"新增地址");
-        url =[NSString stringWithFormat:@"%@/auth/shipping/add" ,baseUrl];
+        url =[NSString stringWithFormat:@"%@/m/auth/shipping/add" ,baseUrl];
     }
     
     [MHNetworkManager postReqeustWithURL:url params:self.addressDic successBlock:^(NSDictionary *returnData) {
@@ -116,7 +116,7 @@
     
     [dic setValue:[NSString stringWithFormat:@"%ld" ,self.postMyAddressModel.id] forKey:@"shippingId"];
     
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/shipping/del" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/del" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {
             [SVProgressHUD dismiss];
 

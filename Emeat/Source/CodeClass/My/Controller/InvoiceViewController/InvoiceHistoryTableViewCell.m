@@ -53,7 +53,22 @@
     }
    
     self.orderDescLab.text =[NSString stringWithFormat:@"含%ld个订单 ,开票金额%.2f元" ,model.orderNum ,[model.invoiceAmount floatValue]/100 ] ;
-    self.invoiceTypes.text = @"纸质专票";
+    if ([model.invoiceMaterial isEqualToString:@"10"]) {//纸质发票
+        if ([model.invoiceType isEqualToString:@"0"]) {//专票
+             self.invoiceTypes.text = @"纸质专票";
+        }else if ([model.invoiceType isEqualToString:@"1"]){
+            self.invoiceTypes.text = @"纸质普票";
+        }
+        
+    }else{
+        if ([model.invoiceType isEqualToString:@"0"]) {//专票
+            self.invoiceTypes.text = @"电子专票";
+        }else if ([model.invoiceType isEqualToString:@"1"]){
+            self.invoiceTypes.text = @"电子普票";
+        }
+    }
+    
+   
     
 }
 
