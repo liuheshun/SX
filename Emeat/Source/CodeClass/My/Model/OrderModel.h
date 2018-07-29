@@ -52,6 +52,8 @@
 @property (nonatomic,strong) NSString *productAmount;
 ///"orderComment": "",                        订单备注
 @property (nonatomic,strong) NSString *orderComment;
+///加工服务名称
+@property (nonatomic,strong) NSString *serviceType;
 
 
 ///
@@ -76,6 +78,9 @@
 @property (nonatomic,assign) NSInteger periodic;
 ///支付方式 999= 支付宝 888=微信 11=线下打款
 @property (nonatomic,assign) NSInteger paymentType;
+
+///加工耗材服务费
+@property (nonatomic,strong) NSString *servicePrice;
 
 /////订单编号
 //@property (nonatomic,assign) NSInteger orderNo;
@@ -131,6 +136,9 @@
 @property (nonatomic,assign) NSInteger activitySum;
 ///    private BigDecimal returnSum;//总差额返款
 @property (nonatomic,assign) NSInteger returnSum;
+////加工耗材费返款差额
+@property (nonatomic,assign) NSInteger serviceMoneySum;
+
 ///    private BigDecimal returnMoneySum;//总返款
 @property (nonatomic,assign) NSInteger returnMoneySum;
 ///    private BigDecimal netPrice;//净总价

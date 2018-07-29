@@ -93,6 +93,7 @@
 		16901D421FDF97360080762A /* SearchLocationAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16901D411FDF97360080762A /* SearchLocationAddressViewController.m */; };
 		1696BF1920EF269200BD9CD3 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696BF1820EF269200BD9CD3 /* NotificationService.m */; };
 		1696BF1D20EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1696BF1520EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		169F950F2109D8C0004D1D36 /* SliceService ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F950E2109D8C0004D1D36 /* SliceService ViewController.m */; };
 		16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */; };
 		16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992A20DB8B7E00D9F101 /* InvoiceListViewController.m */; };
 		16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992D20DB909100D9F101 /* InvoiceListTableViewCell.m */; };
@@ -390,6 +391,8 @@
 		1696BF1720EF269200BD9CD3 /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		1696BF1820EF269200BD9CD3 /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		1696BF1A20EF269200BD9CD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		169F950D2109D8C0004D1D36 /* SliceService ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SliceService ViewController.h"; sourceTree = "<group>"; };
+		169F950E2109D8C0004D1D36 /* SliceService ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SliceService ViewController.m"; sourceTree = "<group>"; };
 		16AA64F5208DBCA0001496E8 /* MMMyCustomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMMyCustomView.h; sourceTree = "<group>"; };
 		16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMMyCustomView.m; sourceTree = "<group>"; };
 		16B0992920DB8B7E00D9F101 /* InvoiceListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListViewController.h; sourceTree = "<group>"; };
@@ -1117,6 +1120,8 @@
 				16901CF11FDA81500080762A /* SelectPayTypeViewController.m */,
 				16CFD7541FB5A3A50015F2C1 /* ConfirmOrderCommentViewController.h */,
 				16CFD7551FB5A3A50015F2C1 /* ConfirmOrderCommentViewController.m */,
+				169F950D2109D8C0004D1D36 /* SliceService ViewController.h */,
+				169F950E2109D8C0004D1D36 /* SliceService ViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1447,7 +1452,6 @@
 				1696BF1120EF269200BD9CD3 /* Sources */,
 				1696BF1220EF269200BD9CD3 /* Frameworks */,
 				1696BF1320EF269200BD9CD3 /* Resources */,
-				312D37ED4230DBC15EA6BCAB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1466,7 +1470,6 @@
 				16FB312F1FAC5D9D00049580 /* Sources */,
 				16FB31301FAC5D9D00049580 /* Frameworks */,
 				16FB31311FAC5D9D00049580 /* Resources */,
-				FAEED68EF61DE7E42CD2FB45 /* [CP] Embed Pods Frameworks */,
 				C2E00984354FEDA3E2D0D263 /* [CP] Copy Pods Resources */,
 				1696BF2120EF269200BD9CD3 /* Embed App Extensions */,
 			);
@@ -1620,21 +1623,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		312D37ED4230DBC15EA6BCAB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-com.lxbox.Emeat.NotificationService/Pods-com.lxbox.Emeat.NotificationService-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		55A6421A70025569730F5278 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1687,26 +1675,16 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/province_data.xml",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PYSearch.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emeat/Pods-Emeat-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FAEED68EF61DE7E42CD2FB45 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Emeat/Pods-Emeat-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1859,6 +1837,7 @@
 				16FC44432029B83C00B95546 /* NSString+textFieldCategory.m in Sources */,
 				16EE100B1FE167660099DA91 /* WaitPayViewController.m in Sources */,
 				16901CFE1FDE6A0A0080762A /* MyAddressView.m in Sources */,
+				169F950F2109D8C0004D1D36 /* SliceService ViewController.m in Sources */,
 				16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */,
 				16D950B51FF0DB4B00DBC7B8 /* GlobalHelper.m in Sources */,
 				16EE10371FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.m in Sources */,
@@ -1950,7 +1929,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = com.lxbox.Emeat.NotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lxbox.Emeat.com-lxbox-Emeat-NotificationService";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1970,7 +1949,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = com.lxbox.Emeat.NotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lxbox.Emeat.com-lxbox-Emeat-NotificationService";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2090,6 +2069,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-1";
 				CODE_SIGN_ENTITLEMENTS = Emeat/Emeat.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
@@ -2191,6 +2171,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-1";
 				CODE_SIGN_ENTITLEMENTS = Emeat/Emeat.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;

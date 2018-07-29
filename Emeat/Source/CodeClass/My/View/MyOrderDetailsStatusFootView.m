@@ -18,6 +18,9 @@
         [self.footTopBgView addSubview:self.orderAllPricesCount];
         [self.footTopBgView addSubview:self.sendPricesLab];
         [self.footTopBgView addSubview:self.sendPricesCount];
+        [self.footTopBgView addSubview:self.selicePricesLab];
+        [self.footTopBgView addSubview:self.selicePricesCount];
+
         [self.footTopBgView addSubview:self.orderPayStatus];
         [self.footTopBgView addSubview:self.orderPayPrices];
         
@@ -125,7 +128,7 @@
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
         self.sendTime.text = [NSString stringWithFormat:@"发货时间 : %@" , model.sendTime];
       
-    }else if (model.status == 55){//////配送中(出库之后的状态,物流未发货)
+    }else if (model.status == 55){//////配送中(出库中的状态,物流未发货)
         self.orderPayStatus.text = @"已支付";
         self.payTime.text = [NSString stringWithFormat:@"付款时间 : %@" , model.paymentTime];
     }
@@ -189,6 +192,7 @@
     
     if (model.status == 60 || model.status == 70 || model.status == 80) {
         [self.footTopBgView addSubview:self.weightRebatesPrices];
+        [self.footTopBgView addSubview:self.servicePrices];
         [self.footTopBgView addSubview:self.activityRebatesPrices];
         [self.footTopBgView addSubview:self.netPrices];
 
@@ -199,12 +203,20 @@
             make.height.equalTo(@(15*kScale));
             
         }];
+        ///加工耗材费返款
         
+        [self.servicePrices mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+            make.top.equalTo(self.weightRebatesPrices.mas_bottom).with.offset(10*kScale);
+            make.height.equalTo(@(15*kScale));
+            
+        }];
         
         [self.activityRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
             make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
-            make.top.equalTo(self.weightRebatesPrices.mas_bottom).with.offset(10*kScale);
+            make.top.equalTo(self.servicePrices.mas_bottom).with.offset(10*kScale);
             make.height.equalTo(@(15*kScale));
             
         }];
@@ -221,22 +233,33 @@
             make.top.equalTo(self.mas_top).with.offset(0);
             make.left.equalTo(self.mas_left).with.offset(0);
             make.width.equalTo(self);
-            make.height.equalTo(@(93*kScale+80*kScale));
+            make.height.equalTo(@(93*kScale+110*kScale+30*kScale));
         }];
        
-        self.weightRebatesPrices.text = [NSString stringWithFormat:@"重量返款差额 ¥-%.2f" ,(float)model.returnSum/100];
+        [self updateConstraintsIfNeeded];
         
-        self.activityRebatesPrices.text = [NSString stringWithFormat:@"活动返款差额 ¥-%.2f" ,(float)model.activitySum/100];
+        self.weightRebatesPrices.text = [NSString stringWithFormat:@"重量差返款额 ¥-%.2f" ,(float)model.returnSum/100];
+        self.servicePrices.text = [NSString stringWithFormat:@"耗材费返差额 ¥-%.2f" ,(float)model.serviceMoneySum/100];
+
+        self.activityRebatesPrices.text = [NSString stringWithFormat:@"活动返款额 ¥-%.2f" ,(float)model.activitySum/100];
         self.netPrices.text = [NSString stringWithFormat:@"净总价 ¥%.2f" ,(float)model.netPrice/100];
         
         NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:self.weightRebatesPrices.text];
-        NSRange range1 = [[str1 string] rangeOfString:@"重量返款差额"];
+        NSRange range1 = [[str1 string] rangeOfString:@"重量差返款额"];
         [str1 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range1];
         self.weightRebatesPrices.attributedText = str1;
         
+        ///
+        NSMutableAttributedString *str11 = [[NSMutableAttributedString alloc] initWithString:self.servicePrices.text];
+        NSRange range11 = [[str11 string] rangeOfString:@"耗材费返差额"];
+        [str11 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range11];
+        self.servicePrices.attributedText = str11;
+        
+        
+        
         
         NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:self.activityRebatesPrices.text];
-        NSRange range2 = [[str2 string] rangeOfString:@"活动返款差额"];
+        NSRange range2 = [[str2 string] rangeOfString:@"活动返款额"];
         [str2 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range2];
         self.activityRebatesPrices.attributedText = str2;
         
@@ -259,7 +282,11 @@
     self.orderAllPricesCount.text = [NSString stringWithFormat:@"¥ %@" , model.orderTotalPrice];
     self.sendPricesLab.text = @"配送费";
     self.sendPricesCount.text = @"¥ 0.00";
-    self.orderPayPrices.text =[NSString stringWithFormat:@"¥ %@" , model.orderTotalPrice];
+    self.selicePricesLab.text = @"加工耗材费";
+    self.selicePricesCount.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)[model.servicePrice integerValue]/100];
+    
+    
+    self.orderPayPrices.text =[NSString stringWithFormat:@"¥ %@" , model.payment];
     
     self.orderInfoLab.text = @"订单信息";
     self.orderNumber.text = [NSString stringWithFormat:@"下单时间 : %@" , model.createOrderTime];
@@ -344,6 +371,30 @@
         _sendPricesCount.textColor = RGB(138, 138, 138, 1);
     }
     return _sendPricesCount;
+}
+
+///加工耗材费
+-(UILabel *)selicePricesLab{
+    if (!_selicePricesLab) {
+        _selicePricesLab = [[UILabel alloc] init];
+        _selicePricesLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _selicePricesLab.textAlignment = NSTextAlignmentLeft;
+        _selicePricesLab.textColor = RGB(138, 138, 138, 1);
+    }
+    return _selicePricesLab;
+}
+
+
+
+
+-(UILabel *)selicePricesCount{
+    if (!_selicePricesCount) {
+        _selicePricesCount = [[UILabel alloc] init];
+        _selicePricesCount.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _selicePricesCount.textAlignment = NSTextAlignmentRight;
+        _selicePricesCount.textColor = RGB(138, 138, 138, 1);
+    }
+    return _selicePricesCount;
 }
 
 -(UILabel *)orderPayStatus{
@@ -454,6 +505,15 @@
     }
     return _weightRebatesPrices;
 }
+-(UILabel *)servicePrices{
+    if (!_servicePrices) {
+        _servicePrices = [[UILabel alloc] init];
+        _servicePrices.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _servicePrices.textAlignment = NSTextAlignmentRight;
+        _servicePrices.textColor = RGB(236, 31, 35, 1);
+    }
+    return _servicePrices;
+}
 
 -(UILabel *)activityRebatesPrices{
     if (!_activityRebatesPrices) {
@@ -485,7 +545,7 @@
         make.top.equalTo(self.mas_top).with.offset(0);
         make.left.equalTo(self.mas_left).with.offset(0);
         make.width.equalTo(self);
-        make.height.equalTo(@(93*kScale));
+        make.height.equalTo(@(93*kScale + 35*kScale));
     }];
     
     [self.orderAllPricesLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -517,10 +577,24 @@
         make.width.equalTo(@(120*kScale));
         make.height.equalTo(@(15*kScale));
     }];
+    ///加工耗材费
+    [self.selicePricesLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.sendPricesCount.mas_bottom).with.offset(15*kScale);
+        make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+        make.width.equalTo(@(90*kScale));
+        make.height.equalTo(@(15*kScale));
+    }];
     
+    
+    [self.selicePricesCount mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.sendPricesCount.mas_bottom).with.offset(15*kScale);
+        make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+        make.width.equalTo(@(120*kScale));
+        make.height.equalTo(@(15*kScale));
+    }];
     
     [self.orderPayPrices mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.sendPricesCount.mas_bottom).with.offset(15*kScale);
+        make.top.equalTo(self.selicePricesCount.mas_bottom).with.offset(15*kScale);
         make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
         make.width.equalTo(@(60*kScale));
         make.height.equalTo(@(15*kScale));
@@ -528,7 +602,7 @@
     
     
     [self.orderPayStatus mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.sendPricesCount.mas_bottom).with.offset(15*kScale);
+        make.top.equalTo(self.selicePricesCount.mas_bottom).with.offset(15*kScale);
         make.right.equalTo(self.orderPayPrices.mas_left).with.offset(-5*kScale);
         make.width.equalTo(@(120*kScale));
         make.height.equalTo(@(15*kScale));

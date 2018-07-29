@@ -57,6 +57,26 @@ DEPENDENCIES:
   - TZImagePickerController
   - YYModel
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - AMapFoundation-NO-IDFA
+    - AMapSearch-NO-IDFA
+    - GTExtensionSDK
+    - GTSDK
+    - IQKeyboardManager
+    - Masonry
+    - MJRefresh
+    - MMPopupView
+    - MOFSPickerManager
+    - PYSearch
+    - RealReachability
+    - SDCycleScrollView
+    - SDWebImage
+    - SVProgressHUD
+    - TZImagePickerController
+    - YYModel
+
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AMapFoundation-NO-IDFA: b6cbefab250ae8ab2e31aa9bb3dbbb98137cd76f
@@ -78,4 +98,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1608c5f42520d4a30614e56edea24931fe516d9f
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.3

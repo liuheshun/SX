@@ -25,6 +25,13 @@
         [self.sendBgView addSubview:self.orderPhoneNumerLab];
         [self.sendBgView addSubview:self.orderAddressLab];
         
+        
+        [self addSubview:self.seliceBgView];
+        [self.seliceBgView addSubview:self.seliceLab];
+        [self.seliceBgView addSubview:self.seliceDetailsLab];
+        [self.seliceBgView addSubview:self.seliceBtn];
+        
+        
         [self addSubview:self.orderCommentBgView];
         [self.orderCommentBgView addSubview:self.orderCommentLab];
         [self.orderCommentBgView addSubview:self.orderCommentDetailsLab];
@@ -147,10 +154,24 @@
     self.orderPhoneNumerLab.text =[NSString stringWithFormat:@"%ld",addressModel.receiverPhone] ;
     self.orderAddressLab.text = [NSString stringWithFormat:@"%@%@" ,addressModel.receiverProvince , addressModel.receiverAddress];
     
+    ///加工服务
+  
+    self.seliceDetailsLab.text = orderModel.serviceType;
+    
+    CGFloat seliceDetailsLabHeight = [GetWidthAndHeightOfString getHeightForText:self.seliceDetailsLab width:kWidth-52*kScale];
+    
+    
+    [self.seliceDetailsLab mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(ceil (seliceDetailsLabHeight)+1));
+    }];
+    [self.seliceBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(85*kScale +ceil (seliceDetailsLabHeight)+1));
+    }];
+    
+    
     
     ///备注信息
     self.orderCommentDetailsLab.text = orderModel.orderComment;
-    
     CGFloat orderCommentDetailsLabHeight = [GetWidthAndHeightOfString getHeightForText:self.orderCommentDetailsLab width:kWidth-52*kScale];
     
    
@@ -163,6 +184,7 @@
     
 //    self.orderCommentBgView.backgroundColor = [UIColor cyanColor];
     
+    ////
     [self.goodsBgView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
         make.bottom.equalTo(self.mas_bottom).with.offset(0*kScale);
@@ -184,11 +206,12 @@
         [self addSubview:self.sendDetailsBgView];
         [self.sendDetailsBgView addSubview:self.sendDetailsLab];
         
+        
         [self.sendDetailsBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left).with.offset(0*kScale);
             make.top.equalTo(self.orderCommentBgView.mas_bottom).with.offset(10*kScale);
             make.right.equalTo(self.mas_right).with.offset(0*kScale);
-            make.height.equalTo(@(70*kScale +(nameMarray.count +1) *43*kScale + (nameMarray.count +1)*1*kScale));
+            make.height.equalTo(@(70*kScale +(nameMarray.count +1) *44*kScale + (nameMarray.count +1)*1*kScale));
         }];
         
         [self.sendDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -344,7 +367,50 @@
     }
     return _orderAddressLab;
 }
-///
+
+////加工服务
+-(UIView *)seliceBgView{
+    if (!_seliceBgView) {
+        _seliceBgView = [[UIView alloc] init];
+        _seliceBgView.backgroundColor = [UIColor whiteColor];
+    }
+    return _seliceBgView;
+}
+
+
+-(UILabel *)seliceLab{
+    if (!_seliceLab) {
+        _seliceLab = [[UILabel alloc] init];
+        _seliceLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _seliceLab.textAlignment = NSTextAlignmentLeft;
+        _seliceLab.text = @"加工服务";
+    }
+    return _seliceLab;
+}
+-(UILabel *)seliceDetailsLab{
+    if (!_seliceDetailsLab) {
+        _seliceDetailsLab = [[UILabel alloc] init];
+        _seliceDetailsLab.font = [UIFont systemFontOfSize:12.0f*kScale];
+        _seliceDetailsLab.textAlignment = NSTextAlignmentLeft;
+        _seliceDetailsLab.numberOfLines = 0;
+    }
+    return _seliceDetailsLab;
+}
+
+-(UIButton *)seliceBtn{
+    if (!_seliceBtn) {
+        _seliceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_seliceBtn setImage:[UIImage imageNamed:@"加工服务"] forState:0];
+    }
+    return _seliceBtn;
+}
+
+
+
+
+
+
+///备注信息
 -(UIView *)orderCommentBgView{
     if (!_orderCommentBgView) {
         _orderCommentBgView = [[UIView alloc] init];
@@ -501,11 +567,50 @@
         make.height.equalTo(@(12*kScale));
     }];
     
+    ///加工服务frame
+    
+    [self.seliceBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.top.equalTo(self.sendBgView.mas_bottom).with.offset(10*kScale);
+        make.width.equalTo(@(kWidth));
+        make.height.equalTo(@(85*kScale));
+    }];
+    
+    [self.seliceLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.seliceBgView.mas_left).with.offset(15*kScale);
+        make.top.equalTo(self.seliceBgView.mas_top).with.offset(15*kScale);
+        make.width.equalTo(@(90*kScale));
+        make.height.equalTo(@(15*kScale));
+        
+    }];
+    
+    [self.seliceBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.seliceBgView.mas_left).with.offset(15*kScale);
+        make.top.equalTo(self.seliceLab.mas_bottom).with.offset(20*kScale);
+        make.width.equalTo(@(22*kScale));
+        make.height.equalTo(@(22*kScale));
+        
+    }];
+    
+    
+    
+    [self.seliceDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.seliceBtn.mas_right).with.offset(15*kScale);
+        make.top.equalTo(self.seliceLab.mas_bottom).with.offset(21*kScale);
+        make.right.equalTo(self.seliceBgView.mas_right).with.offset(-15*kScale);
+        make.height.equalTo(@(15*kScale));
+        
+    }];
+    
+    
+    
+    
+    
     ///备注frame
     
     [self.orderCommentBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
-        make.top.equalTo(self.sendBgView.mas_bottom).with.offset(10*kScale);
+        make.top.equalTo(self.seliceBgView.mas_bottom).with.offset(10*kScale);
         make.width.equalTo(@(kWidth));
         make.height.equalTo(@(85*kScale));
     }];
@@ -530,7 +635,7 @@
     
     [self.orderCommentDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.orderCommentBtn.mas_right).with.offset(15*kScale);
-        make.top.equalTo(self.orderCommentLab.mas_bottom).with.offset(20*kScale);
+        make.top.equalTo(self.orderCommentLab.mas_bottom).with.offset(22*kScale);
         make.right.equalTo(self.orderCommentBgView.mas_right).with.offset(-15*kScale);
         make.height.equalTo(@(15*kScale));
         
@@ -565,16 +670,18 @@
 }
 
 - (BOOL)isTitleFixed{
-    return NO;
+    return YES;
 }
 
 - (CGFloat)widthForColAtIndex:(long)index{
-    
-    return 115*kScale;
+    if (index == 0) {
+        return 145*kScale;
+    }
+    return 100*kScale;
 }
 
 //- (CGFloat)heightForRowAtIndex:(long)index{
-//    return 30*kScale;
+//    return 100*kScale;
 //}
 
 
@@ -602,6 +709,13 @@
     return [UIFont systemFontOfSize:13*kScale];
 }
 
+- (UIFont *)fontForGridAtGridIndex:(GridIndex)gridIndex{
+    return [UIFont systemFontOfSize:11*kScale];
+}
+
+- (JHGridAlignmentType)gridViewAlignmentType{
+    return JHGridAlignmentTypeLeft;
+}
 
 
 /*

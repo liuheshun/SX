@@ -278,7 +278,7 @@
     
     [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
     WXWebpageObject *webpageObject = [WXWebpageObject object];
-    webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail_demo.html?ds=%@" ,baseUrl,self.detailsId];
+    webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail.html?ds=%@" ,baseUrl,self.detailsId];
     message.mediaObject = webpageObject;
     SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
     req.bText = NO;

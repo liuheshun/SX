@@ -17,6 +17,8 @@
         [self addSubview:self.labelOrderTotalPrice];
         [self addSubview:self.labelShipping];
         [self addSubview:self.labelShippingFee];
+        [self addSubview:self.sliceLabPlaceholderLab];
+        [self addSubview:self.sliceLab];
         [self setMainFrame];
     }
     return self;
@@ -26,8 +28,11 @@
     
     self.labelOrder.text = @"商品总价";
     self.labelShipping.text = @"配送费";
+    self.sliceLabPlaceholderLab.text = @"加工耗材费";
     self.labelOrderTotalPrice.text = [NSString stringWithFormat:@"¥ %@" ,model.productTotalPrice];
     self.labelShippingFee.text = [NSString stringWithFormat:@"¥ %ld" ,model.postage];
+    self.sliceLab.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)[model.slicePrices integerValue]/100];
+    
 }
 
 -(void)setMainFrame{
@@ -58,6 +63,22 @@
     [self.labelShippingFee mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.labelOrderTotalPrice);
         make.top.equalTo(self.labelOrder.mas_bottom).with.offset(15*kScale);
+        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+        make.height.equalTo(@(15*kScale));
+    }];
+    
+    
+    [self.sliceLabPlaceholderLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.labelOrder);
+        make.top.equalTo(self.labelShippingFee.mas_bottom).with.offset(15*kScale);
+        make.width.equalTo(self.labelOrder);
+        make.height.equalTo(self.labelOrder);
+        
+    }];
+    
+    [self.sliceLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.labelOrderTotalPrice);
+        make.top.equalTo(self.labelShippingFee.mas_bottom).with.offset(15*kScale);
         make.right.equalTo(self.mas_right).with.offset(-15*kScale);
         make.height.equalTo(@(15*kScale));
     }];
@@ -105,6 +126,27 @@
         _labelShippingFee.textColor = RGB(136, 136, 136, 1);
     }
     return _labelShippingFee;
+}
+///
+-(UILabel*)sliceLabPlaceholderLab{
+    if (!_sliceLabPlaceholderLab) {
+        _sliceLabPlaceholderLab = [[UILabel alloc] init];
+        _sliceLabPlaceholderLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _sliceLabPlaceholderLab.textColor = RGB(136, 136, 136, 1);
+        
+    }
+    return _sliceLabPlaceholderLab;
+}
+
+
+-(UILabel*)sliceLab{
+    if (!_sliceLab) {
+        _sliceLab = [[UILabel alloc] init];
+        _sliceLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _sliceLab.textAlignment = NSTextAlignmentRight;
+        _sliceLab.textColor = RGB(136, 136, 136, 1);
+    }
+    return _sliceLab;
 }
 
 

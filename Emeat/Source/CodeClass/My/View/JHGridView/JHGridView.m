@@ -176,7 +176,8 @@
     cell.textLabel.text = [[_objects objectAtIndex:index] valueForKey:[_tags objectAtIndex:tableView.tag]];
     cell.textLabel.numberOfLines = 0;
     [self applyAlignmentTypeFor:cell.textLabel];
-    
+//    cell.textLabel.backgroundColor = [UIColor redColor];
+//    cell.textLabel.textAlignment = NSTextAlignmentLeft;
     GridIndex gridIndex;
     gridIndex.col = tableView.tag;
     gridIndex.row = indexPath.row;
@@ -221,7 +222,7 @@
     if([_delegate respondsToSelector:@selector(heightForTitles)]){
         return [_delegate heightForTitles];
     }else{
-        return 44;
+        return 44*kScale;
     }
 }
 
@@ -245,7 +246,7 @@
     if([_delegate respondsToSelector:@selector(heightForRowAtIndex:)]){
         return [_delegate heightForRowAtIndex:index];
     }else{
-        return 44;
+        return 44*kScale;
     }
 }
 
@@ -253,7 +254,7 @@
     if([_delegate respondsToSelector:@selector(widthForColAtIndex:)]){
         return [_delegate widthForColAtIndex:index];
     }else{
-        return 90;
+        return 90*kScale;
     }
 }
 

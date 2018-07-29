@@ -138,7 +138,7 @@
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    [self.shareImageView configShareViewMainimage:self.productImageURL Title:self.productTitle Desc:self.productContent Prices:self.productPrices codeURL:[NSString stringWithFormat:@"%@/breaf/beef_detail_demo.html?ds=%@" ,baseUrl,self.detailsId] PriceTypes:self.priceTypes];
+    [self.shareImageView configShareViewMainimage:self.productImageURL Title:self.productTitle Desc:self.productContent Prices:self.productPrices codeURL:[NSString stringWithFormat:@"%@/breaf/beef_detail.html?ds=%@" ,baseUrl,self.detailsId] PriceTypes:self.priceTypes];
     return self.shareImageView;
 }
 

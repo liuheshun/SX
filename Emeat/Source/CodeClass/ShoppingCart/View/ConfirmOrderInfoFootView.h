@@ -17,6 +17,11 @@
 @property (nonatomic,strong) UILabel *labelShipping;
 @property (nonatomic,strong) UILabel *labelShippingFee;
 
+//切片 加工耗材费
+@property (nonatomic,strong) UILabel *sliceLabPlaceholderLab;
+@property (nonatomic,strong) UILabel *sliceLab;
+
+
 -(void)configFootViewWithShoppingModel:(ShoppingCartModel*)model;
 
 @end

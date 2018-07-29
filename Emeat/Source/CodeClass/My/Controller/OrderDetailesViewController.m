@@ -153,11 +153,12 @@
         
             OrderModel *footModel = [OrderModel yy_modelWithJSON:returnData[@"data"]];
             self.status = footModel.status;
+            
             NSString *outCount =[NSString stringWithFormat:@"%ld" ,footModel.outCount];
             [self.outBoundProductNameMarray addObject:@""];
             [self.outBoundProductSizeMarray addObject:@"总计"];
             [self.outBoundProductCountMarray addObject:outCount];
-            self.OutboundDetailsHeight = 70*kScale +(self.outBoundProductNameMarray.count +1) *43*kScale + (self.outBoundProductNameMarray.count +1)*1*kScale;
+            self.OutboundDetailsHeight = 75*kScale +(self.outBoundProductNameMarray.count +1) *44*kScale + (self.outBoundProductNameMarray.count +1)*1*kScale;
 
             
             self.paymentType = footModel.paymentType;
@@ -165,10 +166,11 @@
             footModel.activitySum = [returnData[@"data"][@"orderMoney"][@"activitySum"]integerValue];
             footModel.returnSum = [returnData[@"data"][@"orderMoney"][@"returnSum"] integerValue];
             
+            footModel.serviceMoneySum = [returnData[@"data"][@"orderMoney"][@"serviceMoneySum"] integerValue];
+
             footModel.netPrice = [returnData[@"data"][@"orderMoney"][@"netPrice"] integerValue];
 
             footModel.returnMoneySum = [returnData[@"data"][@"orderMoney"][@"returnMoneySum"] integerValue];
-
             [self.footViewOrderInfoMarray addObject:footModel];
             [self.view addSubview:self.tableView];
             [self.view addSubview:self.orderInfoBottomView];////////
@@ -794,22 +796,22 @@
      if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46 || orderModel.status == 10){
          if (orderModel.paymentType == 12){
              ///线下打款方式
-             return 282*kScale + ceil(strSize.height) +1 + 104*kScale + 45*kScale+20*kScale;
+             return 282*kScale + ceil(strSize.height) +1 + 120*kScale + 45*kScale+20*kScale +95*kScale;
          }else{
-             return 282*kScale + ceil(strSize.height)+1+ 45*kScale +10*kScale;
+             return 282*kScale + ceil(strSize.height)+1+ 45*kScale +10*kScale  +95*kScale;
          }
 
      }else if (orderModel.status == 60 || orderModel.status == 70|| orderModel.status == 80){
          if (orderModel.orderComment.length !=0) {
-              return 282*kScale + ceil(strSize.height)+1 +20*kScale+ self.OutboundDetailsHeight+ 45*kScale;
+              return 282*kScale + ceil(strSize.height)+1 +20*kScale+ self.OutboundDetailsHeight+ 45*kScale+95*kScale;
          }else{
-         return 282*kScale + ceil(strSize.height)+1 +5*kScale+ self.OutboundDetailsHeight+ 45*kScale;
+         return 282*kScale + ceil(strSize.height)+1 +5*kScale+ self.OutboundDetailsHeight+ 45*kScale+95*kScale;
     
          }
      }
      
      else{
-         return 282*kScale + ceil(strSize.height)+1 + 45*kScale+20*kScale;
+         return 282*kScale + ceil(strSize.height)+1 + 45*kScale+20*kScale+95*kScale;
      }
         
     }else{
@@ -819,7 +821,7 @@
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
-    self.myOrderDetailsStatusHeadView = [[MyOrderDetailsStatusHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 242+40)];
+    self.myOrderDetailsStatusHeadView = [[MyOrderDetailsStatusHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 242+40+95)];
     self.myOrderDetailsStatusHeadView.backgroundColor = RGB(238, 238, 238, 1);
     
     if (self.headViewSendAddressMarray.count != 0) {
@@ -841,16 +843,16 @@
     if (self.footViewOrderInfoMarray.count != 0) {
         
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
-        if (orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
-            return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale;
+        if ( orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
+            return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale +35*kScale+30*kScale;
 
         }else{
-            return 269*kScale+10*kScale+55*kScale+20*kScale;
+            return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale;
 
         }
     }
     
-    return 269*kScale+10*kScale+55*kScale+20*kScale;
+    return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{

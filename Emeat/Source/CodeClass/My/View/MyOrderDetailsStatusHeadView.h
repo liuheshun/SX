@@ -36,15 +36,24 @@
 @property (nonatomic,strong) UILabel *orderNameLab;
 @property (nonatomic,strong) UILabel *orderPhoneNumerLab;
 @property (nonatomic,strong) UILabel *orderAddressLab;
-///备注信息
+///备注信息背景
 @property (nonatomic,strong) UIView *orderCommentBgView;
 ///备注信息
 @property (nonatomic,strong) UILabel *orderCommentLab;
 ///备注图标
 @property (nonatomic,strong) UIButton *orderCommentBtn;
-
 ///备注信息
 @property (nonatomic,strong) UILabel *orderCommentDetailsLab;
+
+////
+///加工服务背景
+@property (nonatomic,strong) UIView *seliceBgView;
+///加工服务
+@property (nonatomic,strong) UILabel *seliceLab;
+///加工服务图标
+@property (nonatomic,strong) UIButton *seliceBtn;
+///加工服务信息
+@property (nonatomic,strong) UILabel *seliceDetailsLab;
 
 
 ///配送明细

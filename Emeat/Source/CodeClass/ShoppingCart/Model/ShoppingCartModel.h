@@ -53,6 +53,9 @@
 
 ///商品总价
 @property (nonatomic,strong) NSString *productTotalPrice;
+///需支付
+@property (nonatomic,strong) NSString *needTotalPrices;
+
 
 ///商品库存
 @property (nonatomic,assign) NSInteger productStock;
@@ -72,6 +75,8 @@
 @property (nonatomic,strong) NSString *totalPrice;
 ///邮费
 @property (nonatomic,assign) NSInteger postage;
+///加工耗材费
+@property (nonatomic,strong) NSString *slicePrices;
 
 
 ///商品状态

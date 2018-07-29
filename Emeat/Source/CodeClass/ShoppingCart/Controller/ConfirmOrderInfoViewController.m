@@ -16,6 +16,7 @@
 #import "MyAddressViewController.h"
 
 #import "MMMyCustomView.h"
+#import "SliceService ViewController.h"
 
 
 @interface ConfirmOrderInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -32,6 +33,14 @@
 
 ///订单备注
 @property (nonatomic,strong) NSString *conmmentStr;
+///所选切片服务服务类型
+@property (nonatomic,strong) NSString *serviceType;
+///所选切片名字服务服务
+@property (nonatomic,strong) NSString *serviceName;
+
+
+///所选切片服务费用
+@property (nonatomic,strong) NSString *slicePrices;
 
 
 @end
@@ -48,7 +57,8 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:@"" forKey:@"conmmentString"];
     
-    
+    self.serviceName = @"不需要分切";
+    self.serviceType = @"NO_SERVICE";
     [MMPopupWindow sharedWindow].touchWildToHide = YES;
     MMAlertViewConfig1 *alertConfig = [MMAlertViewConfig1 globalConfig1];
     alertConfig.defaultTextOK = @"确定";
@@ -65,11 +75,11 @@
     alertConfig.splitColor = [UIColor whiteColor];
     
     
-    
 }
 
 
-//http://192.168.0.124:8080/order/get_order_cart_product?userId=7
+
+
 
 
 #pragma mark = =创建订单(确认订单)
@@ -79,23 +89,13 @@
 
     }else{
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        NSString *ticket = [user valueForKey:@"ticket"];
-        NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-        NSString *nonce = [self ret32bitString];//随机数
-        NSString *curTime = [self dateTransformToTimeSp];
-        NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-        
-        [dic setValue:secret forKey:@"secret"];
-        [dic setValue:nonce forKey:@"nonce"];
-        [dic setValue:curTime forKey:@"curTime"];
-        [dic setValue:checkSum forKey:@"checkSum"];
-        [dic setValue:ticket forKey:@"ticket"];
+        dic = [self checkoutData];
+
         //[dic setValue :[user valueForKey:@"shoppingId"] forKey:@"shippingId"];
         [dic setValue:self.shoppingId forKey:@"shippingId"];
         [dic setValue:self.conmmentStr forKey:@"comment"];
         [dic setValue:mTypeIOS forKey:@"mtype"];
-
+        [dic setValue:self.serviceType forKey:@"serviceType"];
         DLog(@"q确认订单信息 dic == %@" ,dic);
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -193,10 +193,10 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 4;
+    return 5;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (section == 3){
+    if (section == 4){
         return self.orderListMarray.count;
     }
     
@@ -208,6 +208,8 @@
     }else if (indexPath.section == 2){
         return 40*kScale;
     }else if (indexPath.section == 3){
+        return 40*kScale;
+    }else if (indexPath.section == 4){
         return 30*kScale;
     }
     return 65*kScale;
@@ -223,7 +225,7 @@
 
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10*kScale)];
     view.backgroundColor = RGB(238, 238, 238, 1);
-    if (section == 3) {
+    if (section == 4) {
         view.backgroundColor = [UIColor whiteColor];
 
     }
@@ -231,21 +233,22 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if (section == 3) {
-        return 80*kScale;
+    if (section == 4) {
+        return 120*kScale;
     }
     return 0.1;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    if (section == 3) {
+    if (section == 4) {
         ConfirmOrderInfoFootView *view = [[ConfirmOrderInfoFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 80*kScale)];
         if (self.orderListMarray.count != 0) {
             ShoppingCartModel *model = [self.orderListMarray firstObject];
+            model.slicePrices = self.slicePrices;
             [view configFootViewWithShoppingModel:model];
             
             [self.bottomView.rightBottomBtn setTitle:@"确认订单" forState:0];
-            [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.productTotalPrice] forState:0];
+            [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.needTotalPrices] forState:0];
         }
         view.backgroundColor = [UIColor whiteColor];
         return view;
@@ -261,7 +264,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-     if (indexPath.section == 3){
+     if (indexPath.section == 4){
         
         ConfirmOrderInfoTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"orderInfo_cell1"];
         if (cell1 == nil) {
@@ -276,11 +279,11 @@
         
         return cell1;
          
-    }else
-    {
-        UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"list_cell"];
+    }else{
+        NSString *s = [NSString stringWithFormat:@"%ld_listcell" ,indexPath.section];
+        UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:s];
         if (cell1 == nil) {
-            cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"list_cell"];
+            cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:s];
             
             [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
             cell1.backgroundColor = [UIColor whiteColor];
@@ -289,29 +292,20 @@
         if (indexPath.section == 0) {//我的收货地址
           
             [cell1 addSubview: self.headView];
-            
-//            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//            MyAddressModel *model = [MyAddressModel new];
-//            model.receiverName = [user valueForKey:@"receiverName"];
-//            model.receiverPhone = [[user valueForKey:@"receiverPhone"] integerValue];
-//            model.receiverProvince = [user valueForKey:@"receiverProvince"];
-//            model.receiverAddress = [user valueForKey:@"receiverAddress"];
-//
-//
-//            if (model.receiverPhone) {
-//                [self.headView configMyShippingAddressWithMyAddressModel:model];
-//            }
-            
             cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
-        }
-        
-        
-        if (indexPath.section == 1) {
+        }else if (indexPath.section == 1) {
+
+          cell1.textLabel.text = [NSString stringWithFormat:@"切片服务:%@" ,self.serviceName];
+                cell1.textLabel.textColor = RGB(51, 51, 51, 1);
+            cell1.backgroundColor = [UIColor whiteColor];
+            cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+        }else if (indexPath.section == 2) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             if ([[user valueForKey:@"conmmentString"] length] != 0 ) {
                 self.conmmentStr = [user valueForKey:@"conmmentString"];
-                cell1.textLabel.text =[ NSString stringWithFormat:@"订单备注:%@" ,self.conmmentStr] ;
+                cell1.textLabel.text = [ NSString stringWithFormat:@"订单备注:%@" ,self.conmmentStr] ;
 
             }else{
                 cell1.textLabel.text = @"订单备注:";
@@ -320,12 +314,12 @@
             
             cell1.backgroundColor = [UIColor whiteColor];
             cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }else if (indexPath.section == 2){
+            
+        }else if (indexPath.section == 3){
             cell1.textLabel.text = @"商品清单";
             cell1.textLabel.textColor = RGB(51, 51, 51, 1);
 
             cell1.backgroundColor = [UIColor whiteColor];
-            //        cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
         }
         cell1.textLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
@@ -374,7 +368,34 @@
         [self.navigationController pushViewController:VC animated:NO];
         
         NSLog(@"选择地址");
-    }else if (indexPath.section == 1){
+    } else if (indexPath.section == 1){
+        SliceService_ViewController *VC = [SliceService_ViewController new];
+        __weak __typeof(self) weakSelf = self;
+
+        VC.returnSelectSliceBlock = ^(NSString *SliceStr, NSString *serviceType, NSString *slicePices, NSString *totalPrice) {
+            
+        
+            
+            
+            DLog(@"所选服务---------== %@" ,totalPrice);
+            
+            ShoppingCartModel *model = [self.orderListMarray firstObject];
+            
+            model.needTotalPrices = [NSString stringWithFormat:@"%.2f" ,(CGFloat) [totalPrice integerValue]/100] ;
+//            [self.orderListMarray removeAllObjects];
+//            [self.orderListMarray addObject:model];
+//
+            weakSelf.serviceName = SliceStr;
+            weakSelf.serviceType = serviceType;
+            weakSelf.slicePrices = slicePices;
+            [weakSelf.tableView reloadData];
+        };
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+    
+    
+    
+    else if (indexPath.section == 2){
         ConfirmOrderCommentViewController *VC = [ConfirmOrderCommentViewController new];
         VC.conmmentStringBlcok = ^(NSString *conmmentStr) {
             DLog(@"订单备注---------== %@" ,conmmentStr);

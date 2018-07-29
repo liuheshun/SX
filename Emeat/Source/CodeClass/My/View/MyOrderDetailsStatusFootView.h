@@ -19,9 +19,11 @@ typedef void(^ReturnDeleteClickBlcok)(NSInteger clickIndex);
 @property (nonatomic,strong) UILabel *orderAllPricesLab;
 @property (nonatomic,strong) UILabel *orderAllPricesCount;
 //配送费
-
 @property (nonatomic,strong) UILabel *sendPricesLab;
 @property (nonatomic,strong) UILabel *sendPricesCount;
+//加工耗材费
+@property (nonatomic,strong) UILabel *selicePricesLab;
+@property (nonatomic,strong) UILabel *selicePricesCount;
 
 
 @property (nonatomic,strong) UILabel *orderPayStatus;
@@ -52,6 +54,9 @@ typedef void(^ReturnDeleteClickBlcok)(NSInteger clickIndex);
 
 ////重量返款差额
 @property (nonatomic,strong) UILabel *weightRebatesPrices;
+///加工耗材费返款差额
+@property (nonatomic,strong) UILabel *servicePrices;
+
 ///活动返款额
 @property (nonatomic,strong) UILabel *activityRebatesPrices;
 ///净总价

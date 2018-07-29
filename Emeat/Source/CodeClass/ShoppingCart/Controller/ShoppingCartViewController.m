@@ -249,6 +249,7 @@
             
             ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
             model.productTotalPrice = productTotalPrice;
+            model.needTotalPrices = productTotalPrice;
             [orderListMarray addObject:model];
         }
         
