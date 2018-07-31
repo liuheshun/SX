@@ -60,6 +60,12 @@
 {
     dispatch_source_t _timer;
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navItem.title = @"订单详情";
@@ -67,6 +73,13 @@
    
     [self requsetOrderDetailsData];
 
+    if ([self.fromPayVC isEqualToString:@"1"]){
+        ///禁止右滑返回
+        id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+        UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+        [self.view addGestureRecognizer:pan];
+    
+    }
 }
 -(void)leftItemAction{
     if ([self.fromPayVC isEqualToString:@"1"])

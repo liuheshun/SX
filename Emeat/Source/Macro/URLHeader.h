@@ -15,7 +15,7 @@
 #define mTypeIOS @"IOS"
 
 ////URL:
-#define baseUrl @"http://admin.cyberfresh.cn"
+#define baseUrl @"http://beta.cyberfresh.cn"
 
 
 ///wangxiaoyang

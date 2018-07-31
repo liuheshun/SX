@@ -17,6 +17,7 @@ PODS:
   - AMapFoundation-NO-IDFA (1.4.3)
   - AMapSearch-NO-IDFA (5.7.0):
     - AMapFoundation-NO-IDFA (~> 1.4)
+  - FDFullscreenPopGesture (1.1)
   - GTExtensionSDK (2.1.0)
   - GTSDK (2.2.0.0-noidfa)
   - IQKeyboardManager (5.0.8)
@@ -43,6 +44,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - AMapSearch-NO-IDFA
+  - FDFullscreenPopGesture (= 1.1)
   - GTExtensionSDK
   - GTSDK (= 2.2.0.0-noidfa)
   - IQKeyboardManager (~> 5.0.4)
@@ -62,6 +64,7 @@ SPEC REPOS:
     - AFNetworking
     - AMapFoundation-NO-IDFA
     - AMapSearch-NO-IDFA
+    - FDFullscreenPopGesture
     - GTExtensionSDK
     - GTSDK
     - IQKeyboardManager
@@ -81,6 +84,7 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AMapFoundation-NO-IDFA: b6cbefab250ae8ab2e31aa9bb3dbbb98137cd76f
   AMapSearch-NO-IDFA: 612a92f75ff20544f42d376dfcf3c034da4ad0b6
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   GTExtensionSDK: e15415fa5a41c96c3545e78e7084267b01580940
   GTSDK: 2cb8f5df1fbb250f596698443edd0191f77024f1
   IQKeyboardManager: 266cb7b1d11f94a3e71229d77f960f9a1b538e5b
@@ -96,6 +100,6 @@ SPEC CHECKSUMS:
   TZImagePickerController: 34ecb53af8c349964394407e42b6e54e22589ebe
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 1608c5f42520d4a30614e56edea24931fe516d9f
+PODFILE CHECKSUM: 0e3ebe8930033da7adc928a35b9e4e9a94aac8e6
 
 COCOAPODS: 1.5.3

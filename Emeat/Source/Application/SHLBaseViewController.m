@@ -18,8 +18,10 @@
 @end
 
 @implementation SHLBaseViewController
--(void)viewWillDisappear:(BOOL)animated{
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
+    
 }
 
 - (void)viewDidLoad {
@@ -30,9 +32,11 @@
     [self addNotification];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:)name:kRealReachabilityChangedNotification object:nil];
-    
-    
+    self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+
+   
 }
+
 
 
 

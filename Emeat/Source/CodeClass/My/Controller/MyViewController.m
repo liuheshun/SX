@@ -37,7 +37,8 @@
 
 @implementation MyViewController
 -(void)viewWillAppear:(BOOL)animated{
-    
+    self.navigationController.navigationBarHidden = YES;
+
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([user valueForKey:@"isLoginState"])
     {
@@ -74,8 +75,11 @@
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-
     [self netWorkIsOnLine];
+    ///禁止右滑返回
+    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+    [self.view addGestureRecognizer:pan];
 }
 
 

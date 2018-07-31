@@ -30,6 +30,9 @@ target 'Emeat' do
 
    pod 'GTSDK', '2.2.0.0-noidfa'
 
+   pod 'FDFullscreenPopGesture', '1.1'
+
+
 
 end
 

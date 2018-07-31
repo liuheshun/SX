@@ -81,10 +81,7 @@
     self.navItem.title = @"商品详情";
     [self showNavBarItemRight];
     isClickGoods = YES;
-//    self.bannerDataArray = [NSMutableArray array];
-//    self.detailsDataArray = [NSMutableArray array];
-//    self.headDataArray = [NSMutableArray array];
-//    self.specsListMarray = [NSMutableArray array];
+
     [self requsetDetailsData];
     [self showNavBarLeftItem ];
   

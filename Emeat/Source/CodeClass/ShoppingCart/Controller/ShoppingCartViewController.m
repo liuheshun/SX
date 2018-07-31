@@ -94,7 +94,10 @@
     self.ShoppingListDataMarray = [NSMutableArray array];
     self.navItem.title = @"购物车";
     [self netWorkIsOnLine];
-  
+    ///禁止右滑返回
+    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+    [self.view addGestureRecognizer:pan];
 }
 
 

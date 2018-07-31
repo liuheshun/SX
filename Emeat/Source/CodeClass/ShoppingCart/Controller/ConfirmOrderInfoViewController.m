@@ -47,6 +47,10 @@
 
 @implementation ConfirmOrderInfoViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
+
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
@@ -153,12 +157,15 @@
 #pragma mark ====确认订单
 
 -(void)rightBottomBtnAction{
-   
-        [self makeOrderData];
+    self.bottomView.rightBottomBtn.enabled = NO;
+    [self performSelector:@selector(changeButtonStatus) withObject:nil afterDelay:1.5f];//防止用户重复点击
+    [self makeOrderData];
         NSLog(@"确认订单");
     
 }
-
+-(void)changeButtonStatus{
+    self.bottomView.rightBottomBtn.enabled = YES;
+}
 #pragma mark = 底部视图
 
 -(ConfirmOrderInfoBottomView*)bottomView{

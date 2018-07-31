@@ -1026,7 +1026,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
     HomePageViewController *homePageVC = [[HomePageViewController alloc] init];
     UINavigationController *navHomePageVC = [[UINavigationController alloc] initWithRootViewController:homePageVC];
-    homePageVC.tabBarItem.title = @"首页";
+    homePageVC.tabBarItem.title = @"商户专区";
     homePageVC.tabBarItem.image = [[UIImage imageNamed:@"首页_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] ;
     homePageVC.tabBarItem.selectedImage = [[UIImage imageNamed:@"首页_sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 

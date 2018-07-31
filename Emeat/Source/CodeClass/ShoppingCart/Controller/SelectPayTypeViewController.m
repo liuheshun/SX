@@ -44,21 +44,18 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.bottomPayBtn];
     [self setBottomViewFrame];
-//    if (self.periodic == 0) {
-//        ///非周期性用户
-//        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝",@"微信" , nil];
-//      //  self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian", nil];
-//        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin", nil];
-//
-//    }else if (self.periodic == 1){
-         ///周期性用户
-         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" ,@"线下打款", nil];
-       // self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao" ,@"weixin" ,@"yinlian",@"qitazhifu", nil];
-        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin" ,@"qitazhifu", nil];
 
-   // }
     
-    
+    self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" ,@"线下打款", nil];
+    self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin" ,@"qitazhifu", nil];
+    [self setPopView];
+    ///禁止右滑返回
+    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+    [self.view addGestureRecognizer:pan];
+}
+
+-(void)setPopView{
     [MMPopupWindow sharedWindow].touchWildToHide = YES;
     self.alertConfig = [MMAlertViewConfig1 globalConfig1];
     self.alertConfig.defaultTextOK = @"确定";
@@ -68,10 +65,11 @@
     self.alertConfig.buttonFontSize = 15*kScale;
     self.alertConfig.buttonHeight = 40*kScale;
     self.alertConfig.width = 315*kScale;
-//    alertConfig.buttonBackgroundColor = [UIColor redColor];
+    //alertConfig.buttonBackgroundColor = [UIColor redColor];
     self.alertConfig.detailColor = RGB(136, 136, 136, 1);
     self.alertConfig.itemNormalColor = [UIColor whiteColor];
     self.alertConfig.splitColor = [UIColor whiteColor];
+    
     
 }
 

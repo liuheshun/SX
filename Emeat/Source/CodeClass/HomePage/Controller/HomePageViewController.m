@@ -73,9 +73,10 @@
 }
 
 
-
 -(void)viewWillAppear:(BOOL)animated{
     
+    
+
     ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
     if (status == RealStatusNotReachable)
     {
@@ -101,7 +102,7 @@
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    
+
     self.sortListMarray = [NSMutableArray array];
     self.dataArray = [NSMutableArray array];
     self.bannerMarray = [NSMutableArray array];
@@ -110,7 +111,10 @@
     [self netWorkIsOnLine];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
-
+    ///禁止右滑返回
+    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+    [self.view addGestureRecognizer:pan];
    
 }
 
