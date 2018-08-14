@@ -169,10 +169,10 @@
 #pragma mark - public helper
 
 /** 给外界可以设置ContentOffSet的方法 */
-- (void)setContentOffSet:(CGPoint)offset animated:(BOOL)animated {
+- (void)setContentOffSet:(CGPoint)offsets animated:(BOOL)animated {
     self.forbidTouchToAdjustPosition = YES;
     
-    NSInteger currentIndex = offset.x/self.collectionView.bounds.size.width;
+    NSInteger currentIndex = offsets.x/self.collectionView.bounds.size.width;
     _oldIndex = _currentIndex;
     self.currentIndex = currentIndex;
     _scrollOverOnePage = NO;
@@ -182,7 +182,7 @@
         _scrollOverOnePage = YES;
     }
 
-    [self.collectionView setContentOffset:offset animated:animated];
+    [self.collectionView setContentOffset:offsets animated:animated];
     
 }
 

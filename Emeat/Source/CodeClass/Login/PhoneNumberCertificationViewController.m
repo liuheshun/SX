@@ -44,7 +44,9 @@
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/getticket.html" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -82,7 +84,8 @@
     NSString * phoneNum = [user valueForKey:@"phoneNum"];
     [dic setObject:phoneNum forKey:@"phone"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取验证码== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/sendSmsByPhone" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -117,7 +120,8 @@
     [dic setValue:self.nickname forKey:@"nickname"];
     [dic setValue:self.headPic forKey:@"headPic"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取登陆tttt== === %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/doLogin" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

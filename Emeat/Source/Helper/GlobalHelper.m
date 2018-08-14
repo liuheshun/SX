@@ -24,11 +24,10 @@
 }
 
 #pragma mark = 空状态
--(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView{
+-(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView isShowBottomBtn:(BOOL)isShowBottomBtn bottomBtnTitle:(NSString*)bottomBtnTitle{
 
-    DLog(@"tale================================= = = = = %@" ,tableView);
     if (tableView) {
-        UIImageView *emptyImv = [[UIImageView alloc] initWithFrame:CGRectMake((kWidth - width)/2, 200*kScale, width, height)];
+        UIImageView *emptyImv = [[UIImageView alloc] initWithFrame:CGRectMake((kWidth - width)/2, 150*kScale, width, height)];
         [tableView addSubview : emptyImv];
 //        [emptyImv mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.centerX.equalTo([[UIApplication  sharedApplication ]keyWindow]);
@@ -45,14 +44,26 @@
         emptyLable.text = noticeText;
         emptyLable.textAlignment = NSTextAlignmentCenter;
         [tableView addSubview:emptyLable];
-//        [emptyLable mas_makeConstraints:^(MASConstraintMaker *make) {
+//        [empttyLable mas_makeConstraints:^(MASConstraintMaker *make) {
 //
 //            make.left.right.equalTo([[UIApplication  sharedApplication ]keyWindow]);
 //            make.top.equalTo(emptyImv.mas_bottom).with.offset(25);
 //            make.height.equalTo(@20);
 //
 //        }];
-        
+        if (isShowBottomBtn == YES) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake((kWidth-110*kScale)/2, MaxY(emptyLable)+30*kScale, 110*kScale, 35*kScale);
+            btn.layer.cornerRadius = 5*kScale;
+            btn.layer.masksToBounds = YES;
+            [btn setTitle:bottomBtnTitle forState:0];
+            btn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
+            btn.backgroundColor = RGB(231, 35, 36, 1);
+            //[btn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
+            [tableView addSubview:btn];
+            self.bottomBtn = btn;
+        }
+       
         self.emptyLable = emptyLable;
         self.emptyImv = emptyImv;
     }
@@ -60,9 +71,12 @@
 }
 
 -(void)removeEmptyView{
+    
     [self.emptyLable removeFromSuperview];
     [self.emptyImv removeFromSuperview];
+    [self.bottomBtn removeFromSuperview];
     
+   
     
 }
 

@@ -110,7 +110,9 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:@"50" forKey:@"status"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"待发货(待确认) ============ %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 
@@ -152,7 +154,7 @@
 
             }
             if (self.orderImvArray.count == 0) {
-                [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView];
+                [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
             }else{
                 [[GlobalHelper shareInstance] removeEmptyView];
             }
@@ -161,7 +163,7 @@
             [self.orderListMarray removeAllObjects];
             [self.orderImvArray removeAllObjects];
 
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
         }
         [self.tableView reloadData];
 

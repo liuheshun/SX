@@ -143,7 +143,9 @@
         [dic setValue:ticket forKey:@"ticket"];
         [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
         [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
         DLog(@"2我的接口=== %@" ,dic);
         [MHAsiNetworkHandler startMonitoring];
         
@@ -265,7 +267,9 @@
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     //使用日期生成图片名称
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyyMMddHHmmss";
@@ -363,7 +367,9 @@
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:userNameString forKey:@"nickname"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"修改用户昵称dic==== %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 

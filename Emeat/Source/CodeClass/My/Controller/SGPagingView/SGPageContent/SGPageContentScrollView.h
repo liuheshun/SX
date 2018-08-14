@@ -26,15 +26,35 @@
  */
 - (void)pageContentScrollView:(SGPageContentScrollView *)pageContentScrollView progress:(CGFloat)progress originalIndex:(NSInteger)originalIndex targetIndex:(NSInteger)targetIndex;
 /**
- *  给 SGPageContentScrollView 所在控制器提供的方法（根据偏移量来处理返回手势的问题）
+ *  获取 SGPageContentScrollView 当前子控制器的下标值
  *
  *  @param pageContentScrollView     SGPageContentScrollView
- *  @param offsetX                   SGPageContentScrollView 内部视图的偏移量
+ *  @param index                     SGPageContentScrollView 当前子控制器的下标值
  */
-- (void)pageContentScrollView:(SGPageContentScrollView *)pageContentScrollView offsetX:(CGFloat)offsetX;
+- (void)pageContentScrollView:(SGPageContentScrollView *)pageContentScrollView index:(NSInteger)index;
+/** SGPageContentScrollView 内容开始拖拽方法 */
+- (void)pageContentScrollViewWillBeginDragging;
+/** SGPageContentScrollView 内容结束拖拽方法 */
+- (void)pageContentScrollViewDidEndDecelerating;
 @end
 
 @interface SGPageContentScrollView : UIView
+
+
+// 外界父控制器
+@property (nonatomic, weak) UIViewController *parentViewController;
+/// 存储子控制器
+@property (nonatomic, strong) NSArray *childViewControllers;
+/// scrollView
+@property (nonatomic, strong) UIScrollView *scrollView;
+/// 记录刚开始时的偏移量
+@property (nonatomic, assign) NSInteger startOffsetX;
+/// 记录加载的上个子控制器
+@property (nonatomic, weak) UIViewController *previousCVC;
+/// 记录加载的上个子控制器的下标
+@property (nonatomic, assign) NSInteger previousCVCIndex;
+/// 标记内容滚动
+@property (nonatomic, assign) BOOL isScrll;
 /**
  *  对象方法创建 SGPageContentScrollView
  *
@@ -56,9 +76,10 @@
 @property (nonatomic, weak) id<SGPageContentScrollViewDelegate> delegatePageContentScrollView;
 /** 是否需要滚动 SGPageContentScrollView 默认为 YES；设为 NO 时，不必设置 SGPageContentScrollView 的代理及代理方法 */
 @property (nonatomic, assign) BOOL isScrollEnabled;
+/** 点击标题触发动画切换滚动内容，默认为 NO */
+@property (nonatomic, assign) BOOL isAnimated;
 
-/** 给外界提供的方法，获取 SGPageTitleView 选中按钮的下标 */
+/** 给外界提供的方法，根据 SGPageTitleView 标题选中时的下标并显示相应的子控制器 */
 - (void)setPageContentScrollViewCurrentIndex:(NSInteger)currentIndex;
 
 @end
-

@@ -26,10 +26,12 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 @property (nonatomic,strong) NSString *homePageDetailsId;
 
 ///空状态view
--(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView;
+-(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView isShowBottomBtn:(BOOL)isShowBottomBtn bottomBtnTitle:(NSString*)bottomBtnTitle;
 -(void)removeEmptyView;
 @property (nonatomic,strong) UIImageView *emptyImv;
 @property (nonatomic,strong) UILabel *emptyLable;
+@property (nonatomic,strong) UIButton *bottomBtn;
+
 
 ///无网络,请求错误view
 -(void)showErrorIView:(UIView*)superMainView errorImageString:(NSString*)errorImageString errorBtnString:(NSString*)errorBtnString errorCGRect:(CGRect)errorRect;
@@ -44,5 +46,20 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 @property (nonatomic,strong) NSString *isSelectFirstAllOrder;
 
 -(void)openLocationServiceWithBlock:(ReturnBlock)returnBlock;
+
+
+///商户专区经常买 是否登录
+@property (nonatomic,strong) NSString *merchantsIsLoginStated;
+@property (nonatomic,strong) NSString *isMerchantsIsLoginEnter;
+
+
+///
+@property (nonatomic,strong) NSMutableArray *segmentTitleMarray;
+
+
+@property (nonatomic,strong) NSString *isEnterDetails;
+
+
+
 
 @end

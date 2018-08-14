@@ -30,7 +30,10 @@
 -(void)requestServeData{
     NSDictionary *dic = [NSDictionary dictionary];
     dic = [self checkoutData];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_service_types" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"服务数据====%@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
@@ -148,7 +151,10 @@
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     dic = [self checkoutData];
     [dic setValue:serviceType forKey:@"serviceType"];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"requestSliceServeMoneyDatadic == %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_service_price" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

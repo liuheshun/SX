@@ -51,7 +51,9 @@
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/getticket.html" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -90,6 +92,8 @@
     [dic setObject:phoneNum forKey:@"phone"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
 
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取验证码== %@" ,dic);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/sendSmsByPhone" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -120,6 +124,8 @@
     [dic setValue:[user valueForKey:@"code"] forKey:@"code"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
 
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取登陆tttt== === %@" ,dic);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/doLogin" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -128,11 +134,12 @@
    
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:returnData[@"data"][@"id"]  forKey:@"userId"];
-            
+            [user setValue:returnData[@"data"][@"customerAccount"] forKey:@"user"];
             [user setValue:@"1" forKey:@"isLoginState"];
             NSDictionary *data = returnData[@"data"];
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
                 //
+                [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
                 [self.navigationController popViewControllerAnimated:YES];
 
             }else{//未认证

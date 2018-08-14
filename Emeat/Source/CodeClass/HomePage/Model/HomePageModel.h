@@ -82,6 +82,32 @@
 @property (nonatomic,assign) CGFloat headViewHeight;
 
 
+///分类名字
+@property (nonatomic,strong) NSString *classifyName;
+///分类id
+@property (nonatomic,assign) NSInteger bigClassifyId;
+///分类图片
+@property (nonatomic,strong) NSString *imageUrl;
+///STAIR(0,"一级",""),VFP(1,"二级","");
+@property (nonatomic,strong) NSString *type;
+
+
+///二级分类名字
+@property (nonatomic,strong) NSString *dataName;
+
+
+////播报信息
+///用户
+@property (nonatomic,strong) NSString *customerAccount;
+///部位上面已有
+
+///购买重量(g)
+@property (nonatomic,assign) NSInteger weight;
+///购买总价格(分)
+@property (nonatomic,assign) NSInteger price;
+
+
+
 
 
 @end

@@ -83,7 +83,10 @@
     NSDictionary *dic = [self checkoutData];
     [dic setValue:[NSString stringWithFormat:@"%ld" , currentPage] forKey:@"currentPage"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"开票历史数据== %@" ,dic );
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryInvoices" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -116,7 +119,7 @@
                      [[GlobalHelper shareInstance] removeEmptyView];
                 }else{//空状态
                     
-                     [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无开票订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView];
+                     [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无开票订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
                 }
     
                 

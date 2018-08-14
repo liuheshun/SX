@@ -100,6 +100,10 @@
         [dic setValue:self.conmmentStr forKey:@"comment"];
         [dic setValue:mTypeIOS forKey:@"mtype"];
         [dic setValue:self.serviceType forKey:@"serviceType"];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        
+        [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+        [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
         DLog(@"q确认订单信息 dic == %@" ,dic);
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

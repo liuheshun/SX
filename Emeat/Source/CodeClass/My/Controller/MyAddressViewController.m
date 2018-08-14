@@ -51,7 +51,10 @@
     
     NSMutableDictionary *dic = [self checkoutData];    
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.addressDataMarray removeAllObjects];
@@ -65,7 +68,7 @@
             
         }
         if (self.addressDataMarray.count == 0) {
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"还没有收货地址,新建一个吧" NoticeImageString:@"wudizhi" viewWidth:50 viewHeight:68 UITableView:self.tableView];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"还没有收货地址,新建一个吧" NoticeImageString:@"wudizhi" viewWidth:50 viewHeight:68 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
             
         }
         else

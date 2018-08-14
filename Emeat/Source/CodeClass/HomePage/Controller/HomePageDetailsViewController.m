@@ -113,13 +113,16 @@
     self.detailsDataArray = [NSMutableArray array];
     self.headDataArray = [NSMutableArray array];
     self.specsListMarray = [NSMutableArray array];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+  
     NSString *str;
     if ([self.fromBaner isEqualToString:@"1"]) {////来自banner
-        str = [NSString stringWithFormat:@"%@/m/mobile/commodity/commodityDeatilByCode?commodityCode=%@&mtype=%@" ,baseUrl ,self.detailsId,mTypeIOS];
+        str = [NSString stringWithFormat:@"%@/m/mobile/commodity/commodityDeatilByCode?commodityCode=%@&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl ,self.detailsId,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
     }
     else ///来自商品列表
     {
-        str = [NSString stringWithFormat:@"%@/m/mobile/commodity/commodityDeatil?id=%@&mtype=%@" , baseUrl ,self.detailsId,mTypeIOS];
+        str = [NSString stringWithFormat:@"%@/m/mobile/commodity/commodityDeatil?id=%@&mtype=%@&appVersionNumber=%@&user=%@" , baseUrl ,self.detailsId,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
     }
     
     DLog(@"详情接口==== %@" ,str);
@@ -625,7 +628,9 @@
     
     [dic setObject:@"1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {

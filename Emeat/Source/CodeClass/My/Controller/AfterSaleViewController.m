@@ -41,7 +41,7 @@
 //
 //    [self requestDataWithTotalPage:1];
     
-     [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView ] ;
+     [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""] ;
     [self.tableView reloadData];
 }
 
@@ -63,7 +63,9 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setObject:@"80" forKey:@"status"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"售后============ %@" ,dic);
     [MHAsiNetworkHandler startMonitoring];
 
@@ -96,7 +98,7 @@
 
             }
             if (self.orderImvArray.count == 0) {
-                [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wkf" viewWidth:50 viewHeight:54 UITableView:self.tableView ] ;
+                [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wkf" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""] ;
             }else{
                 [[GlobalHelper shareInstance] removeEmptyView];
             }
@@ -105,7 +107,7 @@
             [self.orderListMarray removeAllObjects];
             [self.orderImvArray removeAllObjects];
 
-           [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wkf" viewWidth:50 viewHeight:54 UITableView:self.tableView ] ;
+           [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂未开放" NoticeImageString:@"wkf" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""] ;
         }
         [self.tableView reloadData];
         

@@ -15,10 +15,24 @@
 
 @implementation SGPageTitleViewConfigure
 
+- (instancetype)init {
+    if (self = [super init]) {
+        [self initialization];
+    }
+    return self;
+}
+
+- (void)initialization {
+    _needBounces = YES;
+    _showBottomSeparator = YES;
+    _showIndicator = YES;
+}
+
 + (instancetype)pageTitleViewConfigure {
     return [[self alloc] init];
 }
 
+#pragma mark - - SGPageTitleView 属性
 - (UIColor *)bottomSeparatorColor {
     if (!_bottomSeparatorColor) {
         _bottomSeparatorColor = [UIColor lightGrayColor];
@@ -26,18 +40,19 @@
     return _bottomSeparatorColor;
 }
 
-- (CGFloat)spacingBetweenButtons {
-    if (_spacingBetweenButtons <= 0) {
-        _spacingBetweenButtons = 20;
-    }
-    return _spacingBetweenButtons;
-}
-
+#pragma mark - - 标题属性
 - (UIFont *)titleFont {
     if (!_titleFont) {
         _titleFont = [UIFont systemFontOfSize:15];
     }
     return _titleFont;
+}
+
+- (UIFont *)titleSelectedFont {
+    if (!_titleSelectedFont) {
+        _titleSelectedFont = [UIFont systemFontOfSize:15];
+    }
+    return _titleSelectedFont;
 }
 
 - (UIColor *)titleColor {
@@ -54,13 +69,23 @@
     return _titleSelectedColor;
 }
 
-- (CGFloat)indicatorHeight {
-    if (_indicatorHeight <= 0) {
-        _indicatorHeight = 2.0f;
+- (CGFloat)titleTextZoomAdditionalPointSize {
+    if (_titleTextZoomAdditionalPointSize <= 3) {
+        _titleTextZoomAdditionalPointSize = 3;
+    } else if (_titleTextZoomAdditionalPointSize >= 10) {
+        _titleTextZoomAdditionalPointSize = 10;
     }
-    return _indicatorHeight;
+    return _titleTextZoomAdditionalPointSize;
 }
 
+- (CGFloat)titleAdditionalWidth {
+    if (_titleAdditionalWidth <= 0) {
+        _titleAdditionalWidth = 20;
+    }
+    return _titleAdditionalWidth;
+}
+
+#pragma mark - - 指示器属性
 - (UIColor *)indicatorColor {
     if (!_indicatorColor) {
         _indicatorColor = [UIColor redColor];
@@ -68,11 +93,11 @@
     return _indicatorColor;
 }
 
-- (CGFloat)indicatorAdditionalWidth {
-    if (_indicatorAdditionalWidth <= 0) {
-        _indicatorAdditionalWidth = 0;
+- (CGFloat)indicatorHeight {
+    if (_indicatorHeight <= 0) {
+        _indicatorHeight = 2.0f;
     }
-    return _indicatorAdditionalWidth;
+    return _indicatorHeight;
 }
 
 - (CGFloat)indicatorAnimationTime {
@@ -91,6 +116,13 @@
     return _indicatorCornerRadius;
 }
 
+- (CGFloat)indicatorToBottomDistance {
+    if (_indicatorToBottomDistance <= 0) {
+        _indicatorToBottomDistance = 0;
+    }
+    return _indicatorToBottomDistance;
+}
+
 - (CGFloat)indicatorBorderWidth {
     if (_indicatorBorderWidth <= 0) {
         _indicatorBorderWidth = 0;
@@ -103,6 +135,13 @@
         _indicatorBorderColor = [UIColor clearColor];
     }
     return _indicatorBorderColor;
+}
+
+- (CGFloat)indicatorAdditionalWidth {
+    if (_indicatorAdditionalWidth <= 0) {
+        _indicatorAdditionalWidth = 0;
+    }
+    return _indicatorAdditionalWidth;
 }
 
 - (CGFloat)indicatorFixedWidth {
@@ -119,5 +158,41 @@
     return _indicatorDynamicWidth;
 }
 
+#pragma mark - - 按钮之间分割线属性
+- (UIColor *)verticalSeparatorColor {
+    if (!_verticalSeparatorColor) {
+        _verticalSeparatorColor = [UIColor redColor];
+    }
+    return _verticalSeparatorColor;
+}
+
+- (CGFloat)verticalSeparatorReduceHeight {
+    if (_verticalSeparatorReduceHeight <= 0) {
+        _verticalSeparatorReduceHeight = 0;
+    }
+    return _verticalSeparatorReduceHeight;
+}
+
+#pragma mark - - badge 相关属性
+- (UIColor *)badgeColor {
+    if (!_badgeColor) {
+        _badgeColor = [UIColor redColor];
+    }
+    return _badgeColor;
+}
+
+- (CGFloat)badgeSize {
+    if (!_badgeSize) {
+        _badgeSize = 7.0f;
+    }
+    return _badgeSize;
+}
+
+- (CGPoint)badgeOff {
+    if (!_badgeOff.x && !_badgeOff.y) {
+        _badgeOff = CGPointMake(0, 0);
+    }
+    return _badgeOff;
+}
 
 @end

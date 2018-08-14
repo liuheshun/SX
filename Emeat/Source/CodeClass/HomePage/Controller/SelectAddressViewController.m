@@ -124,7 +124,10 @@
     self.myAddressArray = [NSMutableArray array];
     [self.myAddressArray removeAllObjects];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             for (NSDictionary *dic in returnData[@"data"]) {

@@ -32,7 +32,7 @@
     [self addNotification];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:)name:kRealReachabilityChangedNotification object:nil];
-    self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+   // self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
 
    
 }
@@ -541,33 +541,21 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 -(void)addCartPostDataWithProductId:(NSInteger)productId homePageModel:(HomePageModel*)model NSIndexPath:(NSIndexPath*)indexPath cell:(HomePageTableViewCell*)weakCell isFirstClick:(BOOL)isFirst tableView:(UITableView*)tableView{
     //[SVProgressHUD show];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setValue:secret forKey:@"secret"];
-    [dic setValue:nonce forKey:@"nonce"];
-    [dic setValue:curTime forKey:@"curTime"];
-    [dic setValue:checkSum forKey:@"checkSum"];
-    [dic setValue:ticket forKey:@"ticket"];
+    dic = [self checkoutData];
     [dic setValue:mTypeIOS forKey:@"mtype"];
 #pragma mark---------------------------------需要更改productID--------------------------------
     
     //[dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"productId"];
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
-    
     [dic setObject:@"1" forKey:@"quatity"];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-//
-//        HomePageModel *modelq = [HomePageModel yy_modelWithJSON:returnData];
-//
-//        if ([modelq isEqual:@"(null)"]) {
-//            DLog(@"sss");
-//        }
+
         if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
@@ -578,8 +566,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
         
         
         
-        if ([returnData[@"status"] integerValue] == 200)
-        {
+        if ([returnData[@"status"] integerValue] == 200){
             //            SVProgressHUD.minimumDismissTimeInterval = 0.5;
             //            SVProgressHUD.maximumDismissTimeInterval = 1;
             //            [SVProgressHUD showSuccessWithStatus:returnData[@"msg"]];
@@ -602,7 +589,6 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             }else{
             imageViewRect.origin.y = rect.origin.y+imageViewRect.origin.y;
             }
-            DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
             
             [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/4*2, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
@@ -646,23 +632,14 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 -(void)cutCartPostDataWithProductId:(NSInteger)productId  homePageModel:(HomePageModel*)model NSIndexPath:(NSIndexPath*)indexPath cell:(HomePageTableViewCell*)weakCell{
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setObject:secret forKey:@"secret"];
-    [dic setObject:nonce forKey:@"nonce"];
-    [dic setObject:curTime forKey:@"curTime"];
-    [dic setObject:checkSum forKey:@"checkSum"];
-    [dic setObject:ticket forKey:@"ticket"];
-    
+    dic = [self checkoutData];
     [dic setObject:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setObject:@"-1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/update" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -695,32 +672,18 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 
 
 
-///auth/order/get_order_cart_product
-#pragma mark =====购物车数量
+#pragma mark =========================购物车数量
 -(void)requestBadNumValue{
-    
-    
-    //http://localhost:8085/cart/update?userId=7&productId=111&quatity=10
-    //   http://localhost:8085/cart/delete_product?userId=7&productIds=111
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setValue:secret forKey:@"secret"];
-    [dic setValue:nonce forKey:@"nonce"];
-    [dic setValue:curTime forKey:@"curTime"];
-    [dic setValue:checkSum forKey:@"checkSum"];
-    [dic setValue:ticket forKey:@"ticket"];
+    dic = [self checkoutData];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/get_cart_product_count" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
+           
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
             [GlobalHelper shareInstance].shoppingCartBadgeValue = 0;
@@ -741,12 +704,6 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
         DLog(@"购物车数量error==  %@" ,error);
         
     } showHUD:NO];
-    
-    
-    
-    
-    
-    
 }
 
 
@@ -755,26 +712,12 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 -(void)deleteProductPostDataWithProductId:(NSInteger)productId homePageModel:(HomePageModel*)model tableView:(UITableView*)tableView{
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setValue:secret forKey:@"secret"];
-    [dic setValue:nonce forKey:@"nonce"];
-    [dic setValue:curTime forKey:@"curTime"];
-    [dic setValue:checkSum forKey:@"checkSum"];
-    [dic setValue:ticket forKey:@"ticket"];
-    
-    //    [dic setObject:@"7" forKey:@"userId"];
+    dic = [self checkoutData];
     [dic setObject:[NSString stringWithFormat:@"%ld",productId] forKey:@"commodityIds"];
-    //http://192.168.0.124:8080/cart/delete_product?userId=7&productIds=111
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/delete_product", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"status"]integerValue] == 200) {
@@ -783,9 +726,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             [self requestBadNumValue];
             [tableView reloadData];
             
-        }
-        else
-        {
+        }else{
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
         DLog(@"删除 == %@" , returnData);

@@ -86,6 +86,7 @@
         }];
         [self addSubview:segment];
         _segmentView = segment;
+        segment.backgroundColor= [UIColor yellowColor];
     }
     return _segmentView;
 }

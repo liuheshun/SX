@@ -20,25 +20,31 @@
 		160F29D220090D7C00F3295B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D120090D7C00F3295B /* SystemConfiguration.framework */; };
 		160F29D420090D8A00F3295B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D320090D8A00F3295B /* libz.tbd */; };
 		160F29D620090D9500F3295B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D520090D9500F3295B /* libc++.tbd */; };
+		1610A969211196890050335B /* WMPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A95D211196890050335B /* WMPageController.m */; };
+		1610A96A211196890050335B /* WMMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A964211196890050335B /* WMMenuItem.m */; };
+		1610A96B211196890050335B /* WMScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A965211196890050335B /* WMScrollView.m */; };
+		1610A96C211196890050335B /* WMMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A966211196890050335B /* WMMenuView.m */; };
+		1610A96D211196890050335B /* WMProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A967211196890050335B /* WMProgressView.m */; };
+		1610A973211196DE0050335B /* MainTouchTableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A971211196DE0050335B /* MainTouchTableTableView.m */; };
+		1610A974211196DE0050335B /* ParentClassScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A972211196DE0050335B /* ParentClassScrollViewController.m */; };
+		1610A97C211196F60050335B /* OneViewTableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A976211196F60050335B /* OneViewTableTableViewController.m */; };
+		1610A9812111A37F0050335B /* HomePageHeadSortView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A9802111A37F0050335B /* HomePageHeadSortView.m */; };
 		16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC520FC2B290095E261 /* ActionSheetView.m */; };
 		16285FCC20FC2B290095E261 /* VerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC620FC2B290095E261 /* VerButton.m */; };
 		16285FCD20FC2B290095E261 /* ActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FCA20FC2B290095E261 /* ActionButton.m */; };
 		16285FD020FC374F0095E261 /* ShareImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FCF20FC374F0095E261 /* ShareImageViewController.m */; };
 		16285FD320FC3E050095E261 /* ShareImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD220FC3E050095E261 /* ShareImageView.m */; };
 		16285FD620FC82ED0095E261 /* ShareImageBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD520FC82ED0095E261 /* ShareImageBottomView.m */; };
-		162F96ED205765AA004EA49F /* UIView+SGPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E1205765A9004EA49F /* UIView+SGPagingView.m */; };
-		162F96EE205765AA004EA49F /* SGPageContentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E3205765A9004EA49F /* SGPageContentScrollView.m */; };
-		162F96EF205765AA004EA49F /* SGPageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E4205765A9004EA49F /* SGPageContentView.m */; };
-		162F96F0205765AA004EA49F /* SGPageTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E8205765A9004EA49F /* SGPageTitleView.m */; };
-		162F96F1205765AA004EA49F /* SGPageTitleViewConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 162F96E9205765A9004EA49F /* SGPageTitleViewConfigure.m */; };
 		16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16311B0B20909FB1005B2277 /* JMHoledView.m */; };
 		1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA7F1FCE938900F7162C /* SortListSegmentView.m */; };
-		1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA821FCFA66200F7162C /* SortCheckView.m */; };
 		1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA851FCFE0FF00F7162C /* SeacherViewController.m */; };
 		1646C32F1FC801A6000552A1 /* HomePageNavSortTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C32E1FC801A6000552A1 /* HomePageNavSortTableViewCell.m */; };
 		1646C3321FC80E0A000552A1 /* HomePageSortListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C3311FC80E0A000552A1 /* HomePageSortListViewController.m */; };
 		1646C3351FCBC4C9000552A1 /* AddOrCutShoppingCartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C3341FCBC4C9000552A1 /* AddOrCutShoppingCartView.m */; };
 		1646C3381FCBF1BB000552A1 /* HomePageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C3371FCBF1BB000552A1 /* HomePageModel.m */; };
+		165259B5211F5EA2004DDC7D /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165259B4211F5EA2004DDC7D /* MerchantViewController.m */; };
+		165259B8211F633C004DDC7D /* MerchantOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165259B7211F633C004DDC7D /* MerchantOneViewController.m */; };
+		165259BB212182C9004DDC7D /* MessageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165259BA212182C9004DDC7D /* MessageListViewController.m */; };
 		165581112008F8D100F33D6B /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 165581062008F8D100F33D6B /* AlipaySDK.bundle */; };
 		165581122008F8D100F33D6B /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165581072008F8D100F33D6B /* AlipaySDK.framework */; };
 		165581132008F8D100F33D6B /* libPaymentControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 165581092008F8D100F33D6B /* libPaymentControl.a */; };
@@ -56,6 +62,17 @@
 		166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166DACF71FC6B9F500119444 /* HomePageNavView.m */; };
 		1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */; };
 		1679D1BE204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */; };
+		167FD8492112DE4500AF44DD /* NSString+SGPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD83B2112DE4500AF44DD /* NSString+SGPagingView.m */; };
+		167FD84A2112DE4500AF44DD /* UIButton+SGPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD83C2112DE4500AF44DD /* UIButton+SGPagingView.m */; };
+		167FD84B2112DE4500AF44DD /* UIView+SGPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD83D2112DE4500AF44DD /* UIView+SGPagingView.m */; };
+		167FD84C2112DE4500AF44DD /* SGPageContentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD83F2112DE4500AF44DD /* SGPageContentScrollView.m */; };
+		167FD84D2112DE4500AF44DD /* SGPageContentCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD8422112DE4500AF44DD /* SGPageContentCollectionView.m */; };
+		167FD84E2112DE4500AF44DD /* SGPageTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD8442112DE4500AF44DD /* SGPageTitleView.m */; };
+		167FD84F2112DE4500AF44DD /* SGPageTitleViewConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD8452112DE4500AF44DD /* SGPageTitleViewConfigure.m */; };
+		167FD852211307C200AF44DD /* HomePageSortTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD851211307C200AF44DD /* HomePageSortTableViewCell.m */; };
+		167FD8552113145E00AF44DD /* HomePageAllSortListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD8542113145E00AF44DD /* HomePageAllSortListViewController.m */; };
+		167FD85B21142EA100AF44DD /* HomePageSortListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD85A21142EA100AF44DD /* HomePageSortListTableViewCell.m */; };
+		167FD8A021159D7400AF44DD /* GYChangeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 167FD89F21159D7400AF44DD /* GYChangeTextView.m */; };
 		1681304E1FC2955F0045207E /* HomePageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1681304D1FC2955F0045207E /* HomePageTableViewCell.m */; };
 		168130511FC2A5B90045207E /* HomePageDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 168130501FC2A5B90045207E /* HomePageDetailsViewController.m */; };
 		168130541FC2B2BF0045207E /* HomePageDetailsHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 168130531FC2B2BF0045207E /* HomePageDetailsHeadView.m */; };
@@ -65,7 +82,6 @@
 		1683BD6A1FB0054E0043CA23 /* ShoppingCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD691FB0054E0043CA23 /* ShoppingCartViewController.m */; };
 		1683BD6D1FB005AC0043CA23 /* MyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD6C1FB005AC0043CA23 /* MyViewController.m */; };
 		1683BD721FB020440043CA23 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1683BD711FB020440043CA23 /* Images.xcassets */; };
-		1683BD751FB03E300043CA23 /* homePageHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD741FB03E300043CA23 /* homePageHeadView.m */; };
 		1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD771FB18A0B0043CA23 /* ShoppingCartTableViewCell.m */; };
 		1683BD7B1FB18B670043CA23 /* ShoppingCartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1683BD7A1FB18B670043CA23 /* ShoppingCartModel.m */; };
 		16885C582101C643008A6FB9 /* UIView+ZJFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 16885C482101C643008A6FB9 /* UIView+ZJFrame.m */; };
@@ -114,6 +130,13 @@
 		16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */; };
 		16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */; };
 		16C91DE320F8838E00B01F8B /* PhoneNumberCertificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */; };
+		16CD2A692118A26D00A3281A /* UIColor+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A5C2118A26D00A3281A /* UIColor+PYSearchExtension.m */; };
+		16CD2A6A2118A26D00A3281A /* PYSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A5D2118A26D00A3281A /* PYSearchViewController.m */; };
+		16CD2A6B2118A26D00A3281A /* PYSearchSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A5E2118A26D00A3281A /* PYSearchSuggestionViewController.m */; };
+		16CD2A6C2118A26D00A3281A /* PYSearchConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A602118A26D00A3281A /* PYSearchConst.m */; };
+		16CD2A6D2118A26D00A3281A /* PYSearch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16CD2A612118A26D00A3281A /* PYSearch.bundle */; };
+		16CD2A6E2118A26D00A3281A /* NSBundle+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A622118A26D00A3281A /* NSBundle+PYSearchExtension.m */; };
+		16CD2A6F2118A26D00A3281A /* UIView+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A682118A26D00A3281A /* UIView+PYSearchExtension.m */; };
 		16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1EDD2003603000E919C7 /* AF_BrandCell.h */; };
 		16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1ED82003602F00E919C7 /* AF_BrandCell.m */; };
 		16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 16CE1EDA2003603000E919C7 /* AF_MainScreeningViewController.h */; };
@@ -152,6 +175,8 @@
 		16DC91FE20130A56003C25BE /* MHUploadParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DC91FA20130A55003C25BE /* MHUploadParam.m */; };
 		16DC920420130BDE003C25BE /* MBProgressHUD+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DC920120130BDD003C25BE /* MBProgressHUD+Add.m */; };
 		16DC920520130BDE003C25BE /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DC920320130BDD003C25BE /* MBProgressHUD.m */; };
+		16DF171A2119266000367CF2 /* SearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF17192119266000367CF2 /* SearchCollectionViewCell.m */; };
+		16DF171D211AF66700367CF2 /* FeedBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF171C211AF66700367CF2 /* FeedBackView.m */; };
 		16DF76D1201AF9CF00078F10 /* MyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76D0201AF9CF00078F10 /* MyModel.m */; };
 		16DF76D4201B309100078F10 /* MyAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76D3201B309100078F10 /* MyAddressModel.m */; };
 		16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DF76D6201EDD8C00078F10 /* OrderModel.m */; };
@@ -248,6 +273,25 @@
 		160F29D120090D7C00F3295B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		160F29D320090D8A00F3295B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		160F29D520090D9500F3295B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		1610A95D211196890050335B /* WMPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPageController.m; sourceTree = "<group>"; };
+		1610A95E211196890050335B /* WMPageConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPageConst.h; sourceTree = "<group>"; };
+		1610A960211196890050335B /* WMScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollView.h; sourceTree = "<group>"; };
+		1610A961211196890050335B /* WMMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMenuItem.h; sourceTree = "<group>"; };
+		1610A962211196890050335B /* WMMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMMenuView.h; sourceTree = "<group>"; };
+		1610A963211196890050335B /* WMProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMProgressView.h; sourceTree = "<group>"; };
+		1610A964211196890050335B /* WMMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMMenuItem.m; sourceTree = "<group>"; };
+		1610A965211196890050335B /* WMScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMScrollView.m; sourceTree = "<group>"; };
+		1610A966211196890050335B /* WMMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMMenuView.m; sourceTree = "<group>"; };
+		1610A967211196890050335B /* WMProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMProgressView.m; sourceTree = "<group>"; };
+		1610A968211196890050335B /* WMPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPageController.h; sourceTree = "<group>"; };
+		1610A96F211196DE0050335B /* MainTouchTableTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTouchTableTableView.h; sourceTree = "<group>"; };
+		1610A970211196DE0050335B /* ParentClassScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentClassScrollViewController.h; sourceTree = "<group>"; };
+		1610A971211196DE0050335B /* MainTouchTableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTouchTableTableView.m; sourceTree = "<group>"; };
+		1610A972211196DE0050335B /* ParentClassScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentClassScrollViewController.m; sourceTree = "<group>"; };
+		1610A976211196F60050335B /* OneViewTableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneViewTableTableViewController.m; sourceTree = "<group>"; };
+		1610A979211196F60050335B /* OneViewTableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneViewTableTableViewController.h; sourceTree = "<group>"; };
+		1610A97F2111A37F0050335B /* HomePageHeadSortView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageHeadSortView.h; sourceTree = "<group>"; };
+		1610A9802111A37F0050335B /* HomePageHeadSortView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageHeadSortView.m; sourceTree = "<group>"; };
 		16285FC520FC2B290095E261 /* ActionSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetView.m; sourceTree = "<group>"; };
 		16285FC620FC2B290095E261 /* VerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerButton.m; sourceTree = "<group>"; };
 		16285FC720FC2B290095E261 /* ActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionButton.h; sourceTree = "<group>"; };
@@ -261,23 +305,10 @@
 		16285FD420FC82ED0095E261 /* ShareImageBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareImageBottomView.h; sourceTree = "<group>"; };
 		16285FD520FC82ED0095E261 /* ShareImageBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareImageBottomView.m; sourceTree = "<group>"; };
 		162D6E1E20F5922C00292D7E /* com.lxbox.Emeat.NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.lxbox.Emeat.NotificationService.entitlements; sourceTree = "<group>"; };
-		162F96E0205765A9004EA49F /* UIView+SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SGPagingView.h"; sourceTree = "<group>"; };
-		162F96E1205765A9004EA49F /* UIView+SGPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SGPagingView.m"; sourceTree = "<group>"; };
-		162F96E3205765A9004EA49F /* SGPageContentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageContentScrollView.m; sourceTree = "<group>"; };
-		162F96E4205765A9004EA49F /* SGPageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageContentView.m; sourceTree = "<group>"; };
-		162F96E5205765A9004EA49F /* SGPageContentScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageContentScrollView.h; sourceTree = "<group>"; };
-		162F96E6205765A9004EA49F /* SGPageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageContentView.h; sourceTree = "<group>"; };
-		162F96E8205765A9004EA49F /* SGPageTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageTitleView.m; sourceTree = "<group>"; };
-		162F96E9205765A9004EA49F /* SGPageTitleViewConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageTitleViewConfigure.m; sourceTree = "<group>"; };
-		162F96EA205765A9004EA49F /* SGPageTitleViewConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageTitleViewConfigure.h; sourceTree = "<group>"; };
-		162F96EB205765A9004EA49F /* SGPageTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageTitleView.h; sourceTree = "<group>"; };
-		162F96EC205765A9004EA49F /* SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPagingView.h; sourceTree = "<group>"; };
 		16311B0A20909FB1005B2277 /* JMHoledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMHoledView.h; sourceTree = "<group>"; };
 		16311B0B20909FB1005B2277 /* JMHoledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMHoledView.m; sourceTree = "<group>"; };
 		1643DA7E1FCE938900F7162C /* SortListSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortListSegmentView.h; sourceTree = "<group>"; };
 		1643DA7F1FCE938900F7162C /* SortListSegmentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortListSegmentView.m; sourceTree = "<group>"; };
-		1643DA811FCFA66200F7162C /* SortCheckView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortCheckView.h; sourceTree = "<group>"; };
-		1643DA821FCFA66200F7162C /* SortCheckView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortCheckView.m; sourceTree = "<group>"; };
 		1643DA841FCFE0FF00F7162C /* SeacherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeacherViewController.h; sourceTree = "<group>"; };
 		1643DA851FCFE0FF00F7162C /* SeacherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SeacherViewController.m; sourceTree = "<group>"; };
 		1646C32D1FC801A6000552A1 /* HomePageNavSortTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageNavSortTableViewCell.h; sourceTree = "<group>"; };
@@ -288,6 +319,12 @@
 		1646C3341FCBC4C9000552A1 /* AddOrCutShoppingCartView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddOrCutShoppingCartView.m; sourceTree = "<group>"; };
 		1646C3361FCBF1BB000552A1 /* HomePageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageModel.h; sourceTree = "<group>"; };
 		1646C3371FCBF1BB000552A1 /* HomePageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageModel.m; sourceTree = "<group>"; };
+		165259B3211F5EA2004DDC7D /* MerchantViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MerchantViewController.h; sourceTree = "<group>"; };
+		165259B4211F5EA2004DDC7D /* MerchantViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MerchantViewController.m; sourceTree = "<group>"; };
+		165259B6211F633C004DDC7D /* MerchantOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MerchantOneViewController.h; sourceTree = "<group>"; };
+		165259B7211F633C004DDC7D /* MerchantOneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MerchantOneViewController.m; sourceTree = "<group>"; };
+		165259B9212182C9004DDC7D /* MessageListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListViewController.h; sourceTree = "<group>"; };
+		165259BA212182C9004DDC7D /* MessageListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListViewController.m; sourceTree = "<group>"; };
 		165581062008F8D100F33D6B /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		165581072008F8D100F33D6B /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		165581092008F8D100F33D6B /* libPaymentControl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPaymentControl.a; sourceTree = "<group>"; };
@@ -321,6 +358,29 @@
 		1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyAddressTableViewCell.m; sourceTree = "<group>"; };
 		1679D1BC204E7C3A009C2E25 /* HomePageOtherDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageOtherDetailsViewController.h; sourceTree = "<group>"; };
 		1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageOtherDetailsViewController.m; sourceTree = "<group>"; };
+		167FD8382112DE4500AF44DD /* UIButton+SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SGPagingView.h"; sourceTree = "<group>"; };
+		167FD8392112DE4500AF44DD /* NSString+SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SGPagingView.h"; sourceTree = "<group>"; };
+		167FD83A2112DE4500AF44DD /* UIView+SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SGPagingView.h"; sourceTree = "<group>"; };
+		167FD83B2112DE4500AF44DD /* NSString+SGPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SGPagingView.m"; sourceTree = "<group>"; };
+		167FD83C2112DE4500AF44DD /* UIButton+SGPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SGPagingView.m"; sourceTree = "<group>"; };
+		167FD83D2112DE4500AF44DD /* UIView+SGPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SGPagingView.m"; sourceTree = "<group>"; };
+		167FD83F2112DE4500AF44DD /* SGPageContentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageContentScrollView.m; sourceTree = "<group>"; };
+		167FD8402112DE4500AF44DD /* SGPageContentCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageContentCollectionView.h; sourceTree = "<group>"; };
+		167FD8412112DE4500AF44DD /* SGPageContentScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageContentScrollView.h; sourceTree = "<group>"; };
+		167FD8422112DE4500AF44DD /* SGPageContentCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageContentCollectionView.m; sourceTree = "<group>"; };
+		167FD8442112DE4500AF44DD /* SGPageTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageTitleView.m; sourceTree = "<group>"; };
+		167FD8452112DE4500AF44DD /* SGPageTitleViewConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGPageTitleViewConfigure.m; sourceTree = "<group>"; };
+		167FD8462112DE4500AF44DD /* SGPageTitleViewConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageTitleViewConfigure.h; sourceTree = "<group>"; };
+		167FD8472112DE4500AF44DD /* SGPageTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPageTitleView.h; sourceTree = "<group>"; };
+		167FD8482112DE4500AF44DD /* SGPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGPagingView.h; sourceTree = "<group>"; };
+		167FD850211307C200AF44DD /* HomePageSortTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageSortTableViewCell.h; sourceTree = "<group>"; };
+		167FD851211307C200AF44DD /* HomePageSortTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageSortTableViewCell.m; sourceTree = "<group>"; };
+		167FD8532113145E00AF44DD /* HomePageAllSortListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageAllSortListViewController.h; sourceTree = "<group>"; };
+		167FD8542113145E00AF44DD /* HomePageAllSortListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageAllSortListViewController.m; sourceTree = "<group>"; };
+		167FD85921142EA100AF44DD /* HomePageSortListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageSortListTableViewCell.h; sourceTree = "<group>"; };
+		167FD85A21142EA100AF44DD /* HomePageSortListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageSortListTableViewCell.m; sourceTree = "<group>"; };
+		167FD89E21159D7400AF44DD /* GYChangeTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GYChangeTextView.h; sourceTree = "<group>"; };
+		167FD89F21159D7400AF44DD /* GYChangeTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GYChangeTextView.m; sourceTree = "<group>"; };
 		1681304C1FC2955F0045207E /* HomePageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageTableViewCell.h; sourceTree = "<group>"; };
 		1681304D1FC2955F0045207E /* HomePageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageTableViewCell.m; sourceTree = "<group>"; };
 		1681304F1FC2A5B90045207E /* HomePageDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageDetailsViewController.h; sourceTree = "<group>"; };
@@ -339,8 +399,6 @@
 		1683BD6C1FB005AC0043CA23 /* MyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyViewController.m; sourceTree = "<group>"; };
 		1683BD701FB008000043CA23 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		1683BD711FB020440043CA23 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		1683BD731FB03E300043CA23 /* homePageHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = homePageHeadView.h; sourceTree = "<group>"; };
-		1683BD741FB03E300043CA23 /* homePageHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = homePageHeadView.m; sourceTree = "<group>"; };
 		1683BD761FB18A0B0043CA23 /* ShoppingCartTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartTableViewCell.h; sourceTree = "<group>"; };
 		1683BD771FB18A0B0043CA23 /* ShoppingCartTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartTableViewCell.m; sourceTree = "<group>"; };
 		1683BD791FB18B670043CA23 /* ShoppingCartModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShoppingCartModel.h; sourceTree = "<group>"; };
@@ -433,6 +491,20 @@
 		16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberCertificationViewController.m; sourceTree = "<group>"; };
 		16C91DE120F8838E00B01F8B /* PhoneNumberCertificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneNumberCertificationView.h; sourceTree = "<group>"; };
 		16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberCertificationView.m; sourceTree = "<group>"; };
+		16CD2A5B2118A26D00A3281A /* NSBundle+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PYSearchExtension.h"; sourceTree = "<group>"; };
+		16CD2A5C2118A26D00A3281A /* UIColor+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PYSearchExtension.m"; sourceTree = "<group>"; };
+		16CD2A5D2118A26D00A3281A /* PYSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchViewController.m; sourceTree = "<group>"; };
+		16CD2A5E2118A26D00A3281A /* PYSearchSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchSuggestionViewController.m; sourceTree = "<group>"; };
+		16CD2A5F2118A26D00A3281A /* UIView+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PYSearchExtension.h"; sourceTree = "<group>"; };
+		16CD2A602118A26D00A3281A /* PYSearchConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchConst.m; sourceTree = "<group>"; };
+		16CD2A612118A26D00A3281A /* PYSearch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PYSearch.bundle; sourceTree = "<group>"; };
+		16CD2A622118A26D00A3281A /* NSBundle+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+PYSearchExtension.m"; sourceTree = "<group>"; };
+		16CD2A632118A26D00A3281A /* PYSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearch.h; sourceTree = "<group>"; };
+		16CD2A642118A26D00A3281A /* PYSearchSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearchSuggestionViewController.h; sourceTree = "<group>"; };
+		16CD2A652118A26D00A3281A /* PYSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearchViewController.h; sourceTree = "<group>"; };
+		16CD2A662118A26D00A3281A /* UIColor+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PYSearchExtension.h"; sourceTree = "<group>"; };
+		16CD2A672118A26D00A3281A /* PYSearchConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PYSearchConst.h; sourceTree = "<group>"; };
+		16CD2A682118A26D00A3281A /* UIView+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PYSearchExtension.m"; sourceTree = "<group>"; };
 		16CE1ED62003602F00E919C7 /* AF_ScreeningViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AF_ScreeningViewController.m; sourceTree = "<group>"; };
 		16CE1ED72003602F00E919C7 /* AXPriceRangeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AXPriceRangeCell.xib; sourceTree = "<group>"; };
 		16CE1ED82003602F00E919C7 /* AF_BrandCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AF_BrandCell.m; sourceTree = "<group>"; };
@@ -508,6 +580,10 @@
 		16DC920120130BDD003C25BE /* MBProgressHUD+Add.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+Add.m"; sourceTree = "<group>"; };
 		16DC920220130BDD003C25BE /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		16DC920320130BDD003C25BE /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		16DF17182119266000367CF2 /* SearchCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionViewCell.h; sourceTree = "<group>"; };
+		16DF17192119266000367CF2 /* SearchCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchCollectionViewCell.m; sourceTree = "<group>"; };
+		16DF171B211AF66700367CF2 /* FeedBackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedBackView.h; sourceTree = "<group>"; };
+		16DF171C211AF66700367CF2 /* FeedBackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedBackView.m; sourceTree = "<group>"; };
 		16DF76CF201AF9CF00078F10 /* MyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyModel.h; sourceTree = "<group>"; };
 		16DF76D0201AF9CF00078F10 /* MyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyModel.m; sourceTree = "<group>"; };
 		16DF76D2201B309100078F10 /* MyAddressModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAddressModel.h; sourceTree = "<group>"; };
@@ -642,6 +718,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1610A95C211196890050335B /* WMPageController */ = {
+			isa = PBXGroup;
+			children = (
+				1610A95D211196890050335B /* WMPageController.m */,
+				1610A95E211196890050335B /* WMPageConst.h */,
+				1610A95F211196890050335B /* WMMenuView */,
+				1610A968211196890050335B /* WMPageController.h */,
+			);
+			path = WMPageController;
+			sourceTree = "<group>";
+		};
+		1610A95F211196890050335B /* WMMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				1610A960211196890050335B /* WMScrollView.h */,
+				1610A961211196890050335B /* WMMenuItem.h */,
+				1610A962211196890050335B /* WMMenuView.h */,
+				1610A963211196890050335B /* WMProgressView.h */,
+				1610A964211196890050335B /* WMMenuItem.m */,
+				1610A965211196890050335B /* WMScrollView.m */,
+				1610A966211196890050335B /* WMMenuView.m */,
+				1610A967211196890050335B /* WMProgressView.m */,
+			);
+			path = WMMenuView;
+			sourceTree = "<group>";
+		};
+		1610A96E211196DE0050335B /* ParentClass */ = {
+			isa = PBXGroup;
+			children = (
+				1610A96F211196DE0050335B /* MainTouchTableTableView.h */,
+				1610A971211196DE0050335B /* MainTouchTableTableView.m */,
+				1610A970211196DE0050335B /* ParentClassScrollViewController.h */,
+				1610A972211196DE0050335B /* ParentClassScrollViewController.m */,
+			);
+			path = ParentClass;
+			sourceTree = "<group>";
+		};
 		16285FC420FC2B290095E261 /* shareUIView */ = {
 			isa = PBXGroup;
 			children = (
@@ -653,48 +766,6 @@
 				16285FCA20FC2B290095E261 /* ActionButton.m */,
 			);
 			path = shareUIView;
-			sourceTree = "<group>";
-		};
-		162F96DE205765A9004EA49F /* SGPagingView */ = {
-			isa = PBXGroup;
-			children = (
-				162F96DF205765A9004EA49F /* Category */,
-				162F96E2205765A9004EA49F /* SGPageContent */,
-				162F96E7205765A9004EA49F /* SGPageTitle */,
-				162F96EC205765A9004EA49F /* SGPagingView.h */,
-			);
-			path = SGPagingView;
-			sourceTree = "<group>";
-		};
-		162F96DF205765A9004EA49F /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				162F96E0205765A9004EA49F /* UIView+SGPagingView.h */,
-				162F96E1205765A9004EA49F /* UIView+SGPagingView.m */,
-			);
-			path = Category;
-			sourceTree = "<group>";
-		};
-		162F96E2205765A9004EA49F /* SGPageContent */ = {
-			isa = PBXGroup;
-			children = (
-				162F96E3205765A9004EA49F /* SGPageContentScrollView.m */,
-				162F96E4205765A9004EA49F /* SGPageContentView.m */,
-				162F96E5205765A9004EA49F /* SGPageContentScrollView.h */,
-				162F96E6205765A9004EA49F /* SGPageContentView.h */,
-			);
-			path = SGPageContent;
-			sourceTree = "<group>";
-		};
-		162F96E7205765A9004EA49F /* SGPageTitle */ = {
-			isa = PBXGroup;
-			children = (
-				162F96E8205765A9004EA49F /* SGPageTitleView.m */,
-				162F96E9205765A9004EA49F /* SGPageTitleViewConfigure.m */,
-				162F96EA205765A9004EA49F /* SGPageTitleViewConfigure.h */,
-				162F96EB205765A9004EA49F /* SGPageTitleView.h */,
-			);
-			path = SGPageTitle;
 			sourceTree = "<group>";
 		};
 		16311B0920909FB1005B2277 /* NoviceUserGuideView */ = {
@@ -746,6 +817,61 @@
 				165581102008F8D100F33D6B /* WXApiObject.h */,
 			);
 			path = WechatSDK1.8.2;
+			sourceTree = "<group>";
+		};
+		167FD8362112DE4500AF44DD /* SGPagingView */ = {
+			isa = PBXGroup;
+			children = (
+				167FD8372112DE4500AF44DD /* Category */,
+				167FD83E2112DE4500AF44DD /* SGPageContent */,
+				167FD8432112DE4500AF44DD /* SGPageTitle */,
+				167FD8482112DE4500AF44DD /* SGPagingView.h */,
+			);
+			path = SGPagingView;
+			sourceTree = "<group>";
+		};
+		167FD8372112DE4500AF44DD /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				167FD8382112DE4500AF44DD /* UIButton+SGPagingView.h */,
+				167FD8392112DE4500AF44DD /* NSString+SGPagingView.h */,
+				167FD83A2112DE4500AF44DD /* UIView+SGPagingView.h */,
+				167FD83B2112DE4500AF44DD /* NSString+SGPagingView.m */,
+				167FD83C2112DE4500AF44DD /* UIButton+SGPagingView.m */,
+				167FD83D2112DE4500AF44DD /* UIView+SGPagingView.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		167FD83E2112DE4500AF44DD /* SGPageContent */ = {
+			isa = PBXGroup;
+			children = (
+				167FD83F2112DE4500AF44DD /* SGPageContentScrollView.m */,
+				167FD8402112DE4500AF44DD /* SGPageContentCollectionView.h */,
+				167FD8412112DE4500AF44DD /* SGPageContentScrollView.h */,
+				167FD8422112DE4500AF44DD /* SGPageContentCollectionView.m */,
+			);
+			path = SGPageContent;
+			sourceTree = "<group>";
+		};
+		167FD8432112DE4500AF44DD /* SGPageTitle */ = {
+			isa = PBXGroup;
+			children = (
+				167FD8442112DE4500AF44DD /* SGPageTitleView.m */,
+				167FD8452112DE4500AF44DD /* SGPageTitleViewConfigure.m */,
+				167FD8462112DE4500AF44DD /* SGPageTitleViewConfigure.h */,
+				167FD8472112DE4500AF44DD /* SGPageTitleView.h */,
+			);
+			path = SGPageTitle;
+			sourceTree = "<group>";
+		};
+		167FD89A21159C7C00AF44DD /* ChangeTextView */ = {
+			isa = PBXGroup;
+			children = (
+				167FD89E21159D7400AF44DD /* GYChangeTextView.h */,
+				167FD89F21159D7400AF44DD /* GYChangeTextView.m */,
+			);
+			path = ChangeTextView;
 			sourceTree = "<group>";
 		};
 		16885C462101C643008A6FB9 /* ZJScrollPageView */ = {
@@ -878,6 +1004,28 @@
 			path = LaunchIntroduction;
 			sourceTree = "<group>";
 		};
+		16CD2A5A2118A26D00A3281A /* PYSearch */ = {
+			isa = PBXGroup;
+			children = (
+				16DF1717211925FF00367CF2 /* SearchCollectionViewCell */,
+				16CD2A5B2118A26D00A3281A /* NSBundle+PYSearchExtension.h */,
+				16CD2A5C2118A26D00A3281A /* UIColor+PYSearchExtension.m */,
+				16CD2A5D2118A26D00A3281A /* PYSearchViewController.m */,
+				16CD2A5E2118A26D00A3281A /* PYSearchSuggestionViewController.m */,
+				16CD2A5F2118A26D00A3281A /* UIView+PYSearchExtension.h */,
+				16CD2A602118A26D00A3281A /* PYSearchConst.m */,
+				16CD2A612118A26D00A3281A /* PYSearch.bundle */,
+				16CD2A622118A26D00A3281A /* NSBundle+PYSearchExtension.m */,
+				16CD2A632118A26D00A3281A /* PYSearch.h */,
+				16CD2A642118A26D00A3281A /* PYSearchSuggestionViewController.h */,
+				16CD2A652118A26D00A3281A /* PYSearchViewController.h */,
+				16CD2A662118A26D00A3281A /* UIColor+PYSearchExtension.h */,
+				16CD2A672118A26D00A3281A /* PYSearchConst.h */,
+				16CD2A682118A26D00A3281A /* UIView+PYSearchExtension.m */,
+			);
+			path = PYSearch;
+			sourceTree = "<group>";
+		};
 		16CE1ED52003542D00E919C7 /* ScreeningViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -949,6 +1097,8 @@
 		16CFD7251FB2A6F20015F2C1 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				16CD2A5A2118A26D00A3281A /* PYSearch */,
+				167FD89A21159C7C00AF44DD /* ChangeTextView */,
 				16285FC420FC2B290095E261 /* shareUIView */,
 				16311B0920909FB1005B2277 /* NoviceUserGuideView */,
 				16BB3EF7207F500B00623045 /* LaunchIntroduction */,
@@ -1050,10 +1200,20 @@
 		16CFD7341FB2EC1F0015F2C1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1610A96E211196DE0050335B /* ParentClass */,
+				1610A95C211196890050335B /* WMPageController */,
+				165259B3211F5EA2004DDC7D /* MerchantViewController.h */,
+				165259B4211F5EA2004DDC7D /* MerchantViewController.m */,
+				165259B6211F633C004DDC7D /* MerchantOneViewController.h */,
+				165259B7211F633C004DDC7D /* MerchantOneViewController.m */,
 				1683BD651FB004E20043CA23 /* HomePageViewController.h */,
 				1683BD661FB004E20043CA23 /* HomePageViewController.m */,
+				1610A979211196F60050335B /* OneViewTableTableViewController.h */,
+				1610A976211196F60050335B /* OneViewTableTableViewController.m */,
 				1646C3301FC80E0A000552A1 /* HomePageSortListViewController.h */,
 				1646C3311FC80E0A000552A1 /* HomePageSortListViewController.m */,
+				167FD8532113145E00AF44DD /* HomePageAllSortListViewController.h */,
+				167FD8542113145E00AF44DD /* HomePageAllSortListViewController.m */,
 				1681304F1FC2A5B90045207E /* HomePageDetailsViewController.h */,
 				168130501FC2A5B90045207E /* HomePageDetailsViewController.m */,
 				1679D1BC204E7C3A009C2E25 /* HomePageOtherDetailsViewController.h */,
@@ -1076,14 +1236,18 @@
 		16CFD7351FB2EC1F0015F2C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				1683BD731FB03E300043CA23 /* homePageHeadView.h */,
-				1683BD741FB03E300043CA23 /* homePageHeadView.m */,
+				1610A97F2111A37F0050335B /* HomePageHeadSortView.h */,
+				1610A9802111A37F0050335B /* HomePageHeadSortView.m */,
 				166DACF61FC6B9F500119444 /* HomePageNavView.h */,
 				166DACF71FC6B9F500119444 /* HomePageNavView.m */,
 				1646C32D1FC801A6000552A1 /* HomePageNavSortTableViewCell.h */,
 				1646C32E1FC801A6000552A1 /* HomePageNavSortTableViewCell.m */,
 				1681304C1FC2955F0045207E /* HomePageTableViewCell.h */,
 				1681304D1FC2955F0045207E /* HomePageTableViewCell.m */,
+				167FD85921142EA100AF44DD /* HomePageSortListTableViewCell.h */,
+				167FD85A21142EA100AF44DD /* HomePageSortListTableViewCell.m */,
+				167FD850211307C200AF44DD /* HomePageSortTableViewCell.h */,
+				167FD851211307C200AF44DD /* HomePageSortTableViewCell.m */,
 				168130521FC2B2BF0045207E /* HomePageDetailsHeadView.h */,
 				168130531FC2B2BF0045207E /* HomePageDetailsHeadView.m */,
 				168130551FC3C1210045207E /* HomePageCommentDetailsTableViewCell.h */,
@@ -1094,8 +1258,6 @@
 				168130591FC54DF30045207E /* HomePageDetailsBottomView.m */,
 				1643DA7E1FCE938900F7162C /* SortListSegmentView.h */,
 				1643DA7F1FCE938900F7162C /* SortListSegmentView.m */,
-				1643DA811FCFA66200F7162C /* SortCheckView.h */,
-				1643DA821FCFA66200F7162C /* SortCheckView.m */,
 				16DC91DD200F34BB003C25BE /* HomePageDetailsBuyNoticeView.h */,
 				16DC91DE200F34BB003C25BE /* HomePageDetailsBuyNoticeView.m */,
 				16DF76DE2021D14100078F10 /* HomePageAddressNoticeView.h */,
@@ -1104,6 +1266,8 @@
 				16285FD220FC3E050095E261 /* ShareImageView.m */,
 				16285FD420FC82ED0095E261 /* ShareImageBottomView.h */,
 				16285FD520FC82ED0095E261 /* ShareImageBottomView.m */,
+				16DF171B211AF66700367CF2 /* FeedBackView.h */,
+				16DF171C211AF66700367CF2 /* FeedBackView.m */,
 				16901C971FD58D920080762A /* SelectAddressView */,
 			);
 			path = View;
@@ -1186,8 +1350,8 @@
 		16CFD73A1FB2ED540015F2C1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				167FD8362112DE4500AF44DD /* SGPagingView */,
 				16885C462101C643008A6FB9 /* ZJScrollPageView */,
-				162F96DE205765A9004EA49F /* SGPagingView */,
 				16B0992820DB8AC500D9F101 /* InvoiceViewController */,
 				1683BD6B1FB005AC0043CA23 /* MyViewController.h */,
 				1683BD6C1FB005AC0043CA23 /* MyViewController.m */,
@@ -1312,6 +1476,15 @@
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
+		16DF1717211925FF00367CF2 /* SearchCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				16DF17182119266000367CF2 /* SearchCollectionViewCell.h */,
+				16DF17192119266000367CF2 /* SearchCollectionViewCell.m */,
+			);
+			path = SearchCollectionViewCell;
+			sourceTree = "<group>";
+		};
 		16E44BD11FBED1CA0005608B /* YouLikeView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1330,6 +1503,8 @@
 			children = (
 				16F3A3B520B7DFB300ACDED8 /* MessageCenterViewController.h */,
 				16F3A3B620B7DFB300ACDED8 /* MessageCenterViewController.m */,
+				165259B9212182C9004DDC7D /* MessageListViewController.h */,
+				165259BA212182C9004DDC7D /* MessageListViewController.m */,
 			);
 			path = PushMessage;
 			sourceTree = "<group>";
@@ -1602,6 +1777,7 @@
 				1683BD721FB020440043CA23 /* Images.xcassets in Resources */,
 				16FB31401FAC5D9D00049580 /* Assets.xcassets in Resources */,
 				165581152008F8D100F33D6B /* README.txt in Resources */,
+				16CD2A6D2118A26D00A3281A /* PYSearch.bundle in Resources */,
 				16FB313E1FAC5D9D00049580 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1669,7 +1845,6 @@
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/MOFSPickerManager/MOFSPickerManagerDemo/MOFSPickerManager/province_data.xml",
-				"${PODS_ROOT}/PYSearch/PYSearch/PYSearch.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
 			);
@@ -1678,7 +1853,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/province_data.xml",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PYSearch.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
 			);
@@ -1705,22 +1879,28 @@
 				16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */,
 				16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */,
 				16F3A3B720B7DFB300ACDED8 /* MessageCenterViewController.m in Sources */,
-				162F96EE205765AA004EA49F /* SGPageContentScrollView.m in Sources */,
+				1610A96D211196890050335B /* WMProgressView.m in Sources */,
 				16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */,
 				16CE1EE22003611000E919C7 /* AF_MainScreeningViewController.m in Sources */,
 				16885C5B2101C643008A6FB9 /* ZJContentView.m in Sources */,
+				167FD85B21142EA100AF44DD /* HomePageSortListTableViewCell.m in Sources */,
 				16CE1EE32003611000E919C7 /* AF_ScreeningViewController.h in Sources */,
+				165259B8211F633C004DDC7D /* MerchantOneViewController.m in Sources */,
+				167FD8492112DE4500AF44DD /* NSString+SGPagingView.m in Sources */,
 				165BCCA820E2320B006883FB /* InvoiceListModel.m in Sources */,
 				16B0993A20DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m in Sources */,
+				167FD84F2112DE4500AF44DD /* SGPageTitleViewConfigure.m in Sources */,
 				16CE1EE42003611000E919C7 /* AF_ScreeningViewController.m in Sources */,
 				16CE1EE52003611000E919C7 /* AXPriceRangeCell.h in Sources */,
 				16CE1EE62003611000E919C7 /* AXPriceRangeCell.m in Sources */,
-				162F96F0205765AA004EA49F /* SGPageTitleView.m in Sources */,
+				1610A974211196DE0050335B /* ParentClassScrollViewController.m in Sources */,
 				16CE1EE72003611000E919C7 /* AXPriceRangeCell.xib in Sources */,
-				162F96F1205765AA004EA49F /* SGPageTitleViewConfigure.m in Sources */,
 				1679D1BE204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m in Sources */,
+				167FD84E2112DE4500AF44DD /* SGPageTitleView.m in Sources */,
+				167FD8552113145E00AF44DD /* HomePageAllSortListViewController.m in Sources */,
 				16D950CF1FF4EAA400DBC7B8 /* LimitInput.m in Sources */,
 				16EE10281FE1989A0099DA91 /* ContactServiceViewController.m in Sources */,
+				16CD2A6B2118A26D00A3281A /* PYSearchSuggestionViewController.m in Sources */,
 				16DC91FE20130A56003C25BE /* MHUploadParam.m in Sources */,
 				16EE103A1FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m in Sources */,
 				165629C020A05715002D6EC8 /* HWPopTool.m in Sources */,
@@ -1730,14 +1910,18 @@
 				16901CF51FDAB9D80080762A /* OrderDetailesViewController.m in Sources */,
 				16885C5F2101C643008A6FB9 /* ZJScrollPageView.m in Sources */,
 				16F77E6420FED7AD00E0D2DB /* JHGridView.m in Sources */,
+				167FD84D2112DE4500AF44DD /* SGPageContentCollectionView.m in Sources */,
 				16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */,
 				16901CA71FD67FF50080762A /* DDSearchObj.h in Sources */,
+				16CD2A6E2118A26D00A3281A /* NSBundle+PYSearchExtension.m in Sources */,
+				167FD8A021159D7400AF44DD /* GYChangeTextView.m in Sources */,
 				16EE10171FE1683A0099DA91 /* AfterSaleViewController.m in Sources */,
 				16ED4D5E1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m in Sources */,
+				1610A96C211196890050335B /* WMMenuView.m in Sources */,
 				16901CA81FD67FF50080762A /* DDSearchObj.m in Sources */,
 				16E6B28220860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m in Sources */,
 				16CFD7501FB58E9B0015F2C1 /* ConfirmOrderInfoFootView.m in Sources */,
-				162F96ED205765AA004EA49F /* UIView+SGPagingView.m in Sources */,
+				1610A97C211196F60050335B /* OneViewTableTableViewController.m in Sources */,
 				16B86A542086E67E00A50614 /* ShopCertificationViewController.m in Sources */,
 				16EE103D1FECD6970099DA91 /* AboutUsViewController.m in Sources */,
 				16D950C61FF3755800DBC7B8 /* LoginViewController.m in Sources */,
@@ -1747,24 +1931,27 @@
 				16B0994020E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m in Sources */,
 				1681305A1FC54DF30045207E /* HomePageDetailsBottomView.m in Sources */,
 				1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */,
-				1683BD751FB03E300043CA23 /* homePageHeadView.m in Sources */,
 				16CFD76E1FBE910B0015F2C1 /* YouLikeCollectionViewCell.m in Sources */,
 				1683BD7B1FB18B670043CA23 /* ShoppingCartModel.m in Sources */,
 				1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */,
 				16DF76D1201AF9CF00078F10 /* MyModel.m in Sources */,
 				16D950C91FF37B5E00DBC7B8 /* LoginView.m in Sources */,
 				16EE102E1FE19B670099DA91 /* SettingViewController.m in Sources */,
+				165259BB212182C9004DDC7D /* MessageListViewController.m in Sources */,
 				16285FD620FC82ED0095E261 /* ShareImageBottomView.m in Sources */,
 				16285FCD20FC2B290095E261 /* ActionButton.m in Sources */,
 				16CFD7411FB42C3E0015F2C1 /* ConfirmOrderInfoViewController.m in Sources */,
 				16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */,
 				1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */,
+				167FD84A2112DE4500AF44DD /* UIButton+SGPagingView.m in Sources */,
 				1683BD6D1FB005AC0043CA23 /* MyViewController.m in Sources */,
 				16885C5E2101C643008A6FB9 /* ZJScrollSegmentView.m in Sources */,
 				1683BD671FB004E20043CA23 /* HomePageViewController.m in Sources */,
+				167FD852211307C200AF44DD /* HomePageSortTableViewCell.m in Sources */,
 				16DC91E9200F7225003C25BE /* ShoppingCartTool.m in Sources */,
 				16901CF21FDA81500080762A /* SelectPayTypeViewController.m in Sources */,
 				16CFD7561FB5A3A50015F2C1 /* ConfirmOrderCommentViewController.m in Sources */,
+				16CD2A6C2118A26D00A3281A /* PYSearchConst.m in Sources */,
 				1646C3321FC80E0A000552A1 /* HomePageSortListViewController.m in Sources */,
 				168130511FC2A5B90045207E /* HomePageDetailsViewController.m in Sources */,
 				166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */,
@@ -1775,8 +1962,11 @@
 				16EE102B1FE199D90099DA91 /* AfterServiceViewController.m in Sources */,
 				16885C5D2101C643008A6FB9 /* ZJSegmentStyle.m in Sources */,
 				16B0994320E1D1FD00D9F101 /* InvoicePreviewView.m in Sources */,
+				1610A973211196DE0050335B /* MainTouchTableTableView.m in Sources */,
 				16CFD7711FBEB6510015F2C1 /* YouLikeCollectionHeadView.m in Sources */,
 				16901C9A1FD58E540080762A /* CurrentAddressView.m in Sources */,
+				16DF171A2119266000367CF2 /* SearchCollectionViewCell.m in Sources */,
+				16CD2A692118A26D00A3281A /* UIColor+PYSearchExtension.m in Sources */,
 				16EE10251FE1915F0099DA91 /* MyAddressViewController.m in Sources */,
 				16901CF81FDAD8E70080762A /* MyOrderViewController.m in Sources */,
 				16C91DE320F8838E00B01F8B /* PhoneNumberCertificationView.m in Sources */,
@@ -1789,6 +1979,8 @@
 				16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */,
 				16B0993420DC94A900D9F101 /* SelectInvoiceTypesViewController.m in Sources */,
 				1681304E1FC2955F0045207E /* HomePageTableViewCell.m in Sources */,
+				16CD2A6A2118A26D00A3281A /* PYSearchViewController.m in Sources */,
+				16CD2A6F2118A26D00A3281A /* UIView+PYSearchExtension.m in Sources */,
 				16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */,
 				16CFD7471FB43F820015F2C1 /* ConfirmOrderInfoPayTypeTableViewCell.m in Sources */,
 				1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */,
@@ -1798,14 +1990,15 @@
 				165BCC9F20E1F6C6006883FB /* InvoiceHistoryViewController.m in Sources */,
 				16CFD74D1FB5496A0015F2C1 /* ConfirmOrderInfoTableViewCell.m in Sources */,
 				16B0993120DBAA2A00D9F101 /* InvoiceListBottomView.m in Sources */,
-				162F96EF205765AA004EA49F /* SGPageContentView.m in Sources */,
 				16B0993720DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m in Sources */,
 				16901C961FD5326B0080762A /* AddNewAddressViewController.m in Sources */,
 				16DC91FD20130A56003C25BE /* MHNetworkManager.m in Sources */,
+				16DF171D211AF66700367CF2 /* FeedBackView.m in Sources */,
 				16EE100E1FE167860099DA91 /* WaitReceiveViewController.m in Sources */,
 				16285FD320FC3E050095E261 /* ShareImageView.m in Sources */,
 				165BCCA220E215A8006883FB /* InvoiceHistoryTableViewCell.m in Sources */,
 				16CFD75C1FB97E200015F2C1 /* SHLBaseViewController.m in Sources */,
+				1610A96A211196890050335B /* WMMenuItem.m in Sources */,
 				16CFD73E1FB2EFEB0015F2C1 /* ShoppingCartBottomView.m in Sources */,
 				16EE10081FE167480099DA91 /* AllOrderViewController.m in Sources */,
 				16DF76D4201B309100078F10 /* MyAddressModel.m in Sources */,
@@ -1820,10 +2013,12 @@
 				16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */,
 				1646C3351FCBC4C9000552A1 /* AddOrCutShoppingCartView.m in Sources */,
 				160F29BE2009040800F3295B /* LHSPayManger.m in Sources */,
+				1610A96B211196890050335B /* WMScrollView.m in Sources */,
 				16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */,
 				16EE10111FE167970099DA91 /* WaitSendViewController.m in Sources */,
 				16FB31461FAC5D9D00049580 /* main.m in Sources */,
 				16DC91FC20130A56003C25BE /* MHAsiNetworkItem.m in Sources */,
+				1610A969211196890050335B /* WMPageController.m in Sources */,
 				16CFD76B1FBE7F930015F2C1 /* YouLikeTableViewCell.m in Sources */,
 				16FF04F31FD4EDF900F8C280 /* RHLocation.m in Sources */,
 				16DF76E02021D14100078F10 /* HomePageAddressNoticeView.m in Sources */,
@@ -1836,6 +2031,7 @@
 				16DC920420130BDE003C25BE /* MBProgressHUD+Add.m in Sources */,
 				16FC44432029B83C00B95546 /* NSString+textFieldCategory.m in Sources */,
 				16EE100B1FE167660099DA91 /* WaitPayViewController.m in Sources */,
+				167FD84B2112DE4500AF44DD /* UIView+SGPagingView.m in Sources */,
 				16901CFE1FDE6A0A0080762A /* MyAddressView.m in Sources */,
 				169F950F2109D8C0004D1D36 /* SliceService ViewController.m in Sources */,
 				16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */,
@@ -1847,18 +2043,20 @@
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,
 				16B0993D20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m in Sources */,
-				1643DA831FCFA66200F7162C /* SortCheckView.m in Sources */,
 				16885C582101C643008A6FB9 /* UIView+ZJFrame.m in Sources */,
 				168130571FC3C1210045207E /* HomePageCommentDetailsTableViewCell.m in Sources */,
 				16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */,
 				16CFD7531FB595270015F2C1 /* ConfirmOrderInfoBottomView.m in Sources */,
 				165BCCAB20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m in Sources */,
 				16885C5C2101C643008A6FB9 /* ZJCollectionView.m in Sources */,
+				165259B5211F5EA2004DDC7D /* MerchantViewController.m in Sources */,
 				165BCCAE20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m in Sources */,
 				16CFD7621FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m in Sources */,
+				1610A9812111A37F0050335B /* HomePageHeadSortView.m in Sources */,
 				16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */,
 				16B750E82013386E00C4642C /* LDActionSheet.m in Sources */,
 				16B86A572086E75000A50614 /* ShopCeritficationView.m in Sources */,
+				167FD84C2112DE4500AF44DD /* SGPageContentScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2078,7 +2276,7 @@
 					"$(PROJECT_DIR)/Emeat/Source/CodeClass/PaySDK/AlipaySDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = /Users/w/Desktop/Emeat/Emeat/Source/Resources/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "/Users/w/Desktop/赛鲜/Emeat/Source/Resources/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
@@ -2112,7 +2310,6 @@
 					"-l\"MJRefresh\"",
 					"-l\"MMPopupView\"",
 					"-l\"Masonry\"",
-					"-l\"PYSearch\"",
 					"-l\"RealReachability\"",
 					"-l\"SDCycleScrollView\"",
 					"-l\"SDWebImage\"",
@@ -2180,7 +2377,7 @@
 					"$(PROJECT_DIR)/Emeat/Source/CodeClass/PaySDK/AlipaySDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = /Users/w/Desktop/Emeat/Emeat/Source/Resources/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "/Users/w/Desktop/赛鲜/Emeat/Source/Resources/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
@@ -2214,7 +2411,6 @@
 					"-l\"MJRefresh\"",
 					"-l\"MMPopupView\"",
 					"-l\"Masonry\"",
-					"-l\"PYSearch\"",
 					"-l\"RealReachability\"",
 					"-l\"SDCycleScrollView\"",
 					"-l\"SDWebImage\"",

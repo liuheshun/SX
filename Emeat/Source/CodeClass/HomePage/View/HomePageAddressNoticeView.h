@@ -4,7 +4,7 @@
 //
 //  Created by liuheshun on 2018/1/31.
 //  Copyright © 2018年 liuheshun. All rights reserved.
-//
+//当前地址不在配送范围提示
 
 #import <UIKit/UIKit.h>
 

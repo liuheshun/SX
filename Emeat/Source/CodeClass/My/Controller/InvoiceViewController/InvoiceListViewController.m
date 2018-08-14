@@ -135,6 +135,8 @@
     [dic setValue:mTypeIOS forKey:@"mtype"];
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)currentPage] forKey:@"currentPage"];
     
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"发票列表接口验证== %@" ,dic );
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryNoInvoiceOrders" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -147,7 +149,7 @@
                 
                 if ([returnData[@"data"][@"list"] count] == 0) {
                     
-                     [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无已完成订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView];
+                     [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无已完成订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
                 }else{
                     if (currentPage == 1) {
                         [self.invoiceListMarray removeAllObjects];
@@ -229,7 +231,10 @@
     NSDictionary *dic = [self checkoutData];
     [dic setValue:orderIdStr forKey:@"orderIdStr"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"选择下一步开具发票== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];
@@ -287,7 +292,10 @@
     NSDictionary *dic = [self checkoutData];
     [dic setValue:orderIdStr forKey:@"orderIdStr"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"选中发票== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];
@@ -324,7 +332,10 @@
     DLog(@"全选请求发票== %@" ,dic );
     [dic setValue:string forKey:@"checkNum"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/countAllMoney" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         

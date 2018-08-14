@@ -130,7 +130,8 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:orderNo forKey:@"orderNo"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

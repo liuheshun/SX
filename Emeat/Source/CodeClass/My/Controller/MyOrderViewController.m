@@ -20,8 +20,6 @@
 
 
 @interface MyOrderViewController ()<ZJScrollPageViewDelegate>
-@property (nonatomic, strong) SGPageTitleView *pageTitleView;
-@property (nonatomic, strong) SGPageContentView *pageContentView;
 @property(strong, nonatomic)NSArray<NSString *> *titles;
 @property(strong, nonatomic)NSArray<UIViewController<ZJScrollPageViewChildVcDelegate> *> *childVcs;
 

@@ -8,10 +8,9 @@
 
 #import "HomePageViewController.h"
 #import "HomePageTableViewCell.h"
-#import "homePageHeadView.h"
 #import "HomePageDetailsViewController.h"
 #import "HomePageSortListViewController.h"
-#import <PYSearch.h>
+#import "PYSearch.h"
 #import "SelectAddressViewController.h"
 #import "RHLocation.h"
 #import "DDSearchManager.h"
@@ -21,33 +20,37 @@
 #import "JMHoledView.h"
 #import "HWPopTool.h"
 #import "VersionUpdateView.h"
+///////////////
+#import "OneViewTableTableViewController.h"
+#import "MainTouchTableTableView.h"
+#import "ParentClassScrollViewController.h"
+#import "WMPageController.h"
+#import "HomePageHeadSortView.h"
+#import "GYChangeTextView.h"
+#import "MessageCenterViewController.h"
 
-#define tableViewHeadHeight (226*kScale+42+kBarHeight)
+#define Main_Screen_Height      [[UIScreen mainScreen] bounds].size.height
+#define Main_Screen_Width       [[UIScreen mainScreen] bounds].size.width
+#define headViewHeight 408*kScale
+#import "MerchantViewController.h"
 
 
-@interface HomePageViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,PYSearchViewControllerDelegate,CLLocationManagerDelegate,RHLocationDelegate ,JMHoledViewDelegate>
-@property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) UILabel *lab;
+@interface HomePageViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,PYSearchViewControllerDelegate,CLLocationManagerDelegate,RHLocationDelegate ,JMHoledViewDelegate ,scrollDelegate,WMPageControllerDelegate ,GYChangeTextViewDelegate>
+
+///导航栏视图
 @property (nonatomic,strong) HomePageNavView *navView;
-//@property (nonatomic,strong) AddOrCutShoppingCartView *cartView;
+///商品列表数据源
 @property (nonatomic,strong) NSMutableArray *dataArray;//商品列表数据源
-
 ///轮播图
 @property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
-///今日推荐
-@property (nonatomic,strong) homePageHeadView *headTieleView;
-
 ///记录当前位置信息
 @property (nonatomic,strong) Location *currentLocation;
 @property (nonatomic,strong) NSString *currentAddressSubLocality;
-
 ///记录当前附近位置信息
 @property (nonatomic,strong) NSMutableArray *otherAddressArray;
-
 @property (nonatomic,strong) RHLocation *rhLocation;
-
+///选择地址VC
 @property (nonatomic,strong) SelectAddressViewController *selectAddressVC;
-
 ///banner轮播图数据源
 @property (nonatomic,strong) NSMutableArray *bannerMarray;
 ///分类标签数据源字典
@@ -60,56 +63,147 @@
 @property (nonatomic,strong) NSMutableArray *hotSearchMarray;
 ///历史搜索数据
 @property (nonatomic,strong) NSMutableArray *historySearchMarray;
+///主tableview
+@property(nonatomic ,strong)MainTouchTableTableView * mainTableView;
+@property(nonatomic,strong) UIScrollView * parentScrollView;
+///头部背景图片
+@property(nonatomic,strong)UIImageView *headImageView;
+/// canScroll= yes : mainTableView 视图可以滚动，parentScrollView 禁止滚动
+@property (nonatomic, assign) BOOL canScroll;
+@property (nonatomic, assign) BOOL isTopIsCanNotMoveMainTableView;
+@property (nonatomic, assign) BOOL isTopIsCanNotMoveParentScrollView;
+///头部分类视图
+@property (nonatomic,strong) HomePageHeadSortView *homePageHeadSortView;
+///segment标题
+@property (nonatomic,strong) NSMutableArray *segmentTitleMarray;
+@property (nonatomic,strong) WMPageController *pageVC;
+///首页分类数据
+@property (nonatomic,strong) NSMutableArray *homePageSortDataMarray;
+///播报数据
+@property (nonatomic,strong) NSMutableArray *PlayTextDataMarray;
 
+///显示当前定位
+@property (nonatomic,strong) UIButton *showCurrentAddressBtn;
+
+///是否已加载segment
+@property (nonatomic,strong) NSString *isLoadingSeg;
+
+///
+@property (nonatomic,strong) NSString *isleaveCurrentVc;
+
+
+@property (nonatomic,assign) NSInteger selectIndex;
 
 
 @end
 
 @implementation HomePageViewController
 {
+
     NSInteger totalPage;//分页
     NSInteger totalPageCount;//分页总数
-    CGFloat noticeViewHeiht;
+    NSInteger isFirstLoading;
 }
 
 
 -(void)viewWillAppear:(BOOL)animated{
-    
-    
 
     ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
     if (status == RealStatusNotReachable)
     {
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-
     }else{
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
     }
+    
+
     [self requestBadNumValue];
-
-
+    [self requestLocation];//请求当前位置信息
+    [self requestFirstLevelData];
+    [self requestHomePageSortData];
+    [self requestPlayTextData];
+    
+    [self requsetHomPageBannerData];
+    [self requestHotSearchData];
+    
 }
 -(void)viewDidDisappear:(BOOL)animated{
-    [GlobalHelper shareInstance].selectAddressString = self.navView.selectAddressBtn.titleLabel.text;
+    self.isLoadingSeg = @"1";
+    self.isleaveCurrentVc = @"1";
+    [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressBtn.titleLabel.text;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
-
     if (@available(iOS 11.0, *)) {
-        self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        self.mainTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSelectIndexss:)name:@"selectIndex" object:nil];
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:@"0" forKey:@"selectIndex"];
+    
+    //self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
 
+    
+   // self.selectIndex = 0;
+    self.isLoadingSeg = @"1";
+    self.isleaveCurrentVc = @"0";
     self.sortListMarray = [NSMutableArray array];
     self.dataArray = [NSMutableArray array];
     self.bannerMarray = [NSMutableArray array];
     self.hotSearchMarray = [NSMutableArray array];
     self.historySearchMarray = [NSMutableArray array];
-    [self netWorkIsOnLine];
+    self.segmentTitleMarray = [NSMutableArray array];
     
+    self.homePageSortDataMarray = [NSMutableArray array];
+    self.PlayTextDataMarray = [NSMutableArray array];
+    isFirstLoading = 0;
+//    ///初始数据
+//    NSArray *titleArray = @[@{@"classifyName":@"经常买"} ,@{@"classifyName":@"大家都在买"} ,@{@"classifyName":@"赛鲜精选"}];
+//    for (NSDictionary *dic in titleArray) {
+//        HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+//        [self.segmentTitleMarray addObject:model];
+//    }
+   
+ 
+//    [self netWorkIsOnLine];
+
+    [self.view addSubview:self.mainTableView];
+    [self.view addSubview:self.navView];
+    [self.mainTableView addSubview:self.headImageView];
+    [self setCycleScrollViews:self.headImageView];
+    [self.headImageView addSubview:self.homePageHeadSortView];
+    [self.headImageView addSubview:self.showCurrentAddressBtn];
+    
+    [self addSortClickAction];
+    [self addNavigationHeadBlockAction];
+    /*
+     如果您的项目需要头部视图实现一些动效,不需要下拉刷新效果
+     
+     1.您需要修改demo中MainViewController ,viewDidLoad 中  设置self.mainTableView.bounces = YES;
+     2.需要修改MainViewController,- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
+     
+     //        if (!self.canScroll){
+     //支持下刷新,下拉时maintableView 没有滚动到位置 parentScrollView 不进行刷新
+     //            CGFloat parentScrollViewOffsetY = self.parentScrollView.contentOffset.y;
+     //            if(parentScrollViewOffsetY >0)
+     //                self.parentScrollView.contentOffset = CGPointMake(0, 0);
+     //        }else
+     //        {
+     self.parentScrollView.contentOffset = CGPointMake(0, 0);
+     //        }
+     }
+     
+     删除这段代码中注释部分,也就是else中只保留 self.parentScrollView.contentOffset = CGPointMake(0, 0);
+     */
+    //支持下刷新。关闭弹簧效果
+    self.mainTableView.bounces =  NO;
+    self.canScroll = YES;
+///版本更新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
     ///禁止右滑返回
     id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
@@ -118,48 +212,83 @@
    
 }
 
+-(void)changeSelectIndexss:(NSNotification*)notInfo{
+    self.pageVC.selectIndex = [notInfo.object intValue];
+
+}
+
+#pragma mark ===========添加分类点击事件
+
+
+-(void)addSortClickAction{
+    __weak __typeof(self) weakSelf = self;
+
+    self.homePageHeadSortView.returnClickSortIndex = ^(NSInteger index, NSString *sortTitle) {
+        DLog(@"%@  %ld" ,sortTitle , index);
+        
+        HomePageModel *model = weakSelf.homePageSortDataMarray[index];
+        
+        HomePageSortListViewController *VC = [HomePageSortListViewController new];
+        VC.segmentTitleMarray = weakSelf.segmentTitleMarray;
+        VC.sortId = model.bigClassifyId;
+        VC.sortType = model.type;
+        VC.hidesBottomBarWhenPushed = YES;
+        [weakSelf.navigationController pushViewController:VC animated:YES];
+    };
+}
+
+
 
 #pragma mark ================================= 热门搜索数据
 -(void)requestHotSearchData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSInteger usrId = [[user valueForKey:@"userId"] integerValue];
-    DLog(@"sous ==== url=== %@" , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld",baseUrl,usrId]);
+    DLog(@"热门搜索数据url=== %@" , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld",baseUrl,usrId]);
+
+   
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId] params:nil successBlock:^(NSDictionary *returnData) {
-        
-        DLog(@"sous ==== %@ url=== %@" ,returnData , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId]);
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld&&appVersionNumber=%@&user=%@", baseUrl,usrId ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"] ] params:nil successBlock:^(NSDictionary *returnData) {
+
+        DLog(@"热门搜索数据 ==== %@ url=== %@" ,returnData , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId]);
         if ([returnData[@"status"] integerValue] == 200) {
+            [self.hotSearchMarray removeAllObjects];
+            [self.historySearchMarray removeAllObjects];
+
             [self.hotSearchMarray addObjectsFromArray:returnData[@"data"][@"topSearchList"]];
             [self.historySearchMarray addObjectsFromArray:returnData[@"data"][@"historyList"]];
             DLog(@"====sss===== hotSearchMarray=== %@  historySearchMarray=%@" , returnData[@"data"][@"topSearchList"] , self.historySearchMarray);
-            
-          
+
+
           //////////数据库搜索历史数据写到本地(暂时去掉)
        //  [NSKeyedArchiver archiveRootObject:self.historySearchMarray toFile:PYSEARCH_SEARCH_HISTORY_CACHE_PATH];
-            
-           
+
+
         }
     } failureBlock:^(NSError *error) {
-        
-        DLog(@"%@" ,error);
+
+        DLog(@"sous ==== url===error %@" ,error);
     } showHUD:NO];
-    
+
 }
 
-#pragma mark == 检查版本更新
+#pragma mark ============== 检查版本更新
 
 -(void)checkVersionUpdate{
-    
+
     [self requestVersionUpdateData];
 }
 
 -(void)requestVersionUpdateData{
     //http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/appversion/index.jhtml?appType=2&mtype=%@" ,baseUrl,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
-        
+    
+    
+   
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/appversion/index.jhtml?appType=2&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+
         DLog(@"vvvvvvvvvvvv =====%@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
-            
+
             NSString* currentAppVersion = [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前app版本号
             if ( [returnData[@"version"] floatValue] > [currentAppVersion floatValue] ) {
                 VersionUpdateViewConfig *config = [VersionUpdateViewConfig UpdateViewConfig];
@@ -171,11 +300,11 @@
                     [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
                     [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
                     [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
-                    
+
                 }else{//非强制更新 只出现一次
                     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                     if ([[user valueForKey:@"isFirst"] isEqualToString:@"second"]) {
-                        
+
                     }else{
                         VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 0, 295*kScale, kHeight-20*kScale)];
 //                        upView.backgroundColor = [UIColor cyanColor];
@@ -183,154 +312,54 @@
                         [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
                         [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
                         [user setValue:@"second" forKey:@"isFirst"];
-
                     }
-                   
-                    
                 }
-              
-              
-
             }
-
-            
-           
         }
-        
-        
-        
+
     } failureBlock:^(NSError *error) {
-        
-        
+
+
     } showHUD:NO];
-    
-    
-    
+
+
+
 }
 
 
+#pragma mark = 添加搜索 消息 定位 点击事件
 
-
--(void)netWorkIsOnLine{
-    
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    if (status == RealStatusNotReachable)
-    {
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-
-        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
-        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
-        
-    }else{
-        
-        [self setMainViewData];
-        [[GlobalHelper shareInstance] removeErrorView];
-    }
-}
-
-
-
-#pragma mark = 重新加载
-
--(void)errorLoadingBtnAction{
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    
-    if (status == RealStatusNotReachable){
-        
-    }else{
-        [self setMainViewData];
-        [[GlobalHelper shareInstance] removeErrorView];
-    }
-}
-
-
--(void)setMainViewData{
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
-    [self.view addSubview:self.tableView];
-    [self setCycleScrollViews];
-    [self.view addSubview:self.headTieleView];
-    [self.view addSubview:self.navView];
-    [self.navView addSubview:self.addressNoticeView];
-    [self addBlockAction];
-    [self setupRefresh];
-    ///更新购物车数量
-    [self requestBadNumValue];
-    
-    [self requestHotSearchData];
-    ////
-    
-
-
-    
-}
-
-
-
-#pragma mark = 添加block事件
-
--(void)addBlockAction{
-    
+-(void)addNavigationHeadBlockAction{
     __weak __typeof(self) weakSelf = self;
-    
-    #pragma mark = 分类列表点击 block事件
-    
+
+    #pragma mark = 消息点击 block事件
+
     self.navView.sortBlock = ^{
-    
-        
-        [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.navView.shadeBtn];
-        
-        [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.navView.tableView];
-        
-        weakSelf.navView.HomeArray = weakSelf.sortListMarray;
-        
-    };
-    
-    
-    ///点击分类标签进入分类列表
-    
-    
-    self.navView.selectSortIndexBlock = ^(NSInteger selectIndex) {
-        
-        [weakSelf.navView.tableView removeFromSuperview];
-        
-        [weakSelf.navView.shadeBtn removeFromSuperview];
-        
-        HomePageSortListViewController *VC = [HomePageSortListViewController new];
-        
-        VC.selelctSortLable = weakSelf.sortListMarray[selectIndex][@"dataName"];
-        
-        VC.ID = weakSelf.sortListMarray[selectIndex][@"id"];
-        
-        VC.sortListMarray = weakSelf.sortListMarray;
-    
-        
-        VC.currentLocation = weakSelf.currentLocation;
-        
-        ///记录当前附近位置信息
-    
-        
-        VC.otherAddressArray = weakSelf.otherAddressArray;
-    
-        
+
+//        MerchantViewController *VC = [MerchantViewController suspendTopPageVC];
+//        VC.hidesBottomBarWhenPushed = YES;
+//        [weakSelf.navigationController pushViewController:VC animated:YES];
+//        DLog(@"消息");
+
+        MessageCenterViewController *VC = [MessageCenterViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
         [weakSelf.navigationController pushViewController:VC animated:YES];
-    
-        
+        DLog(@"消息");
+
     };
-   
+  
 #pragma mark ============================== 搜索商品
-    
-    
+
+
     self.navView.searchBtnBlock = ^{
-    
-        
+
         NSArray *hotSeaches = [NSArray array];
         hotSeaches =  weakSelf.hotSearchMarray;
         DLog(@"====sss===== %@" , hotSeaches);
         // 2. Create a search view controller
-        
+
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品名称搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
-    
+
 
             searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
             searchViewController.showSearchResultWhenSearchBarRefocused = YES;
@@ -340,13 +369,13 @@
             searchViewController.searchResultController = sVc;
             sVc.fromSortString = @"0";
             sVc.searchText = searchText;
-            
-//   
+
+//
 //            SeacherViewController *sVc = [[SeacherViewController alloc] init];
 //            sVc.searchText = searchText;
 //            [searchViewController.navigationController pushViewController:sVc animated:YES];
 
-            
+
         }];
         searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
 
@@ -355,139 +384,62 @@
         searchViewController.showHotSearch = YES;
 //        searchViewController.searchHistories = weakSelf.hotSearchMarray;
         searchViewController.delegate = weakSelf;
-        
+
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-        
+
         // 5. Present a navigation controller
-        
+
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-        
+
         [weakSelf presentViewController:nav animated:YES completion:nil];
-    
-        
+
+
         DLog(@"sousuo");
-        
+
     };
-    
-    
+
+
 #pragma makr ==============================  选择地址
-    
-    
+
+
     _navView.selectAddressBtnBlock = ^{
-    
-    
+
         SelectAddressViewController *VC = [SelectAddressViewController new];
-        
         VC.hidesBottomBarWhenPushed = YES;
-    //            VC.currentLocation = weakSelf.currentLocation;
-    //            VC.otherAddressArray = weakSelf.otherAddressArray;
-    //
-    
+
 #pragma mark============================== 选择地址接收传值
 
         VC.selectAddressBL = ^(Location *currentLocations) {//地址传值
-        
-            weakSelf.currentLocation = currentLocations;
-            
-            DLog(@"区域=== %@" ,currentLocations.name);
-            
-            [weakSelf.navView.selectAddressBtn setTitle:currentLocations.name forState:0];
-    
-            
-            CGFloat imageWidth = weakSelf.navView.selectAddressBtn.imageView.bounds.size.width;
-    
-            
-            CGFloat labelWidth = weakSelf.navView.selectAddressBtn.titleLabel.bounds.size.width;
-            
-            weakSelf.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth);
-            
-            weakSelf.navView.selectAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth);
-            
-            DLog(@"--------------选择地址block返回---------------------------------------")
-            CGFloat y = weakSelf.tableView.contentOffset.y;
 
+            weakSelf.currentLocation = currentLocations;
+            [weakSelf.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
             if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
                         DLog(@"在范围内");
-            
                 weakSelf.isShowNoticeView = @"1";
-                noticeViewHeiht = 0;
                 [weakSelf.addressNoticeView removeFromSuperview];
-                DLog(@"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu============%f" , y);
-
-                [weakSelf scrollViewDidScroll:weakSelf.tableView];    
-                
             }else{
                 DLog(@"-------------不在");
                 weakSelf.isShowNoticeView = @"0";
-                noticeViewHeiht = 29;
-                [weakSelf.navView addSubview:weakSelf.addressNoticeView];
-                [weakSelf scrollViewDidScroll:weakSelf.tableView];
-
-
+               [weakSelf.cycleScrollView addSubview:weakSelf.addressNoticeView];
             }
-            
-            [weakSelf.tableView reloadData];
-            
         };
-    
-        
+
+
         [weakSelf.navigationController pushViewController:VC animated:YES];
-        
+
         DLog(@"选择收货地址");
-        
-    
+
+
     };
 }
 
-- (void)setupRefresh{
-    
-    //下拉刷新
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRereshing)];
-    self.tableView.mj_header  = header;
-    header.lastUpdatedTimeLabel.hidden = YES;
-    [self.tableView.mj_header beginRefreshing];
-    //上拉加载
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
-        self.tableView.mj_footer.automaticallyHidden = YES;
-}
 
-
-- (void)headerRereshing{
-    
-    totalPage=1;
-    [self requestLocation];//请求当前位置信息
-    [self requsetHomPageBannerData];
-    [self requestListData:totalPage];
-    [self requestSortListData];
-    [self.tableView.mj_header endRefreshing];
-    [self.tableView.mj_footer endRefreshing];
-    
-}
-
-
-#pragma mark=====================上拉加载============================
-
-- (void)footerRereshing{
-
-    totalPage++;
-    if (totalPage<=totalPageCount) {
-        
-        [self requestListData:totalPage];
-        [self.tableView.mj_footer endRefreshing];
-        
-    }else{
-        
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    }
-}
-
-
-
-#pragma mark = 商品banner数据
+#pragma mark = ===================商品banner轮播图数据
 
 -(void)requsetHomPageBannerData{
-    
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@" ,baseUrl ,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
          DLog(@"bannertu=====%@" ,returnData);
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
@@ -504,85 +456,104 @@
                 }
             }
             self.cycleScrollView.imageURLStringsGroup = mArray;
-        
-        
-        
-        
+
+
+
+
         }else{
-            
-        }
-      
 
-        
+        }
+
+
+
     } failureBlock:^(NSError *error) {
 
-        
+
     } showHUD:NO];
-    
-   
-    
+
+
+
+}
+
+#pragma mark = 提前请求当前定位位置信息
+
+-(void)requestLocation{
+
+    [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
+        if (isOpen == YES) {
+            [self setLocations];
+
+        }else{
+//            DLog(@"----------无定位权限-------------");
+//            [SVProgressHUD showErrorWithStatus:@"请开启定位权限"];
+           
+            [self.addressNoticeView removeFromSuperview];
+        }
+
+    }];
+
+
 }
 
 
-#pragma mark = 商品列表数据
--(void)requestListData:(NSInteger)currentPage{
-  
-    [MHAsiNetworkHandler startMonitoring];
+
+#pragma mark ======首页分类数据 =======
+
+-(void)requestHomePageSortData{
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/mobile/commodity/commodityShow?currentPage=%ld&mtype=%@" , baseUrl , currentPage,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
-        //DLog(@"商品列表== %@" ,returnData);
-       
-        NSInteger pages = [returnData[@"data"][@"page"][@"totalPage"] integerValue];
-        NSInteger pageSize = [returnData[@"data"][@"page"][@"pageSize"] integerValue];
-        NSInteger total = [returnData[@"data"][@"page"][@"totalRecords"] integerValue];
-
-
-        if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
-            
-            
-            if (currentPage == 1) {
-                [self.dataArray removeAllObjects];
-            }
-            for (NSDictionary *dic in returnData[@"data"][@"list"]) {
-                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
-                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
-                if (mainImvMarray.count!=0) {
-                    model.mainImage = [mainImvMarray firstObject];
-                }                
-                model.pages = pages;
-                model.pageSize = pageSize;
-                model.total = total;
-                [self.dataArray addObject:model];
-            }
-
-            [self.tableView reloadData];
-        }
-        
-        
-        
-    } failureBlock:^(NSError *error) {
-        
-        
-    } showHUD:NO];
-  
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
-}
-
-
-#pragma mark = 分类列表标签数据
-
--(void)requestSortListData{
-    //[MHAsiNetworkHandler startMonitoring];
-
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/rightBanner?mtype=%@" , baseUrl,mTypeIOS] params:nil successBlock:^(NSDictionary *returnData) {
-        //DLog(@"标签=== %@" ,returnData);
-        if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
-            [self.sortListMarray removeAllObjects];
-
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_home_classify?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+        DLog(@"=首页分类数据 = %@" ,returnData);
+        if ([returnData[@"status"] integerValue] == 200) {
+            [self.homePageSortDataMarray removeAllObjects];
             for (NSDictionary *dic in returnData[@"data"]) {
-                [self.sortListMarray addObject:dic];
+                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+
+                [self.homePageSortDataMarray addObject:model];
             }
-            [self.tableView reloadData];
+            ///手动添加更多分类
+            HomePageModel *model = [HomePageModel new];
+            model.classifyName = @"更多分类";
+            [self.homePageSortDataMarray addObject:model];
+            [self.mainTableView reloadData];
+        }
+        
+        [self.homePageHeadSortView setHomePageSortUIButtions:self.homePageSortDataMarray];
+
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+    
+}
+
+#pragma mark ====  一级分类标签数据 ====
+
+-(void)requestFirstLevelData{
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+   
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+        DLog(@"一级分类标签数据 = %@" ,returnData);
+        if ([returnData[@"status"] integerValue] == 200) {
+            [self.segmentTitleMarray removeAllObjects];
+            ///初始数据
+            NSArray *titleArray = @[@{@"classifyName":@"经常买"} ,@{@"classifyName":@"大家都在买"} ,@{@"classifyName":@"赛鲜精选"}];
+            for (NSDictionary *dic in titleArray) {
+                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+                [self.segmentTitleMarray addObject:model];
+            }
+            
+            
+            for (NSDictionary *dic in returnData[@"data"]) {
+                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+                NSString *bigClassifyId = dic[@"id"];
+                model.bigClassifyId = [bigClassifyId integerValue];
+                [self.segmentTitleMarray addObject:model];
+            }
+            [self.mainTableView reloadData];
         }
         
         
@@ -592,6 +563,32 @@
         
     } showHUD:NO];
     
+}
+
+#pragma mark ================== 获取播报数据
+
+-(void)requestPlayTextData{
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/roll/get_roll_order?appVersionNumber=%@&user=%@" ,baseUrl, [user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+        
+        DLog(@"获取播报数据=====%@" ,returnData);
+        if ([returnData[@"status"] integerValue] == 200) {
+            [self.PlayTextDataMarray removeAllObjects];
+            for (NSDictionary *dic in returnData[@"data"]) {
+                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+                [self.PlayTextDataMarray addObject:model];
+                
+            }
+            [self addChangeTextView];
+
+            [self.mainTableView reloadData];
+        }
+        
+    } failureBlock:^(NSError *error) {
+        
+    } showHUD:NO];
     
 }
 
@@ -600,171 +597,515 @@
 
 
 
--(UITableView*)tableView{
-    if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight-kBottomBarHeight) style:UITableViewStyleGrouped];
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        _tableView.backgroundColor = RGB(238, 238, 238, 1);
+/////////////////////////
+///
+/////////
+///////////////////////
+
+#pragma mark = =========================定位
+
+-(void)setLocations{
+    self.rhLocation = [[RHLocation alloc] init];
+    self.rhLocation.delegate = self;
+    [self.rhLocation beginUpdatingLocation];
+}
+
+- (void)locationDidEndUpdatingLocation:(Location *)location{
+    self.currentAddressSubLocality = location.subLocality;
+
+    self.currentLocation = location;
+
+    [self.showCurrentAddressBtn setTitle:location.name forState:0];
+
+    [self getAddresspoiWithLocation:location];
+
+    ///判断当前地址是否在配送范围内
+    if ([location.city isEqualToString:@"上海市"] && ![location.subLocality isEqualToString:@"崇明区"]) {
+        DLog(@"请求在范围内");
+        [self.addressNoticeView removeFromSuperview];
+        self.isShowNoticeView = @"1";
+
+
+    }else{
+        DLog(@"请求不在");
+        self.isShowNoticeView = @"0";
+        [self.cycleScrollView addSubview:self.addressNoticeView];
+
+    }
+
+
+}
+
+
+
+
+-(void)getAddresspoiWithLocation:(Location*)location{
+    self.otherAddressArray = [NSMutableArray array];
+    [self.otherAddressArray removeAllObjects];
+    //逆地理编码，请求附近兴趣点数据
+    [[DDSearchManager sharedManager] poiReGeocode:CLLocationCoordinate2DMake(location.latitude,location.longitude) returnBlock:^(NSArray<__kindof DDSearchPoi *> *pois) {
+
+
+        for (DDSearchPoi *poi in pois) {
+            poi.district = self.currentAddressSubLocality;
+            if (![self.otherAddressArray containsObject:poi]) {
+//                DLog(@"qu==== %@  %@" ,poi.district , poi.province)
+                Location *locat = [Location new];
+
+                locat.administrativeArea = poi.province;
+                locat.city = poi.city;
+                locat.subLocality = poi.district;
+                locat.longitude = poi.coordinate.longitude;
+                locat.latitude = poi.coordinate.latitude;
+                locat.name = poi.name;
+
+                [self.otherAddressArray addObject:locat];
+            }
+        }
+
+
+
+
+    }];
+
+}
+
+
+
+
+#pragma scrollDelegate
+-(void)scrollViewLeaveAtTheTop:(UIScrollView *)scrollView
+{
+    self.parentScrollView = scrollView;
+    
+    //离开顶部 主View 可以滑动
+    self.canScroll = YES;
+}
+
+-(void)scrollViewChangeTab:(UIScrollView *)scrollView
+{
+    self.parentScrollView = scrollView;
+    /*
+     * 如果已经离开顶端 切换tab parentScrollView的contentOffset 应该初始化位置
+     * 这一规则 仿简书
+     */
+    if (self.canScroll) {
+        self.parentScrollView.contentOffset = CGPointMake(0, 0);
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    /*
+     *  处理联动事件
+     */
+    
+    //获取滚动视图y值的偏移量
+    CGFloat tabOffsetY = 0;
+    CGFloat offsetY = scrollView.contentOffset.y;
+    
+    if (offsetY >=headViewHeight) {
+        
+        scrollView.contentOffset = CGPointMake(0, tabOffsetY);
+        offsetY = tabOffsetY;
+    }
+    
+    self.isTopIsCanNotMoveParentScrollView = self.isTopIsCanNotMoveMainTableView;
+    
+    
+    if (offsetY>=tabOffsetY) {
+        scrollView.contentOffset = CGPointMake(0, tabOffsetY);
+        self.isTopIsCanNotMoveMainTableView = YES;
+    }else{
+        self.isTopIsCanNotMoveMainTableView = NO;
+    }
+    
+    if (self.isTopIsCanNotMoveMainTableView != self.isTopIsCanNotMoveParentScrollView) {
+        if (!self.isTopIsCanNotMoveParentScrollView && self.isTopIsCanNotMoveMainTableView) {
+            //滑动到顶端
+            self.canScroll = NO;
+        }
+        
+        if(self.isTopIsCanNotMoveParentScrollView && !self.isTopIsCanNotMoveMainTableView){
+            //离开顶端
+            if (!self.canScroll) {
+                scrollView.contentOffset = CGPointMake(0, tabOffsetY);
+            }else{
+                self.parentScrollView.contentOffset = CGPointMake(0, tabOffsetY);
+            }
+        }
+    }else{
+        if (!self.canScroll){
+            //支持下刷新,下拉时maintableView 没有滚动到位置 parentScrollView 不进行刷新
+            CGFloat parentScrollViewOffsetY = self.parentScrollView.contentOffset.y;
+            if(parentScrollViewOffsetY >0)
+                self.parentScrollView.contentOffset = CGPointMake(0, 0);
+        }else
+        {
+            self.parentScrollView.contentOffset = CGPointMake(0, 0);
+        }
+    }
+    
+   // DLog(@"offsetY=== %f     " ,offsetY );
+    
+    if (offsetY >= -220*kScale) {
+        [UIView animateWithDuration:0.4  animations:^{
+            self.showCurrentAddressBtn.hidden = YES;
+            self.navView.selectAddressBtn.hidden = NO;
+            CGRect rect = self.navView.searchBtn.frame;
+            rect.origin.x = MaxX(self.navView.selectAddressBtn)+10*kScale;
+            rect.size.width = 210*kScale;
+            self.navView.searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, kWidth-190*kScale, 0, 0);
+            [self.navView.selectAddressBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:5*kScale];
+            
+            self.navView.searchBtn.frame = rect;
+            
+        }];
+       
+        
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            self.showCurrentAddressBtn.hidden = NO;
+            self.navView.selectAddressBtn.hidden = YES;
+            CGRect rect = self.navView.searchBtn.frame;
+            rect.origin.x = MaxX(self.navView.scanBtn)+5*kScale;
+            rect.size.width = kWidth-110*kScale;
+            self.navView.searchBtn.frame = rect;
+            self.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, kWidth-140*kScale, 0, 0);
+            
+        }];
+        
+
         
     }
-    return _tableView;
+    
+  
 }
 
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
+
+
+
+
+#pragma mark --tableDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.dataArray.count;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 135*kScale;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 1;
 }
 
-
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 0.1;
-}
-
--(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 0.1)];
-    view.backgroundColor = [UIColor whiteColor];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return view;
+    return Main_Screen_Height-64;
 }
-
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-//        [tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-//    }
+//-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+//    return <#expression#>
+//}
+//-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 200)];
+//    view.backgroundColor = [UIColor redColor];
+//    return view;
 //}
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *CellIdentifier = @"homePage_cell";//以indexPath来唯一确定cell
-
-    HomePageTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell1 == nil) {
-        cell1 = [[HomePageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone];
-        cell1.backgroundColor = [UIColor whiteColor];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    /* 添加pageView
+     * 这里可以任意替换你喜欢的pageView
+     *作者这里使用一款github较多人使用的 WMPageController 地址https://github.com/wangmchn/WMPageController
+     */
+    for (UIView *v in cell.contentView.subviews) {
+            DLog(@"v==== %@" ,v);
+            
+    
     }
-    cell1.cartBtn.tag = indexPath.row;
-    [cell1.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];
-    __weak __typeof(HomePageTableViewCell*) weakCell = cell1;
-    __weak __typeof(self) weakSelf = self;
-    HomePageModel *model = [HomePageModel new];
-    if (self.dataArray.count!=0) {
-        model = self.dataArray[indexPath.row];
-        totalPageCount = model.pages;
-    }
-    
-    //    后期可能会有此需求(商品首页回显加入购物车数量)
+    if (self.segmentTitleMarray.count >3) {
+          //  [cell.contentView addSubview:self.setPageViewControllers];
 
-//     cell1.cartView.numAddBlock = ^{///加入购物车
-//            DLog(@"加加");
-//        [weakSelf addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:indexPath cell:weakCell isFirstClick:NO tableView:weakSelf.tableView];
-//        };
-//
-//        cell1.cartView.numCutBlock = ^{///减去购物车
-//            DLog(@"渐渐");
-//            NSInteger count = [weakCell.cartView.numberLabel.text integerValue];
-//
-//            if (count>1) {
-//
-//                [self cutCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:indexPath cell:weakCell];///减去购物车
-//
-//
-//            }else{
-//
-//
-//                ///删除整个商品
-//                [self deleteProductPostDataWithProductId:model.id homePageModel:model tableView:weakSelf.tableView];
-//
-//            }
-//
-//        };
-  
+    }
+    [cell.contentView addSubview:self.pageVC.view];
     
-    [cell1 configHomePageCellWithModel:model];
-    
-    return cell1;
+    return cell;
 }
 
-#pragma mark = 加入购物车按钮
+
+#pragma mark -- setter/getter
 
 
--(void)cartBtnAction:(UIButton*)btn{
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    if ([user valueForKey:@"isLoginState"]) {
-        [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
+-(WMPageController *)pageVC{
+    if (_pageVC == nil) {
+        
+        NSMutableArray *viewControllers = [NSMutableArray array];
+        if (self.segmentTitleMarray.count >3) {
+            for (int i =0; i<self.segmentTitleMarray.count; i++) {
+                OneViewTableTableViewController * oneVc  = [OneViewTableTableViewController new];
+                oneVc.delegate = self;
+                oneVc.titleModelMarray = self.segmentTitleMarray;
+                if (i == 0) {
+                    oneVc.isFirsrEnter = 1;
+                    oneVc.isLoading = 1;
+                }
+                [viewControllers addObject:oneVc];
+                
+            }
+            NSMutableArray *titleMarray = [NSMutableArray array];
+            NSMutableArray *widthMarray = [NSMutableArray array];
+            for (HomePageModel*model in self.segmentTitleMarray) {
+                [titleMarray addObject:model.classifyName];
+                
+                ///计算文字宽度
+                CGSize textSize1 = [model.classifyName sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
+                [widthMarray addObject:[NSString stringWithFormat:@"%f" ,textSize1.width]];
+            }
+            
+            self.pageVC = [[WMPageController alloc] initWithViewControllerClasses:viewControllers andTheirTitles:titleMarray];
+            [self.pageVC setViewFrame:CGRectMake(0, 0, Main_Screen_Width, Main_Screen_Height)];
+            self.pageVC.delegate = self;
+            //self.pageVC.menuItemWidth = 100;
+            self.pageVC.itemsWidths = widthMarray;
+            self.pageVC.menuHeight = 44;
+            //self.pageVC.menuViewBottomSpace = 10;
+            self.pageVC.postNotification = YES;
+            self.pageVC.bounces = YES;
+            
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            
+            self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
+            
+                _pageVC.title = @"Line";
+                _pageVC.menuViewStyle = WMMenuViewStyleLine;
+                _pageVC.titleSizeSelected = 15;
+                _pageVC.titleSizeNormal = 15;
+                _pageVC.menuBGColor = [UIColor whiteColor];
+                _pageVC.titleColorSelected = RGB(231, 35, 36, 1);
+                _pageVC.titleColorNormal = RGB(136, 136, 136, 1);
+                _pageVC.progressColor = RGB(231, 35, 36, 1);
+                _pageVC.menuViewContentMargin = 15;
+                _pageVC.itemMargin = 15;
+            
+                [self addChildViewController:self.pageVC];
+                [self.pageVC didMoveToParentViewController:self];
+            
     }
-    if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"])
-    {
-        
-        NSIndexPath *myIndex=[self.tableView indexPathForCell:(HomePageTableViewCell*)[btn superview]];
-        HomePageTableViewCell *cell1 = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:btn.tag inSection:myIndex.section]];
-        
-        //后期可能会有此需求(商品首页回显加入购物车数量)下面一行需要删掉
-        // [cell1.cartBtn removeFromSuperview];
-        
-        if (self.dataArray.count != 0)
-        {
-            HomePageModel *model = self.dataArray[myIndex.row];
-            
-            [self addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:myIndex cell:cell1 isFirstClick:YES tableView:self.tableView];
-            
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:myIndex.row inSection:myIndex.section];
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+    }
+        return _pageVC;
+}
+
+//
+//-(UIView *)setPageViewControllers
+//{
+//    WMPageController *pageController = [self p_defaultController];
+//    pageController.title = @"Line";
+//    pageController.menuViewStyle = WMMenuViewStyleLine;
+//    pageController.titleSizeSelected = 15;
+//    pageController.titleSizeNormal = 15;
+//    pageController.menuBGColor = [UIColor whiteColor];
+//    pageController.titleColorSelected = RGB(231, 35, 36, 1);
+//    pageController.titleColorNormal = RGB(136, 136, 136, 1);
+//    pageController.progressColor = RGB(231, 35, 36, 1);
+//    pageController.menuViewContentMargin = 15;
+//    pageController.itemMargin = 15;
+//
+//    [self addChildViewController:pageController];
+//    [pageController didMoveToParentViewController:self];
+//    return pageController.view;
+//}
+//
+//- (WMPageController *)p_defaultController {
+//    if (<#condition#>) {
+//        <#statements#>
+//    }
+//    NSMutableArray *viewControllers = [NSMutableArray array];
+//    if (self.segmentTitleMarray.count >3) {
+//        for (int i =0; i<self.segmentTitleMarray.count; i++) {
+//            OneViewTableTableViewController * oneVc  = [OneViewTableTableViewController new];
+//            oneVc.delegate = self;
+//            oneVc.titleModelMarray = self.segmentTitleMarray;
+//            if (i == 0) {
+//                oneVc.isFirsrEnter = 1;
+//                oneVc.isLoading = 1;
+//            }
+//            [viewControllers addObject:oneVc];
+//
+//        }
+//        NSMutableArray *titleMarray = [NSMutableArray array];
+//        NSMutableArray *widthMarray = [NSMutableArray array];
+//        for (HomePageModel*model in self.segmentTitleMarray) {
+//            [titleMarray addObject:model.classifyName];
+//
+//            ///计算文字宽度
+//            CGSize textSize1 = [model.classifyName sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
+//            [widthMarray addObject:[NSString stringWithFormat:@"%f" ,textSize1.width]];
+//        }
+//
+//        self.pageVC = [[WMPageController alloc] initWithViewControllerClasses:viewControllers andTheirTitles:titleMarray];
+//        [self.pageVC setViewFrame:CGRectMake(0, 0, Main_Screen_Width, Main_Screen_Height)];
+//        self.pageVC.delegate = self;
+//        //self.pageVC.menuItemWidth = 100;
+//        self.pageVC.itemsWidths = widthMarray;
+//        self.pageVC.menuHeight = 44;
+//        //self.pageVC.menuViewBottomSpace = 10;
+//        self.pageVC.postNotification = YES;
+//        self.pageVC.bounces = YES;
+//
+//            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//
+//            self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
+//
+//
+//        return self.pageVC;
+//    }else{
+//        self.pageVC = [[WMPageController alloc] init];
+//        return self.pageVC;
+//    }
+//
+//}
+
+-(void)pageController:(WMPageController *)pageController didEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
+    ///发送通知给子控制器
+    if ([info[@"index"] intValue] == 0) {
+        if ([self.isleaveCurrentVc isEqualToString:@"1"]) {
+            NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+            self.isleaveCurrentVc = @"0";
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
+            NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:info[@"index"] forKey:@"selectIndex"];
+            self.isLoadingSeg = @"0";
+        }else{
+        if ([self.isLoadingSeg isEqualToString:@"1"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
+            NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:info[@"index"] forKey:@"selectIndex"];
+            self.isLoadingSeg = @"0";
+        }
             
         }
-      
-    }else
-    {
-        LoginViewController *VC = [LoginViewController new];
-        VC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:VC animated:YES];
-        
+    }else{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
+        NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        [user setValue:info[@"index"] forKey:@"selectIndex"];
+        self.isLoadingSeg = @"1";
+
+    }
    
+   
+    
+}
+
+- (void)pageController:(WMPageController *)pageController willEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info {
+    //if ([info[@"title"] length] != 0) {
+        NSLog(@"哈哈哈哈哈哈哈哈  %@  === %@ ",viewController ,info);
+        
+        
+        
+       // if ([info[@"index"] integerValue] == 0) {
+            isFirstLoading++;
+            DLog(@"isFirstLoading==== %ld" ,isFirstLoading);
+//            if (isFirstLoading != 3) {
+    
+            //}
+//        }else{
+//            ///发送通知给子控制器
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
+//        }
+        
+   // }
+    
+    
+}
+
+#pragma mark ===============添加播报视图view
+
+-(void)addChangeTextView{
+    UIImageView *playImage = [[UIImageView alloc] initWithFrame:CGRectMake(15*kScale, MaxY(self.homePageHeadSortView)+8*kScale, 35*kScale, 34*kScale)];
+    playImage.image = [UIImage imageNamed:@"saixianbobao"];
+    [self.headImageView addSubview:playImage];
+    GYChangeTextView *tView = [[GYChangeTextView alloc] initWithFrame:CGRectMake(MaxX(playImage)+25*kScale, MaxY(self.homePageHeadSortView), kWidth-140*kScale, 50*kScale)];
+    tView.delegate = self;
+    tView.backgroundColor =  RGB(238, 238, 238, 1);
+    [self.headImageView addSubview:tView];
+    //self.tView = tView;
+    NSArray * listArray = self.PlayTextDataMarray;
+    [tView animationWithTexts:listArray];
+    
+    
+}
+
+
+
+-(UIImageView *)headImageView
+{
+    if (_headImageView == nil)
+    {
+        _headImageView= [[UIImageView alloc] init];
+        _headImageView.frame=CGRectMake(0, -headViewHeight ,Main_Screen_Width,headViewHeight);
+        _headImageView.userInteractionEnabled = YES;
+        
+        
     }
+    return _headImageView;
+}
+
+
+
+-(MainTouchTableTableView *)mainTableView
+{
+    if (_mainTableView == nil)
+    {
+        _mainTableView= [[MainTouchTableTableView alloc]initWithFrame:CGRectMake(0,kBarHeight,Main_Screen_Width,Main_Screen_Height-kBarHeight)];
+        _mainTableView.delegate=self;
+        _mainTableView.dataSource=self;
+        _mainTableView.showsVerticalScrollIndicator = NO;
+        _mainTableView.contentInset = UIEdgeInsetsMake(headViewHeight,0, 0, 0);
+        _mainTableView.backgroundColor = [UIColor clearColor];
+    }
+    return _mainTableView;
 }
 
 
 
 
-#pragma mark  = 点击事件
 
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
-    VC.hidesBottomBarWhenPushed = YES;
-    if (self.dataArray.count != 0) {
-        HomePageModel *model = self.dataArray[indexPath.row];
-        VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
-       
-        [self.navigationController pushViewController:VC animated:YES];
-    }
-  
+
+
+#pragma mark ==========================首页轮播图
+
+- (void )setCycleScrollViews:(UIImageView*)headImageview{
+    
+    self.cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"banner加载"]];   //placeholder
+    self.cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
+    self.cycleScrollView.showPageControl = YES;//是否显示分页控件
+    self.cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
+    self.cycleScrollView.tag = 1;
+    
+    [headImageview addSubview:self.cycleScrollView];
 }
 
-#pragma mark = 轮播图点击事件
+
+#pragma mark ===================== 轮播图点击事件
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
-    
+
     HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
     VC.hidesBottomBarWhenPushed = YES;
-    
+
     HomePageOtherDetailsViewController *otherVC = [HomePageOtherDetailsViewController new];
     otherVC.hidesBottomBarWhenPushed = YES;
 
 
     if (self.bannerMarray.count!=0) {
         HomePageModel *model = self.bannerMarray[index];
-        
+
         DLog(@"轮播图详情页======= %@" ,model.bannerUrl);
-        
+
         if ([model.bannerUrl containsString:@"SP"]) {
             VC.fromBaner = @"1";
             VC.detailsId = model.bannerUrl;
@@ -777,69 +1118,43 @@
             [self.navigationController pushViewController:otherVC animated:YES];
 
         }
+
+    }
+
+
+}
+
+
+#pragma mark========分类视图
+-(HomePageHeadSortView *)homePageHeadSortView{
+    if (_homePageHeadSortView == nil) {
+        _homePageHeadSortView = [[HomePageHeadSortView alloc] initWithFrame:CGRectMake(0, 176*kScale, kWidth, 182*kScale)];
+        _homePageHeadSortView.backgroundColor = [UIColor whiteColor];
         
     }
-   
-    
+    return _homePageHeadSortView;
 }
 
 
 
-
-
-
-
-#pragma mark = 提前请求当前定位位置信息
-
--(void)requestLocation{
-    
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-
-//        [self setLocations];
-        
-//    });
-    [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
-        if (isOpen == YES) {
-            [self setLocations];
-
-        }else{
-//            DLog(@"----------无定位权限-------------");
-//            [SVProgressHUD showErrorWithStatus:@"请开启定位权限"];
-            [self.navView.selectAddressBtn setTitle:@" " forState:0];
-            CGFloat imageWidth = self.navView.selectAddressBtn.imageView.bounds.size.width;
-            CGFloat labelWidth = self.navView.selectAddressBtn.titleLabel.bounds.size.width;
-            self.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth);
-            self.navView.selectAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth);
-            noticeViewHeiht = 0;
-            [self.addressNoticeView removeFromSuperview];
-        }
-        
-    }];
-
-    
-}
-
-
+#pragma mark ================== navigation视图
 
 -(HomePageNavView*)navView{
     if (!_navView) {
-        _navView = [[HomePageNavView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kBarHeight+42+noticeViewHeiht)];
+        _navView = [[HomePageNavView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kBarHeight)];
         _navView.backgroundColor = RGB(236, 31, 35, 1);
-        //_navView.HomeArray = @[@"1" ,@"2"];///////////////
     }
     return _navView;
 }
-
-
+#pragma mark ================== 不在配送范围内提示视图
 -(HomePageAddressNoticeView*)addressNoticeView{
     if (!_addressNoticeView) {
-        _addressNoticeView = [[HomePageAddressNoticeView alloc] initWithFrame:CGRectMake(0, kBarHeight+42, kWidth, noticeViewHeiht)];
+        _addressNoticeView = [[HomePageAddressNoticeView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 29*kScale)];
     }
     [_addressNoticeView.noticeBtn addTarget:self action:@selector(enterBtnAction) forControlEvents:1];
     
     [_addressNoticeView.enterBtn addTarget:self action:@selector(enterBtnAction) forControlEvents:1];
-
+    
     return _addressNoticeView;
 }
 
@@ -851,24 +1166,19 @@
     
 #pragma mark= 选择地址接收传值
     __weak __typeof(self) weakSelf = self;
-
+    
     VC.selectAddressBL = ^(Location *currentLocations) {//地址传值
-//        DLog(@"区域=== %@" ,currentLocations.subLocality);
-        [self.navView.selectAddressBtn setTitle:currentLocations.name forState:0];
-        CGFloat imageWidth = self.navView.selectAddressBtn.imageView.bounds.size.width;
-        CGFloat labelWidth = self.navView.selectAddressBtn.titleLabel.bounds.size.width;
-        self.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth);
-        self.navView.selectAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth);
-
+        //        DLog(@"区域=== %@" ,currentLocations.subLocality);
+       // [self.navView.selectAddressBtn setTitle:currentLocations.name forState:0];
+        [self.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
+        
         
         if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
             DLog(@"在范围内");
             
             weakSelf.isShowNoticeView = @"1";
-            noticeViewHeiht = 0;
             [weakSelf.addressNoticeView removeFromSuperview];
             
-            [weakSelf scrollViewDidScroll:weakSelf.tableView];
             
             
             
@@ -877,203 +1187,33 @@
             DLog(@"-------------不在");
             
             weakSelf.isShowNoticeView = @"0";
-            noticeViewHeiht = 29;
-            [weakSelf scrollViewDidScroll:weakSelf.tableView];
             
             
         }
-        [weakSelf.tableView reloadData];
-
+        
     };
     
     [self.navigationController pushViewController:VC animated:YES];
     DLog(@"选择收货地址");
 }
 
-
--(void)scrollViewDidScrollToTop:(UIScrollView *)scrollView{
-    
-}
-
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-   
-    
-    if (scrollView == self.tableView) {
-        if (scrollView.contentOffset.x == 0) {
-          
-            CGFloat tableViewoffsetY = scrollView.contentOffset.y;            //
-            //DLog(@"偏移量========= %f " ,tableViewoffsetY );
-            CGFloat tempY = tableViewoffsetY;
-            
-            if ( tableViewoffsetY>=0 ) {
-                CGRect rect = self.navView.frame;
-                rect.origin.y = 0;
-                if (tempY > 42) {
-                    tempY = 42;
-                }
-                
-                rect.size.height = kBarHeight+42-tempY+noticeViewHeiht;
-                self.navView.frame = rect;
-                self.cycleScrollView.frame = CGRectMake(0, kBarHeight+42+noticeViewHeiht-tableViewoffsetY, kWidth, 176*kScale);
-                self.headTieleView.frame = CGRectMake(0, kBarHeight+42+noticeViewHeiht+176*kScale-tableViewoffsetY, kWidth, 50*kScale);
-                self.addressNoticeView.frame = CGRectMake(0, kBarHeight+42-tempY, kWidth, noticeViewHeiht);
-                
-                if (tableViewoffsetY >= 12) {
-
-                    [UIView animateWithDuration:0.5 animations:^{
-                        self.navView.searchBtn.backgroundColor = [UIColor clearColor];
-                        self.navView.searchBtn.frame = CGRectMake(MaxX(self.navView.selectAddressBtn)+15, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
-
-//                        rectSearch.origin.x = MaxX(self.navView.selectAddressBtn)+15;
-//                        rectSearch.origin.y = kStatusBarHeight;
-//                        rectSearch.size.height = kTopBarHeight;
-//                        rectSearch.size.width = kTopBarHeight;
-//                        self.navView.searchBtn.frame = rectSearch;
-                        [self.navView.searchBtn setImage:[UIImage imageNamed:@"search"] forState:0];
-                        [self.navView.searchBtn setTitle:@"" forState:0];
-                        
-                    }];
-                   
-                }else{
-
-                    [UIView animateWithDuration:0.5 animations:^{
-                        self.navView.searchBtn.frame = CGRectMake(30, MaxY(self.navView.selectAddressBtn), kWidth -60, 30);
-                        self.navView.searchBtn.backgroundColor = [UIColor whiteColor];
-                        [self.navView.searchBtn setImage:[UIImage imageNamed:@"sousuo"] forState:0];
-                        [self.navView.searchBtn setTitle:@"请输入商品名称" forState:0];
-                        
-                        //self.addressNoticeView.frame = CGRectMake(0, kBarHeight+42, kWidth, noticeViewHeiht);
-                        
-                        
-                    }];
-                    
-                }
-
-            }else if (tableViewoffsetY < 0){
-                
-                self.navView.frame = CGRectMake(0, 0-tableViewoffsetY, kWidth, kBarHeight+42+noticeViewHeiht);
-                self.cycleScrollView.frame = CGRectMake(0, kBarHeight+42+noticeViewHeiht-tableViewoffsetY, kWidth, 176*kScale);
-               // self.navView.searchBtn.frame = CGRectMake(30, MaxY(self.navView.selectAddressBtn), kWidth-60, 30);
-                
-                //self.addressNoticeView.frame = CGRectMake(0, kBarHeight+42-tableViewoffsetY, kWidth, noticeViewHeiht);
-               
-                self.headTieleView.frame = CGRectMake(0, kBarHeight+42+noticeViewHeiht+176*kScale-tableViewoffsetY, kWidth, 50*kScale);
-                
-            }
-            
-            
-            
-        }
+-(UIButton *)showCurrentAddressBtn{
+    if (_showCurrentAddressBtn == nil) {
+        _showCurrentAddressBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _showCurrentAddressBtn.frame = CGRectMake((kWidth-150*kScale)/2, 163*kScale, 150*kScale, 26*kScale);
+        _showCurrentAddressBtn.layer.cornerRadius = 13*kScale;
+        _showCurrentAddressBtn.layer.borderColor = RGB(231, 35, 36, 1).CGColor;
+        _showCurrentAddressBtn.layer.borderWidth = 1;
+        _showCurrentAddressBtn.titleLabel.font = [UIFont systemFontOfSize:11.0*kScale];
+        _showCurrentAddressBtn.backgroundColor = [UIColor whiteColor];
+        [_showCurrentAddressBtn setImage:[UIImage imageNamed:@"dingwei_red"] forState:0];
+        [_showCurrentAddressBtn setTitleColor:RGB(51, 51, 51, 1) forState:0];
+        _showCurrentAddressBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _showCurrentAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10*kScale, 0, 0);
+        _showCurrentAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 15*kScale, 0, 0);
+        [_showCurrentAddressBtn addTarget:self action:@selector(enterBtnAction) forControlEvents:1];
     }
-}
-
-
-
-
-#pragma mark = 定位
-
--(void)setLocations{
-    self.rhLocation = [[RHLocation alloc] init];
-    self.rhLocation.delegate = self;
-    [self.rhLocation beginUpdatingLocation];
-}
-
-- (void)locationDidEndUpdatingLocation:(Location *)location{
-    self.currentAddressSubLocality = location.subLocality;
-    
-    self.currentLocation = location;
-    
-    [self.navView.selectAddressBtn setTitle:location.name forState:0];
-    CGFloat imageWidth = self.navView.selectAddressBtn.imageView.bounds.size.width;
-    CGFloat labelWidth = self.navView.selectAddressBtn.titleLabel.bounds.size.width;
-    self.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth);
-    self.navView.selectAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth);
-    [self getAddresspoiWithLocation:location];
-    
-    ///判断当前地址是否在配送范围内
-    if ([location.city isEqualToString:@"上海市"] && ![location.subLocality isEqualToString:@"崇明区"]) {
-        DLog(@"请求在范围内");
-        [self.addressNoticeView removeFromSuperview];
-        self.isShowNoticeView = @"1";
-        noticeViewHeiht = 0;
-        [self scrollViewDidScroll:self.tableView];
-
-    }else{
-        DLog(@"----------ssss---请求不在");
-        self.isShowNoticeView = @"0";
-        noticeViewHeiht = 29;
-        [self.navView addSubview:self.addressNoticeView];
-
-        [self scrollViewDidScroll:self.tableView];
-    }
-   
-    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, tableViewHeadHeight+noticeViewHeiht)];
-    tableHeaderView.backgroundColor = [UIColor whiteColor];
-    
-   // _tableView.scrollIndicatorInsets = UIEdgeInsetsMake(tableViewHeadHeight+noticeViewHeiht, 0, 0, 0);
-    _tableView.tableHeaderView = tableHeaderView;
-    [self.tableView reloadData];
-    
-}
-
-
-
-
--(void)getAddresspoiWithLocation:(Location*)location{
-    self.otherAddressArray = [NSMutableArray array];
-    [self.otherAddressArray removeAllObjects];
-    //逆地理编码，请求附近兴趣点数据
-    [[DDSearchManager sharedManager] poiReGeocode:CLLocationCoordinate2DMake(location.latitude,location.longitude) returnBlock:^(NSArray<__kindof DDSearchPoi *> *pois) {
-    
-        
-        for (DDSearchPoi *poi in pois) {
-            poi.district = self.currentAddressSubLocality;
-            if (![self.otherAddressArray containsObject:poi]) {
-//                DLog(@"qu==== %@  %@" ,poi.district , poi.province)
-                Location *locat = [Location new];
-      
-                locat.administrativeArea = poi.province;
-                locat.city = poi.city;
-                locat.subLocality = poi.district;
-                locat.longitude = poi.coordinate.longitude;
-                locat.latitude = poi.coordinate.latitude;
-                locat.name = poi.name;
-
-                [self.otherAddressArray addObject:locat];
-            }
-        }
-        
-        
-        
-        
-    }];
-    
-}
-
-#pragma mark = 首页轮播图
-
-- (void )setCycleScrollViews{
-    
-    _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, kBarHeight+42+noticeViewHeiht, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"banner加载"]];   //placeholder
-    _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    _cycleScrollView.showPageControl = YES;//是否显示分页控件
-    _cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
-    _cycleScrollView.tag = 1;
-    
-    [self.view addSubview:self.cycleScrollView];
-}
-
--(homePageHeadView *)headTieleView{
-    if (!_headTieleView) {
-        _headTieleView = [[homePageHeadView alloc] initWithFrame:CGRectMake(0, MaxY(self.cycleScrollView), kWidth, 50*kScale)];
-        _headTieleView.backgroundColor = [UIColor whiteColor];
-        
-    }
-    return _headTieleView;
+    return _showCurrentAddressBtn;
 }
 
 -(void)dealloc{

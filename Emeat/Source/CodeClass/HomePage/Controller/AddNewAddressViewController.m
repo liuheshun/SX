@@ -71,7 +71,10 @@
     
     DLog(@"地址详细字典======== ==== %@" ,self.addressDic);
     [self.addressDic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [self.addressDic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [self.addressDic setValue:[user valueForKey:@"user"] forKey:@"user"];
     NSString *url;
     if (_isCanRemove == NO) {
         //DLog(@"更新地址");
@@ -115,6 +118,11 @@
     NSMutableDictionary *dic = [self checkoutData];
     
     [dic setValue:[NSString stringWithFormat:@"%ld" ,self.postMyAddressModel.id] forKey:@"shippingId"];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/del" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {

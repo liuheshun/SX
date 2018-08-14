@@ -28,7 +28,7 @@
 - (instancetype)initWithFrame:(CGRect)frame segmentView:(ZJScrollSegmentView *)segmentView parentViewController:(UIViewController *)parentViewController delegate:(id<ZJScrollPageViewDelegate>) delegate;
 
 /** 给外界可以设置ContentOffSet的方法 */
-- (void)setContentOffSet:(CGPoint)offset animated:(BOOL)animated;
+- (void)setContentOffSet:(CGPoint)offsets animated:(BOOL)animated;
 /** 给外界 重新加载内容的方法 */
 - (void)reload;
 

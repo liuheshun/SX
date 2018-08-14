@@ -146,7 +146,10 @@
     [dic setValue:self.invoicePreviewView.bankLabel.text forKey:@"invoiceCompanyBank"];
     [dic setValue:self.invoicePreviewView.bankAccountLabel.text forKey:@"invoiceCompanyBankAccount"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"保存发票信息== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];

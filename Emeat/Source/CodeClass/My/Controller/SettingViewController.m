@@ -101,7 +101,7 @@
     {
         
         [user setValue:@"0" forKey:@"isLoginState"];
-       // [user setValue:@"退出登录ticket" forKey:@"ticket"];
+       [user setValue:@"退出登录ticket" forKey:@"ticket"];
         ///购物车BadgeValue置为0
         [GlobalHelper shareInstance].shoppingCartBadgeValue = 0;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];

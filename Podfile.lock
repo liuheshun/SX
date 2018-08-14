@@ -26,7 +26,6 @@ PODS:
   - MMPopupView (1.7.2):
     - Masonry
   - MOFSPickerManager (2.0.0)
-  - PYSearch (0.8.8)
   - RealReachability (1.1.9):
     - RealReachability/Connection (= 1.1.9)
     - RealReachability/Ping (= 1.1.9)
@@ -39,6 +38,7 @@ PODS:
   - SDWebImage/Core (4.3.3)
   - SVProgressHUD (2.2.5)
   - TZImagePickerController (2.0.1)
+  - YNPageViewController (0.1.8)
   - YYModel (1.0.4)
 
 DEPENDENCIES:
@@ -52,11 +52,11 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.14.1)
   - MMPopupView
   - MOFSPickerManager
-  - PYSearch
   - RealReachability
   - SDCycleScrollView (~> 1.73)
   - SVProgressHUD (~> 2.2.2)
   - TZImagePickerController
+  - YNPageViewController (~> 0.1.8)
   - YYModel
 
 SPEC REPOS:
@@ -72,12 +72,12 @@ SPEC REPOS:
     - MJRefresh
     - MMPopupView
     - MOFSPickerManager
-    - PYSearch
     - RealReachability
     - SDCycleScrollView
     - SDWebImage
     - SVProgressHUD
     - TZImagePickerController
+    - YNPageViewController
     - YYModel
 
 SPEC CHECKSUMS:
@@ -92,14 +92,14 @@ SPEC CHECKSUMS:
   MJRefresh: 238e6a37e2dba12160ee3b79f6d2a2b26abcab42
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   MOFSPickerManager: 65973d99de9e598239d46783dc3466e76115b76f
-  PYSearch: aa3704f283c67667808de6df514c24df03f5f116
   RealReachability: a8c483900986a0f3305733961effbfbb00637a02
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TZImagePickerController: 34ecb53af8c349964394407e42b6e54e22589ebe
+  YNPageViewController: fdd2b7ad7fa9b2100f1498a532641ab826fca0d8
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 0e3ebe8930033da7adc928a35b9e4e9a94aac8e6
+PODFILE CHECKSUM: 9994291e499e811a0408bed3fc62cefb9a47e813
 
 COCOAPODS: 1.5.3

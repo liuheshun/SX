@@ -121,8 +121,9 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
     
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"订单详情===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
@@ -226,7 +227,9 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
     DLog(@"取消订单dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -268,7 +271,9 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
     DLog(@"确认收货dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/confirm" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -384,7 +389,9 @@
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [SVProgressHUD showProgress:-1 status:@"正在上传,请稍等."];
    NSString* path = [[NSString stringWithFormat:@"%@/m/auth/order/upVoucher" ,baseUrl] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -922,7 +929,9 @@
     [dic setValue:self.orderNo forKey:@"orderNo"];
     [dic setValue:imageString forKey:@"images"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/modificationVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

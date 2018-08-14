@@ -10,7 +10,6 @@ target 'Emeat' do
 
    pod 'Masonry', '~> 1.1.0'
 
-   pod "PYSearch"
 
    pod “AMapSearch-NO-IDFA”
 
@@ -32,7 +31,7 @@ target 'Emeat' do
 
    pod 'FDFullscreenPopGesture', '1.1'
 
-
+   pod 'YNPageViewController', '~> 0.1.8'
 
 end
 

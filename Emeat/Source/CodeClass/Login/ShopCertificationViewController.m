@@ -123,6 +123,8 @@
     //    [dic1 setValue:@"0" forKey:@"isDeleted"];
     [dic1 setValue:mTypeIOS forKey:@"mtype"];
 
+    [dic1 setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic1 setValue:[user valueForKey:@"user"] forKey:@"user"];
     //parentId=0
     [MHAsiNetworkHandler startMonitoring];
     NSString *url;
@@ -151,6 +153,8 @@
                     [self.navigationController popToRootViewControllerAnimated:YES];
                 }
                 
+                [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
+
             };
             NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
             

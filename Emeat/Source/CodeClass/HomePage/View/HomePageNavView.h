@@ -8,39 +8,29 @@
 
 #import <UIKit/UIKit.h>
 
-//cell 点击事件block
-typedef void(^selectSortListIndexBlock)(NSInteger selectIndex);
-
-//分类按钮点击事件block
+//消息按钮点击事件block
 typedef void(^sortBtnActionBlock)(void);
 
 
 
-@interface HomePageNavView : UIView<UITableViewDelegate,UITableViewDataSource>
+@interface HomePageNavView : UIView
+///扫一扫
+@property (nonatomic,strong) UIButton *scanBtn;
 
-@property (nonatomic,strong) UITableView *tableView;
-//阴影遮罩
-@property (nonatomic,strong) UIButton *shadeBtn;
-//接收数据源数据
-@property (strong, nonatomic) NSArray *HomeArray;
 
-//选择收货地址
+//选择地址
 @property (nonatomic,strong) UIButton *selectAddressBtn;
-//分类
-@property (nonatomic,strong) UIButton *sortBtn;
+//消息
+@property (nonatomic,strong) UIButton *messageBtn;
+//搜索按钮
+@property (nonatomic,strong) UIButton *searchBtn;
 
-@property (nonatomic,copy) selectSortListIndexBlock selectSortIndexBlock;
-//分类block
+//消息block
 @property (nonatomic,copy) sortBtnActionBlock sortBlock;
 //搜索block
 @property (nonatomic,copy) sortBtnActionBlock searchBtnBlock;
 //选择地址block
 @property (nonatomic,copy) sortBtnActionBlock selectAddressBtnBlock;
-
-
-//搜索按钮
-@property (nonatomic,strong) UIButton *searchBtn;
-
 
 
 

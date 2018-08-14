@@ -60,7 +60,9 @@
     [dic setValue:[user valueForKey:@"userId"] forKey:@"id"];
     [dic setValue:self.conmmentString forKey:@"feedBack"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"反馈=== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/feedback", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

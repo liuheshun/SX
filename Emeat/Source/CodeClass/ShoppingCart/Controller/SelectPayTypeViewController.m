@@ -290,7 +290,9 @@
     [dic setValue:@" " forKey:@"bankType"];
     [dic setValue:@" " forKey:@"transactionType"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"周期性付款====== dic == %@ 订单号===%@  支付方式==== %@ " ,dic , self.orderNo ,self.selectPayType );
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/payInfo/pay" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -437,6 +439,8 @@
         [dic setValue:orderNo forKey:@"orderNo"];
         [dic setValue:mTypeIOS forKey:@"mtype"];
         
+        [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+        [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
         DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
         ///auth/order/mpayed
         

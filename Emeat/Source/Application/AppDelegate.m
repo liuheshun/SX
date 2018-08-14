@@ -22,6 +22,9 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <CommonCrypto/CommonDigest.h>
 
+////
+#import "MerchantViewController.h"
+
 
 //高德地图key
 static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
@@ -838,6 +841,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 
 -(void)requestTicketReturnWeChatReturnDic:(NSMutableDictionary *)WeChatReturnDic{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
     NSString *nonce = [self ret32bitString];//随机数
     NSString *curTime = [self dateTransformToTimeSp];
@@ -849,7 +853,8 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     [dic setObject:curTime forKey:@"curTime"];
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/getticket.html" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -884,11 +889,17 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:dicData[@"openid"] forKey:@"openId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"微信名字==%@",dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/checkOpenId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"微信登陆=======  %@",returnData);
+        [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
+
         //获得当前控制器
         UITabBarController *tabBarController = ( UITabBarController*)self.window.rootViewController;
         UINavigationController * nav = (UINavigationController *)tabBarController.selectedViewController;
@@ -911,7 +922,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                 
                 [currentVC.navigationController popViewControllerAnimated:YES];
                 
-            }else{//未认证
+            }else{//店铺未认证
                 [currentVC.navigationController pushViewController:[ShopCertificationViewController new] animated:YES];
             }
             

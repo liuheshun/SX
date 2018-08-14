@@ -20,5 +20,20 @@
 ///传值  记录当前位置信息
 @property (nonatomic,strong) Location *currentLocation;
 @property (nonatomic,strong) NSMutableArray *otherAddressArray;
+///
+
+
+@property (nonatomic,assign) NSInteger selectIndex;
+
+///首页分类id传值
+@property (nonatomic,assign) NSInteger sortId;
+///分类类型 STAIR(0,"一级",""),VFP(1,"二级","");
+@property (nonatomic,strong) NSString *sortType;
+
+///所以一级分类(model)
+@property (nonatomic,strong) NSMutableArray *segmentTitleMarray;
+
+
+
 
 @end

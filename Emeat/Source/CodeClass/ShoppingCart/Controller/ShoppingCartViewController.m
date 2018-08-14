@@ -77,12 +77,20 @@
   
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 
-
+    //禁止页面左侧滑动返回，注意，如果仅仅需要禁止此单个页面返回，还需要在viewWillDisapper下开放侧滑权限
+    // 禁用返回手势
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
     
-
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    // 开启返回手势
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
+}
 
 
 
@@ -94,10 +102,10 @@
     self.ShoppingListDataMarray = [NSMutableArray array];
     self.navItem.title = @"购物车";
     [self netWorkIsOnLine];
-    ///禁止右滑返回
-    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
-    [self.view addGestureRecognizer:pan];
+//    ///禁止右滑返回
+//    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+//    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+//    [self.view addGestureRecognizer:pan];
 }
 
 
@@ -237,7 +245,9 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取订单信息 dic == %@" ,dic);
     NSMutableArray *orderListMarray = [NSMutableArray array];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -297,7 +307,9 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setObject:commodityId forKey:@"commodityId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     ///商品
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/select" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"选中商品结算=== %@ " , returnData);
@@ -355,7 +367,9 @@
     [dic setObject:ticket forKey:@"ticket"];
     [dic setObject:commodityId forKey:@"commodityId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
    
     //[dic setObject:productIds forKey:@"productIds"];
 
@@ -434,6 +448,8 @@
     [dic setValue:mTypeIOS forKey:@"mtype"];
 
     
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     //[dic setObject:productIds forKey:@"productIds"];
     
     ///商品
@@ -492,7 +508,9 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setObject:ticket forKey:@"ticket"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     ///商品
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/select_all" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"全部选中商品结算=== %@   %@" ,returnData[@"msg"] , returnData);
@@ -572,7 +590,9 @@
     [dic setObject:checkSum forKey:@"checkSum"];
     [dic setValue:ticket forKey:@"ticket"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/list" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         [self.ShoppingListDataMarray removeAllObjects];
 
@@ -623,8 +643,10 @@
 #pragma mark = 猜你喜欢
 
 -(void)requestGuesslikeData{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
-    NSString *dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@" ,baseUrl,mTypeIOS] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+   
+    NSString *dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [MHNetworkManager getRequstWithURL:dataUTF8 params:nil successBlock:^(NSDictionary *returnData) {
         DLog(@"猜你喜欢 === %@" ,returnData);
         
@@ -677,7 +699,9 @@
     [dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"commodityId"];
     [dic setObject:@"1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"猜你喜欢====dic====%@   %ld" ,dic ,productId);
     
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -728,7 +752,9 @@
 //    [dic setObject:@"7" forKey:@"userId"];
     [dic setObject:[NSString stringWithFormat:@"%ld",productId] forKey:@"commodityIds"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/delete_product", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"删除 == %@" , returnData);
@@ -791,7 +817,9 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setValue:[NSString stringWithFormat:@"%ld" ,quatity] forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/update" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"购物车加减购物车===%@" ,returnData);

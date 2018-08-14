@@ -167,6 +167,8 @@
         [dic setValue:mTypeIOS forKey:@"mtype"];
         [dic setValue:[NSString stringWithFormat:@"%ld" ,userId] forKey:@"customerId"];
         
+        [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+        [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
         
         urlStr = [NSString stringWithFormat:@"%@/m/search/searchCommodityByPosition" ,baseUrl];
 //        urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
@@ -179,7 +181,9 @@
         [dic setValue:mTypeIOS forKey:@"mtype"];
         [dic setValue:[NSString stringWithFormat:@"%ld" ,userId] forKey:@"customerId"];
         
-        urlStr = [NSString stringWithFormat:@"%@/m/search/searchCommodity" ,baseUrl];
+        [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+        [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+        urlStr = [NSString stringWithFormat:@"%@/m/search/get_commodity_by_name" ,baseUrl];
         //urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     }
    
@@ -212,7 +216,7 @@
         }
         
         if (self.searchDataMarray.count == 0) {
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"没有找到您要找的商品,换一个试试吧" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"没有找到您要找的商品,换一个试试吧" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
             
         }
         else
@@ -402,7 +406,9 @@
     
     [dic setObject:@"1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         //
@@ -507,7 +513,9 @@
     [dic setObject:[NSString stringWithFormat:@"%ld" , productId] forKey:@"commodityId"];
     [dic setObject:@"1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/update" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
 
         DLog(@"减去购物车==  %@" ,returnData);
@@ -551,7 +559,9 @@
 
     [dic setObject:@"1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200) {

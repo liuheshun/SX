@@ -40,7 +40,10 @@
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"开票历史订单== %@" ,dic );
     
 
