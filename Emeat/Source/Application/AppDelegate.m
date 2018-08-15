@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "HomePageViewController.h"
+#import "PersonalPageViewController.h"
+
 #import "HomePageDetailsViewController.h"
 #import "HomePageOtherDetailsViewController.h"
 #import "PhoneNumberCertificationViewController.h"
@@ -1035,11 +1037,20 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 -(UITabBarController*)setTabBar{
     
+    PersonalPageViewController *PersonalPageVC = [[PersonalPageViewController alloc] init];
+    UINavigationController *navPersonalPageVC = [[UINavigationController alloc] initWithRootViewController:PersonalPageVC];
+    PersonalPageVC.tabBarItem.title = @"个人专区";
+    PersonalPageVC.tabBarItem.image = [[UIImage imageNamed:@"个人专区"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] ;
+    PersonalPageVC.tabBarItem.selectedImage = [[UIImage imageNamed:@"个人专区选中"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+    
+    
+    
     HomePageViewController *homePageVC = [[HomePageViewController alloc] init];
     UINavigationController *navHomePageVC = [[UINavigationController alloc] initWithRootViewController:homePageVC];
     homePageVC.tabBarItem.title = @"商户专区";
-    homePageVC.tabBarItem.image = [[UIImage imageNamed:@"首页_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] ;
-    homePageVC.tabBarItem.selectedImage = [[UIImage imageNamed:@"首页_sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    homePageVC.tabBarItem.image = [[UIImage imageNamed:@"商户专区"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] ;
+    homePageVC.tabBarItem.selectedImage = [[UIImage imageNamed:@"商户专区选中"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
     
     
@@ -1057,7 +1068,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
     self.tabBars = [[UITabBarController alloc] init];
     self.tabBars.delegate = self;
-    self.tabBars.viewControllers = @[navHomePageVC  , navCartVC , navMyVC];
+    self.tabBars.viewControllers = @[navPersonalPageVC,navHomePageVC  , navCartVC , navMyVC];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(236, 31, 35, 1), NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     return  self.tabBars;

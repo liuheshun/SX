@@ -77,7 +77,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navItem.title = @"商品详情";
     [self showNavBarItemRight];
     isClickGoods = YES;
@@ -173,8 +173,9 @@
                 }
               
             }else{
-                [self alertMessage:returnData[@"msg"] willDo:nil];
-            }            
+
+                [[GlobalHelper shareInstance] emptyViewNoticeText:@"您浏览的商品已下架, 换一个吧" NoticeImageString:@"下架商品" viewWidth:56*kScale viewHeight:65*kScale UITableView:(UITableView*)self.view isShowBottomBtn:NO bottomBtnTitle:@""];
+            }
         [SVProgressHUD dismiss];
 
         } failureBlock:^(NSError *error) {

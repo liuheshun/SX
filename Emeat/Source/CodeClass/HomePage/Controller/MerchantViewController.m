@@ -200,7 +200,7 @@
             [homePageSortDataMarray addObject:model];
         }
         
-        [self.homePageHeadSortView setHomePageSortUIButtions:homePageSortDataMarray];
+       // [self.homePageHeadSortView setHomePageSortUIButtions:homePageSortDataMarray];
         
         
     } failureBlock:^(NSError *error) {

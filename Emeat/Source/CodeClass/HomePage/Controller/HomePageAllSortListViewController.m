@@ -316,6 +316,9 @@
                 
             }
             if (self.isFirsrEnter == 1) {
+                if (self.sortId == 9999) {
+                    self.titleIndexs = 3;
+                }
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSelectedIndex" object:[NSString stringWithFormat:@"%ld", self.titleIndexs]];
                 
             }
@@ -889,6 +892,7 @@
             cell1.textLabel.text = model.dataName;
             cell1.textLabel.backgroundColor = [UIColor clearColor];
             cell1.textLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+            cell1.textLabel.numberOfLines = 2;
             cell1.textLabel.textColor = RGB(51, 51, 51, 1);
         }
         

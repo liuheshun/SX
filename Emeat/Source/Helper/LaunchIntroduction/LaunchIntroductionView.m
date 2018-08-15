@@ -165,8 +165,8 @@ NSString *storyboard;
         self.alpha = 0;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self removeFromSuperview];
-            //后期加上
-            [self addNewUserView];
+            //后期加上 新手引导
+            //[self addNewUserView];
         });
         
     }];

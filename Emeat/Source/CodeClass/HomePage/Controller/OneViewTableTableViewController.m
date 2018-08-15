@@ -748,6 +748,7 @@
                 HomePageModel *model = self.secondaryMarray[indexPath.row];
                 secondCell.textLabel.text = model.dataName;
                 secondCell.textLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+                secondCell.textLabel.numberOfLines = 2;
                 secondCell.textLabel.textColor = RGB(51, 51, 51, 1);
 
             }

@@ -84,6 +84,8 @@
 
 ///显示当前定位
 @property (nonatomic,strong) UIButton *showCurrentAddressBtn;
+@property (nonatomic,strong) UILabel *showCurrentAddressLabel;
+
 
 ///是否已加载segment
 @property (nonatomic,strong) NSString *isLoadingSeg;
@@ -94,6 +96,7 @@
 
 @property (nonatomic,assign) NSInteger selectIndex;
 
+@property (nonatomic,strong) NSString *defaultIndex;
 
 @end
 
@@ -118,7 +121,6 @@
     
 
     [self requestBadNumValue];
-    [self requestLocation];//请求当前位置信息
     [self requestFirstLevelData];
     [self requestHomePageSortData];
     [self requestPlayTextData];
@@ -130,7 +132,9 @@
 -(void)viewDidDisappear:(BOOL)animated{
     self.isLoadingSeg = @"1";
     self.isleaveCurrentVc = @"1";
-    [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressBtn.titleLabel.text;
+//    [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressl.titleLabel.text;
+    [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressLabel.text;
+
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -140,7 +144,8 @@
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    
+    [self requestLocation];//请求当前位置信息
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSelectIndexss:)name:@"selectIndex" object:nil];
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -152,6 +157,7 @@
    // self.selectIndex = 0;
     self.isLoadingSeg = @"1";
     self.isleaveCurrentVc = @"0";
+    self.defaultIndex = @"1";
     self.sortListMarray = [NSMutableArray array];
     self.dataArray = [NSMutableArray array];
     self.bannerMarray = [NSMutableArray array];
@@ -232,6 +238,11 @@
         VC.segmentTitleMarray = weakSelf.segmentTitleMarray;
         VC.sortId = model.bigClassifyId;
         VC.sortType = model.type;
+        if (index == 9) {
+            VC.sortId = 9999;
+            VC.sortType = @"STAIR";
+        }
+       
         VC.hidesBottomBarWhenPushed = YES;
         [weakSelf.navigationController pushViewController:VC animated:YES];
     };
@@ -412,7 +423,9 @@
         VC.selectAddressBL = ^(Location *currentLocations) {//地址传值
 
             weakSelf.currentLocation = currentLocations;
-            [weakSelf.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
+           // [weakSelf.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
+            weakSelf.showCurrentAddressLabel.text = currentLocations.name;
+
             if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
                         DLog(@"在范围内");
                 weakSelf.isShowNoticeView = @"1";
@@ -615,8 +628,8 @@
 
     self.currentLocation = location;
 
-    [self.showCurrentAddressBtn setTitle:location.name forState:0];
-
+   // [self.showCurrentAddressBtn setTitle:location.name forState:0];
+    self.showCurrentAddressLabel.text = location.name;
     [self getAddresspoiWithLocation:location];
 
     ///判断当前地址是否在配送范围内
@@ -746,7 +759,7 @@
         }
     }
     
-   // DLog(@"offsetY=== %f     " ,offsetY );
+    DLog(@"offsetY=== %f     " ,offsetY );
     
     if (offsetY >= -220*kScale) {
         [UIView animateWithDuration:0.4  animations:^{
@@ -768,10 +781,15 @@
             self.showCurrentAddressBtn.hidden = NO;
             self.navView.selectAddressBtn.hidden = YES;
             CGRect rect = self.navView.searchBtn.frame;
-            rect.origin.x = MaxX(self.navView.scanBtn)+5*kScale;
+            
+           // CGRectMake(60*kScale,kStatusBarHeight+5, kWidth-110*kScale, 30*kScale);
+            
+            rect.origin.x = 60*kScale;
+            rect.origin.y = kStatusBarHeight+5;
+            rect.size.height = 30*kScale;
             rect.size.width = kWidth-110*kScale;
             self.navView.searchBtn.frame = rect;
-            self.navView.selectAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, kWidth-140*kScale, 0, 0);
+            self.navView.searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, kWidth-140*kScale, 0, 0);
             
         }];
         
@@ -828,7 +846,7 @@
 
     }
     [cell.contentView addSubview:self.pageVC.view];
-    
+
     return cell;
 }
 
@@ -858,7 +876,7 @@
                 [titleMarray addObject:model.classifyName];
                 
                 ///计算文字宽度
-                CGSize textSize1 = [model.classifyName sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
+                CGSize textSize1 = [model.classifyName sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15*kScale]}];
                 [widthMarray addObject:[NSString stringWithFormat:@"%f" ,textSize1.width]];
             }
             
@@ -873,97 +891,30 @@
             self.pageVC.bounces = YES;
             
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            
-            self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
-            
+//
+//            self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
+            self.pageVC.selectIndex = 0;
                 _pageVC.title = @"Line";
                 _pageVC.menuViewStyle = WMMenuViewStyleLine;
-                _pageVC.titleSizeSelected = 15;
-                _pageVC.titleSizeNormal = 15;
+                _pageVC.titleSizeSelected = 15*kScale;
+                _pageVC.titleSizeNormal = 15*kScale;
                 _pageVC.menuBGColor = [UIColor whiteColor];
                 _pageVC.titleColorSelected = RGB(231, 35, 36, 1);
                 _pageVC.titleColorNormal = RGB(136, 136, 136, 1);
                 _pageVC.progressColor = RGB(231, 35, 36, 1);
-                _pageVC.menuViewContentMargin = 15;
+                //_pageVC.menuViewContentMargin = 15;
                 _pageVC.itemMargin = 15;
             
                 [self addChildViewController:self.pageVC];
                 [self.pageVC didMoveToParentViewController:self];
+
             
     }
     }
+
         return _pageVC;
 }
 
-//
-//-(UIView *)setPageViewControllers
-//{
-//    WMPageController *pageController = [self p_defaultController];
-//    pageController.title = @"Line";
-//    pageController.menuViewStyle = WMMenuViewStyleLine;
-//    pageController.titleSizeSelected = 15;
-//    pageController.titleSizeNormal = 15;
-//    pageController.menuBGColor = [UIColor whiteColor];
-//    pageController.titleColorSelected = RGB(231, 35, 36, 1);
-//    pageController.titleColorNormal = RGB(136, 136, 136, 1);
-//    pageController.progressColor = RGB(231, 35, 36, 1);
-//    pageController.menuViewContentMargin = 15;
-//    pageController.itemMargin = 15;
-//
-//    [self addChildViewController:pageController];
-//    [pageController didMoveToParentViewController:self];
-//    return pageController.view;
-//}
-//
-//- (WMPageController *)p_defaultController {
-//    if (<#condition#>) {
-//        <#statements#>
-//    }
-//    NSMutableArray *viewControllers = [NSMutableArray array];
-//    if (self.segmentTitleMarray.count >3) {
-//        for (int i =0; i<self.segmentTitleMarray.count; i++) {
-//            OneViewTableTableViewController * oneVc  = [OneViewTableTableViewController new];
-//            oneVc.delegate = self;
-//            oneVc.titleModelMarray = self.segmentTitleMarray;
-//            if (i == 0) {
-//                oneVc.isFirsrEnter = 1;
-//                oneVc.isLoading = 1;
-//            }
-//            [viewControllers addObject:oneVc];
-//
-//        }
-//        NSMutableArray *titleMarray = [NSMutableArray array];
-//        NSMutableArray *widthMarray = [NSMutableArray array];
-//        for (HomePageModel*model in self.segmentTitleMarray) {
-//            [titleMarray addObject:model.classifyName];
-//
-//            ///计算文字宽度
-//            CGSize textSize1 = [model.classifyName sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
-//            [widthMarray addObject:[NSString stringWithFormat:@"%f" ,textSize1.width]];
-//        }
-//
-//        self.pageVC = [[WMPageController alloc] initWithViewControllerClasses:viewControllers andTheirTitles:titleMarray];
-//        [self.pageVC setViewFrame:CGRectMake(0, 0, Main_Screen_Width, Main_Screen_Height)];
-//        self.pageVC.delegate = self;
-//        //self.pageVC.menuItemWidth = 100;
-//        self.pageVC.itemsWidths = widthMarray;
-//        self.pageVC.menuHeight = 44;
-//        //self.pageVC.menuViewBottomSpace = 10;
-//        self.pageVC.postNotification = YES;
-//        self.pageVC.bounces = YES;
-//
-//            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//
-//            self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
-//
-//
-//        return self.pageVC;
-//    }else{
-//        self.pageVC = [[WMPageController alloc] init];
-//        return self.pageVC;
-//    }
-//
-//}
 
 -(void)pageController:(WMPageController *)pageController didEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
     ///发送通知给子控制器
@@ -994,32 +945,22 @@
         self.isLoadingSeg = @"1";
 
     }
-   
-   
-    
 }
 
 - (void)pageController:(WMPageController *)pageController willEnterViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info {
-    //if ([info[@"title"] length] != 0) {
-        NSLog(@"哈哈哈哈哈哈哈哈  %@  === %@ ",viewController ,info);
-        
-        
-        
-       // if ([info[@"index"] integerValue] == 0) {
-            isFirstLoading++;
-            DLog(@"isFirstLoading==== %ld" ,isFirstLoading);
-//            if (isFirstLoading != 3) {
-    
-            //}
-//        }else{
-//            ///发送通知给子控制器
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
-//        }
-        
-   // }
-    
+   
+}
+
+- (void)pageController:(WMPageController *)pageController lazyLoadViewController:(__kindof UIViewController *)viewController withInfo:(NSDictionary *)info{
+    if ([self.defaultIndex isEqualToString:@"1"]) {
+        self.pageVC.selectIndex = 1;
+        self.defaultIndex = @"2";
+    }
+
     
 }
+
+
 
 #pragma mark ===============添加播报视图view
 
@@ -1170,8 +1111,8 @@
     VC.selectAddressBL = ^(Location *currentLocations) {//地址传值
         //        DLog(@"区域=== %@" ,currentLocations.subLocality);
        // [self.navView.selectAddressBtn setTitle:currentLocations.name forState:0];
-        [self.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
-        
+       // [self.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
+        self.showCurrentAddressLabel.text = currentLocations.name;
         
         if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
             DLog(@"在范围内");
@@ -1206,11 +1147,28 @@
         _showCurrentAddressBtn.layer.borderWidth = 1;
         _showCurrentAddressBtn.titleLabel.font = [UIFont systemFontOfSize:11.0*kScale];
         _showCurrentAddressBtn.backgroundColor = [UIColor whiteColor];
-        [_showCurrentAddressBtn setImage:[UIImage imageNamed:@"dingwei_red"] forState:0];
+      //  [_showCurrentAddressBtn setImage:[UIImage imageNamed:@"dingwei_red"] forState:0];
         [_showCurrentAddressBtn setTitleColor:RGB(51, 51, 51, 1) forState:0];
-        _showCurrentAddressBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _showCurrentAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10*kScale, 0, 0);
-        _showCurrentAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 15*kScale, 0, 0);
+        _showCurrentAddressBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        //_showCurrentAddressBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10*kScale, 0, 0);
+        UIImageView *imv = [[UIImageView alloc] initWithFrame:CGRectMake(5*kScale, 5*kScale, 14*kScale, 16*kScale)];
+       // imv.backgroundColor = [UIColor cyanColor];
+        imv.image = [UIImage imageNamed:@"dingwei_red"];
+        [_showCurrentAddressBtn addSubview:imv];
+        
+        self.showCurrentAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(MaxX(imv)+5, 0, 150-38, 26)];
+        //self.showCurrentAddressLabel.backgroundColor = [UIColor redColor];
+        self.showCurrentAddressLabel.font = [UIFont systemFontOfSize:13.0f*kScale];
+        self.showCurrentAddressLabel.textColor = RGB(51, 51, 51, 1);
+        self.showCurrentAddressLabel.textAlignment = NSTextAlignmentCenter;
+        self.showCurrentAddressLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;    //中间的内容以……方式省略，显示头尾的文字内容。
+
+        [_showCurrentAddressBtn addSubview:self.showCurrentAddressLabel];
+        
+        
+        _showCurrentAddressBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 21*kScale, 0, 0);
+       
+        
         [_showCurrentAddressBtn addTarget:self action:@selector(enterBtnAction) forControlEvents:1];
     }
     return _showCurrentAddressBtn;

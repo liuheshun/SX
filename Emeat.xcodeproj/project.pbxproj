@@ -36,6 +36,7 @@
 		16285FD320FC3E050095E261 /* ShareImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD220FC3E050095E261 /* ShareImageView.m */; };
 		16285FD620FC82ED0095E261 /* ShareImageBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD520FC82ED0095E261 /* ShareImageBottomView.m */; };
 		16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16311B0B20909FB1005B2277 /* JMHoledView.m */; };
+		163C9EF8212276B600E367EE /* PersonalPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 163C9EF7212276B600E367EE /* PersonalPageViewController.m */; };
 		1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA7F1FCE938900F7162C /* SortListSegmentView.m */; };
 		1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA851FCFE0FF00F7162C /* SeacherViewController.m */; };
 		1646C32F1FC801A6000552A1 /* HomePageNavSortTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C32E1FC801A6000552A1 /* HomePageNavSortTableViewCell.m */; };
@@ -307,6 +308,8 @@
 		162D6E1E20F5922C00292D7E /* com.lxbox.Emeat.NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.lxbox.Emeat.NotificationService.entitlements; sourceTree = "<group>"; };
 		16311B0A20909FB1005B2277 /* JMHoledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMHoledView.h; sourceTree = "<group>"; };
 		16311B0B20909FB1005B2277 /* JMHoledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMHoledView.m; sourceTree = "<group>"; };
+		163C9EF6212276B600E367EE /* PersonalPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalPageViewController.h; sourceTree = "<group>"; };
+		163C9EF7212276B600E367EE /* PersonalPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalPageViewController.m; sourceTree = "<group>"; };
 		1643DA7E1FCE938900F7162C /* SortListSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortListSegmentView.h; sourceTree = "<group>"; };
 		1643DA7F1FCE938900F7162C /* SortListSegmentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortListSegmentView.m; sourceTree = "<group>"; };
 		1643DA841FCFE0FF00F7162C /* SeacherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SeacherViewController.h; sourceTree = "<group>"; };
@@ -777,6 +780,39 @@
 			path = NoviceUserGuideView;
 			sourceTree = "<group>";
 		};
+		163C9EF22122764A00E367EE /* Personal */ = {
+			isa = PBXGroup;
+			children = (
+				163C9EF42122769C00E367EE /* Controller */,
+				163C9EF52122769C00E367EE /* Model */,
+				163C9EF32122769C00E367EE /* View */,
+			);
+			path = Personal;
+			sourceTree = "<group>";
+		};
+		163C9EF32122769C00E367EE /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		163C9EF42122769C00E367EE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				163C9EF6212276B600E367EE /* PersonalPageViewController.h */,
+				163C9EF7212276B600E367EE /* PersonalPageViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		163C9EF52122769C00E367EE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		165581042008F86500F33D6B /* PaySDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -1070,6 +1106,7 @@
 		16CFD7221FB2A6F20015F2C1 /* CodeClass */ = {
 			isa = PBXGroup;
 			children = (
+				163C9EF22122764A00E367EE /* Personal */,
 				16F3A3B420B7DF7A00ACDED8 /* PushMessage */,
 				165581042008F86500F33D6B /* PaySDK */,
 				16D950C31FF3752100DBC7B8 /* Login */,
@@ -1877,6 +1914,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */,
+				163C9EF8212276B600E367EE /* PersonalPageViewController.m in Sources */,
 				16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */,
 				16F3A3B720B7DFB300ACDED8 /* MessageCenterViewController.m in Sources */,
 				1610A96D211196890050335B /* WMProgressView.m in Sources */,
