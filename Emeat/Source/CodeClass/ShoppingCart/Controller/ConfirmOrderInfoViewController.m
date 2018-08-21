@@ -18,6 +18,7 @@
 #import "MMMyCustomView.h"
 #import "SliceService ViewController.h"
 
+#import "CardCenterViewController.h"
 
 @interface ConfirmOrderInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -27,6 +28,11 @@
 
 ///头部地址视图
 @property (nonatomic,strong)  ConfirmOrderInfoAddressHeadView *headView;
+///底部视图
+@property (nonatomic,strong)  ConfirmOrderInfoFootView *orderInfoFootView ;
+
+
+
 ///收货地址id
 @property (nonatomic,strong) NSString *shoppingId;
 ///订单数据源
@@ -42,6 +48,8 @@
 ///所选切片服务费用
 @property (nonatomic,strong) NSString *slicePrices;
 
+///优惠券id
+@property (nonatomic,strong) NSString *ticketId;
 
 @end
 
@@ -60,7 +68,7 @@
     self.navItem.title = @"确认订单";
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:@"" forKey:@"conmmentString"];
-    
+    self.ticketId = @" ";
     self.serviceName = @"不需要分切";
     self.serviceType = @"NO_SERVICE";
     [MMPopupWindow sharedWindow].touchWildToHide = YES;
@@ -99,11 +107,17 @@
         [dic setValue:self.shoppingId forKey:@"shippingId"];
         [dic setValue:self.conmmentStr forKey:@"comment"];
         [dic setValue:mTypeIOS forKey:@"mtype"];
-        [dic setValue:self.serviceType forKey:@"serviceType"];
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         
         [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
         [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+
+            [dic setValue:self.ticketId forKey:@"ticketId"];
+        [dic setValue:self.serviceType forKey:@"serviceType"];
+
+    
+        
+        
         DLog(@"q确认订单信息 dic == %@" ,dic);
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -122,25 +136,12 @@
             }else{
                
 
-                MMMyCustomView *alertView = [[MMMyCustomView alloc] initWithConfirmTitle:@"认证提示" detail:@"您的店铺还未通过认证，请耐心等待工作人员与您联系，客服热线 4001106111。"];
+                MMMyCustomView *alertView = [[MMMyCustomView alloc] initWithConfirmTitle:@"错误提示" detail:returnData[@"msg"]];
                 alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
                 alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
                 [alertView show];
                 
-//                MMPopupCompletionBlock completeBlock = ^(MMPopupView *popupView, BOOL finished){
-//                    NSLog(@"animation complete");
-//                    
-//                };
-//                MMPopupItemHandler block = ^(NSInteger index){
-//                    NSLog(@"clickd %@ button",@(index));
-//                };
-//                NSArray *items =
-//                @[MMItemMake(@"Done", MMItemTypeNormal, block),
-//                  MMItemMake(@"Cancel", MMItemTypeNormal, block)];
-//                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"sss" detail:@"gsfesfs" items:items];
-//                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
-//                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
-//                [alertView show];
+
                 
 
             }
@@ -245,24 +246,25 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 4) {
-        return 120*kScale;
+        return 205*kScale;
     }
     return 0.1;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (section == 4) {
-        ConfirmOrderInfoFootView *view = [[ConfirmOrderInfoFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 80*kScale)];
+       self.orderInfoFootView = [[ConfirmOrderInfoFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 80*kScale)];
+        [self.orderInfoFootView.cardUseBtn addTarget:self action:@selector(selectCardAction) forControlEvents:1];
         if (self.orderListMarray.count != 0) {
             ShoppingCartModel *model = [self.orderListMarray firstObject];
             model.slicePrices = self.slicePrices;
-            [view configFootViewWithShoppingModel:model];
+            [self.orderInfoFootView configFootViewWithShoppingModel:model];
             
             [self.bottomView.rightBottomBtn setTitle:@"确认订单" forState:0];
             [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.needTotalPrices] forState:0];
         }
-        view.backgroundColor = [UIColor whiteColor];
-        return view;
+        self.orderInfoFootView.backgroundColor = [UIColor whiteColor];
+        return self.orderInfoFootView;
         
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10*kScale)];
@@ -349,7 +351,35 @@
     return _headView;
 }
 
-#pragma mark  = 点击事件
+
+#pragma mark ==================选择优惠券点击事件
+
+-(void)selectCardAction{
+    CardCenterViewController *VC = [CardCenterViewController new];
+    VC.isFromCardCenter = @"0";
+    [self.navigationController pushViewController:VC animated:YES];
+    
+    VC.selectCardPrice = ^(NSMutableArray *selectCardMarray) {
+        CardModel *model = [selectCardMarray firstObject];
+        
+//        self.orderInfoFootView.cardPricesLab.text = [NSString stringWithFormat:@"- %.2f" ,(CGFloat)model.amount/100];
+//        self.orderInfoFootView.cardAddPricesLab.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)model.amount/100];
+//
+//        [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.productTotalPrice] forState:0];
+//        
+//        [self.orderInfoFootView.cardUseBtn setTitle:model.ticketName forState:0];
+
+        
+        self.ticketId = [NSString stringWithFormat:@"%ld" ,model.cardId];
+        
+        [self getOrderInfoDataServiceType:self.serviceType TicketId:self.ticketId];
+        
+    };
+    
+    DLog(@"选择优惠券");
+}
+
+#pragma mark  ==================== 点击事件
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -383,15 +413,16 @@
         SliceService_ViewController *VC = [SliceService_ViewController new];
         __weak __typeof(self) weakSelf = self;
 
-        VC.returnSelectSliceBlock = ^(NSString *SliceStr, NSString *serviceType, NSString *slicePices, NSString *totalPrice) {
-            
+#pragma mark ===============切片服务回调
         
-            
-            
+        VC.returnSelectSliceBlock = ^(NSString *SliceStr, NSString *serviceType, NSString *slicePices, NSString *totalPrice) {
+
+            self.serviceType = serviceType;
+            [self getOrderInfoDataServiceType:serviceType TicketId:self.ticketId];
             DLog(@"所选服务---------== %@" ,totalPrice);
-            
+
             ShoppingCartModel *model = [self.orderListMarray firstObject];
-            
+
             model.needTotalPrices = [NSString stringWithFormat:@"%.2f" ,(CGFloat) [totalPrice integerValue]/100] ;
 //            [self.orderListMarray removeAllObjects];
 //            [self.orderListMarray addObject:model];
@@ -399,7 +430,7 @@
             weakSelf.serviceName = SliceStr;
             weakSelf.serviceType = serviceType;
             weakSelf.slicePrices = slicePices;
-            [weakSelf.tableView reloadData];
+          //  [weakSelf.tableView reloadData];
         };
         [self.navigationController pushViewController:VC animated:YES];
     }
@@ -425,6 +456,72 @@
     
 }
 
+
+#pragma mark = =获取订单信息(去结算)
+
+-(void)getOrderInfoDataServiceType:(NSString*)serviceType TicketId:(NSString*)ticketId{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dic = [self checkoutData];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:serviceType forKey:@"serviceType"];
+    [dic setValue:ticketId forKey:@"ticketId"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    DLog(@"获取订单信息 dic == %@" ,dic);
+    NSMutableArray *orderListMarray = [NSMutableArray array];
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
+        
+        if ([returnData[@"status"] integerValue] == 200)
+        {
+            
+            
+            NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
+
+            NSString *servicePrice = returnData[@"data"][@"servicePrice"];
+            NSInteger  amount = [returnData[@"data"][@"ticket"][@"amount"] integerValue];
+            NSString *ticketName = returnData[@"data"][@"ticket"][@"ticketName"];
+            NSInteger cardId = [returnData[@"data"][@"ticket"][@"id"] integerValue];
+            
+            for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                model.productTotalPrice = productTotalPrice;
+                model.servicePrice = servicePrice;
+                model.needTotalPrices = productTotalPrice;
+                model.ticketName = ticketName;
+                model.amount = amount;
+                model.cardId = cardId;
+                [orderListMarray addObject:model];
+            }
+            
+            self.orderListMarray = orderListMarray;
+            [SVProgressHUD dismiss];
+            
+            
+            [self.tableView reloadData];
+            
+//            ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController new];
+//            VC.hidesBottomBarWhenPushed = YES;
+//            VC.orderListMarray = orderListMarray;
+//            [self.navigationController pushViewController:VC animated:YES];
+            NSLog(@"去结算");
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
+        }
+        
+        
+    } failureBlock:^(NSError *error) {
+        DLog(@"获取订单信息err0r=== %@  " ,error);
+        
+    } showHUD:NO];
+    
+    
+}
 
 
 

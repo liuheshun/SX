@@ -86,6 +86,7 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+    [SVProgressHUD dismiss];
     // 开启返回手势
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
@@ -233,25 +234,17 @@
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *ticket = [user valueForKey:@"ticket"];
-    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-    NSString *nonce = [self ret32bitString];//随机数
-    NSString *curTime = [self dateTransformToTimeSp];
-    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-    
-    [dic setObject:secret forKey:@"secret"];
-    [dic setObject:nonce forKey:@"nonce"];
-    [dic setObject:curTime forKey:@"curTime"];
-    [dic setObject:checkSum forKey:@"checkSum"];
-    [dic setObject:ticket forKey:@"ticket"];
+    dic = [self checkoutData];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-    
+    [dic setValue:@"NO_SERVICE" forKey:@"serviceType"];
+    [dic setValue:@"" forKey:@"ticketId"];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     DLog(@"获取订单信息 dic == %@" ,dic);
     NSMutableArray *orderListMarray = [NSMutableArray array];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
+        DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
+
         if ([returnData[@"status"] integerValue] == 200)
         {
             
@@ -272,7 +265,6 @@
             VC.orderListMarray = orderListMarray;
             [self.navigationController pushViewController:VC animated:YES];
             NSLog(@"去结算");
-            DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         }
         else
         {

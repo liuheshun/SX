@@ -185,6 +185,8 @@
             footModel.netPrice = [returnData[@"data"][@"orderMoney"][@"netPrice"] integerValue];
 
             footModel.returnMoneySum = [returnData[@"data"][@"orderMoney"][@"returnMoneySum"] integerValue];
+            footModel.amount = [returnData[@"data"][@"ticket"][@"ticket"][@"amount"] integerValue];
+
             [self.footViewOrderInfoMarray addObject:footModel];
             [self.view addSubview:self.tableView];
             [self.view addSubview:self.orderInfoBottomView];////////
@@ -864,20 +866,20 @@
         
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
         if ( orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
-            return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale +35*kScale+30*kScale;
+            return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale +35*kScale+30*kScale +40*kScale;
 
         }else{
-            return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale;
+            return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale +40*kScale;
 
         }
     }
     
-    return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale;
+    return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale+40*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
    
-    self.myOrderDetailsStatusFootView = [[MyOrderDetailsStatusFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 269*kScale+10*kScale+20*kScale)];
+    self.myOrderDetailsStatusFootView = [[MyOrderDetailsStatusFootView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 269*kScale+10*kScale+20*kScale+40)];
     self.myOrderDetailsStatusFootView.backgroundColor = RGB(238, 238, 238, 1);
     if (self.footViewOrderInfoMarray.count != 0)
     {

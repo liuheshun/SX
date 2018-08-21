@@ -141,7 +141,17 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
  
     NSDictionary *dic = self.titleMarray[indexPath.section];
-    [self requestSliceServeMoneyDataServiceType:dic[@"types"] ServiceName:dic[@"name"]];
+    
+    DLog(@"qieqieiieieiiei==== %@" ,dic);
+    self.returnSelectSliceBlock(dic[@"name"] ,dic[@"types"] , @"" , @"");
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+    
+    
+    
+    
+    //[self requestSliceServeMoneyDataServiceType:dic[@"types"] ServiceName:dic[@"name"]];
    
     
 }

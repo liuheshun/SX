@@ -17,7 +17,7 @@
 #import "BDImagePicker.h"
 #import "MHUploadParam.h"
 #import "ShopCertificationViewController.h"
-
+#import "CardCenterViewController.h"
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -581,14 +581,14 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 1) {
-        return 3;
+        return 4;
     }else if (section == 2){
         return 1;
     }
     return 0;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 45;
+    return 45*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -637,8 +637,8 @@
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *imvArray = @[@"dingwei" , @"kefu" , @"shouhou-1"];
-    NSArray *titleArray = @[@"收货地址管理" , @"联系客服" ,@"售后服务"];
+    NSArray *imvArray = @[@"dingwei" ,@"卡券中心", @"kefu" , @"shouhou-1"];
+    NSArray *titleArray = @[@"收货地址管理" ,@"卡券中心", @"联系客服" ,@"售后服务"];
     UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"my_cell"];
     if (cell1 == nil) {
         cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"my_cell"];
@@ -680,6 +680,20 @@
             }
             
         }else if (indexPath.row == 1){
+            if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
+                CardCenterViewController *VC = [CardCenterViewController new];
+                VC.isFromCardCenter = @"1";
+                VC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:VC animated:YES];
+                
+                
+            }else{
+                LoginViewController *VC = [LoginViewController new];
+                VC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:VC animated:YES];
+            }
+        
+        }else if (indexPath.row == 2){
             DLog(@"联系客服");
             NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"4001106111"];
             UIWebView * callWebview = [[UIWebView alloc] init];
@@ -689,7 +703,7 @@
 //            ContactServiceViewController *VC = [ContactServiceViewController new];
 //            VC.hidesBottomBarWhenPushed = YES;
 //            [self.navigationController pushViewController:VC animated:YES];
-        }else if (indexPath.row == 2){
+        }else if (indexPath.row == 3){
             
             
             AfterServiceViewController *VC = [AfterServiceViewController new];

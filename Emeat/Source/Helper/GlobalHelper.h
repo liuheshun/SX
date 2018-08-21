@@ -58,7 +58,8 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 
 
 @property (nonatomic,strong) NSString *isEnterDetails;
-
+////商户专区首页分类数组
+@property (nonatomic,strong) NSMutableArray *SortMarray;
 
 
 

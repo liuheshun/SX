@@ -33,8 +33,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:)name:kRealReachabilityChangedNotification object:nil];
    // self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-
-   
+  
 }
 
 
@@ -419,6 +418,23 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 }
 
 
+#pragma mark ==================时间戳转日期字符串
+
+-(NSString*)returnTimeStringWithTimeStamp:(NSString*)timeStamp{
+    
+    
+        // timeStampString 是服务器返回的13位时间戳
+        NSString *timeStampString  = timeStamp;
+        // iOS 生成的时间戳是10位
+        NSTimeInterval interval    =[timeStampString doubleValue] / 1000.0;
+        NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *dateString       = [formatter stringFromDate: date];
+        NSLog(@"服务器返回的时间戳对应的时间是:%@",dateString);
+    
+    return dateString;
+}
 
 
 
@@ -510,8 +526,8 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark == =校验数据
-
+#pragma mark == ====校验数据
+///校验数据
 -(NSMutableDictionary*)checkoutData{
     
     
@@ -713,7 +729,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     dic = [self checkoutData];
-    [dic setObject:[NSString stringWithFormat:@"%ld",productId] forKey:@"commodityIds"];
+    [dic setObject:[NSString stringWithFormat:@"%ld",(long)productId] forKey:@"commodityIds"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];

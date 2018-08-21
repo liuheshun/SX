@@ -78,9 +78,20 @@
 ///加工耗材费
 @property (nonatomic,strong) NSString *slicePrices;
 
+///
+@property (nonatomic,strong) NSString *servicePrice;
+
 
 ///商品状态
 @property (nonatomic,strong) NSString *priceTypes;
+
+//代金券价格
+@property (nonatomic,assign) NSInteger amount;
+///代金券名称
+@property (nonatomic,strong) NSString *ticketName;
+///代金券id
+@property (nonatomic,assign) NSInteger cardId;
+
 
 
 @end

@@ -62,6 +62,7 @@
 #import "MMAlertView.h"
 #import "MMMyCustomView.h"
 #import "InvoiceDetailsModel.h"
+#import "CardModel.h"
 
 
 
@@ -74,6 +75,7 @@
 #import "OrderModel.h"
 #import "ZJScrollPageView.h"
 
+#import "WebViewJavascriptBridge.h"
 
 
 

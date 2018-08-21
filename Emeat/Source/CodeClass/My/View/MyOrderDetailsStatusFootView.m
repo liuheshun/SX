@@ -20,7 +20,12 @@
         [self.footTopBgView addSubview:self.sendPricesCount];
         [self.footTopBgView addSubview:self.selicePricesLab];
         [self.footTopBgView addSubview:self.selicePricesCount];
+        [self.footTopBgView addSubview:self.cardPricePlaceholderLab];
+        [self.footTopBgView addSubview:self.cardPricesLab];
 
+        
+        
+        
         [self.footTopBgView addSubview:self.orderPayStatus];
         [self.footTopBgView addSubview:self.orderPayPrices];
         
@@ -233,7 +238,7 @@
             make.top.equalTo(self.mas_top).with.offset(0);
             make.left.equalTo(self.mas_left).with.offset(0);
             make.width.equalTo(self);
-            make.height.equalTo(@(93*kScale+110*kScale+30*kScale));
+            make.height.equalTo(@(93*kScale+110*kScale+30*kScale+40*kScale));
         }];
        
         [self updateConstraintsIfNeeded];
@@ -284,7 +289,9 @@
     self.sendPricesCount.text = @"¥ 0.00";
     self.selicePricesLab.text = @"加工耗材费";
     self.selicePricesCount.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)[model.servicePrice integerValue]/100];
+    self.cardPricePlaceholderLab.text = @"卡券抵扣";
     
+     self.cardPricesLab.text =[NSString stringWithFormat:@"¥ %.2f" , (CGFloat)model.amount/100];
     
     self.orderPayPrices.text =[NSString stringWithFormat:@"¥ %@" , model.payment];
     
@@ -396,6 +403,34 @@
     }
     return _selicePricesCount;
 }
+
+
+///代金券折扣
+-(UILabel *)cardPricePlaceholderLab{
+    if (!_cardPricePlaceholderLab) {
+        _cardPricePlaceholderLab = [[UILabel alloc] init];
+        _cardPricePlaceholderLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _cardPricePlaceholderLab.textAlignment = NSTextAlignmentLeft;
+        _cardPricePlaceholderLab.textColor = RGB(138, 138, 138, 1);
+    }
+    return _cardPricePlaceholderLab;
+}
+
+
+
+
+-(UILabel *)cardPricesLab{
+    if (!_cardPricesLab) {
+        _cardPricesLab = [[UILabel alloc] init];
+        _cardPricesLab.font = [UIFont systemFontOfSize:15.0f*kScale];
+        _cardPricesLab.textAlignment = NSTextAlignmentRight;
+        _cardPricesLab.textColor = RGB(138, 138, 138, 1);
+    }
+    return _cardPricesLab;
+}
+
+
+
 
 -(UILabel *)orderPayStatus{
     if (!_orderPayStatus) {
@@ -545,7 +580,7 @@
         make.top.equalTo(self.mas_top).with.offset(0);
         make.left.equalTo(self.mas_left).with.offset(0);
         make.width.equalTo(self);
-        make.height.equalTo(@(93*kScale + 35*kScale));
+        make.height.equalTo(@(93*kScale + 35*kScale+40*kScale));
     }];
     
     [self.orderAllPricesLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -593,8 +628,30 @@
         make.height.equalTo(@(15*kScale));
     }];
     
-    [self.orderPayPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+    //优惠券
+    
+    [self.cardPricePlaceholderLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.selicePricesCount.mas_bottom).with.offset(15*kScale);
+        make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+        make.width.equalTo(@(90*kScale));
+        make.height.equalTo(@(15*kScale));
+    }];
+    
+    
+    [self.cardPricesLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.selicePricesCount.mas_bottom).with.offset(15*kScale);
+        make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+        make.width.equalTo(@(120*kScale));
+        make.height.equalTo(@(15*kScale));
+    }];
+    
+    
+    
+    
+    
+    
+    [self.orderPayPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.cardPricesLab.mas_bottom).with.offset(15*kScale);
         make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
         make.width.equalTo(@(60*kScale));
         make.height.equalTo(@(15*kScale));
@@ -602,7 +659,7 @@
     
     
     [self.orderPayStatus mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.selicePricesCount.mas_bottom).with.offset(15*kScale);
+        make.top.equalTo(self.cardPricesLab.mas_bottom).with.offset(15*kScale);
         make.right.equalTo(self.orderPayPrices.mas_left).with.offset(-5*kScale);
         make.width.equalTo(@(120*kScale));
         make.height.equalTo(@(15*kScale));

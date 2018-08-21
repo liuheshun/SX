@@ -151,6 +151,9 @@
 ///outCount //出库总量
 @property (nonatomic,assign) NSInteger outCount;
 
+///优惠券金额
+@property (nonatomic,assign) NSInteger amount;
+
 
 ///退货原因
 //@property (nonatomic,strong) NSString * refundReason;

@@ -101,7 +101,8 @@
     
     SGPageTitleViewConfigure *configure = [SGPageTitleViewConfigure pageTitleViewConfigure];
     //configure.indicatorAdditionalWidth = 10; // 说明：指示器额外增加的宽度，不设置，指示器宽度为标题文字宽度；若设置无限大，则指示器宽度为按钮宽度
-    
+    configure.titleColor = RGB(51, 51, 51, 1);
+    configure.titleSelectedColor = RGB(236, 31, 35, 1);
     /// pageTitleView
     self.pageTitleView = [SGPageTitleView pageTitleViewWithFrame:CGRectMake(0, pageTitleViewY, self.view.frame.size.width, 44) delegate:self titleNames:titleArr configure:configure];
     //self.pageTitleView.selectedIndex = 0;

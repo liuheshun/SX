@@ -25,6 +25,12 @@ typedef void(^ReturnDeleteClickBlcok)(NSInteger clickIndex);
 @property (nonatomic,strong) UILabel *selicePricesLab;
 @property (nonatomic,strong) UILabel *selicePricesCount;
 
+///卡券折扣
+@property (nonatomic,strong) UILabel *cardPricePlaceholderLab;
+@property (nonatomic,strong) UILabel *cardPricesLab;
+
+
+
 
 @property (nonatomic,strong) UILabel *orderPayStatus;
 @property (nonatomic,strong) UILabel *orderPayPrices;

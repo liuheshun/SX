@@ -33,6 +33,11 @@ target 'Emeat' do
 
    pod 'YNPageViewController', '~> 0.1.8'
 
+   pod 'WebViewJavascriptBridge', '~> 6.0.3'
+
+
+
+
 end
 
 

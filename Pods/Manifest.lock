@@ -38,6 +38,7 @@ PODS:
   - SDWebImage/Core (4.3.3)
   - SVProgressHUD (2.2.5)
   - TZImagePickerController (2.0.1)
+  - WebViewJavascriptBridge (6.0.3)
   - YNPageViewController (0.1.8)
   - YYModel (1.0.4)
 
@@ -56,6 +57,7 @@ DEPENDENCIES:
   - SDCycleScrollView (~> 1.73)
   - SVProgressHUD (~> 2.2.2)
   - TZImagePickerController
+  - WebViewJavascriptBridge (~> 6.0.3)
   - YNPageViewController (~> 0.1.8)
   - YYModel
 
@@ -77,6 +79,7 @@ SPEC REPOS:
     - SDWebImage
     - SVProgressHUD
     - TZImagePickerController
+    - WebViewJavascriptBridge
     - YNPageViewController
     - YYModel
 
@@ -97,9 +100,10 @@ SPEC CHECKSUMS:
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TZImagePickerController: 34ecb53af8c349964394407e42b6e54e22589ebe
+  WebViewJavascriptBridge: 7f5bc4d3581e672e8f32bd0f812d54bc69bb8e29
   YNPageViewController: fdd2b7ad7fa9b2100f1498a532641ab826fca0d8
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 9994291e499e811a0408bed3fc62cefb9a47e813
+PODFILE CHECKSUM: c9cd3c6b7737268f07495a7b1bf69202b2e5e539
 
 COCOAPODS: 1.5.3

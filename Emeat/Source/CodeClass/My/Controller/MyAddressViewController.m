@@ -25,6 +25,7 @@
     
     [self getMyAddressData];
 
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

@@ -80,6 +80,11 @@ typedef void(^clickRightItemBlock)(void);
 -(NSMutableDictionary*)checkoutData;
     
 
+#pragma mark ============时间戳转时间
+-(NSString*)returnTimeStringWithTimeStamp:(NSString*)timeStamp;
+
+
+
 #pragma mark = 加入购物车数据
 
 -(void)addCartPostDataWithProductId:(NSInteger)productId homePageModel:(HomePageModel*)model NSIndexPath:(NSIndexPath*)indexPath cell:(HomePageTableViewCell*)weakCell isFirstClick:(BOOL)isFirst tableView:(UITableView*)tableView;

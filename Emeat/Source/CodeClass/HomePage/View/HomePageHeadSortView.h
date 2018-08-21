@@ -17,6 +17,9 @@ typedef void(^ReturnClickSortTitleIndex)(NSInteger index ,NSString*sortTitle);
 @property (nonatomic,strong) UIButton *sortBtn;
 
 @property (nonatomic,copy) ReturnClickSortTitleIndex returnClickSortIndex;
+@property (nonatomic,strong) UIImageView *image;
+@property (nonatomic,strong) UILabel *label;
+
 
 
 -(void)setHomePageSortUIButtions:(NSMutableArray*)BtnMarray;

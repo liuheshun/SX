@@ -107,7 +107,7 @@
     }else{///下架
         self.selectBtn.userInteractionEnabled = NO;
         model.productChecked = 0;
-        [self.selectBtn setImage:[UIImage imageNamed:@"xiajia"] forState:UIControlStateNormal];
+        [self.selectBtn setImage:[UIImage imageNamed:@"已下架"] forState:UIControlStateNormal];
         self.productPrice.textColor = RGB(136, 136, 136, 1);
         self.nameLabel.textColor = RGB(136, 136, 136, 1);
         

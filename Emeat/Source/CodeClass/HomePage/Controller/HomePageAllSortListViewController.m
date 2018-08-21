@@ -316,6 +316,9 @@
                 
             }
             if (self.isFirsrEnter == 1) {
+                if (self.sortId == 9999) {
+                    self.titleIndexs = 3;
+                }
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSelectedIndex" object:[NSString stringWithFormat:@"%ld", self.titleIndexs]];
                 
             }
@@ -607,7 +610,7 @@
         _mainRightTableView.delegate = self;
         _mainRightTableView.dataSource = self;
         [_mainRightTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        _mainRightTableView.backgroundColor =  RGB(238, 238, 238, 1);;
+        _mainRightTableView.backgroundColor =  [UIColor whiteColor];
     }
     return _mainRightTableView;
 }
@@ -725,10 +728,10 @@
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (self.titleIndexs <3) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 100*kScale)];
-        view.backgroundColor = RGB(238, 238, 238, 1);
+        view.backgroundColor = [UIColor whiteColor];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(0, 0, kWidth, 100*kScale);
-        btn.backgroundColor = RGB(238, 238, 238, 1);
+        btn.backgroundColor = [UIColor whiteColor];
         [btn setTitle:@"  没有商品啦~告诉我你想买点啥" forState:0];
         [btn setTitleColor:RGB(136, 136, 136, 1) forState:0];
         btn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
@@ -753,10 +756,10 @@
         }
        
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth-85*kScale, 100*kScale)];
-        view.backgroundColor = RGB(238, 238, 238, 1);
+        view.backgroundColor = [UIColor whiteColor];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(0, 0, kWidth-85*kScale, 100*kScale);
-        btn.backgroundColor = RGB(238, 238, 238, 1);
+        btn.backgroundColor = [UIColor whiteColor];
         [btn setTitle:@"  没有商品啦~告诉我你想买点啥" forState:0];
         [btn setTitleColor:RGB(136, 136, 136, 1) forState:0];
         btn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
@@ -889,6 +892,7 @@
             cell1.textLabel.text = model.dataName;
             cell1.textLabel.backgroundColor = [UIColor clearColor];
             cell1.textLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+            cell1.textLabel.numberOfLines = 2;
             cell1.textLabel.textColor = RGB(51, 51, 51, 1);
         }
         

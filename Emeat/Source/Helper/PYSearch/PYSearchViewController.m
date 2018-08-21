@@ -484,9 +484,9 @@
 {
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = title;
-    titleLabel.font = [UIFont systemFontOfSize:13];
+    titleLabel.font = [UIFont systemFontOfSize:15*kScale];
     titleLabel.tag = 1;
-    titleLabel.textColor = PYTextColor;
+    titleLabel.textColor = RGB(51, 51, 51, 1);
     [titleLabel sizeToFit];
     titleLabel.py_x = 0;
     titleLabel.py_y = 0;
@@ -1329,7 +1329,7 @@
 
     }
     cell.backgroundColor = [UIColor whiteColor];
-    DLog(@"%ld" ,self.dataMarray.count);
+//    DLog(@"%ld" ,self.dataMarray.count);
     if (self.dataMarray.count != 0) {
         cell.cartBtn.tag = indexPath.row;
         [cell.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];

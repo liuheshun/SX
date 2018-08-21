@@ -100,8 +100,25 @@
     else if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"])
     {
         
-        [user setValue:@"0" forKey:@"isLoginState"];
-       [user setValue:@"退出登录ticket" forKey:@"ticket"];
+        NSUserDefaults *defatluts = [NSUserDefaults standardUserDefaults];
+        
+        NSDictionary *dictionary = [defatluts dictionaryRepresentation];
+        
+        for(NSString *key in [dictionary allKeys]){
+            
+            [defatluts removeObjectForKey:key];
+            
+            [defatluts synchronize];
+            
+        }
+        
+
+//        
+//        [user setValue:@"0" forKey:@"isLoginState"];
+//       [user setValue:@"退出登录ticket" forKey:@"ticket"];
+//        [user setValue:@"" forKey:@"user"];
+
+        
         ///购物车BadgeValue置为0
         [GlobalHelper shareInstance].shoppingCartBadgeValue = 0;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];

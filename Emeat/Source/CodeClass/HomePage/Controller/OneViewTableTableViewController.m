@@ -122,10 +122,17 @@
         if ([self.sss isEqualToString:@"1"]) {
             [GlobalHelper shareInstance].merchantsIsLoginStated = @"1";
             [GlobalHelper shareInstance].isMerchantsIsLoginEnter = @"1";
-            self.baseURLString = [NSString stringWithFormat:@"%@/m/auth/user/get_often_commodity" , baseUrl];
-            [self requestOftenListData:totalPage BaseURLString:self.baseURLString totalPage:1];
-            self.sss = @"2";
-            self.isLoading = 1;
+            
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.baseURLString = [NSString stringWithFormat:@"%@/m/auth/user/get_often_commodity" , baseUrl];
+                [self requestOftenListData:totalPage BaseURLString:self.baseURLString totalPage:1];
+                self.sss = @"2";
+                self.isLoading = 1;
+                
+            });
+            
+           
 
         }
        
@@ -748,6 +755,7 @@
                 HomePageModel *model = self.secondaryMarray[indexPath.row];
                 secondCell.textLabel.text = model.dataName;
                 secondCell.textLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+                secondCell.textLabel.numberOfLines = 2;
                 secondCell.textLabel.textColor = RGB(51, 51, 51, 1);
 
             }
