@@ -113,6 +113,9 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    
+    [self requestStoreStatedData];///账号是否登录 认证
+    
     self.levelStatedSelectIndex = 10000;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRefreshData:) name:@"sortRefresh" object:@"one"];
@@ -284,6 +287,40 @@
         [self.myTableView.mj_footer endRefreshingWithNoMoreData];
     }
 }
+
+
+-(void)requestStoreStatedData{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    DLog(@"账号店铺是否登录认证= %@" ,dic);
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/auth/mobile/store/get_store" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        DLog(@"账号店铺是否登录认证= %@" ,returnData);
+
+        
+    } failureBlock:^(NSError *error) {
+        DLog(@"账号店铺是否登录认证= %@" ,error);
+
+    } showHUD:NO];
+    
+    
+}
+
+
 
 
 #pragma mark  =====根据一级分类id 查询数据(二级分类,商品数据(默认选中的二级分类商品))
@@ -741,6 +778,7 @@
     if (self.indexs>=3) {
         
         if (tableView == self.secondTableView) {
+            ///左侧分类
             UITableViewCell *secondCell = [tableView dequeueReusableCellWithIdentifier:@"secondcell"];
             if (secondCell == nil) {
                 secondCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"secondcell"];
@@ -762,7 +800,7 @@
             
             return secondCell;
         }else{
-        
+        ///右侧商品列表
         NSString *CellIdentifier = [NSString stringWithFormat:@"right_cell_%ld" ,indexPath.row];//以indexPath来唯一确定cell
         
         HomePageSortListTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -777,6 +815,8 @@
         if (self.dataArray.count!=0) {
             HomePageModel *model =  self.dataArray[indexPath.row];
             totalPageCount = model.pages;
+        ///标记商户专区
+            model.goodsTypes = @"1";
             [cell1 configCellWithModel:model];
             if (indexPath.row == self.dataArray.count -1) {
                 self.feedBackBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -798,7 +838,9 @@
         }
         
     }else{
-        NSString *CellIdentifier = [NSString stringWithFormat:@"CellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
+        
+        ///前三个固定分类商品列表
+        NSString *CellIdentifier = [NSString stringWithFormat:@"sCellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
         
         HomePageTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell1 == nil) {
@@ -812,8 +854,21 @@
         if (self.dataArray.count!=0) {
              HomePageModel *model =  self.dataArray[indexPath.row];
              totalPageCount = model.pages;
-             [cell1 configHomePageCellWithModel:model];
+            model.goodsTypes = @"1";
+            ///赋值
+            [cell1 configHomePageCellWithModel:model];
             
+            ///是否可以查看价格
+            
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            
+            if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+                
+            }else{
+                ///点击查看价格点击事件
+                [cell1.newsPriceBtn addTarget:self action:@selector(checkPricesAction) forControlEvents:1];
+            }
+            ///反馈
             if (indexPath.row == self.dataArray.count -1) {
                 self.feedBackBtn = [UIButton buttonWithType:UIButtonTypeCustom];
                 self.feedBackBtn.frame = CGRectMake(0, 135*kScale, kWidth, 100*kScale);
@@ -832,6 +887,15 @@
         
         return cell1;
     }
+}
+
+
+#pragma mark ==============查看价格
+
+-(void)checkPricesAction{
+    
+    DLog(@"前三个固定分类查看价格" );
+    
 }
 
 
@@ -1084,10 +1148,10 @@
             }
             DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
             
-            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/4*2, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
+            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/5*3, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
                 
-                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[2];
+                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[3];
                 [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
             }];
             [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];
@@ -1141,7 +1205,7 @@
                 VC.hidesBottomBarWhenPushed = YES;
                 HomePageModel *model = self.dataArray[indexPath.row];
                 VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
-                
+                VC.isFromBORC = @"b";
                 [self.navigationController pushViewController:VC animated:YES];
             }
         }
@@ -1153,7 +1217,8 @@
             VC.hidesBottomBarWhenPushed = YES;
             HomePageModel *model = self.dataArray[indexPath.row];
             VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
-    
+            VC.isFromBORC = @"b";
+
             [self.navigationController pushViewController:VC animated:YES];
         }
     }

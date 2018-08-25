@@ -131,11 +131,31 @@
         DLog(@"详情返回结果=== %@" ,returnData);
             if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
                 
+               
+                
                 HomePageModel *bannerModel = [HomePageModel yy_modelWithJSON:returnData[@"data"]];
                 [GlobalHelper shareInstance].homePageDetailsId = [NSString stringWithFormat:@"%ld" ,bannerModel.id];
 
                 CGSize r = [bannerModel.commodityDesc boundingRectWithSize:CGSizeMake(kWidth-30*kScale, 1000*kScale) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
-                self.headViewHeiht = (650)*kScale +r.height;
+                
+                if ([self.isFromBORC isEqualToString:@"c"]) {
+                    bannerModel.isFromBORC = @"c";
+                    self.headViewHeiht = (610)*kScale +r.height;
+
+                    if ([self.isPackage isEqualToString:@"1"]) {
+                        bannerModel.isPackage = @"1";
+                    }else{
+                        bannerModel.isPackage = @"0";
+                    }
+                    
+                }else if ([self.isFromBORC isEqualToString:@"b"]){
+                    bannerModel.isFromBORC = @"b";
+                    self.headViewHeiht = (650)*kScale +r.height;
+
+                }
+                
+                
+                
                 if (bannerModel) {
                     [self.headDataArray addObject:bannerModel];
                     self.bannerDataArray = [NSMutableArray arrayWithArray:[bannerModel.commodityBanner componentsSeparatedByString:@","]];
@@ -412,7 +432,8 @@
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-            self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, self.headViewHeiht)];
+        
+        self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, self.headViewHeiht)];
 //            [self.headView setSDCycleScrollView:self.bannerDataArray];
         
         
@@ -425,7 +446,7 @@
         self.cycleScrollView = cycleScrollView;
         
         
-        
+        ///头部赋值
         if (self.headDataArray.count!=0) {
             HomePageModel *model = self.headDataArray[section];
             [self.headView configHeadViewWithModel:model];
@@ -445,6 +466,7 @@
             };
         
 
+        ///切换规格
         self.headView.returnSelectIndex = ^(NSInteger selectIndex) {
             HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[selectIndex];
             weakSelf.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId] ;

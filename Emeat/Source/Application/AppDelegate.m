@@ -922,9 +922,14 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             NSDictionary *data = returnData[@"data"];
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
                 
+                //记录店铺认证
+                [user setValue:@"1" forKey:@"approve"];
+
                 [currentVC.navigationController popViewControllerAnimated:YES];
                 
             }else{//店铺未认证
+                
+                [user setValue:@"1" forKey:@"approve"];
                 [currentVC.navigationController pushViewController:[ShopCertificationViewController new] animated:YES];
             }
             
@@ -1077,15 +1082,11 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
     self.tabBars = [[UITabBarController alloc] init];
     self.tabBars.delegate = self;
-<<<<<<< .merge_file_7vqZfO
-//    self.tabBars.viewControllers = @[navPersonalPageVC,navHomePageVC  , navCartVC , navMyVC];
-    
-    self.tabBars.viewControllers = @[navHomePageVC  , navCartVC , navMyVC];
-
-    
-=======
     self.tabBars.viewControllers = @[navPersonalPageVC,navHomePageVC  , navCartVC , navMyVC];
->>>>>>> .merge_file_2TIlRz
+    
+    //self.tabBars.viewControllers = @[navHomePageVC  , navCartVC , navMyVC];
+
+
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(236, 31, 35, 1), NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     return  self.tabBars;

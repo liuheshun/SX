@@ -24,7 +24,20 @@
 @property (strong,nonatomic)NSString *productContent;
 ///分享商品单价
 @property (strong,nonatomic)NSString *productPrices;
-///app端所有商品对象里面添加一个对象 priceTypes （两个字段private Integer index用于判断直接定价还是按重量计价
+///app  B端所有商品对象里面添加一个对象 priceTypes （两个字段private Integer index用于判断直接定价还是按重量计价
 @property (nonatomic,strong) NSString *priceTypes;
+
+///判断 (isFromBORC=b)B端 还是 (isFromBORC=c)C端
+@property (nonatomic,strong) NSString *isFromBORC;
+
+///是否是 C端套餐 isPackage=1
+@property (nonatomic,strong) NSString *isPackage;
+
+
+
+
+
+
+
 
 @end

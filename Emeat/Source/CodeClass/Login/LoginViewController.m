@@ -136,8 +136,11 @@
             [user setValue:returnData[@"data"][@"id"]  forKey:@"userId"];
             [user setValue:returnData[@"data"][@"customerAccount"] forKey:@"user"];
             [user setValue:@"1" forKey:@"isLoginState"];
+
             NSDictionary *data = returnData[@"data"];
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
+                [user setValue:@"1" forKey:@"approve"];
+
                 //
                 [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
                 [self.navigationController popViewControllerAnimated:YES];

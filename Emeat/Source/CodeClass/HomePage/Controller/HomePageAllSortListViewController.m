@@ -41,6 +41,11 @@
 
 @property (nonatomic,strong) FeedBackView *popupView ;
 
+///侧边栏选中id的位置
+@property (nonatomic,assign)  NSInteger currentSelectSecondIdIndex;
+
+
+
 @end
 
 @implementation HomePageAllSortListViewController
@@ -351,38 +356,104 @@
     DLog(@"根据一级分类id 查询数据 == %@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classify_list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
-        if ([returnData[@"status"] integerValue] == 200) {
-            [self.dataArray removeAllObjects];
-            [self.secondaryMarray removeAllObjects];
-            NSInteger pages = [returnData[@"data"][@"result"][@"page"][@"totalPage"] integerValue];
-            
-            for (NSDictionary *dic in returnData[@"data"][@"result"][@"list"]) {
-                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
-                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
-                if (mainImvMarray.count!=0) {
-                    model.mainImage = [mainImvMarray firstObject];
-                }
-                model.pages = pages;
-                [self.dataArray addObject:model];
-            }
-            
-            ///二级分类
-            [self.secondaryMarray removeAllObjects];
-            for (NSDictionary *dic2 in returnData[@"data"][@"sons"]) {
-                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic2];
+        if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+            DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+            if ([returnData[@"status"] integerValue] == 200) {
+                [self.dataArray removeAllObjects];
+                [self.secondaryMarray removeAllObjects];
+                NSInteger pages = [returnData[@"data"][@"result"][@"page"][@"totalPage"] integerValue];
                 
-                [self.secondaryMarray addObject:model];
+                for (NSDictionary *dic in returnData[@"data"][@"result"][@"list"]) {
+                    HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+                    NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                    if (mainImvMarray.count!=0) {
+                        model.mainImage = [mainImvMarray firstObject];
+                    }
+                    model.pages = pages;
+                    [self.dataArray addObject:model];
+                }
+                
+                ///二级分类
+                [self.secondaryMarray removeAllObjects];
+                for (NSDictionary *dic2 in returnData[@"data"][@"sons"]) {
+                    HomePageModel *model = [HomePageModel yy_modelWithJSON:dic2];
+                    
+                    [self.secondaryMarray addObject:model];
+                }
+                NSInteger currendSecondId = 0;
+                for (HomePageModel*model in self.secondaryMarray) {
+                    if (model.id == self.sortId) {
+                        currendSecondId = model.id;
+                        ///侧边栏选中的位置
+                        self.currentSelectSecondIdIndex = [self.secondaryMarray indexOfObject:model];
+                    }
+                }
+                
+                
+                if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+                    ///默认选中的侧边栏secondId
+                    HomePageModel *model1 = [self.secondaryMarray firstObject];
+                    self.secondId = model1.id;
+                    
+                }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+                    
+                    ///选中的侧边栏secondId
+                    self.secondId = currendSecondId;
+                    
+                }
+                
+                
             }
-           ///默认选中的侧边栏secondId
-            HomePageModel *model1 = [self.secondaryMarray firstObject];
-            self.secondId = model1.id;
+            if ([self.isReloadLeftTableView isEqualToString:@"1"]) {
+                [self.leftTableView reloadData];
+                
+            }
+            [self.mainRightTableView reloadData];
+            
+        }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+            DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+            if ([returnData[@"status"] integerValue] == 200) {
+              
+                
+                ///二级分类
+                [self.secondaryMarray removeAllObjects];
+                for (NSDictionary *dic2 in returnData[@"data"][@"sons"]) {
+                    HomePageModel *model = [HomePageModel yy_modelWithJSON:dic2];
+                    
+                    [self.secondaryMarray addObject:model];
+                }
+                NSInteger currendSecondId = 0;
+                for (HomePageModel*model in self.secondaryMarray) {
+                    if (model.id == self.sortId) {
+                        self.secondId = model.id;
+                        ///侧边栏选中的位置
+                        self.currentSelectSecondIdIndex = [self.secondaryMarray indexOfObject:model];
+                    }
+                }
+                
+                
+//                if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+//                    ///默认选中的侧边栏secondId
+//                    HomePageModel *model1 = [self.secondaryMarray firstObject];
+//                    self.secondId = model1.id;
+//
+//                }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+//
+//                    ///选中的侧边栏secondId
+//                    self.secondId = currendSecondId;
+//
+//                }
+                
+                [self requestGoodsListDataWithBigClassId:bigClassId secondId:self.secondId totalPage:1];
+                
+            }
+            if ([self.isReloadLeftTableView isEqualToString:@"1"]) {
+                [self.leftTableView reloadData];
+                
+            }
+            [self.mainRightTableView reloadData];
         }
-        if ([self.isReloadLeftTableView isEqualToString:@"1"]) {
-            [self.leftTableView reloadData];
-
-        }
-        [self.mainRightTableView reloadData];
+       
     } failureBlock:^(NSError *error) {
         
         
@@ -882,10 +953,22 @@
             
         }
        
-        //默认选中第一行
-        cell1.selectedBackgroundView = [[UIView alloc]initWithFrame:cell1.bounds];
-        cell1.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
-        [self.leftTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]animated:YES scrollPosition:UITableViewScrollPositionTop];
+        
+        if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+            //默认选中第一行
+            cell1.selectedBackgroundView = [[UIView alloc]initWithFrame:cell1.bounds];
+            cell1.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
+            [self.leftTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]animated:YES scrollPosition:UITableViewScrollPositionTop];
+            
+        }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+           
+            //默认选中第一行
+            cell1.selectedBackgroundView = [[UIView alloc]initWithFrame:cell1.bounds];
+            cell1.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
+            [self.leftTableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:self.currentSelectSecondIdIndex inSection:0]animated:YES scrollPosition:UITableViewScrollPositionTop];
+            
+        }
+      
 
         if (self.secondaryMarray.count !=0) {
             HomePageModel *model = self.secondaryMarray[indexPath.row];
@@ -924,7 +1007,7 @@
 }
 }
 
-#pragma mark  = 点击事件
+#pragma mark  = tableview点击事件
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -953,7 +1036,8 @@
                 VC.hidesBottomBarWhenPushed = YES;
                 HomePageModel *model = self.dataArray[indexPath.row];
                 VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
-                
+                VC.isFromBORC = @"b";
+
                 [self.navigationController pushViewController:VC animated:YES];
             }
         }
@@ -965,6 +1049,8 @@
             VC.hidesBottomBarWhenPushed = YES;
             HomePageModel *model = self.dataArray[indexPath.row];
             VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
+            VC.isFromBORC = @"b";
+
             [GlobalHelper shareInstance].isEnterDetails = @"1";
             [self.navigationController pushViewController:VC animated:YES];
         }

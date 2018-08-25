@@ -229,6 +229,7 @@
     }
     
     /// 颜色
+    currentButton.selected = YES;
     [currentButton setTitleColor:self.configration.selectedItemColor forState:UIControlStateNormal];
     currentButton.titleLabel.font = self.configration.selectedItemFont;
     /// 线条
@@ -274,11 +275,12 @@
         }
         /// 颜色
         [self.itemsArrayM enumerateObjectsUsingBlock:^(UIButton  * obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            obj.selected = NO;
             [obj setTitleColor:self.configration.normalItemColor forState:UIControlStateNormal];
             obj.titleLabel.font = self.configration.itemFont;
             if (idx == self.itemsArrayM.count - 1) {
-                
-                [currentButton setTitleColor:self.configration.selectedItemColor forState:UIControlStateNormal];
+               currentButton.selected = YES;
+               [currentButton setTitleColor:self.configration.selectedItemColor forState:UIControlStateNormal];
                 currentButton.titleLabel.font = self.configration.selectedItemFont;
             }
         }];
@@ -381,15 +383,18 @@
         [currentButton setTitleColor:selColor forState:UIControlStateNormal];
     } else{
         if (progress > 0.5) {
+            lastButton.selected = NO;
+            currentButton.selected = YES;
             [lastButton setTitleColor:self.configration.normalItemColor forState:UIControlStateNormal];
             [currentButton setTitleColor:self.configration.selectedItemColor forState:UIControlStateNormal];
             currentButton.titleLabel.font = self.configration.selectedItemFont;
             
         } else if (progress < 0.5 && progress > 0){
+            lastButton.selected = YES;
             [lastButton setTitleColor:self.configration.selectedItemColor forState:UIControlStateNormal];
             lastButton.titleLabel.font = self.configration.selectedItemFont;
             
-            
+            currentButton.selected = NO;
             [currentButton setTitleColor:self.configration.normalItemColor forState:UIControlStateNormal];
             currentButton.titleLabel.font = self.configration.itemFont;
             

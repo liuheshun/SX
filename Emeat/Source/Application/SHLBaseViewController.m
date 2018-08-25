@@ -451,7 +451,7 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
 //    UIViewController *shoppingVC = self.childViewControllers[1];
 //      NSDictionary * infoDic = [notification object];
     NSInteger shoppingIndex = [GlobalHelper shareInstance].shoppingCartBadgeValue;
-    UITabBarItem * item=[self.tabBarController.tabBar.items objectAtIndex:1];
+    UITabBarItem * item=[self.tabBarController.tabBar.items objectAtIndex:2];
     //
     if (shoppingIndex == 0) {
         item.badgeValue = nil;
@@ -606,10 +606,10 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             imageViewRect.origin.y = rect.origin.y+imageViewRect.origin.y;
             }
             
-            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/4*2, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
+            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/5*3, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
                 
-                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[2];
+                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[3];
                 [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
             }];
             [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];

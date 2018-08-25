@@ -31,7 +31,7 @@ target 'Emeat' do
 
    pod 'FDFullscreenPopGesture', '1.1'
 
-   pod 'YNPageViewController', '~> 0.1.8'
+   pod 'YNPageViewController', '~> 0.1.9'
 
    pod 'WebViewJavascriptBridge', '~> 6.0.3'
 

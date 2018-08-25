@@ -49,11 +49,48 @@
     [self.descLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(hDesc));
     }];
-    if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
-        self.pricelab.text =[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100];
-    }else{
-        self.pricelab.text =[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100];
+    if ([model.isFromBORC isEqualToString:@"c"]) {
+        
+        self.pricelab.text =[NSString stringWithFormat:@"%.2f元",(float)model.unitPrice/100];
+//        self.noticeBtn.hidden = YES;
+//        self.weightLab.hidden = YES;
+        
+        [self.noticeBtn removeFromSuperview];
+        [self.weightLab removeFromSuperview];
+        
+        [self.lineView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.and.right.equalTo(self);
+            make.top.equalTo(self.moreSpecificationsBgView.mas_bottom).with.offset(20*kScale);
+            make.height.equalTo(@(10*kScale));
+            
+        }];
+        
+        
+        
+        
+        if ([model.isPackage isEqualToString:@"1"]) {
+            [self.goodsDetailsBtn setTitle:@"套餐详情" forState:0];
+
+        }else{
+            [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
+
+        }
+        
+    }else if ([model.isFromBORC isEqualToString:@"b"]){
+        
+        if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
+            self.pricelab.text =[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100];
+        }else{
+            self.pricelab.text =[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100];
+        }
+        [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
+
     }
+    
+    
+    
+    
+   
 //    self.pricelab.text = [NSString stringWithFormat:@"¥%.2f元/kg" ,(float)model.unitPrice/100];
     
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.pricelab.text];
@@ -84,7 +121,10 @@
     }];
     
     
-    [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
+   
+    
+    
+    
     //[self.pingjiaDetailsBtn setTitle:@"评价详情" forState:0];
     
     

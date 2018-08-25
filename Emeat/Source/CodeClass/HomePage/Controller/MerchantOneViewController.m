@@ -67,7 +67,9 @@
     
 }
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    
+}
 
 -(void)notInfo:(NSNotification*)info{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadIndex" object:nil];

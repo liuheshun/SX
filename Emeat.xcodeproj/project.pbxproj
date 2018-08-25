@@ -30,6 +30,40 @@
 		1610A97C211196F60050335B /* OneViewTableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A976211196F60050335B /* OneViewTableTableViewController.m */; };
 		1610A9812111A37F0050335B /* HomePageHeadSortView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A9802111A37F0050335B /* HomePageHeadSortView.m */; };
 		1616CE4E212511C2004FF454 /* CardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1616CE4D212511C2004FF454 /* CardModel.m */; };
+		161BBAD8212BB9B5002AA7EC /* CardContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 161BBABB212BB9B5002AA7EC /* CardContentView.xib */; };
+		161BBAD9212BB9B5002AA7EC /* UIColor+FlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBABC212BB9B5002AA7EC /* UIColor+FlatColors.m */; };
+		161BBADA212BB9B5002AA7EC /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 161BBAC0212BB9B5002AA7EC /* LICENSE */; };
+		161BBADB212BB9B5002AA7EC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 161BBAC1212BB9B5002AA7EC /* README.md */; };
+		161BBADC212BB9B5002AA7EC /* ZLSwipeableViewMovement.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAC3212BB9B5002AA7EC /* ZLSwipeableViewMovement.m */; };
+		161BBADD212BB9B5002AA7EC /* DefaultViewAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAC5212BB9B5002AA7EC /* DefaultViewAnimator.m */; };
+		161BBADE212BB9B5002AA7EC /* ViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAC8212BB9B5002AA7EC /* ViewManager.m */; };
+		161BBADF212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBACD212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.m */; };
+		161BBAE0212BB9B5002AA7EC /* PanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBACE212BB9B5002AA7EC /* PanGestureRecognizer.m */; };
+		161BBAE1212BB9B5002AA7EC /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAD0212BB9B5002AA7EC /* Utils.m */; };
+		161BBAE2212BB9B5002AA7EC /* Scheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAD3212BB9B5002AA7EC /* Scheduler.m */; };
+		161BBAE3212BB9B5002AA7EC /* DefaultDirectionInterpretor.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAD4212BB9B5002AA7EC /* DefaultDirectionInterpretor.m */; };
+		161BBAE4212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAD5212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.m */; };
+		161BBAE5212BB9B5002AA7EC /* ZLSwipeableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAD6212BB9B5002AA7EC /* ZLSwipeableView.m */; };
+		161BBAE6212BB9B5002AA7EC /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAD7212BB9B5002AA7EC /* CardView.m */; };
+		161BBAF9212D3F0C002AA7EC /* XLCardItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAF1212D3F0C002AA7EC /* XLCardItem.m */; };
+		161BBAFA212D3F0C002AA7EC /* XLCardSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAF2212D3F0C002AA7EC /* XLCardSwitch.m */; };
+		161BBAFB212D3F0C002AA7EC /* XLCardSwitchFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAF7212D3F0C002AA7EC /* XLCardSwitchFlowLayout.m */; };
+		161BBAFC212D3F0C002AA7EC /* XLCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBAF8212D3F0C002AA7EC /* XLCard.m */; };
+		161BBAFE212D4048002AA7EC /* DataPropertyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 161BBAFD212D4047002AA7EC /* DataPropertyList.plist */; };
+		161BBB0D212D4059002AA7EC /* 8.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB00212D4059002AA7EC /* 8.png */; };
+		161BBB0E212D4059002AA7EC /* 9.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB01212D4059002AA7EC /* 9.png */; };
+		161BBB0F212D4059002AA7EC /* 12.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB02212D4059002AA7EC /* 12.png */; };
+		161BBB10212D4059002AA7EC /* 13.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB03212D4059002AA7EC /* 13.png */; };
+		161BBB11212D4059002AA7EC /* 11.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB04212D4059002AA7EC /* 11.png */; };
+		161BBB12212D4059002AA7EC /* 10.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB05212D4059002AA7EC /* 10.png */; };
+		161BBB13212D4059002AA7EC /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB06212D4059002AA7EC /* 4.png */; };
+		161BBB14212D4059002AA7EC /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB07212D4059002AA7EC /* 5.png */; };
+		161BBB15212D4059002AA7EC /* 7.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB08212D4059002AA7EC /* 7.png */; };
+		161BBB16212D4059002AA7EC /* 6.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB09212D4059002AA7EC /* 6.png */; };
+		161BBB17212D4059002AA7EC /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB0A212D4059002AA7EC /* 2.png */; };
+		161BBB18212D4059002AA7EC /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB0B212D4059002AA7EC /* 3.png */; };
+		161BBB19212D4059002AA7EC /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB0C212D4059002AA7EC /* 1.png */; };
+		161BBB1F212D89B6002AA7EC /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBB1E212D89B6002AA7EC /* PersonalViewController.m */; };
 		16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC520FC2B290095E261 /* ActionSheetView.m */; };
 		16285FCC20FC2B290095E261 /* VerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC620FC2B290095E261 /* VerButton.m */; };
 		16285FCD20FC2B290095E261 /* ActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FCA20FC2B290095E261 /* ActionButton.m */; };
@@ -299,6 +333,57 @@
 		1610A9802111A37F0050335B /* HomePageHeadSortView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageHeadSortView.m; sourceTree = "<group>"; };
 		1616CE4C212511C2004FF454 /* CardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardModel.h; sourceTree = "<group>"; };
 		1616CE4D212511C2004FF454 /* CardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardModel.m; sourceTree = "<group>"; };
+		161BBABB212BB9B5002AA7EC /* CardContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardContentView.xib; sourceTree = "<group>"; };
+		161BBABC212BB9B5002AA7EC /* UIColor+FlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+FlatColors.m"; sourceTree = "<group>"; };
+		161BBABD212BB9B5002AA7EC /* UIColor+FlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+FlatColors.h"; sourceTree = "<group>"; };
+		161BBABE212BB9B5002AA7EC /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
+		161BBAC0212BB9B5002AA7EC /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		161BBAC1212BB9B5002AA7EC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		161BBAC3212BB9B5002AA7EC /* ZLSwipeableViewMovement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLSwipeableViewMovement.m; sourceTree = "<group>"; };
+		161BBAC4212BB9B5002AA7EC /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		161BBAC5212BB9B5002AA7EC /* DefaultViewAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultViewAnimator.m; sourceTree = "<group>"; };
+		161BBAC6212BB9B5002AA7EC /* PanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanGestureRecognizer.h; sourceTree = "<group>"; };
+		161BBAC7212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShouldSwipeDeterminator.h; sourceTree = "<group>"; };
+		161BBAC8212BB9B5002AA7EC /* ViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewManager.m; sourceTree = "<group>"; };
+		161BBAC9212BB9B5002AA7EC /* DefaultDirectionInterpretor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultDirectionInterpretor.h; sourceTree = "<group>"; };
+		161BBACA212BB9B5002AA7EC /* Scheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scheduler.h; sourceTree = "<group>"; };
+		161BBACB212BB9B5002AA7EC /* ZLSwipeableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLSwipeableView.h; sourceTree = "<group>"; };
+		161BBACC212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLSwipeableViewSwipeOptions.h; sourceTree = "<group>"; };
+		161BBACD212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShouldSwipeDeterminator.m; sourceTree = "<group>"; };
+		161BBACE212BB9B5002AA7EC /* PanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanGestureRecognizer.m; sourceTree = "<group>"; };
+		161BBACF212BB9B5002AA7EC /* DefaultViewAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultViewAnimator.h; sourceTree = "<group>"; };
+		161BBAD0212BB9B5002AA7EC /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		161BBAD1212BB9B5002AA7EC /* ZLSwipeableViewMovement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLSwipeableViewMovement.h; sourceTree = "<group>"; };
+		161BBAD2212BB9B5002AA7EC /* ViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewManager.h; sourceTree = "<group>"; };
+		161BBAD3212BB9B5002AA7EC /* Scheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scheduler.m; sourceTree = "<group>"; };
+		161BBAD4212BB9B5002AA7EC /* DefaultDirectionInterpretor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultDirectionInterpretor.m; sourceTree = "<group>"; };
+		161BBAD5212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLSwipeableViewSwipeOptions.m; sourceTree = "<group>"; };
+		161BBAD6212BB9B5002AA7EC /* ZLSwipeableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLSwipeableView.m; sourceTree = "<group>"; };
+		161BBAD7212BB9B5002AA7EC /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
+		161BBAF1212D3F0C002AA7EC /* XLCardItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardItem.m; sourceTree = "<group>"; };
+		161BBAF2212D3F0C002AA7EC /* XLCardSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitch.m; sourceTree = "<group>"; };
+		161BBAF3212D3F0C002AA7EC /* XLCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCard.h; sourceTree = "<group>"; };
+		161BBAF4212D3F0C002AA7EC /* XLCardSwitchFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardSwitchFlowLayout.h; sourceTree = "<group>"; };
+		161BBAF5212D3F0C002AA7EC /* XLCardItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardItem.h; sourceTree = "<group>"; };
+		161BBAF6212D3F0C002AA7EC /* XLCardSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardSwitch.h; sourceTree = "<group>"; };
+		161BBAF7212D3F0C002AA7EC /* XLCardSwitchFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitchFlowLayout.m; sourceTree = "<group>"; };
+		161BBAF8212D3F0C002AA7EC /* XLCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCard.m; sourceTree = "<group>"; };
+		161BBAFD212D4047002AA7EC /* DataPropertyList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DataPropertyList.plist; sourceTree = "<group>"; };
+		161BBB00212D4059002AA7EC /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
+		161BBB01212D4059002AA7EC /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
+		161BBB02212D4059002AA7EC /* 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 12.png; sourceTree = "<group>"; };
+		161BBB03212D4059002AA7EC /* 13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 13.png; sourceTree = "<group>"; };
+		161BBB04212D4059002AA7EC /* 11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 11.png; sourceTree = "<group>"; };
+		161BBB05212D4059002AA7EC /* 10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10.png; sourceTree = "<group>"; };
+		161BBB06212D4059002AA7EC /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
+		161BBB07212D4059002AA7EC /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
+		161BBB08212D4059002AA7EC /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
+		161BBB09212D4059002AA7EC /* 6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6.png; sourceTree = "<group>"; };
+		161BBB0A212D4059002AA7EC /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		161BBB0B212D4059002AA7EC /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		161BBB0C212D4059002AA7EC /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		161BBB1D212D89B6002AA7EC /* PersonalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
+		161BBB1E212D89B6002AA7EC /* PersonalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
 		16285FC520FC2B290095E261 /* ActionSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetView.m; sourceTree = "<group>"; };
 		16285FC620FC2B290095E261 /* VerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerButton.m; sourceTree = "<group>"; };
 		16285FC720FC2B290095E261 /* ActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionButton.h; sourceTree = "<group>"; };
@@ -770,6 +855,99 @@
 			path = ParentClass;
 			sourceTree = "<group>";
 		};
+		161BBAB9212BB9B5002AA7EC /* CardView */ = {
+			isa = PBXGroup;
+			children = (
+				161BBABA212BB9B5002AA7EC /* UIColor+FlatColors */,
+				161BBABF212BB9B5002AA7EC /* ZLSwipeableView */,
+				161BBABE212BB9B5002AA7EC /* CardView.h */,
+				161BBAD7212BB9B5002AA7EC /* CardView.m */,
+			);
+			path = CardView;
+			sourceTree = "<group>";
+		};
+		161BBABA212BB9B5002AA7EC /* UIColor+FlatColors */ = {
+			isa = PBXGroup;
+			children = (
+				161BBABB212BB9B5002AA7EC /* CardContentView.xib */,
+				161BBABC212BB9B5002AA7EC /* UIColor+FlatColors.m */,
+				161BBABD212BB9B5002AA7EC /* UIColor+FlatColors.h */,
+			);
+			path = "UIColor+FlatColors";
+			sourceTree = "<group>";
+		};
+		161BBABF212BB9B5002AA7EC /* ZLSwipeableView */ = {
+			isa = PBXGroup;
+			children = (
+				161BBAC0212BB9B5002AA7EC /* LICENSE */,
+				161BBAC1212BB9B5002AA7EC /* README.md */,
+				161BBAC2212BB9B5002AA7EC /* ZLSwipeableView */,
+			);
+			path = ZLSwipeableView;
+			sourceTree = "<group>";
+		};
+		161BBAC2212BB9B5002AA7EC /* ZLSwipeableView */ = {
+			isa = PBXGroup;
+			children = (
+				161BBAC3212BB9B5002AA7EC /* ZLSwipeableViewMovement.m */,
+				161BBAC4212BB9B5002AA7EC /* Utils.h */,
+				161BBAC5212BB9B5002AA7EC /* DefaultViewAnimator.m */,
+				161BBAC6212BB9B5002AA7EC /* PanGestureRecognizer.h */,
+				161BBAC7212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.h */,
+				161BBAC8212BB9B5002AA7EC /* ViewManager.m */,
+				161BBAC9212BB9B5002AA7EC /* DefaultDirectionInterpretor.h */,
+				161BBACA212BB9B5002AA7EC /* Scheduler.h */,
+				161BBACB212BB9B5002AA7EC /* ZLSwipeableView.h */,
+				161BBACC212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.h */,
+				161BBACD212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.m */,
+				161BBACE212BB9B5002AA7EC /* PanGestureRecognizer.m */,
+				161BBACF212BB9B5002AA7EC /* DefaultViewAnimator.h */,
+				161BBAD0212BB9B5002AA7EC /* Utils.m */,
+				161BBAD1212BB9B5002AA7EC /* ZLSwipeableViewMovement.h */,
+				161BBAD2212BB9B5002AA7EC /* ViewManager.h */,
+				161BBAD3212BB9B5002AA7EC /* Scheduler.m */,
+				161BBAD4212BB9B5002AA7EC /* DefaultDirectionInterpretor.m */,
+				161BBAD5212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.m */,
+				161BBAD6212BB9B5002AA7EC /* ZLSwipeableView.m */,
+			);
+			path = ZLSwipeableView;
+			sourceTree = "<group>";
+		};
+		161BBAF0212D3F0C002AA7EC /* XLCardSwitch */ = {
+			isa = PBXGroup;
+			children = (
+				161BBAF5212D3F0C002AA7EC /* XLCardItem.h */,
+				161BBAF1212D3F0C002AA7EC /* XLCardItem.m */,
+				161BBAF3212D3F0C002AA7EC /* XLCard.h */,
+				161BBAF8212D3F0C002AA7EC /* XLCard.m */,
+				161BBAF6212D3F0C002AA7EC /* XLCardSwitch.h */,
+				161BBAF2212D3F0C002AA7EC /* XLCardSwitch.m */,
+				161BBAF4212D3F0C002AA7EC /* XLCardSwitchFlowLayout.h */,
+				161BBAF7212D3F0C002AA7EC /* XLCardSwitchFlowLayout.m */,
+			);
+			path = XLCardSwitch;
+			sourceTree = "<group>";
+		};
+		161BBAFF212D4059002AA7EC /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				161BBB00212D4059002AA7EC /* 8.png */,
+				161BBB01212D4059002AA7EC /* 9.png */,
+				161BBB02212D4059002AA7EC /* 12.png */,
+				161BBB03212D4059002AA7EC /* 13.png */,
+				161BBB04212D4059002AA7EC /* 11.png */,
+				161BBB05212D4059002AA7EC /* 10.png */,
+				161BBB06212D4059002AA7EC /* 4.png */,
+				161BBB07212D4059002AA7EC /* 5.png */,
+				161BBB08212D4059002AA7EC /* 7.png */,
+				161BBB09212D4059002AA7EC /* 6.png */,
+				161BBB0A212D4059002AA7EC /* 2.png */,
+				161BBB0B212D4059002AA7EC /* 3.png */,
+				161BBB0C212D4059002AA7EC /* 1.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		16285FC420FC2B290095E261 /* shareUIView */ = {
 			isa = PBXGroup;
 			children = (
@@ -795,6 +973,9 @@
 		163C9EF22122764A00E367EE /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				161BBAFF212D4059002AA7EC /* Images */,
+				161BBAFD212D4047002AA7EC /* DataPropertyList.plist */,
+				161BBAF0212D3F0C002AA7EC /* XLCardSwitch */,
 				163C9EF42122769C00E367EE /* Controller */,
 				163C9EF52122769C00E367EE /* Model */,
 				163C9EF32122769C00E367EE /* View */,
@@ -814,6 +995,8 @@
 			children = (
 				163C9EF6212276B600E367EE /* PersonalPageViewController.h */,
 				163C9EF7212276B600E367EE /* PersonalPageViewController.m */,
+				161BBB1D212D89B6002AA7EC /* PersonalViewController.h */,
+				161BBB1E212D89B6002AA7EC /* PersonalViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1146,6 +1329,7 @@
 		16CFD7251FB2A6F20015F2C1 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				161BBAB9212BB9B5002AA7EC /* CardView */,
 				16CD2A5A2118A26D00A3281A /* PYSearch */,
 				167FD89A21159C7C00AF44DD /* ChangeTextView */,
 				16285FC420FC2B290095E261 /* shareUIView */,
@@ -1829,11 +2013,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				161BBB17212D4059002AA7EC /* 2.png in Resources */,
+				161BBB16212D4059002AA7EC /* 6.png in Resources */,
+				161BBB13212D4059002AA7EC /* 4.png in Resources */,
+				161BBB0D212D4059002AA7EC /* 8.png in Resources */,
+				161BBB14212D4059002AA7EC /* 5.png in Resources */,
 				165581112008F8D100F33D6B /* AlipaySDK.bundle in Resources */,
+				161BBB0F212D4059002AA7EC /* 12.png in Resources */,
 				16FB31431FAC5D9D00049580 /* LaunchScreen.storyboard in Resources */,
+				161BBB12212D4059002AA7EC /* 10.png in Resources */,
+				161BBB19212D4059002AA7EC /* 1.png in Resources */,
+				161BBB15212D4059002AA7EC /* 7.png in Resources */,
+				161BBADB212BB9B5002AA7EC /* README.md in Resources */,
+				161BBB18212D4059002AA7EC /* 3.png in Resources */,
+				161BBB10212D4059002AA7EC /* 13.png in Resources */,
+				161BBB0E212D4059002AA7EC /* 9.png in Resources */,
+				161BBAFE212D4048002AA7EC /* DataPropertyList.plist in Resources */,
 				1683BD721FB020440043CA23 /* Images.xcassets in Resources */,
 				16FB31401FAC5D9D00049580 /* Assets.xcassets in Resources */,
+				161BBAD8212BB9B5002AA7EC /* CardContentView.xib in Resources */,
+				161BBB11212D4059002AA7EC /* 11.png in Resources */,
 				165581152008F8D100F33D6B /* README.txt in Resources */,
+				161BBADA212BB9B5002AA7EC /* LICENSE in Resources */,
 				16CD2A6D2118A26D00A3281A /* PYSearch.bundle in Resources */,
 				16FB313E1FAC5D9D00049580 /* Main.storyboard in Resources */,
 			);
@@ -1937,6 +2138,7 @@
 				163C9EF8212276B600E367EE /* PersonalPageViewController.m in Sources */,
 				16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */,
 				16F3A3B720B7DFB300ACDED8 /* MessageCenterViewController.m in Sources */,
+				161BBADC212BB9B5002AA7EC /* ZLSwipeableViewMovement.m in Sources */,
 				1610A96D211196890050335B /* WMProgressView.m in Sources */,
 				16CE1EE12003611000E919C7 /* AF_MainScreeningViewController.h in Sources */,
 				16CE1EE22003611000E919C7 /* AF_MainScreeningViewController.m in Sources */,
@@ -1947,6 +2149,7 @@
 				167FD8492112DE4500AF44DD /* NSString+SGPagingView.m in Sources */,
 				165BCCA820E2320B006883FB /* InvoiceListModel.m in Sources */,
 				16B0993A20DCDDFB00D9F101 /* SelectInvoiceTypesDetailsTableViewCell.m in Sources */,
+				161BBAFB212D3F0C002AA7EC /* XLCardSwitchFlowLayout.m in Sources */,
 				167FD84F2112DE4500AF44DD /* SGPageTitleViewConfigure.m in Sources */,
 				16CE1EE42003611000E919C7 /* AF_ScreeningViewController.m in Sources */,
 				16CE1EE52003611000E919C7 /* AXPriceRangeCell.h in Sources */,
@@ -1976,6 +2179,7 @@
 				167FD8A021159D7400AF44DD /* GYChangeTextView.m in Sources */,
 				16EE10171FE1683A0099DA91 /* AfterSaleViewController.m in Sources */,
 				16ED4D5E1FFCD85E0070AB85 /* ShoppingCartAddressHeadView.m in Sources */,
+				161BBADF212BB9B5002AA7EC /* DefaultShouldSwipeDeterminator.m in Sources */,
 				1610A96C211196890050335B /* WMMenuView.m in Sources */,
 				16901CA81FD67FF50080762A /* DDSearchObj.m in Sources */,
 				16E6B28220860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m in Sources */,
@@ -1987,6 +2191,7 @@
 				16D950C61FF3755800DBC7B8 /* LoginViewController.m in Sources */,
 				1646C3381FCBF1BB000552A1 /* HomePageModel.m in Sources */,
 				16DC91E3200F655F003C25BE /* PurchaseCarAnimationTool.m in Sources */,
+				161BBAE1212BB9B5002AA7EC /* Utils.m in Sources */,
 				1646C32F1FC801A6000552A1 /* HomePageNavSortTableViewCell.m in Sources */,
 				16B0994020E0E98E00D9F101 /* SpecialInvoiceTableViewCell.m in Sources */,
 				1681305A1FC54DF30045207E /* HomePageDetailsBottomView.m in Sources */,
@@ -2002,6 +2207,7 @@
 				16285FCD20FC2B290095E261 /* ActionButton.m in Sources */,
 				16CFD7411FB42C3E0015F2C1 /* ConfirmOrderInfoViewController.m in Sources */,
 				16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */,
+				161BBAE0212BB9B5002AA7EC /* PanGestureRecognizer.m in Sources */,
 				1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */,
 				167FD84A2112DE4500AF44DD /* UIButton+SGPagingView.m in Sources */,
 				1683BD6D1FB005AC0043CA23 /* MyViewController.m in Sources */,
@@ -2010,6 +2216,7 @@
 				1683BD671FB004E20043CA23 /* HomePageViewController.m in Sources */,
 				167FD852211307C200AF44DD /* HomePageSortTableViewCell.m in Sources */,
 				16DC91E9200F7225003C25BE /* ShoppingCartTool.m in Sources */,
+				161BBAFA212D3F0C002AA7EC /* XLCardSwitch.m in Sources */,
 				16901CF21FDA81500080762A /* SelectPayTypeViewController.m in Sources */,
 				16CFD7561FB5A3A50015F2C1 /* ConfirmOrderCommentViewController.m in Sources */,
 				16CD2A6C2118A26D00A3281A /* PYSearchConst.m in Sources */,
@@ -2024,6 +2231,7 @@
 				16885C5D2101C643008A6FB9 /* ZJSegmentStyle.m in Sources */,
 				16B0994320E1D1FD00D9F101 /* InvoicePreviewView.m in Sources */,
 				1610A973211196DE0050335B /* MainTouchTableTableView.m in Sources */,
+				161BBAFC212D3F0C002AA7EC /* XLCard.m in Sources */,
 				16CFD7711FBEB6510015F2C1 /* YouLikeCollectionHeadView.m in Sources */,
 				16901C9A1FD58E540080762A /* CurrentAddressView.m in Sources */,
 				16DF171A2119266000367CF2 /* SearchCollectionViewCell.m in Sources */,
@@ -2037,11 +2245,13 @@
 				16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */,
 				16CFD7591FB9297C0015F2C1 /* ConfirmOrderInfoAddressHeadView.m in Sources */,
 				165BCCB120E35D82006883FB /* InvoiceDetailsModel.m in Sources */,
+				161BBAE5212BB9B5002AA7EC /* ZLSwipeableView.m in Sources */,
 				16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */,
 				16B0993420DC94A900D9F101 /* SelectInvoiceTypesViewController.m in Sources */,
 				1681304E1FC2955F0045207E /* HomePageTableViewCell.m in Sources */,
 				16CD2A6A2118A26D00A3281A /* PYSearchViewController.m in Sources */,
 				16CD2A6F2118A26D00A3281A /* UIView+PYSearchExtension.m in Sources */,
+				161BBAE2212BB9B5002AA7EC /* Scheduler.m in Sources */,
 				16ED48B12124057300A440C5 /* CardCenterViewController.m in Sources */,
 				16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */,
 				16CFD7471FB43F820015F2C1 /* ConfirmOrderInfoPayTypeTableViewCell.m in Sources */,
@@ -2059,6 +2269,7 @@
 				16EE100E1FE167860099DA91 /* WaitReceiveViewController.m in Sources */,
 				16285FD320FC3E050095E261 /* ShareImageView.m in Sources */,
 				165BCCA220E215A8006883FB /* InvoiceHistoryTableViewCell.m in Sources */,
+				161BBAE6212BB9B5002AA7EC /* CardView.m in Sources */,
 				16CFD75C1FB97E200015F2C1 /* SHLBaseViewController.m in Sources */,
 				1610A96A211196890050335B /* WMMenuItem.m in Sources */,
 				16CFD73E1FB2EFEB0015F2C1 /* ShoppingCartBottomView.m in Sources */,
@@ -2072,6 +2283,8 @@
 				16DC91DF200F34BB003C25BE /* HomePageDetailsBuyNoticeView.m in Sources */,
 				16DC920520130BDE003C25BE /* MBProgressHUD.m in Sources */,
 				168130541FC2B2BF0045207E /* HomePageDetailsHeadView.m in Sources */,
+				161BBB1F212D89B6002AA7EC /* PersonalViewController.m in Sources */,
+				161BBADD212BB9B5002AA7EC /* DefaultViewAnimator.m in Sources */,
 				16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */,
 				1646C3351FCBC4C9000552A1 /* AddOrCutShoppingCartView.m in Sources */,
 				160F29BE2009040800F3295B /* LHSPayManger.m in Sources */,
@@ -2093,13 +2306,16 @@
 				16DC920420130BDE003C25BE /* MBProgressHUD+Add.m in Sources */,
 				16FC44432029B83C00B95546 /* NSString+textFieldCategory.m in Sources */,
 				16EE100B1FE167660099DA91 /* WaitPayViewController.m in Sources */,
+				161BBAE3212BB9B5002AA7EC /* DefaultDirectionInterpretor.m in Sources */,
 				167FD84B2112DE4500AF44DD /* UIView+SGPagingView.m in Sources */,
+				161BBAD9212BB9B5002AA7EC /* UIColor+FlatColors.m in Sources */,
 				16901CFE1FDE6A0A0080762A /* MyAddressView.m in Sources */,
 				169F950F2109D8C0004D1D36 /* SliceService ViewController.m in Sources */,
 				16DF76D7201EDD8C00078F10 /* OrderModel.m in Sources */,
 				16D950B51FF0DB4B00DBC7B8 /* GlobalHelper.m in Sources */,
 				16EE10371FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.m in Sources */,
 				16F0AF46207F9AE10093FE7D /* MyHeadLonginOutView.m in Sources */,
+				161BBAF9212D3F0C002AA7EC /* XLCardItem.m in Sources */,
 				16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */,
 				16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */,
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
@@ -2110,12 +2326,14 @@
 				16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */,
 				16CFD7531FB595270015F2C1 /* ConfirmOrderInfoBottomView.m in Sources */,
 				165BCCAB20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m in Sources */,
+				161BBAE4212BB9B5002AA7EC /* ZLSwipeableViewSwipeOptions.m in Sources */,
 				16885C5C2101C643008A6FB9 /* ZJCollectionView.m in Sources */,
 				165259B5211F5EA2004DDC7D /* MerchantViewController.m in Sources */,
 				165BCCAE20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m in Sources */,
 				16CFD7621FBAE5630015F2C1 /* UIButton+ImageTitleSpaceing.m in Sources */,
 				1610A9812111A37F0050335B /* HomePageHeadSortView.m in Sources */,
 				16B750E3201337BF00C4642C /* LDImagePicker.m in Sources */,
+				161BBADE212BB9B5002AA7EC /* ViewManager.m in Sources */,
 				16B750E82013386E00C4642C /* LDActionSheet.m in Sources */,
 				16B86A572086E75000A50614 /* ShopCeritficationView.m in Sources */,
 				167FD84C2112DE4500AF44DD /* SGPageContentScrollView.m in Sources */,

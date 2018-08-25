@@ -43,8 +43,13 @@
 @property (nonatomic,strong) NSString *size;
 ///最大规格
 @property (nonatomic,strong) NSString *size2;
-///售价
+
+///促销价格
 @property (nonatomic,assign) NSInteger unitPrice;
+///原价价格
+@property (nonatomic,assign) NSInteger costPrice;
+
+
 
 ///商品轮播图(字符串数组)
 @property (nonatomic,strong) NSString *commodityBanner;
@@ -69,6 +74,15 @@
 ///app端所有商品对象里面添加一个对象 priceTypes （两个字段private Integer index用于判断直接定价还是按重量计价
 @property (nonatomic,strong) NSString *priceTypes;
 
+///商品种类 (1)商户专区商品 ; (0)个人专区商品
+@property (nonatomic,strong) NSString *goodsTypes;
+
+///判断 (isFromBORC=b)B端 还是 (isFromBORC=c)C端
+@property (nonatomic,strong) NSString *isFromBORC;
+
+
+///是否是 C端套餐 isPackage=1
+@property (nonatomic,strong) NSString *isPackage;
 
 
 

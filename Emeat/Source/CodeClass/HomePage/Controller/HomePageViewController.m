@@ -43,14 +43,17 @@
 @property (nonatomic,strong) NSMutableArray *dataArray;//商品列表数据源
 ///轮播图
 @property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
+
+
 ///记录当前位置信息
 @property (nonatomic,strong) Location *currentLocation;
 @property (nonatomic,strong) NSString *currentAddressSubLocality;
 ///记录当前附近位置信息
 @property (nonatomic,strong) NSMutableArray *otherAddressArray;
 @property (nonatomic,strong) RHLocation *rhLocation;
-///选择地址VC
-@property (nonatomic,strong) SelectAddressViewController *selectAddressVC;
+
+
+
 ///banner轮播图数据源
 @property (nonatomic,strong) NSMutableArray *bannerMarray;
 ///分类标签数据源字典
@@ -487,25 +490,7 @@
 
 }
 
-#pragma mark = 提前请求当前定位位置信息
 
--(void)requestLocation{
-
-    [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
-        if (isOpen == YES) {
-            [self setLocations];
-
-        }else{
-//            DLog(@"----------无定位权限-------------");
-//            [SVProgressHUD showErrorWithStatus:@"请开启定位权限"];
-           
-            [self.addressNoticeView removeFromSuperview];
-        }
-
-    }];
-
-
-}
 
 
 
@@ -613,7 +598,25 @@
 ///
 /////////
 ///////////////////////
+#pragma mark = 提前请求当前定位位置信息
 
+-(void)requestLocation{
+    
+    [[GlobalHelper shareInstance] openLocationServiceWithBlock:^(BOOL isOpen) {
+        if (isOpen == YES) {
+            [self setLocations];
+            
+        }else{
+            //            DLog(@"----------无定位权限-------------");
+            //            [SVProgressHUD showErrorWithStatus:@"请开启定位权限"];
+            
+            [self.addressNoticeView removeFromSuperview];
+        }
+        
+    }];
+    
+    
+}
 #pragma mark = =========================定位
 
 -(void)setLocations{
@@ -1049,6 +1052,8 @@
         if ([model.bannerUrl containsString:@"SP"]) {
             VC.fromBaner = @"1";
             VC.detailsId = model.bannerUrl;
+            VC.isFromBORC = @"b";
+
             [self.navigationController pushViewController:VC animated:YES];
         }
         else

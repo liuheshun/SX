@@ -453,10 +453,10 @@
             }
             DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
             
-            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/4*2, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
+            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/5*3, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
                 
-                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[2];
+                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[3];
                 [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
             }];
             [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];

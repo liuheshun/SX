@@ -45,7 +45,9 @@
 
     
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    
+}
 
 -(void)setMainView{
     
@@ -142,7 +144,7 @@
 - (void)pageViewController:(YNPageViewController *)pageViewController
             contentOffsetY:(CGFloat)contentOffset
                   progress:(CGFloat)progress {
-        NSLog(@"--- contentOffset = %f,    progress = %f", contentOffset, progress);
+        //NSLog(@"--- contentOffset = %f,    progress = %f", contentOffset, progress);
 }
 
 
