@@ -13,4 +13,8 @@ typedef void(^returnMyShippingAddress)(MyAddressModel* model);
 @property (nonatomic,copy) returnMyShippingAddress myShippingAddressBlock;
 @property (nonatomic,strong) NSString *fromConfirmVC;
 
+///
+@property (nonatomic,strong) NSMutableArray *orderListMarray;
+
+
 @end

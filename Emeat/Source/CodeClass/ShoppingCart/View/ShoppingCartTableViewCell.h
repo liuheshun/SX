@@ -64,6 +64,11 @@ typedef void(^LQQNumChange)(void);
 @property (nonatomic,retain) UILabel *sizeLabel;
 ///价格
 @property (nonatomic,retain) UILabel *productPrice;
+
+///原价
+@property (nonatomic,strong) UILabel *oldProductPrices;
+
+
 ///加按钮
 @property (nonatomic,strong) UIButton *addBtn;
 ///减按钮

@@ -40,10 +40,7 @@
 
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    DLog(@"待 配送将要------消失");
-    
-}
+
 
 
 - (void)setupRefresh{
@@ -113,12 +110,11 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"待发货(待确认) ============ %@" ,dic);
+
     [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/queryByStatus?currentPage=%ld" , baseUrl ,totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"待发货(待确认)订单=== %@" ,returnData);
         
         NSInteger pages = [returnData[@"data"][@"pages"] integerValue];
         NSInteger pageSize = [returnData[@"data"][@"pageSize"] integerValue];
@@ -171,7 +167,6 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"待发货(待确认) 订单error=== %@" ,error);
         
     } showHUD:NO];
     

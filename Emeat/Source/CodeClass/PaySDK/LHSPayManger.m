@@ -47,7 +47,7 @@
 -(void)sendAliPay:(NSString *)orderString{
     NSString *appScheme = @"alisdkSaixian";
     [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-        NSLog(@"调起支付结果==== resultStr_%@",resultDic);
+       // NSLog(@"调起支付结果==== resultStr_%@",resultDic);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
 //        [self paymentResult:resultDic];
@@ -95,18 +95,15 @@
                                                             options:NSJSONReadingMutableContainers
                                                               error:&err];
         orderStringNO = dic[@"alipay_trade_app_pay_response"][@"out_trade_no"];
-        DLog(@"ssssssssssss==== %@" ,orderStringNO);
 
         [self requsetOrderDetailsData:orderStringNO];
         
         
     }else if ([resultDic[@"resultStatus"] isEqualToString:@"6001"]){
        // [self payCancel];
-        DLog(@"取消支付");
          [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:@"取消"];
     }else{
        // [self payFail];
-        DLog(@"支付失败");
          [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:@"失败"];
     }
 }
@@ -133,9 +130,9 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
-    DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
+    //DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
+       // DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -153,7 +150,7 @@
         }
         
     } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
+       // DLog(@"获取订单信息err0r=== %@  " ,error);
         [SVProgressHUD dismiss];
     } showHUD:NO];
     

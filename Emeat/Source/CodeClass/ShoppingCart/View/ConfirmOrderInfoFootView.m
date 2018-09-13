@@ -50,7 +50,7 @@
     self.cardAddPricesPlaceholderLab.text = @"卡券抵扣";
     
     self.labelOrderTotalPrice.text = [NSString stringWithFormat:@"¥ %@" ,model.productTotalPrice];
-    self.labelShippingFee.text = [NSString stringWithFormat:@"¥ %ld" ,model.postage];
+    self.labelShippingFee.text = [NSString stringWithFormat:@"¥ %@" ,model.postMoney];
     if (model.servicePrice) {
         self.sliceLab.text = [NSString stringWithFormat:@"¥ %@" ,model.servicePrice];
     }else{
@@ -68,7 +68,7 @@
 
 -(void)setMainFrame{
     
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 20*kScale, kWidth, 10*kScale)];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0*kScale, kWidth, 10*kScale)];
     topView.backgroundColor = RGB(238, 238, 238, 1);
     [self addSubview:topView];
     [self.cardUseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -91,7 +91,7 @@
     }];
     
     
-    UIView *bView = [[UIView alloc] initWithFrame:CGRectMake(0, 70*kScale, kWidth, 10*kScale)];
+    UIView *bView = [[UIView alloc] initWithFrame:CGRectMake(0, 50*kScale, kWidth, 10*kScale)];
     bView.backgroundColor = RGB(238, 238, 238, 1);
     [self addSubview:bView];
     

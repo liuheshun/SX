@@ -196,82 +196,118 @@
     }
     
     if (model.status == 60 || model.status == 70 || model.status == 80) {
-        [self.footTopBgView addSubview:self.weightRebatesPrices];
-        [self.footTopBgView addSubview:self.servicePrices];
-        [self.footTopBgView addSubview:self.activityRebatesPrices];
-        [self.footTopBgView addSubview:self.netPrices];
+        
+        if ([model.typeOfBusiness isEqualToString:@"B"]) {
+            [self.footTopBgView addSubview:self.weightRebatesPrices];
+            [self.footTopBgView addSubview:self.servicePrices];
+            [self.footTopBgView addSubview:self.activityRebatesPrices];
+            [self.footTopBgView addSubview:self.netPrices];
+            
+            [self.weightRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+                make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+                make.top.equalTo(self.orderPayStatus.mas_bottom).with.offset(10*kScale);
+                make.height.equalTo(@(15*kScale));
+                
+            }];
+            ///加工耗材费返款
+            
+            [self.servicePrices mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+                make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+                make.top.equalTo(self.weightRebatesPrices.mas_bottom).with.offset(10*kScale);
+                make.height.equalTo(@(15*kScale));
+                
+            }];
+            
+            [self.activityRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+                make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+                make.top.equalTo(self.servicePrices.mas_bottom).with.offset(10*kScale);
+                make.height.equalTo(@(15*kScale));
+                
+            }];
+            
+            [self.netPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+                make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+                make.top.equalTo(self.activityRebatesPrices.mas_bottom).with.offset(10*kScale);
+                make.height.equalTo(@(15*kScale));
+                
+            }];
+            
+            [self.footTopBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.mas_top).with.offset(0);
+                make.left.equalTo(self.mas_left).with.offset(0);
+                make.width.equalTo(self);
+                make.height.equalTo(@(93*kScale+110*kScale+30*kScale+40*kScale));
+            }];
+            
+            [self updateConstraintsIfNeeded];
+            
+            self.weightRebatesPrices.text = [NSString stringWithFormat:@"重量差返款额 ¥-%.2f" ,(float)model.returnSum/100];
+            self.servicePrices.text = [NSString stringWithFormat:@"耗材费返差额 ¥-%.2f" ,(float)model.serviceMoneySum/100];
+            
+            self.activityRebatesPrices.text = [NSString stringWithFormat:@"活动返款额 ¥-%.2f" ,(float)model.activitySum/100];
+            self.netPrices.text = [NSString stringWithFormat:@"净总价 ¥%.2f" ,(float)model.netPrice/100];
+            
+            NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:self.weightRebatesPrices.text];
+            NSRange range1 = [[str1 string] rangeOfString:@"重量差返款额"];
+            [str1 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range1];
+            self.weightRebatesPrices.attributedText = str1;
+            
+            ///
+            NSMutableAttributedString *str11 = [[NSMutableAttributedString alloc] initWithString:self.servicePrices.text];
+            NSRange range11 = [[str11 string] rangeOfString:@"耗材费返差额"];
+            [str11 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range11];
+            self.servicePrices.attributedText = str11;
+            
+            
+            
+            
+            NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:self.activityRebatesPrices.text];
+            NSRange range2 = [[str2 string] rangeOfString:@"活动返款额"];
+            [str2 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range2];
+            self.activityRebatesPrices.attributedText = str2;
+            
+            NSMutableAttributedString *str3 = [[NSMutableAttributedString alloc] initWithString:self.netPrices.text];
+            NSRange range3 = [[str3 string] rangeOfString:@"净总价"];
+            [str3 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range3];
+            self.netPrices.attributedText = str3;
+        
+        }else if ([model.typeOfBusiness isEqualToString:@"C"]){
+            [self.footTopBgView addSubview:self.servicePrices];
 
-        [self.weightRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
-            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
-            make.top.equalTo(self.orderPayStatus.mas_bottom).with.offset(10*kScale);
-            make.height.equalTo(@(15*kScale));
+            [self.servicePrices mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
+                make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
+                make.top.equalTo(self.orderPayStatus.mas_bottom).with.offset(10*kScale);
+                make.height.equalTo(@(15*kScale));
+            }];
             
-        }];
-        ///加工耗材费返款
-        
-        [self.servicePrices mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
-            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
-            make.top.equalTo(self.weightRebatesPrices.mas_bottom).with.offset(10*kScale);
-            make.height.equalTo(@(15*kScale));
             
-        }];
-        
-        [self.activityRebatesPrices mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
-            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
-            make.top.equalTo(self.servicePrices.mas_bottom).with.offset(10*kScale);
-            make.height.equalTo(@(15*kScale));
+            [self.footTopBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.mas_top).with.offset(0);
+                make.left.equalTo(self.mas_left).with.offset(0);
+                make.width.equalTo(self);
+                make.height.equalTo(@(93*kScale+110*kScale+30*kScale+40*kScale -95*kScale));
+            }];
             
-        }];
-        
-        [self.netPrices mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.footTopBgView.mas_left).with.offset(15*kScale);
-            make.right.equalTo(self.footTopBgView.mas_right).with.offset(-15*kScale);
-            make.top.equalTo(self.activityRebatesPrices.mas_bottom).with.offset(10*kScale);
-            make.height.equalTo(@(15*kScale));
+            [self updateConstraintsIfNeeded];
             
-        }];
+            
+            self.servicePrices.text = [NSString stringWithFormat:@"耗材费返差额 ¥-%.2f" ,(float)model.serviceMoneySum/100];
+            ///
+            NSMutableAttributedString *str11 = [[NSMutableAttributedString alloc] initWithString:self.servicePrices.text];
+            NSRange range11 = [[str11 string] rangeOfString:@"耗材费返差额"];
+            [str11 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range11];
+            self.servicePrices.attributedText = str11;
+            
+            
+            
+            
+        }
         
-        [self.footTopBgView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.mas_top).with.offset(0);
-            make.left.equalTo(self.mas_left).with.offset(0);
-            make.width.equalTo(self);
-            make.height.equalTo(@(93*kScale+110*kScale+30*kScale+40*kScale));
-        }];
-       
-        [self updateConstraintsIfNeeded];
-        
-        self.weightRebatesPrices.text = [NSString stringWithFormat:@"重量差返款额 ¥-%.2f" ,(float)model.returnSum/100];
-        self.servicePrices.text = [NSString stringWithFormat:@"耗材费返差额 ¥-%.2f" ,(float)model.serviceMoneySum/100];
-
-        self.activityRebatesPrices.text = [NSString stringWithFormat:@"活动返款额 ¥-%.2f" ,(float)model.activitySum/100];
-        self.netPrices.text = [NSString stringWithFormat:@"净总价 ¥%.2f" ,(float)model.netPrice/100];
-        
-        NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:self.weightRebatesPrices.text];
-        NSRange range1 = [[str1 string] rangeOfString:@"重量差返款额"];
-        [str1 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range1];
-        self.weightRebatesPrices.attributedText = str1;
-        
-        ///
-        NSMutableAttributedString *str11 = [[NSMutableAttributedString alloc] initWithString:self.servicePrices.text];
-        NSRange range11 = [[str11 string] rangeOfString:@"耗材费返差额"];
-        [str11 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range11];
-        self.servicePrices.attributedText = str11;
-        
-        
-        
-        
-        NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:self.activityRebatesPrices.text];
-        NSRange range2 = [[str2 string] rangeOfString:@"活动返款额"];
-        [str2 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range2];
-        self.activityRebatesPrices.attributedText = str2;
-        
-        NSMutableAttributedString *str3 = [[NSMutableAttributedString alloc] initWithString:self.netPrices.text];
-        NSRange range3 = [[str3 string] rangeOfString:@"净总价"];
-        [str3 addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51, 1) range:range3];
-        self.netPrices.attributedText = str3;
         
         
         
@@ -286,7 +322,7 @@
     self.orderAllPricesLab.text = @"商品总价";
     self.orderAllPricesCount.text = [NSString stringWithFormat:@"¥ %@" , model.orderTotalPrice];
     self.sendPricesLab.text = @"配送费";
-    self.sendPricesCount.text = @"¥ 0.00";
+    self.sendPricesCount.text = [NSString stringWithFormat:@"¥ %ld" ,model.postage];
     self.selicePricesLab.text = @"加工耗材费";
     self.selicePricesCount.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)[model.servicePrice integerValue]/100];
     self.cardPricePlaceholderLab.text = @"卡券抵扣";

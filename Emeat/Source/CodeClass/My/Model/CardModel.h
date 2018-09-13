@@ -26,7 +26,8 @@
 
 ///减去代金券订单总价
 @property (nonatomic,strong) NSString *productTotalPrice;
-
+///配送费
+@property (nonatomic,strong) NSString *postMoney;
 
 
 

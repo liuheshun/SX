@@ -37,29 +37,33 @@
 
 @implementation MyViewController
 -(void)viewWillAppear:(BOOL)animated{
+    
     self.navigationController.navigationBarHidden = YES;
-
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([user valueForKey:@"isLoginState"])
     {
         [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
     }
     
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    if (status == RealStatusNotReachable)
-    {
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-        
-    }else{
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-//        [self.view addSubview:self.tableView];
-        if (self.tableView) {
-             [self.view addSubview:self.tableView];
-        }
-        [self requsetMyData];
-
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    //禁止页面左侧滑动返回，注意，如果仅仅需要禁止此单个页面返回，还需要在viewWillDisapper下开放侧滑权限
+    // 禁用返回手势
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
+    
+    [self netWorkIsOnLine];
 
+
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [SVProgressHUD dismiss];
+    [[GlobalHelper shareInstance] removeErrorView];
+    
+    // 开启返回手势
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
 }
 
 
@@ -75,49 +79,40 @@
     }else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    [self netWorkIsOnLine];
-    ///禁止右滑返回
-    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
-    [self.view addGestureRecognizer:pan];
+//
+//
+//    ///禁止右滑返回
+//    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+//    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+//    [self.view addGestureRecognizer:pan];
 }
 
 
 
 -(void)netWorkIsOnLine{
     
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    
-    if (status == RealStatusNotReachable)
-    {
-        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
-        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
-        
-    }else{
-        
-        [self.view addSubview:self.tableView];
+//    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+//
+//    if (status == RealStatusNotReachable)
+//    {
+//        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+//        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+//
+//    }else{
         [self requsetMyData];
 
-        
-        [[GlobalHelper shareInstance] removeErrorView];
-    }
+   // }
 }
 
 
 #pragma mark = 重新加载
 
 -(void)errorLoadingBtnAction{
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
+   
     
-    if (status == RealStatusNotReachable){
-        
-    }else{
-        [self.view addSubview:self.tableView];
         [self requsetMyData];
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
-        [[GlobalHelper shareInstance] removeErrorView];
-    }
+    
 }
 
 
@@ -146,19 +141,28 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-        DLog(@"2我的接口=== %@" ,dic);
-        [MHAsiNetworkHandler startMonitoring];
+
+    [MHAsiNetworkHandler startMonitoring];
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
             
-            DLog(@"2我的接口=== %@" ,returnData);
+               [self.view addSubview:self.tableView];
+            
             if ([returnData[@"code"] isEqualToString:@"0404"] || [returnData[@"code"] isEqualToString:@"04"]) {
                 [GlobalHelper shareInstance].isLoginState = @"0";
                 [user setValue:@"0" forKey:@"isLoginState"];
                 [self.tableView reloadData];
             }
             if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
+                [[GlobalHelper shareInstance] removeErrorView];
+
                 [self.myDataMarray removeAllObjects];
+                
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                
+                [user setValue:returnData[@"data"][@"user"][@"headPic"] forKey:@"headPic"];
+                [user setValue:returnData[@"data"][@"user"][@"nickname"] forKey:@"nickname"];
+                
                 
                 NSInteger waitBuy =[ returnData[@"data"][@"waitBuy"] integerValue];
                 NSInteger waitTransport =[ returnData[@"data"][@"waitTransport"] integerValue];
@@ -201,7 +205,6 @@
             [self.tableView reloadData];
             
         } failureBlock:^(NSError *error) {
-            DLog(@"2我的接口error=== %@" ,error);
         } showHUD:NO];
         
    
@@ -225,10 +228,9 @@
 #pragma mark = 修改用户头像
 
 -(void)userImvBtn{
-    DLog(@"修改用户头像");
    
     [BDImagePicker showImagePickerFromViewController:self allowsEditing:NO finishAction:^(UIImage *image) {
-        DLog(@"touxiang===== %@" ,image);
+
         if (image) {
 //            self.customImage = image;
 //           [self.headView.userImv setImage:image forState:0];
@@ -284,7 +286,7 @@
     [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager uploadFileWithURL:[NSString stringWithFormat:@"%@/m/auth/user/updateHeadPic" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"头像返回======= %@",returnData);
+
         if ([returnData[@"status"] integerValue] == 200) {
             
             [self.headView.userImv setImage:[UIImage imageNamed:returnData[@"data"]] forState:0];
@@ -301,7 +303,6 @@
 
         [self.tableView reloadData];
     } failureBlock:^(NSError *error) {
-        DLog(@"头像上传error======= %@" ,error);
         [SVProgressHUD dismiss];
 
     } uploadParam:upParam showHUD:NO];
@@ -315,7 +316,6 @@
 {
     //先调整分辨率
     CGSize newSize = CGSizeMake(source_image.size.width, source_image.size.height);
-    DLog(@"wwwwwwww=w==w=w==w=w  %f %f " ,newSize.height , newSize.width);
     CGFloat tempHeight = newSize.height / maxSize;
     CGFloat tempWidth = newSize.width / maxSize;
     
@@ -370,16 +370,14 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"修改用户昵称dic==== %@" ,dic);
+
     [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/updateName" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"修改用户昵称==== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [SVProgressHUD showSuccessWithStatus:@"修改成功"];
         }
     } failureBlock:^(NSError *error) {
-        DLog(@"修改用户昵称error==== %@" ,error);
 
     } showHUD:NO];
     
@@ -417,7 +415,6 @@
 #pragma mark = 查看全部订单
 
 -(void)checkAllOrderBtnAction{
-    DLog(@"查看全部订单");
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
         MyOrderViewController *VC = [MyOrderViewController new];
         VC.selectIndex = 0;
@@ -435,7 +432,6 @@
 #pragma mark = 等待付款
 
 -(void)waitPayBtnAction{
-    DLog(@"等待付款");
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
         
         MyOrderViewController *VC = [MyOrderViewController new];
@@ -457,7 +453,6 @@
 #pragma mark = 等待发货
 
 -(void)waitSendGoodsBtnAction{
-    DLog(@"等待发货");
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
         MyOrderViewController *VC = [MyOrderViewController new];
         VC.hidesBottomBarWhenPushed = YES;
@@ -476,7 +471,6 @@
 #pragma mark = 等待收货
 
 -(void)waitReceiveBtnAction{
-    DLog(@"等待收货");
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
         MyOrderViewController *VC = [MyOrderViewController new];
         VC.hidesBottomBarWhenPushed = YES;
@@ -495,7 +489,6 @@
 #pragma mark = 等待评价
 
 -(void)waitCommentBtnAction{
-    DLog(@"等待评价");
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
         
         MyOrderViewController *VC = [MyOrderViewController new];
@@ -516,7 +509,6 @@
 #pragma mark = 退货/售后
 
 -(void)returnGoodsBtnAction{
-    DLog(@"售后");
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
         
         MyOrderViewController *VC = [MyOrderViewController new];
@@ -553,7 +545,6 @@
     __weak __typeof(self) weakSelf = self;
 
     self.headView.userNameBlock = ^(NSString *userName) {
-        DLog(@"uuuuu=== %@" ,userName);
         [weakSelf updataUserName:userName];
     };
    // [self.headView.userName addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -694,7 +685,6 @@
             }
         
         }else if (indexPath.row == 2){
-            DLog(@"联系客服");
             NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"4001106111"];
             UIWebView * callWebview = [[UIWebView alloc] init];
             [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];

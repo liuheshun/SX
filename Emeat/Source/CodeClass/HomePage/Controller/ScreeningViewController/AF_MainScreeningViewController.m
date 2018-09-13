@@ -55,7 +55,6 @@
 //    self.itemButtonMarray =  [NSMutableArray arrayWithObjects:@[@"耳机",@"有线",@"充电插头",@"音频线"],@[@"苹果",@"三星",@"苹果1",@"三星",@"苹果2",@"三星"], nil];
     rvc.headTieleMarray = self.headTieleMarray;
     rvc.itemButtonMarray = self.itemButtonMarray;
-    DLog(@"%@" ,self.headTieleMarray);
     window.rootViewController = rvc;
     
     //设置视图偏移

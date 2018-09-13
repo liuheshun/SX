@@ -93,7 +93,6 @@
     NSString *priceStr = [NSString stringWithFormat:@"%@-%@", priceRangeCell.priceText1.text, priceRangeCell.priceText2.text];
 
     [strArr addObject:priceStr];//
-    NSLog(@"筛选条件 : \n%@", [self dictionaryToJson:self.selectMarray]);
     self.minPricesStr = priceRangeCell.priceText1.text;
     self.maxPricesStr = priceRangeCell.priceText2.text;
     
@@ -103,7 +102,6 @@
     }
     
     
-        NSLog(@"筛选条件 : \n%@", strArr);
 }
 /** 字典转json字符串 */
 - (NSString*)dictionaryToJson:(id)data
@@ -240,7 +238,6 @@
         return priceRangeCell;
     }else {
         
-        DLog(@"-------====  %@  -- %ld" ,self.dataArr , self.dataArr.count);
             AF_BrandCell *cell = [AF_BrandCell cellWithTableView:tableView dataArr:self.dataArr[indexPath.section-1] indexPath:indexPath];
             /** 取消cell点击状态 */
             cell.selectionStyle = UITableViewCellSelectionStyleNone;

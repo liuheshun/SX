@@ -65,14 +65,12 @@
 
 
 -(void)continueInvoiceBtnAction{
-    DLog(@"继续开票")
     
     InvoiceListViewController *VC = [InvoiceListViewController new];
     [self.navigationController pushViewController:VC animated:YES];
 }
 
 -(void)historyInvoiceBtnAction{
-   DLog(@"开票历史")
     InvoiceHistoryViewController *VC = [InvoiceHistoryViewController new];
     [self.navigationController pushViewController:VC animated:YES];
 }

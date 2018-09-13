@@ -122,6 +122,8 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     }
    
+    
+    [self requestStoreStatedData];
     [self requestBadNumValue];
     [self requestFirstLevelData];
     [self requestHomePageSortData];
@@ -213,6 +215,7 @@
     self.canScroll = YES;
 ///版本更新通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+    
     ///禁止右滑返回
     id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
     UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
@@ -232,7 +235,6 @@
     __weak __typeof(self) weakSelf = self;
 
     self.homePageHeadSortView.returnClickSortIndex = ^(NSInteger index, NSString *sortTitle) {
-        DLog(@"%@  %ld" ,sortTitle , index);
         
         HomePageModel *model = weakSelf.homePageSortDataMarray[index];
         
@@ -256,20 +258,17 @@
 -(void)requestHotSearchData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSInteger usrId = [[user valueForKey:@"userId"] integerValue];
-    DLog(@"热门搜索数据url=== %@" , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld",baseUrl,usrId]);
 
    
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld&&appVersionNumber=%@&user=%@", baseUrl,usrId ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"] ] params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld&appVersionNumber=%@&user=%@&showType=SOGO", baseUrl,usrId ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"] ] params:nil successBlock:^(NSDictionary *returnData) {
 
-        DLog(@"热门搜索数据 ==== %@ url=== %@" ,returnData , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId]);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.hotSearchMarray removeAllObjects];
             [self.historySearchMarray removeAllObjects];
 
             [self.hotSearchMarray addObjectsFromArray:returnData[@"data"][@"topSearchList"]];
             [self.historySearchMarray addObjectsFromArray:returnData[@"data"][@"historyList"]];
-            DLog(@"====sss===== hotSearchMarray=== %@  historySearchMarray=%@" , returnData[@"data"][@"topSearchList"] , self.historySearchMarray);
 
 
           //////////数据库搜索历史数据写到本地(暂时去掉)
@@ -279,7 +278,6 @@
         }
     } failureBlock:^(NSError *error) {
 
-        DLog(@"sous ==== url===error %@" ,error);
     } showHUD:NO];
 
 }
@@ -299,11 +297,61 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/appversion/index.jhtml?appType=2&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
 
-        DLog(@"vvvvvvvvvvvv =====%@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
-
-            NSString* currentAppVersion = [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前app版本号
-            if ( [returnData[@"version"] floatValue] > [currentAppVersion floatValue] ) {
+            
+            
+            NSString *localVerson= [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前本地app版本号
+            
+            //将版本号按照.切割后存入数组中
+            
+            NSArray *localArray = [localVerson componentsSeparatedByString:@"."];
+            
+            NSArray *appArray = [[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."];
+            
+            NSInteger minArrayLength = MIN(localArray.count, appArray.count);
+            
+            BOOL needUpdate = NO;
+            
+            for(int i=0;i<minArrayLength;i++){//以最短的数组长度为遍历次数,防止数组越界
+                //取出每个部分的字符串值,比较数值大小
+                
+                NSString *localElement = localArray[i];
+                
+                NSString *appElement = appArray[i];
+ 
+                NSInteger  localValue =  localElement.integerValue;
+    
+                
+                NSInteger  appValue = appElement.integerValue;
+                
+                
+                
+                if(localValue<appValue) {
+                    
+                    //从前往后比较数字大小,一旦分出大小,跳出循环
+                    
+                    needUpdate = YES;
+                    
+                    break;
+                    
+                }else{
+                    
+                    
+                    
+                    needUpdate = NO;
+                    
+                }
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+            if (needUpdate) {
+                
                 VersionUpdateViewConfig *config = [VersionUpdateViewConfig UpdateViewConfig];
                 config.imageString = @"versionUpdate";
                 config.titleString = returnData[@"content"];
@@ -313,21 +361,27 @@
                     [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
                     [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
                     [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
-
+                    
                 }else{//非强制更新 只出现一次
                     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                     if ([[user valueForKey:@"isFirst"] isEqualToString:@"second"]) {
-
+                        
                     }else{
                         VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 0, 295*kScale, kHeight-20*kScale)];
-//                        upView.backgroundColor = [UIColor cyanColor];
+                        //                        upView.backgroundColor = [UIColor cyanColor];
                         [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
                         [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
                         [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
                         [user setValue:@"second" forKey:@"isFirst"];
                     }
                 }
+                
+                
             }
+            
+            
+            
+            
         }
 
     } failureBlock:^(NSError *error) {
@@ -357,7 +411,6 @@
         MessageCenterViewController *VC = [MessageCenterViewController new];
         VC.hidesBottomBarWhenPushed = YES;
         [weakSelf.navigationController pushViewController:VC animated:YES];
-        DLog(@"消息");
 
     };
   
@@ -368,8 +421,8 @@
 
         NSArray *hotSeaches = [NSArray array];
         hotSeaches =  weakSelf.hotSearchMarray;
-        DLog(@"====sss===== %@" , hotSeaches);
         // 2. Create a search view controller
+        [GlobalHelper shareInstance].showType= @"SOGO";
 
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品名称搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
 
@@ -381,6 +434,7 @@
 
             searchViewController.searchResultController = sVc;
             sVc.fromSortString = @"0";
+            sVc.showType = @"SOGO";
             sVc.searchText = searchText;
 
 //
@@ -407,7 +461,6 @@
         [weakSelf presentViewController:nav animated:YES completion:nil];
 
 
-        DLog(@"sousuo");
 
     };
 
@@ -429,11 +482,11 @@
             weakSelf.showCurrentAddressLabel.text = currentLocations.name;
 
             if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
-                        DLog(@"在范围内");
+               //         DLog(@"在范围内");
                 weakSelf.isShowNoticeView = @"1";
                 [weakSelf.addressNoticeView removeFromSuperview];
             }else{
-                DLog(@"-------------不在");
+                //DLog(@"-------------不在");
                 weakSelf.isShowNoticeView = @"0";
                [weakSelf.cycleScrollView addSubview:weakSelf.addressNoticeView];
             }
@@ -442,7 +495,7 @@
 
         [weakSelf.navigationController pushViewController:VC animated:YES];
 
-        DLog(@"选择收货地址");
+       // DLog(@"选择收货地址");
 
 
     };
@@ -455,7 +508,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
 
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-         DLog(@"bannertu=====%@" ,returnData);
+      //   DLog(@"bannertu=====%@" ,returnData);
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.bannerMarray removeAllObjects];
@@ -501,7 +554,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_home_classify?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"=首页分类数据 = %@" ,returnData);
+        //DLog(@"=首页分类数据 = %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.homePageSortDataMarray removeAllObjects];
             for (NSDictionary *dic in returnData[@"data"]) {
@@ -532,8 +585,14 @@
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
    
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"一级分类标签数据 = %@" ,returnData);
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+       // DLog(@"一级分类标签数据 = %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.segmentTitleMarray removeAllObjects];
             ///初始数据
@@ -570,7 +629,7 @@
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/roll/get_roll_order?appVersionNumber=%@&user=%@" ,baseUrl, [user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"获取播报数据=====%@" ,returnData);
+       // DLog(@"获取播报数据=====%@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.PlayTextDataMarray removeAllObjects];
             for (NSDictionary *dic in returnData[@"data"]) {
@@ -591,6 +650,57 @@
 
 
 
+
+#pragma mark =============检验店铺是否认证
+
+-(void)requestStoreStatedData{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    //DLog(@"账号店铺是否登录认证= %@" ,dic);
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/mobile/store/get_store" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+       // DLog(@"账号店铺是否登录认证hhhh= %@" ,returnData);
+        
+        if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:@"0" forKey:@"isLoginState"];
+            
+        }
+        
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        dic = returnData[@"data"];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        if (dic) {
+            [user setValue:[NSString stringWithFormat:@"%ld" ,[dic[@"isApprove"] integerValue]] forKey:@"approve"];
+        }else{
+            [user setValue:@"2" forKey:@"approve"];
+            
+        }
+        
+        [self.mainTableView reloadData];
+
+    } failureBlock:^(NSError *error) {
+       // DLog(@"账号店铺是否登录认证= %@" ,error);
+        
+    } showHUD:NO];
+    
+    
+}
 
 
 
@@ -636,13 +746,13 @@
 
     ///判断当前地址是否在配送范围内
     if ([location.city isEqualToString:@"上海市"] && ![location.subLocality isEqualToString:@"崇明区"]) {
-        DLog(@"请求在范围内");
+        //DLog(@"请求在范围内");
         [self.addressNoticeView removeFromSuperview];
         self.isShowNoticeView = @"1";
 
 
     }else{
-        DLog(@"请求不在");
+        //DLog(@"请求不在");
         self.isShowNoticeView = @"0";
         [self.cycleScrollView addSubview:self.addressNoticeView];
 
@@ -761,7 +871,7 @@
         }
     }
     
-    DLog(@"offsetY=== %f     " ,offsetY );
+   // DLog(@"offsetY=== %f     " ,offsetY );
     
     if (offsetY >= -220*kScale) {
         [UIView animateWithDuration:0.4  animations:^{
@@ -839,7 +949,7 @@
      *作者这里使用一款github较多人使用的 WMPageController 地址https://github.com/wangmchn/WMPageController
      */
     for (UIView *v in cell.contentView.subviews) {
-            DLog(@"v==== %@" ,v);
+         //   DLog(@"v==== %@" ,v);
             
     
     }
@@ -922,17 +1032,17 @@
     ///发送通知给子控制器
     if ([info[@"index"] intValue] == 0) {
         if ([self.isleaveCurrentVc isEqualToString:@"1"]) {
-            NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+           // NSLog(@"显示显示 %@  === %@ ",viewController ,info);
             self.isleaveCurrentVc = @"0";
             [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
-            NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+            //NSLog(@"显示显示 %@  === %@ ",viewController ,info);
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:info[@"index"] forKey:@"selectIndex"];
             self.isLoadingSeg = @"0";
         }else{
         if ([self.isLoadingSeg isEqualToString:@"1"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
-            NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+           // NSLog(@"显示显示 %@  === %@ ",viewController ,info);
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:info[@"index"] forKey:@"selectIndex"];
             self.isLoadingSeg = @"0";
@@ -941,7 +1051,7 @@
         }
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"sortRefresh" object:@"one" userInfo:info];
-        NSLog(@"显示显示 %@  === %@ ",viewController ,info);
+        //NSLog(@"显示显示 %@  === %@ ",viewController ,info);
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:info[@"index"] forKey:@"selectIndex"];
         self.isLoadingSeg = @"1";
@@ -1047,7 +1157,7 @@
     if (self.bannerMarray.count!=0) {
         HomePageModel *model = self.bannerMarray[index];
 
-        DLog(@"轮播图详情页======= %@" ,model.bannerUrl);
+      //  DLog(@"轮播图详情页======= %@" ,model.bannerUrl);
 
         if ([model.bannerUrl containsString:@"SP"]) {
             VC.fromBaner = @"1";
@@ -1063,7 +1173,7 @@
             }else{
                 otherVC.detailsURL = model.bannerUrl;
             }
-            DLog(@"轮播图详情页外部外部链接======= %@" ,otherVC.detailsURL);
+          //  DLog(@"轮播图详情页外部外部链接======= %@" ,otherVC.detailsURL);
             [self.navigationController pushViewController:otherVC animated:YES];
 
         }
@@ -1123,7 +1233,7 @@
         self.showCurrentAddressLabel.text = currentLocations.name;
         
         if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
-            DLog(@"在范围内");
+           // DLog(@"在范围内");
             
             weakSelf.isShowNoticeView = @"1";
             [weakSelf.addressNoticeView removeFromSuperview];
@@ -1133,17 +1243,17 @@
             
         }else{
             
-            DLog(@"-------------不在");
+           // DLog(@"-------------不在");
             
             weakSelf.isShowNoticeView = @"0";
             
-            
+            [self.cycleScrollView addSubview:self.addressNoticeView];
+
         }
         
     };
     
     [self.navigationController pushViewController:VC animated:YES];
-    DLog(@"选择收货地址");
 }
 
 -(UIButton *)showCurrentAddressBtn{

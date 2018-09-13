@@ -13,5 +13,7 @@
 #define MMStrongify(o)      __strong typeof(self) o = mmwo;
 #define MMHexColor(color)   [UIColor mm_colorWithHex:color]
 #define MM_SPLIT_WIDTH      (1/[UIScreen mainScreen].scale)
+#define SpaceLef      (15*kScale)
 
 #endif /* MMPopupDefine_h */
+

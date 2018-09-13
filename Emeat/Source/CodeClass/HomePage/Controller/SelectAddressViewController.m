@@ -141,12 +141,10 @@
 
         [self.tableView reloadData];
         
-        DLog(@"收货地址列表===== %@ %@ " ,returnData, returnData[@"status"]);
         
     } failureBlock:^(NSError *error) {
         [self.view addSubview:self.tableView];
 
-        DLog(@"收货地址错误列表=== %@" , error);
         
     } showHUD:NO];
  
@@ -288,7 +286,7 @@
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15)];
-    view.backgroundColor = [UIColor cyanColor];
+    view.backgroundColor = [UIColor whiteColor];
     
     return view;
 }
@@ -310,7 +308,6 @@
         }
         
         
-        DLog(@"fuzhi==== %lu" ,(unsigned long)self.results.count);
         if (self.results.count!=0) {
             Location *location =self.results[indexPath.row];
             cell1.textLabel.text = location.name;
@@ -473,14 +470,12 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     NSString *inputStr = searchController.searchBar.text ;
 
-    DLog(@"输入字体=== %@" ,searchController.searchBar.text);
     [[DDSearchManager sharedManager] keyWordsSearch:inputStr city:@"" returnBlock:^(NSArray<__kindof DDSearchPointAnnotation *> *pointAnnotaions) {
         if (self.results.count > 0) {
             [self.results removeAllObjects];
         }
         
         for (DDSearchPointAnnotation *poi in pointAnnotaions) {
-            NSLog(@"附近地址==cccc擦擦擦======%@ ",poi);
             Location *locat = [Location new];
             
             locat.administrativeArea = poi.province;
@@ -492,7 +487,7 @@
 
             
             [self.results addObject:locat];
-            DLog(@"cccccccc======= %ld" ,self.results.count);
+
         }
         [self.tableView reloadData];
 
@@ -505,7 +500,6 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     self.searchBarState = @"搜索";
-    DLog(@"搜搜地址");
 }
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
@@ -528,7 +522,6 @@
 
     
     self.searchBarState = @"取消";
-    DLog(@"取消");
     [self.results removeAllObjects];
     self.searchController.active = NO;
     [self.tableView reloadData];
@@ -632,7 +625,6 @@
 #pragma mark =定位点击事件
 
 -(void)locationBtnAction{
-    DLog(@"定位当前位置");
     [self setLocations];
 }
 
@@ -678,7 +670,6 @@
     [self getAddresspoiWithLocation:location];
     
     _isFinishedAnimation = YES;
-    NSLog(@"定位--------------%@ %@" ,location.thoroughfare,location.subThoroughfare);
 }
 
 -(void)getAddresspoiWithLocation:(Location*)location{
@@ -700,7 +691,6 @@
             locat.name = poi.name;
 
             
-            NSLog(@"附近地址========%@ ",poi.district);
             if (![self.otherAddressArray containsObject:locat]) {
                 [self.otherAddressArray addObject:locat];
             }

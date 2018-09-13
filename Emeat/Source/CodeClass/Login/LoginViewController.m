@@ -54,10 +54,9 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取ticket== %@" ,dic);
+   // DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/getticket.html" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"ticker=== %@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
             NSString *ticket = returnData[@"ticket"];
             ///保存ticket
@@ -94,10 +93,8 @@
 
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取验证码== %@" ,dic);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/sendSmsByPhone" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"code=== %@" ,returnData);
       
         
     } failureBlock:^(NSError *error) {
@@ -126,26 +123,32 @@
 
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取登陆tttt== === %@" ,dic);
+   // DLog(@"获取登陆tttt== === %@" ,dic);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/doLogin" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"denglu 登陆== === %@  "   , returnData);
+       // DLog(@"denglu 登陆== === %@  "   , returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
    
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:returnData[@"data"][@"id"]  forKey:@"userId"];
             [user setValue:returnData[@"data"][@"customerAccount"] forKey:@"user"];
             [user setValue:@"1" forKey:@"isLoginState"];
+            [user setValue:returnData[@"data"][@"headPic"] forKey:@"headPic"];
+            [user setValue:returnData[@"data"][@"nickname"] forKey:@"nickname"];
 
             NSDictionary *data = returnData[@"data"];
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
-                [user setValue:@"1" forKey:@"approve"];
+                [user setValue:[NSString stringWithFormat:@"%@" ,returnData[@"data"][@"store"][@"isApprove"]] forKey:@"approve"];
+               
+                
 
                 //
                 [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
                 [self.navigationController popViewControllerAnimated:YES];
 
             }else{//未认证
+                [user setValue:@"0" forKey:@"approve"];
+
                 [self.navigationController pushViewController:[ShopCertificationViewController new] animated:YES];
             }
             
@@ -209,7 +212,7 @@
 
 -(void)sendCodeMessage{
     [self requestTicket];
-    DLog(@"发送消息");
+   // DLog(@"发送消息");
     [self yourButtonTitleTime];
 
 }
@@ -220,7 +223,7 @@
 
 -(void)loginBtnActions{
     [self requestLogin];
-    DLog(@"登陆 ===");
+   // DLog(@"登陆 ===");
     
 
 }
@@ -282,7 +285,7 @@
             textField.text = [textField.text substringToIndex:11];
         }
    
-    DLog(@"sssss== %@" ,textField.text);
+    //DLog(@"sssss== %@" ,textField.text);
 
     if (textField.text.length == 11)
     {
@@ -330,7 +333,7 @@
 }
 
 -(void)codeTextFieldTextFieldDidChange:(UITextField*)textField{
-    DLog(@"c== %@" ,textField.text);
+   // DLog(@"c== %@" ,textField.text);
     if (textField.text.length > 6) {
         textField.text = [textField.text substringToIndex:6];
     }

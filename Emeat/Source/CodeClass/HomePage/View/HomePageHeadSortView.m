@@ -36,7 +36,6 @@
             }
         }
 
-        DLog(@"cunz");
     }else{
     for (int i = 0; i< BtnMarray.count; i++) {
         HomePageModel *model = BtnMarray[i];
@@ -75,7 +74,6 @@
 
 
 -(void)sortBtnClickAction:(UIButton*)btn{
-    DLog(@"click=====%ld" ,btn.tag);
     if ([self respondsToSelector:@selector(returnClickSortIndex)]) {
         self.returnClickSortIndex(btn.tag, btn.titleLabel.text);
     }

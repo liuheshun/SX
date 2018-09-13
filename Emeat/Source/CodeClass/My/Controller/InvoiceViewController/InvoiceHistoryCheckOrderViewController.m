@@ -44,12 +44,10 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"开票历史订单== %@" ,dic );
     
 
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryOrdersByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-      DLog(@"开票历史订单详情数据======= %@" , returnData);
 
         if ([returnData[@"status"] integerValue] == 200) {
             [self.invoiceImageListMarray removeAllObjects];
@@ -77,13 +75,12 @@
                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
                     NSString *dateString       = [formatter stringFromDate: date];
-                    NSLog(@"服务器返回的时间戳对应的时间是:%@",dateString);
+                   // NSLog(@"服务器返回的时间戳对应的时间是:%@",dateString);
                     
                     firstModel.createOrderTime = dateString;
                     firstModel.statusDesc = @"已完成";
                     [self.invoiceListMarray addObject:firstModel];
-                        DLog(@"选中的ID===%@" ,Id);
-                        
+                    
                         
                    
                     NSMutableArray *Marray = [NSMutableArray array];
@@ -105,8 +102,7 @@
                     }
                     
                     [self.tableView reloadData];
-                    DLog(@"发票列表== jeikou == %ld " ,self.invoiceImageListMarray.count);
-                    
+                
                 
 
             }
@@ -179,7 +175,6 @@
     if (self.invoiceImageListMarray.count != 0) {
         MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
         orderConfig.orderImvArray = self.invoiceImageListMarray[indexPath.section];
-        DLog(@"-------------------------==cccccccc=== %@" ,orderConfig.orderImvArray[0]);
 
         
     }

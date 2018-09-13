@@ -130,7 +130,6 @@
 }
 
 -(void)textViewDidChange:(UITextView *)textView{
-    DLog(@"textView ===== %@" ,textView.text);
     if (textView.text.length == 0) {
         self.submitBtn.userInteractionEnabled = NO;
         _submitBtn.backgroundColor = RGB(220, 220, 220, 1);

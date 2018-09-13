@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, GYTitlePosition) {
         self.contentsAry = textAry;
         HomePageModel *model = [textAry objectAtIndex:0];
         //self.textLabel.text = [textAry objectAtIndex:0];
-        self.textLabel.text = [NSString stringWithFormat:@"%@用户成功下单支付%.2f元购买%@等商品共%.2fkg",model.customerAccount , (CGFloat)model.price/100 , model.position ,(CGFloat)model.weight/100];
+        self.textLabel.text = [NSString stringWithFormat:@"%@用户成功下单支付%.2f元购买%@等商品",model.customerAccount , (CGFloat)model.price/100 , model.position];
         
         //设置字体颜色
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.textLabel.text];
@@ -79,7 +79,7 @@ typedef NS_ENUM(NSUInteger, GYTitlePosition) {
         NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.price/100]];
         [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
         
-        NSRange range2 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.weight/100]];
+        NSRange range2 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.weight/1000]];
         [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range2];
         
         self.textLabel.attributedText = str;
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSUInteger, GYTitlePosition) {
             
             HomePageModel *model = [weakSelf.contentsAry objectAtIndex:[weakSelf realCurrentIndex]];
             //self.textLabel.text = [textAry objectAtIndex:0];
-            weakSelf.textLabel.text = [NSString stringWithFormat:@"%@用户成功下单支付%.2f元购买%@等商品共%.2fKG",model.customerAccount , (CGFloat)model.price/100 , model.position ,(CGFloat)model.weight/100];
+            weakSelf.textLabel.text = [NSString stringWithFormat:@"%@用户成功下单支付%.2f元购买%@等商品",model.customerAccount , (CGFloat)model.price/100 , model.position ];
             
             //设置字体颜色
             //设置字体颜色
@@ -125,7 +125,7 @@ typedef NS_ENUM(NSUInteger, GYTitlePosition) {
             NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.price/100]];
             [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
             
-            NSRange range2 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.weight/100]];
+            NSRange range2 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.weight/1000]];
             [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range2];
             weakSelf.textLabel.attributedText = str;
             
@@ -142,7 +142,7 @@ typedef NS_ENUM(NSUInteger, GYTitlePosition) {
             
             HomePageModel *model = [weakSelf.contentsAry objectAtIndex:[weakSelf realCurrentIndex]];
             //self.textLabel.text = [textAry objectAtIndex:0];
-            weakSelf.textLabel.text = [NSString stringWithFormat:@"%@用户成功下单支付%.2f元购买%@等商品共%.2fKG",model.customerAccount , (CGFloat)model.price/100 , model.position ,(CGFloat)model.weight/100];
+            weakSelf.textLabel.text = [NSString stringWithFormat:@"%@用户成功下单支付%.2f元购买%@等商品",model.customerAccount , (CGFloat)model.price/100 , model.position ];
             
             //设置字体颜色
             NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.textLabel.text];
@@ -156,7 +156,7 @@ typedef NS_ENUM(NSUInteger, GYTitlePosition) {
             NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.price/100]];
             [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
             
-            NSRange range2 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.weight/100]];
+            NSRange range2 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.weight/1000]];
             [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range2];
             
             weakSelf.textLabel.attributedText = str;

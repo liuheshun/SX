@@ -17,4 +17,8 @@ typedef void(^SelectCardPrices)(NSMutableArray  *selectCardMarray);
 @property (nonatomic,copy) SelectCardPrices selectCardPrice;
 
 
+///订单类型 B C 
+@property (nonatomic,strong) NSString *businessType;
+
+
 @end

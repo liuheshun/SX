@@ -10,7 +10,7 @@
 #import "HomePageSortListTableViewCell.h"
 #import "FeedBackView.h"
 #import "HomePageDetailsViewController.h"
-
+#import "ShopCertificationViewController.h"
 #import "HWPopTool.h"
 
 @interface HomePageAllSortListViewController ()<UITableViewDelegate ,UITableViewDataSource>
@@ -64,23 +64,28 @@
     self.dataArray = [NSMutableArray array];
     self.secondaryMarray = [NSMutableArray array];
     self.levelMarray = [NSMutableArray array];
-    DLog(@"sortId====== %ld  sortType===== %@" ,(long)self.sortId , self.sortType);
+   // DLog(@"sortId====== %ld  sortType===== %@" ,(long)self.sortId , self.sortType);
     
     [self getLevelListData];
     
     if (self.isFirsrEnter == 1) {
-    if ([self.sortType isEqualToString:@"STAIR"]) {//一级
-        if (self.isFirsrEnter == 1) {
+    
+        if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+        
+            if (self.isFirsrEnter == 1) {
             
             [self requestFirstLevelData];
         }
-    }else if ([self.sortType isEqualToString:@"VFP"]){//二级
-        if (self.isFirsrEnter == 1) {
+    
+        }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+        
+            if (self.isFirsrEnter == 1) {
             
-            [self requestgoodsDataWithSonId:self.sortId ];
+                [self requestgoodsDataWithSonId:self.sortId ];
 
         }
-    }
+   
+        }
     }
     
 //    self.segmentTitleMarray = [NSMutableArray array];
@@ -112,7 +117,7 @@
     
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectIndexRefreshData:) name:@"selectIndexRefreshData" object:nil];
     }
-    DLog(@"viewWillAppear======titleIndexs======= %ld" ,self.titleIndexs);
+    //DLog(@"viewWillAppear======titleIndexs======= %ld" ,self.titleIndexs);
 }
 
 #pragma mark ===========通知事件 
@@ -124,7 +129,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"selectIndexRefreshData" object:nil];
 
     self.titleIndexs = [noti.object integerValue];
-    DLog(@"通知事件 titlecccccccc======= %ld" ,self.segmentTitleMarray.count);
+    //DLog(@"通知事件 titlecccccccc======= %ld" ,self.segmentTitleMarray.count);
     if (self.segmentTitleMarray.count == 0) {
         self.segmentTitleMarray = [NSMutableArray array];
         [self requestFirstLevelData];
@@ -174,12 +179,12 @@
     
         }else if (self.titleIndexs == 1){
             ///大家都在买
-            self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/commodity/get_other_buy?mtype=%@&appVersionNumber=%@&user=%@" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+            self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/commodity/get_other_buy?mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
             [self requestALLPeopleDataBaseURLString:self.baseURLString];
     
         }else if (self.titleIndexs == 2){
             ///赛鲜精选
-            self.baseURLString = [NSString stringWithFormat:@"%@//m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+            self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
             [self requesSaiXianDataBaseURLString:self.baseURLString];
     
         }else if (self.titleIndexs >=3){
@@ -188,6 +193,7 @@
             [self setupRefresh];
             HomePageModel *model = self.segmentTitleMarray[self.titleIndexs];
             if ([self.isReloadLeftTableView isEqualToString:@"1"]) {
+                
                 [self requestFirstSortDataWithBigClassId:model.bigClassifyId totalPage:totalPage];
                 
             }else if ([self.isReloadLeftTableView isEqualToString:@"0"]){
@@ -292,13 +298,18 @@
 #pragma mark ====  一级分类菜单标签  ====
 
 -(void)requestFirstLevelData{
-    self.segmentTitleMarray = [NSMutableArray array];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+
     
-    
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys?mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"一级分类标签数据 = %@" ,returnData);
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys" ,baseUrl ] params:dic successBlock:^(NSDictionary *returnData) {
+       // DLog(@"一级分类标签数据 = %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
+            self.segmentTitleMarray = [NSMutableArray array];
+
             ///初始数据
             NSArray *titleArray = @[@{@"classifyName":@"经常买"} ,@{@"classifyName":@"大家都在买"} ,@{@"classifyName":@"赛鲜精选"}];
             [self.segmentTitleMarray removeAllObjects];
@@ -314,7 +325,7 @@
                 if (self.isFirsrEnter == 1) {
                     if (model.bigClassifyId == self.sortId) {
                         self.titleIndexs = [self.segmentTitleMarray indexOfObject:model];
-                        DLog(@" titleIndexs ============= %ld" ,self.titleIndexs);
+                       // DLog(@" titleIndexs ============= %ld" ,self.titleIndexs);
                         
                     }
                 }
@@ -342,6 +353,8 @@
 }
 
 
+
+
 #pragma mark  =====根据一级分类id 查询数据(二级分类,商品数据(默认选中的二级分类商品))
 -(void)requestFirstSortDataWithBigClassId:(NSInteger)bigClassId totalPage:(NSInteger)totalPage{
     
@@ -353,11 +366,13 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"根据一级分类id 查询数据 == %@" ,dic);
+    [dic setValue:@"SOGO" forKey:@"showType"];
+
+//DLog(@"根据一级分类id 查询数据 == %@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classify_list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([self.sortType isEqualToString:@"STAIR"]) {//一级
-            DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+          //  DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
             if ([returnData[@"status"] integerValue] == 200) {
                 [self.dataArray removeAllObjects];
                 [self.secondaryMarray removeAllObjects];
@@ -411,7 +426,7 @@
             [self.mainRightTableView reloadData];
             
         }else if ([self.sortType isEqualToString:@"VFP"]){//二级
-            DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+            //DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
             if ([returnData[@"status"] integerValue] == 200) {
               
                 
@@ -422,27 +437,32 @@
                     
                     [self.secondaryMarray addObject:model];
                 }
-                NSInteger currendSecondId = 0;
+                NSInteger tempSortId = 0;
                 for (HomePageModel*model in self.secondaryMarray) {
                     if (model.id == self.sortId) {
+                        tempSortId = model.id;
                         self.secondId = model.id;
                         ///侧边栏选中的位置
                         self.currentSelectSecondIdIndex = [self.secondaryMarray indexOfObject:model];
                     }
+                    else{
+//                        self.currentSelectSecondIdIndex = 0;
+//
+//                        HomePageModel *model = [self.secondaryMarray firstObject];
+//                        self.secondId = model.id;
+                    }
+                }
+                
+                ///
+                if (tempSortId != self.sortId) {
+                    self.currentSelectSecondIdIndex = 0;
+                    
+                    HomePageModel *model = [self.secondaryMarray firstObject];
+                    self.secondId = model.id;
                 }
                 
                 
-//                if ([self.sortType isEqualToString:@"STAIR"]) {//一级
-//                    ///默认选中的侧边栏secondId
-//                    HomePageModel *model1 = [self.secondaryMarray firstObject];
-//                    self.secondId = model1.id;
-//
-//                }else if ([self.sortType isEqualToString:@"VFP"]){//二级
-//
-//                    ///选中的侧边栏secondId
-//                    self.secondId = currendSecondId;
-//
-//                }
+
                 
                 [self requestGoodsListDataWithBigClassId:bigClassId secondId:self.secondId totalPage:1];
                 
@@ -460,6 +480,127 @@
     } showHUD:NO];
 }
 
+////-----进入分类之后 点击segment切换数据请求下面接口
+
+-(void)clickSegmentRequestFirstSortDataWithBigClassId:(NSInteger)bigClassId totalPage:(NSInteger)totalPage{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:[NSString stringWithFormat:@"%ld" ,bigClassId] forKey:@"bigClassId"];
+    [dic setValue:[NSString stringWithFormat:@"%ld" ,totalPage] forKey:@"currentPage"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    [dic setValue:@"SOGO" forKey:@"showType"];
+    
+    //DLog(@"根据一级分类id 查询数据 == %@" ,dic);
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classify_list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        self.sortType = @"STAIR";
+        
+        if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+           // DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+            if ([returnData[@"status"] integerValue] == 200) {
+                [self.dataArray removeAllObjects];
+                [self.secondaryMarray removeAllObjects];
+                NSInteger pages = [returnData[@"data"][@"result"][@"page"][@"totalPage"] integerValue];
+                
+                for (NSDictionary *dic in returnData[@"data"][@"result"][@"list"]) {
+                    HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+                    NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                    if (mainImvMarray.count!=0) {
+                        model.mainImage = [mainImvMarray firstObject];
+                    }
+                    model.pages = pages;
+                    [self.dataArray addObject:model];
+                }
+                
+                ///二级分类
+                [self.secondaryMarray removeAllObjects];
+                for (NSDictionary *dic2 in returnData[@"data"][@"sons"]) {
+                    HomePageModel *model = [HomePageModel yy_modelWithJSON:dic2];
+                    
+                    [self.secondaryMarray addObject:model];
+                }
+                NSInteger currendSecondId = 0;
+                for (HomePageModel*model in self.secondaryMarray) {
+                    if (model.id == self.sortId) {
+                        currendSecondId = model.id;
+                        ///侧边栏选中的位置
+                        self.currentSelectSecondIdIndex = [self.secondaryMarray indexOfObject:model];
+                    }
+                }
+                
+                
+                if ([self.sortType isEqualToString:@"STAIR"]) {//一级
+                    ///默认选中的侧边栏secondId
+                    HomePageModel *model1 = [self.secondaryMarray firstObject];
+                    self.secondId = model1.id;
+                    
+                }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+                    
+                    ///选中的侧边栏secondId
+                    self.secondId = currendSecondId;
+                    
+                }
+                
+                
+            }
+            if ([self.isReloadLeftTableView isEqualToString:@"1"]) {
+                [self.leftTableView reloadData];
+                
+            }
+            [self.mainRightTableView reloadData];
+            
+        }else if ([self.sortType isEqualToString:@"VFP"]){//二级
+            //DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+            if ([returnData[@"status"] integerValue] == 200) {
+                
+                
+                ///二级分类
+                [self.secondaryMarray removeAllObjects];
+                for (NSDictionary *dic2 in returnData[@"data"][@"sons"]) {
+                    HomePageModel *model = [HomePageModel yy_modelWithJSON:dic2];
+                    
+                    [self.secondaryMarray addObject:model];
+                }
+                for (HomePageModel*model in self.secondaryMarray) {
+                    if (model.id == self.sortId) {
+                        self.secondId = model.id;
+                        ///侧边栏选中的位置
+                        self.currentSelectSecondIdIndex = [self.secondaryMarray indexOfObject:model];
+                    }
+                    else{
+                        self.currentSelectSecondIdIndex = 0;
+                        
+                        HomePageModel *model = [self.secondaryMarray firstObject];
+                        self.secondId = model.id;
+                    }
+                }
+                
+                
+                
+                [self requestGoodsListDataWithBigClassId:bigClassId secondId:self.secondId totalPage:1];
+                
+            }
+            if ([self.isReloadLeftTableView isEqualToString:@"1"]) {
+                [self.leftTableView reloadData];
+                
+            }
+            [self.mainRightTableView reloadData];
+        }
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+}
+
+
+
+
+
 
 #pragma mark ===========根据二级分类id查总一级分类ID
 
@@ -473,10 +614,12 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"根据二级分类请求商品数据 == %@" ,dic);
+    [dic setValue:@"SOGO" forKey:@"showType"];
+
+    //DLog(@"根据二级分类请求商品数据 == %@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classify_list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"根据二级分类请求商品数据=== %@" ,returnData);
+        //DLog(@"根据二级分类请求商品数据=== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             
             self.sortId = [returnData[@"data"][@"bigClassId"] integerValue];
@@ -515,7 +658,7 @@
 -(void)requesSaiXianDataBaseURLString:(NSString*)BaseURLString{
     
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
+       // DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
@@ -557,7 +700,7 @@
 -(void)requestALLPeopleDataBaseURLString:(NSString*)BaseURLString{
     
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"大家都在买 数据=sssssd= %@" ,returnData);
+        //DLog(@"大家都在买 数据=sssssd= %@" ,returnData);
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.dataArray removeAllObjects];
@@ -602,20 +745,20 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"经常买1111= %@" ,dic);
+    //DLog(@"经常买1111= %@" ,dic);
     
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager postReqeustWithURL:BaseURLString params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"经常买=sssssd= %@" ,returnData);
+        //DLog(@"经常买=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
 
         if ([[NSString stringWithFormat:@"%@" ,returnData[@"code"]] isEqualToString:@"0404"] || [[NSString stringWithFormat:@"%@" ,returnData[@"code"]] isEqualToString:@"04"]) {
-            DLog(@"未登录");
+            //DLog(@"未登录");
             
             [self.dataArray removeAllObjects];
             [self.mainRightTableView reloadData];
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登陆" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:self.mainRightTableView isShowBottomBtn:YES bottomBtnTitle:@"点击登陆"];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登录" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:self.mainRightTableView isShowBottomBtn:YES bottomBtnTitle:@"点击登录"];
             [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
             
         }
@@ -650,7 +793,7 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"经常买=sssssd=%@" ,error);
+      //  DLog(@"经常买=sssssd=%@" ,error);
         
     } showHUD:NO];
     
@@ -905,7 +1048,7 @@
         [dic setValue:self.popupView.textView.text forKey:@"feedBack"];
     }
     [MHNetworkManager postReqeustWithURL:URL params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"反馈==== %@" ,returnData);
+       // DLog(@"反馈==== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             
             [[HWPopTool sharedInstance] closeWithBlcok:^{
@@ -936,7 +1079,22 @@
         if (self.dataArray.count!=0) {
             HomePageModel *model =  self.dataArray[indexPath.row];
             totalPageCount = model.pages;
+            model.goodsTypes = @"1";
+
             [cell1 configHomePageCellWithModel:model];
+            
+            
+            ///是否可以查看价格
+            
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            
+            if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+                
+                
+            }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){
+                ///点击查看价格点击事件
+                [cell1.newsPriceBtn addTarget:self action:@selector(checkPricesAction) forControlEvents:1];
+            }
         }
         
         return cell1;
@@ -999,13 +1157,98 @@
         if (self.dataArray.count!=0) {
             HomePageModel *model =  self.dataArray[indexPath.row];
             totalPageCount = model.pages;
+            model.goodsTypes = @"1";
+
             [cell1 configCellWithModel:model];
+            
+            
+            ///是否可以查看价格
+            
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            
+            if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+                
+                
+            }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"]){
+                ///点击查看价格点击事件
+                [cell1.newsPriceBtn addTarget:self action:@selector(checkPricesAction) forControlEvents:1];
+            }
         }
         
         return cell1;
         
 }
 }
+
+
+
+
+
+#pragma mark ==============查看价格
+
+-(void)checkPricesAction{
+    
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    if ([[user valueForKey:@"isLoginState"] isEqualToString:@"0"]) {
+        LoginViewController *VC = [LoginViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+    }else if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"]){
+        
+        
+        if ([[user valueForKey:@"approve"] isEqualToString:@"0"]) {///认证未通过
+            MMPopupItemHandler block = ^(NSInteger index){
+               // NSLog(@"clickd %@ button",@(index));
+                if (index == 0) {
+                    NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                    dispatch_async(dispatch_get_main_queue(), ^(){
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                    });
+                }
+            };
+            NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"再等等", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您的认证申请还未通过，请耐心等待！\n客服热线：4001106111" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+            
+        }else  if ([[user valueForKey:@"approve"] isEqualToString:@"2"]) {///未认证
+            MMPopupItemHandler block = ^(NSInteger index){
+               // NSLog(@"clickd %@ button",@(index));
+                if (index == 0) {
+                    
+                    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+                    VC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:VC animated:YES];
+                }
+            };
+            NSArray *items = @[MMItemMake(@"去认证", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您还未通过商户认证，请先提交认证申请!" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+        }
+        
+    }
+    
+    
+    
+}
+
+
+
 
 #pragma mark  = tableview点击事件
 
@@ -1023,7 +1266,7 @@
             
             HomePageModel *smodel = self.secondaryMarray[indexPath.row];
             self.isReloadLeftTableView = @"0";
-            DLog(@"一级 == %ld  二级====%ld" ,model.bigClassifyId ,smodel.id);
+           // DLog(@"一级 == %ld  二级====%ld" ,model.bigClassifyId ,smodel.id);
             self.secondId = smodel.id;
             self.levelStatedSelectIndex = 10000;
             [self requestGoodsListDataWithBigClassId:model.bigClassifyId secondId:smodel.id totalPage:1];
@@ -1076,7 +1319,9 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"根据二级分类请求商品数据 == %@" ,dic);
+    [dic setValue:@"SOGO" forKey:@"showType"];
+
+    //DLog(@"根据二级分类请求商品数据 == %@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classify_list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"根据二级分类请求商品数据=== %@" ,returnData);
@@ -1138,10 +1383,11 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@" 按等级筛选 === %@" ,dic);
+    [dic setValue:@"SOGO" forKey:@"showType"];
+    //DLog(@" 按等级筛选 === %@" ,dic);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/mobile/commodity/search_item_list" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@" 按等级筛选 === %@" ,returnData);
+        //DLog(@" 按等级筛选 === %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             if (totalPage == 1) {
                 [self.dataArray removeAllObjects];
@@ -1178,6 +1424,7 @@
 
 #pragma mark ==================加入购物车点击事件
 -(void)cartBtnAction:(UIButton*)btn{
+    
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([user valueForKey:@"isLoginState"]) {
         [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
@@ -1185,31 +1432,76 @@
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"])
     {
         
-        NSIndexPath *myIndex=[self.mainRightTableView indexPathForCell:(HomePageTableViewCell*)[btn superview]];
-        HomePageTableViewCell *cell1 = [self.mainRightTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:btn.tag inSection:myIndex.section]];
-        
-        //后期可能会有此需求(商品首页回显加入购物车数量)下面一行需要删掉
-        // [cell1.cartBtn removeFromSuperview];
-        
-        if (self.dataArray.count != 0)
-        {
-            HomePageModel *model = self.dataArray[myIndex.row];
+        if ([[user valueForKey:@"approve"] isEqualToString:@"0"]) {///认证未通过
+            MMPopupItemHandler block = ^(NSInteger index){
+                if (index == 0) {
+                    NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                    dispatch_async(dispatch_get_main_queue(), ^(){
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                    });
+                }
+            };
+            NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"再等等", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您的认证申请还未通过，请耐心等待！\n客服热线：4001106111" items:items];
             
-            [self addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:myIndex cell:cell1 isFirstClick:YES tableView:self.mainRightTableView];
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
             
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:myIndex.row inSection:myIndex.section];
-            [self.mainRightTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
             
+            [alertView show];
+            
+            
+            
+        }else  if ([[user valueForKey:@"approve"] isEqualToString:@"2"]) {///未认证
+            MMPopupItemHandler block = ^(NSInteger index){
+                if (index == 0) {
+                    
+                    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+                    VC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:VC animated:YES];
+                }
+            };
+            NSArray *items = @[MMItemMake(@"去认证", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您还未通过商户认证，请先提交认证申请!" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+        }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+            
+            
+            /////
+            NSIndexPath *myIndex=[self.mainRightTableView indexPathForCell:(HomePageTableViewCell*)[btn superview]];
+            HomePageTableViewCell *cell1 = [self.mainRightTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:btn.tag inSection:myIndex.section]];
+            
+            //后期可能会有此需求(商品首页回显加入购物车数量)下面一行需要删掉
+            // [cell1.cartBtn removeFromSuperview];
+            
+            if (self.dataArray.count != 0)
+            {
+                HomePageModel *model = self.dataArray[myIndex.row];
+                
+                [self addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:myIndex cell:cell1 isFirstClick:YES tableView:self.mainRightTableView];
+                
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:myIndex.row inSection:myIndex.section];
+                [self.mainRightTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+                
+            }
         }
         
-    }else
-    {
+    }else{
         LoginViewController *VC = [LoginViewController new];
         VC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:VC animated:YES];
         
         
     }
+    
+  
 }
 
 
@@ -1239,7 +1531,16 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
     
     [dic setObject:@"1" forKey:@"quatity"];
-    DLog(@"加入购物车 ==== %@" , dic);
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+   // DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         //
         //        HomePageModel *modelq = [HomePageModel yy_modelWithJSON:returnData];
@@ -1282,7 +1583,7 @@
             }else{
                 imageViewRect.origin.y = rect.origin.y+imageViewRect.origin.y;
             }
-            DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
+           // DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
             
 //            [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/4*2, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
 //
@@ -1311,11 +1612,11 @@
             SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
+       // DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
         [tableView reloadData];
     } failureBlock:^(NSError *error) {
         
-        DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
+       // DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
         
     } showHUD:NO];
     
@@ -1331,7 +1632,7 @@
     
    
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/mobile/commodity/get_grade_list?mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"获取等级列表 == %@" ,returnData);
+       // DLog(@"获取等级列表 == %@" ,returnData);
         for (NSDictionary *dic in returnData[@"data"]) {
             HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
             [self.levelMarray addObject:model];

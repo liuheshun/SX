@@ -58,7 +58,6 @@
     switchOrdinaryInvoiceType = 20;
     [self.view addSubview:self.tableView];
     
-    DLog(@"ttttt=========%@" ,self.invoiceShowMarray);
 }
 
 #pragma mark ==提交预览
@@ -67,27 +66,24 @@
     if (InvoiceKinds == 1) {///普票
         if (switchOrdinaryInvoiceType == 20) {///企业
             if (self.invoiceTypesDetailsCell.invoiceLookUpTextField.text.length == 0 || self.invoiceTypesDetailsCell.enioTextField.text.length == 0  || self.receiveAddressCell.receiverTextField.text.length == 0 || self.receiveAddressCell.receiverPhoneNumTextField.text.length == 0 || self.receiveAddressCell.receiverAddressTextField.text.length == 0 || self.receiveAddressCell.receiverDetailsAddressTextField.text.length == 0) {
-                DLog(@"请填写发票必填信息");
+
                 [self alertMessage:@"请填写发票必须信息或邮寄信息" willDo:nil];
             }else{
                 
                 [self addPreviewView];
                 
                 
-                DLog(@"ttttt==== %@" ,self.invoiceTypesDetailsCell.invoiceLookUpTextField.text)
 
             }
         }else if (switchOrdinaryInvoiceType == 21){///非企业/个人
             
             if (self.invoiceTypesDetailsCell.invoiceLookUpTextField.text.length == 0 || self.receiveAddressCell.receiverTextField.text.length == 0 || self.receiveAddressCell.receiverPhoneNumTextField.text.length == 0 || self.receiveAddressCell.receiverAddressTextField.text.length == 0 || self.receiveAddressCell.receiverDetailsAddressTextField.text.length == 0) {
-                DLog(@"请填写发票必填信息");
                 [self alertMessage:@"请填写发票必填信息或邮寄信息" willDo:nil];
             }else{
                 
                 [self addPreviewView];
                 
                 
-                DLog(@"ttttt==== %@" ,self.invoiceTypesDetailsCell.invoiceLookUpTextField.text)
                 
             }
             
@@ -101,14 +97,11 @@
             self.specialInvoiceCell.companyAddressTextField.text.length == 0  ||
             self.specialInvoiceCell.bankTextField.text.length == 0  ||
             self.specialInvoiceCell.bankAccountTextField.text.length == 0  ||self.specialReceiveAddressCell.receiverTextField.text.length == 0 || self.specialReceiveAddressCell.receiverPhoneNumTextField.text.length == 0 || self.specialReceiveAddressCell.receiverAddressTextField.text.length == 0 || self.specialReceiveAddressCell.receiverDetailsAddressTextField.text.length == 0) {
-            DLog(@"请填写发票必填信息");
             [self alertMessage:@"请填写专用票必填信息或邮寄信息" willDo:nil];
         }else{
             
             [self addPreviewView];
             
-            
-            DLog(@"ttttt==== %@" ,self.invoiceTypesDetailsCell.invoiceLookUpTextField.text)
             
         }
         
@@ -150,7 +143,6 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"保存发票信息== %@" ,dic );
     
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/saveInvoice" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -165,13 +157,11 @@
         }
        
         
-        DLog(@"保存发票信息data== jeikou == %@ " ,returnData);
         
         
         
     } failureBlock:^(NSError *error) {
         
-        DLog(@"保存发票信息error %@ " ,error);
 
     } showHUD:NO];
     
@@ -181,7 +171,6 @@
 
 -(void)addPreviewView{
     
-    DLog(@"提交");
     self.aView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
     self.aView.backgroundColor = RGB(0, 0, 0, 0.6);
     // 当前顶层窗口
@@ -284,11 +273,7 @@
 #pragma mark == 提交信息
 
 -(void)subBtnAction{
-    DLog(@"提交信息");
     [self postInvoiceData];
-    
-    
-  
 }
 
 
@@ -397,7 +382,6 @@
             InvoiceKinds = kindStated;
             
             [weakSelf.tableView reloadData];
-            DLog(@"sss");
            
         };
 
@@ -507,7 +491,6 @@
             
             /// 回显赋值
             
-            DLog(@"sssssssssssssssss===================== %@" ,self.invoiceShowMarray);
             if (self.invoiceShowMarray.count!=0) {
                 InvoiceDetailsModel *model = [self.invoiceShowMarray firstObject];
                 [self.receiveAddressCell configAddressCellWithModel:model];
@@ -599,11 +582,9 @@
 
 #pragma mark =====普通发票选择地址
 -(void)OrdinaryReceiverAddressTextFieldAction{
-    DLog(@"普票选择地址");
     
     [[MOFSPickerManager shareManger] showMOFSAddressPickerWithTitle:nil cancelTitle:@"取消" commitTitle:@"完成" commitBlock:^(NSString *address, NSString *zipcode) {
          address = [address stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        DLog(@"普票选择地址 ===== %@ %@" ,address ,zipcode);
 
 
         self.receiveAddressCell.receiverAddressTextField.text = address;
@@ -618,11 +599,9 @@
 
 #pragma mark =====专用发票选择地址
 -(void)specialReceiverAddressTextFieldAction{
-    DLog(@"专用发票选择地址");
     
     [[MOFSPickerManager shareManger] showMOFSAddressPickerWithTitle:nil cancelTitle:@"取消" commitTitle:@"完成" commitBlock:^(NSString *address, NSString *zipcode) {
         address = [address stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        DLog(@"专用发票选择地址 ===== %@ %@" ,address ,zipcode);
         
         
         self.specialReceiveAddressCell.receiverAddressTextField.text = address;
@@ -649,13 +628,11 @@
 
 -(void)lookUpTypeBtn1Action{
     
-    DLog(@"企业单位");
     [self.tableView reloadData];
 }
 
 -(void)lookUpTypeBtn2Action{
     
-    DLog(@"菲企业单位");
     [self.tableView reloadData];
 }
 
@@ -923,7 +900,6 @@
         textField.text = [textField.text substringToIndex:11];
     }
     
-    DLog(@"sssss== %@" ,textField.text);
     
     if (textField.text.length == 11) {
         if (![self checkTel:textField.text] ) {

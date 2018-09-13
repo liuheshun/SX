@@ -38,7 +38,6 @@
     }else{
     [self  postSuggestData];
     }
-    DLog(@"反馈提交===== %@" ,self.conmmentString );
 }
 
 -(void)postSuggestData{
@@ -63,11 +62,11 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"反馈=== %@" ,dic);
+   
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/feedback", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"反馈returnData== %@" ,returnData);
+      
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             
             
@@ -82,7 +81,7 @@
         }
         
     } failureBlock:^(NSError *error) {
-        DLog(@"2我的接口error=== %@" ,error);
+ 
 
         [SVProgressHUD showErrorWithStatus:@"请稍后重试"];
         

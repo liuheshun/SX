@@ -28,7 +28,7 @@
 
 }
 -(void)InfoNotificationAction:(NSNotification*)notification{
-    DLog(@"use == %@" , notification.userInfo)
+    //DLog(@"use == %@" , notification.userInfo)
     self.detailsURL =  notification.userInfo[@"detailsURL"];
     [self setWebView];
 }
@@ -104,7 +104,7 @@
      */
     [_bridge registerHandler:@"loginAction" handler:^(id data, WVJBResponseCallback responseCallback) {
         // data js页面传过来的参数  假设这里是用户名和姓名，字典格式
-        NSLog(@"JS调用OC，并传值过来");
+       // NSLog(@"JS调用OC，并传值过来");
         
         // 利用data参数处理自己的逻辑
         NSDictionary *dict = (NSDictionary *)data;
@@ -118,7 +118,7 @@
 }
 
 -(void)loginAction{
-    DLog(@"哈哈哈哈");
+   // DLog(@"哈哈哈哈");
 }
 
 /**
@@ -136,17 +136,17 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *islogin = [user valueForKey:@"isLoginState"];
     NSString *ticket = [user valueForKey:@"ticket"];
-    DLog(@"传过去ticket === %@" ,ticket);
+    //DLog(@"传过去ticket === %@" ,ticket);
     
     [_bridge callHandler:@"registerAction" data:[NSString stringWithFormat:@"%@,%@" ,islogin ,ticket] responseCallback:^(id responseData) {
-        NSLog(@"oc请求js后接受的回调结果：%@",responseData);
+        //NSLog(@"oc请求js后接受的回调结果：%@",responseData);
     }];
     
 }
 
 
 - (void)renderButtons:(NSString *)str {
-    NSLog(@"JS调用OC，取到参数为： %@",str);
+    //NSLog(@"JS调用OC，取到参数为： %@",str);
     
 }
 
@@ -159,7 +159,7 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
       NSString *tit = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];//获取当前页面的title
-    DLog(@"标题 ==== == == = == = == ==== %@" ,tit);
+   // DLog(@"标题 ==== == == = == = == ==== %@" ,tit);
     self.navItem.title = tit;
     
     //[webView stringByEvaluatingJavaScriptFromString:@"appids(0)"];
@@ -171,7 +171,7 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     
     NSString *requestString = [[request URL] absoluteString];
-    DLog(@"webView========== %@" ,requestString);
+   // DLog(@"webView========== %@" ,requestString);
     if ([requestString rangeOfString:@"SP"].location != NSNotFound){
         
         
@@ -205,7 +205,7 @@
             NSString *iosticket = [array lastObject];
             NSArray *iosticketArray = [iosticket componentsSeparatedByString:@"="];
             iosticket = [iosticketArray lastObject];
-            DLog(@"hahahha=== %@ %@" ,isloginStatus ,iosticket );
+          //  DLog(@"hahahha=== %@ %@" ,isloginStatus ,iosticket );
             [GlobalHelper shareInstance].isLoginState = isloginStatus;
             [user setValue:isloginStatus forKey:@"isLoginState"];
             [user setValue:iosticket forKey:@"ticket"];
@@ -213,7 +213,7 @@
             
         }
         [self.navigationController popViewControllerAnimated:YES];
-        DLog(@"中秋");
+       // DLog(@"中秋");
         return NO;
 
     }else if ([requestString rangeOfString:@"999"].location != NSNotFound){
@@ -236,7 +236,7 @@
 
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    DLog(@"error=========%@" ,error);
+   // DLog(@"error=========%@" ,error);
 }
 
 - (void)didReceiveMemoryWarning {

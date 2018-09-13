@@ -135,7 +135,7 @@
 
 #pragma mark - YNPageViewControllerDataSource
 - (UIScrollView *)pageViewController:(YNPageViewController *)pageViewController pageForIndex:(NSInteger)index {
-    DLog(@"iiiii ====== %ld" ,index);
+   // DLog(@"iiiii ====== %ld" ,index);
 
     MerchantOneViewController *vc = pageViewController.controllersM[index];
     return [vc tableView];
@@ -158,14 +158,14 @@
                  formIndex:(NSInteger)fromIndex
                    toIndex:(NSInteger)toIndex{
 
-    DLog(@"tttt==%ld" ,toIndex);
+   // DLog(@"tttt==%ld" ,toIndex);
 }
 
 
 - (void)pageViewController:(YNPageViewController *)pageViewController
         didEndDecelerating:(UIScrollView *)scrollView{
     
-    DLog(@"ppppppp=====%ld" ,pageViewController.pageIndex);
+   // DLog(@"ppppppp=====%ld" ,pageViewController.pageIndex);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadIndex" object:nil userInfo:@{@"index":[NSString stringWithFormat:@"%ld" ,pageViewController.pageIndex]}];
 
     
@@ -189,7 +189,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSMutableArray *homePageSortDataMarray = [NSMutableArray array];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_home_classify?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"=首页分类数据 = %@" ,returnData);
+        //DLog(@"=首页分类数据 = %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             for (NSDictionary *dic in returnData[@"data"]) {
                 HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
@@ -219,7 +219,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"一级分类标签数据 = %@" ,returnData);
+       // DLog(@"一级分类标签数据 = %@" ,returnData);
         NSArray *titleArray = [NSArray array];
         NSMutableArray *ar = [NSMutableArray array];
         NSMutableArray *VC = [NSMutableArray array];
@@ -233,7 +233,7 @@
                 [self.segmentTitleMarray addObject:model];
                 
                 [ar addObject:model.classifyName];
-                DLog(@"xxx=== %@" ,model.classifyName);
+               // DLog(@"xxx=== %@" ,model.classifyName);
                 MerchantOneViewController *one = [MerchantOneViewController new];
                 [VC addObject:one];
             }
@@ -261,7 +261,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"bannertu=====%@" ,returnData);
+       // DLog(@"bannertu=====%@" ,returnData);
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.bannerMarray removeAllObjects];
@@ -302,7 +302,7 @@
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/roll/get_roll_order?appVersionNumber=%@&user=%@" ,baseUrl, [user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"获取播报数据=====%@" ,returnData);
+       // DLog(@"获取播报数据=====%@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             for (NSDictionary *dic in returnData[@"data"]) {
                 HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];

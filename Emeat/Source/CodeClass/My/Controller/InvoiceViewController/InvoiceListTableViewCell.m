@@ -157,7 +157,6 @@
 -(void)setOrderImvFrame{
     NSInteger arrayCount = 0;
     InvoiceTableCellConfig *orderConfig = [InvoiceTableCellConfig myOrderTableCellConfig];
-    DLog(@"发票列表图片=========== %ld" , orderConfig.orderImvArray.count);
 //    orderConfig.orderImvArray = @[@"1" , @"12" ,@"3" ,@"4"];
     if (orderConfig.orderImvArray.count >3) {
         arrayCount = 4;

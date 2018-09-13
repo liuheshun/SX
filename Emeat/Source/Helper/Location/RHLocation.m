@@ -86,19 +86,19 @@
                 
                 [self.delegate locationDidEndUpdatingLocation:location];
             }
-            NSLog(@"city = %@", city);//石家庄市
-            NSLog(@"--%@",placemark.name);//黄河大道221号
-            NSLog(@"++++%@",placemark.subLocality); //裕华区
-            NSLog(@"country == %@",placemark.country);//中国
-            NSLog(@"administrativeArea == %@",placemark.administrativeArea); //河北省
+//            NSLog(@"city = %@", city);//石家庄市
+//            NSLog(@"--%@",placemark.name);//黄河大道221号
+//            NSLog(@"++++%@",placemark.subLocality); //裕华区
+//            NSLog(@"country == %@",placemark.country);//中国
+//            NSLog(@"administrativeArea == %@",placemark.administrativeArea); //河北省
         }
         else if (error == nil && [array count] == 0)
         {
-            NSLog(@"No results were returned.");
+//            NSLog(@"No results were returned.");
         }
         else if (error != nil)
         {
-            NSLog(@"An error occurred = %@", error);
+//            NSLog(@"An error occurred = %@", error);
         }
     }];
     //系统会一直更新数据，直到选择停止更新，因为我们只需要获得一次经纬度即可，所以获取之后就停止更新

@@ -51,7 +51,7 @@
         {
             AboutUsViewController *VC = [AboutUsViewController new];
             [self.navigationController pushViewController:VC animated:YES];
-            DLog(@"关于我们");
+           
             break;
         }
         case 1:
@@ -60,7 +60,7 @@
                 
                 SuggestionFeedbackViewController *VC = [SuggestionFeedbackViewController new];
                 [self.navigationController pushViewController:VC animated:YES];
-                DLog(@"意见反馈");
+           
                 break;
                 
             }else{
@@ -74,7 +74,7 @@
         case 2:
         {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@" ,appStoreURL]]];
-            DLog(@"版本更新");
+           
             break;
         }
         default:
@@ -87,7 +87,7 @@
 
 -(void)exitBtnAction{
     
-    DLog(@"退出登录");
+
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([user valueForKey:@"isLoginState"]) {
         [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
@@ -105,11 +105,14 @@
         NSDictionary *dictionary = [defatluts dictionaryRepresentation];
         
         for(NSString *key in [dictionary allKeys]){
-            
+
+            if ([key isEqualToString:@"appVersion"]) {
+                ///此处退出登录不清除记录引导页状态
+            }else{
             [defatluts removeObjectForKey:key];
             
             [defatluts synchronize];
-            
+            }
         }
         
 
@@ -139,7 +142,7 @@
 -(void)setUI{
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
     NSString *currentAppVersion = infoDic[@"CFBundleShortVersionString"];
-    DLog(@"当前版本== %@" , currentAppVersion);
+
     currentAppVersion = [NSString stringWithFormat:@"版本更新 (当前版本V%@)" ,currentAppVersion];
     NSArray *textArray = @[@"关于我们" ,@"意见反馈" ,currentAppVersion];
     for (int i = 0; i < textArray.count; i ++) {

@@ -51,7 +51,6 @@
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
 
-    DLog(@"开票历史详情数据== %@" ,dic );
     
     
     [MHAsiNetworkHandler startMonitoring];
@@ -79,9 +78,6 @@
         }
         
         
-        DLog(@"开票历史详情数据== jeikou == %@ " ,returnData);
-        
-        
         
     } failureBlock:^(NSError *error) {
         
@@ -101,8 +97,6 @@
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
-    DLog(@"开票订单数量== %@" ,dic );
     
     
     [MHAsiNetworkHandler startMonitoring];
@@ -115,9 +109,6 @@
         }
         
         //[self.tableView reloadData];
-        
-        DLog(@"开票订单数量数据== jeikou == %@ " ,returnData);
-        
         
         
     } failureBlock:^(NSError *error) {
@@ -264,7 +255,6 @@
 #pragma mark ===客服
 -(void)kfBtnAction{
     
-    DLog(@"联系客服");
     NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"4001106111"];
     UIWebView * callWebview = [[UIWebView alloc] init];
     [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
@@ -353,7 +343,6 @@
         InvoiceHistoryCheckOrderViewController  *Vc = [InvoiceHistoryCheckOrderViewController new];
         Vc.invoiceId = model.id;
         [self.navigationController pushViewController:Vc animated:YES];
-        DLog(@"查看发票订单");
     }
   
     

@@ -33,19 +33,12 @@
 
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    DLog(@"全部视图   已经已经出现");
 
-}
--(void)viewWillDisappear:(BOOL)animated{
-    DLog(@"全部视图 谎言将要  将要------消失");
-
-}
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    DLog(@"全部视图  加载didload");
+  
 
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.orderListMarray = [NSMutableArray array];
@@ -138,10 +131,9 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"所有的订单 ============ %@" ,dic);
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/list?currentPage=%ld" , baseUrl ,totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"所有的订单=== %@" ,returnData);
         
         NSInteger pages = [returnData[@"data"][@"pages"] integerValue];
         NSInteger pageSize = [returnData[@"data"][@"pageSize"] integerValue];
@@ -170,7 +162,6 @@
                     OrderModel *model = [OrderModel yy_modelWithJSON:dic2];
                     model.productImage = dic2[@"productImage"];
                     
-                   // DLog(@"jeixi---====sssd ============== %@" ,model.productImage);
                     model.productImage = [[NSMutableArray arrayWithArray:[model.productImage componentsSeparatedByString:@","]] firstObject];
                     
                     

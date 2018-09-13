@@ -75,7 +75,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"reloadIndex" object:nil];
 
     NSInteger index = [info.userInfo[@"index"] integerValue];
-    DLog(@"通知========%ld" ,index);
+   // DLog(@"通知========%ld" ,index);
     
     self.index = index;
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -175,7 +175,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classifys?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"一级分类标签数据 = %@" ,returnData);
+        //DLog(@"一级分类标签数据 = %@" ,returnData);
         NSArray *titleArray = [NSArray array];
         NSMutableArray *ar = [NSMutableArray array];
         NSMutableArray *VC = [NSMutableArray array];
@@ -189,7 +189,7 @@
                 [self.titleModelMarray addObject:model];
                 
                 [ar addObject:model.classifyName];
-                DLog(@"xxx=== %@" ,model.classifyName);
+                //DLog(@"xxx=== %@" ,model.classifyName);
                 MerchantOneViewController *one = [MerchantOneViewController new];
                 [VC addObject:one];
             }
@@ -230,10 +230,10 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"根据一级分类id 查询数据 == %@" ,dic);
+    //DLog(@"根据一级分类id 查询数据 == %@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_classify_list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
+       // DLog(@"根据一级分类id 查询数据=== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.dataArray removeAllObjects];
             
@@ -294,20 +294,20 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"经常买1111= %@" ,dic);
+    //DLog(@"经常买1111= %@" ,dic);
     
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager postReqeustWithURL:BaseURLString params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"经常买=sssssd= %@" ,returnData);
+        //DLog(@"经常买=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
         
         if ([[NSString stringWithFormat:@"%@" ,returnData[@"code"]] isEqualToString:@"0404"] || [[NSString stringWithFormat:@"%@" ,returnData[@"code"]] isEqualToString:@"04"]) {
-            DLog(@"未登录");
+           //DLog(@"未登录");
             
             
             [self.dataArray removeAllObjects];
             [self.tableView reloadData];
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登陆" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:YES bottomBtnTitle:@"点击登陆"];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登录" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:YES bottomBtnTitle:@"点击登录"];
             [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
             
             
@@ -345,7 +345,7 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"经常买=error=%@" ,error);
+        //DLog(@"经常买=error=%@" ,error);
         
     } showHUD:NO];
     
@@ -368,7 +368,7 @@
 -(void)requestALLPeopleDataBaseURLString:(NSString*)BaseURLString{
     
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"大家都在买 数据=sssssd= %@" ,returnData);
+        //DLog(@"大家都在买 数据=sssssd= %@" ,returnData);
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.dataArray removeAllObjects];
@@ -396,7 +396,7 @@
 -(void)requesSaiXianDataBaseURLString:(NSString*)BaseURLString{
     
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
+        //DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {

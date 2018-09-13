@@ -19,8 +19,12 @@
 @property (nonatomic,strong) UILabel *descLab;
 //商品重量规格
 @property (nonatomic,strong) UILabel *weightLab;
-//商品价格
-@property (nonatomic,strong) UILabel *pricelab;
+///商品促销价格
+@property (nonatomic,strong) UIButton *newsPriceBtn;
+///商品原价
+@property (nonatomic,strong) UIButton *oldPriceBtn;
+
+
 //购物车按钮
 @property (nonatomic,strong) UIButton *cartBtn;
 

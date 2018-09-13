@@ -26,6 +26,16 @@
 @property (nonatomic,strong) NSString *orderNo;
 ///"productId": 12,                        商品id
 @property (nonatomic,strong) NSString *productId;
+
+///
+@property (nonatomic,assign) NSInteger commodityId;
+
+///标准规格
+@property (nonatomic,strong) NSString *standardSize;
+///实际规格
+@property (nonatomic,strong) NSString * productSize;
+
+
 ///"productName": "1",                    商品名称
 @property (nonatomic,strong) NSString *productName;
 ///"productImage": "1",                    商品图片
@@ -153,6 +163,13 @@
 
 ///优惠券金额
 @property (nonatomic,assign) NSInteger amount;
+
+///订单 分为C端和B端
+@property (nonatomic,strong) NSString *typeOfBusiness;
+
+/////邮费
+@property (nonatomic,assign) NSInteger postage;
+
 
 
 ///退货原因

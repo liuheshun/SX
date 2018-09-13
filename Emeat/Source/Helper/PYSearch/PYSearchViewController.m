@@ -10,6 +10,9 @@
 #import "SearchCollectionViewCell.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "HomePageDetailsViewController.h"
+#import "ShopCertificationViewController.h"
+
+
 #define PYRectangleTagMaxCol 3
 #define PYTextColor PYSEARCH_COLOR(113, 113, 113)
 #define PYSEARCH_COLORPolRandomColor self.colorPol[arc4random_uniform((uint32_t)self.colorPol.count)]
@@ -99,6 +102,7 @@
 ///热搜推荐
 @property (nonatomic,strong) NSMutableArray *dataMarray;
 
+@property (nonatomic,strong) NSString *isShowShareString;
 
 
 
@@ -1281,10 +1285,10 @@
     //设置headerView的尺寸大小
 //    layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width, 30);
     //该方法也可以设置itemSize
-    layout.itemSize =CGSizeMake(115*kScale, 167*kScale);
+    layout.itemSize =CGSizeMake(115*kScale, 167*kScale+22*kScale);
     
     //2.初始化collectionView
-    mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 60*kScale, kWidth, 167*kScale) collectionViewLayout:layout];
+    mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 60*kScale, kWidth, 167*kScale+22*kScale) collectionViewLayout:layout];
     [view addSubview:mainCollectionView];
     mainCollectionView.backgroundColor = [UIColor clearColor];
     mainCollectionView.showsHorizontalScrollIndicator = NO;
@@ -1292,7 +1296,7 @@
 
     //3.注册collectionViewCell
     //注意，此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致 均为 cellId
-    [mainCollectionView registerClass:[SearchCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
+    [mainCollectionView registerClass:[SearchCollectionViewCell class] forCellWithReuseIdentifier:@"hot_cellId"];
     
     //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
     [mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
@@ -1323,11 +1327,11 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    SearchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
-    if (cell == nil) {
-        cell = (SearchCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
-
-    }
+    SearchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"hot_cellId" forIndexPath:indexPath];
+//    if (cell == nil) {
+//        cell = (SearchCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"hot_cellId" forIndexPath:indexPath];
+//
+//    }
     cell.backgroundColor = [UIColor whiteColor];
 //    DLog(@"%ld" ,self.dataMarray.count);
     if (self.dataMarray.count != 0) {
@@ -1335,11 +1339,86 @@
         [cell.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];
         HomePageModel *model = self.dataMarray[indexPath.item];
         [cell configHomePageCellWithModel:model];
+        ///是否可以查看价格
         
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        
+        if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+            
+            
+        }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){
+            ///点击查看价格点击事件
+            [cell.newsPriceBtn addTarget:self action:@selector(checkPricesAction) forControlEvents:1];
+        }
     }
    
     return cell;
 }
+
+
+
+#pragma mark ==============查看价格
+
+-(void)checkPricesAction{
+    
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    if ([[user valueForKey:@"isLoginState"] isEqualToString:@"0"]) {
+        LoginViewController *VC = [LoginViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+    }else if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"]){
+        
+        
+        if ([[user valueForKey:@"approve"] isEqualToString:@"0"]) {///认证未通过
+            MMPopupItemHandler block = ^(NSInteger index){
+                if (index == 0) {
+                    NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                    dispatch_async(dispatch_get_main_queue(), ^(){
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                    });
+                }
+            };
+            NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"再等等", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您的认证申请还未通过，请耐心等待！\n客服热线：4001106111" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+            
+        }else  if ([[user valueForKey:@"approve"] isEqualToString:@"2"]) {///未认证
+            MMPopupItemHandler block = ^(NSInteger index){
+                if (index == 0) {
+                    
+                    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+                    VC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:VC animated:YES];
+                }
+            };
+            NSArray *items = @[MMItemMake(@"去认证", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您还未通过商户认证，请先提交认证申请!" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+        }
+        
+    }
+    
+    
+    
+}
+
+
 
 //设置每个item的尺寸
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1359,21 +1438,99 @@
     if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"])
     {
         
-        NSIndexPath *myIndex=[mainCollectionView indexPathForCell:(SearchCollectionViewCell*)[btn superview]];
-        SearchCollectionViewCell *cell1 = [mainCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:btn.tag inSection:myIndex.section]];
-        //后期可能会有此需求(商品首页回显加入购物车数量)下面一行需要删掉
-        // [cell1.cartBtn removeFromSuperview];
-        
-        if (self.dataMarray.count != 0)
-        {
-            HomePageModel *model = self.dataMarray[myIndex.row];
+        if ([self.isShowShareString isEqualToString:@"0"]) {///c端,
             
-            [self addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:myIndex cell:cell1 isFirstClick:YES tableView:self.baseSearchTableView];
+            //---
+            NSIndexPath *myIndex=[mainCollectionView indexPathForCell:(SearchCollectionViewCell*)[btn superview]];
+            SearchCollectionViewCell *cell1 = [mainCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:btn.tag inSection:myIndex.section]];
+            //后期可能会有此需求(商品首页回显加入购物车数量)下面一行需要删掉
+            // [cell1.cartBtn removeFromSuperview];
             
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:myIndex.row inSection:myIndex.section];
-           // [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+            if (self.dataMarray.count != 0)
+            {
+                HomePageModel *model = self.dataMarray[myIndex.row];
+                
+                [self addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:myIndex cell:cell1 isFirstClick:YES tableView:self.baseSearchTableView];
+                
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:myIndex.row inSection:myIndex.section];
+                // [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+                
+            }
+
+        }else{
+            
+            if ([[user valueForKey:@"approve"] isEqualToString:@"0"]) {///认证未通过
+                MMPopupItemHandler block = ^(NSInteger index){
+                    if (index == 0) {
+                        NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                        dispatch_async(dispatch_get_main_queue(), ^(){
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                        });
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"再等等", MMItemTypeNormal, block)];
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您的认证申请还未通过，请耐心等待！\n客服热线：4001106111" items:items];
+                
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                
+                [alertView show];
+                
+                
+                
+            }else  if ([[user valueForKey:@"approve"] isEqualToString:@"2"]) {///未认证
+                MMPopupItemHandler block = ^(NSInteger index){
+                    if (index == 0) {
+                        
+                        ShopCertificationViewController *VC = [ShopCertificationViewController new];
+                        VC.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:VC animated:YES];
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"去认证", MMItemTypeNormal, block)];
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您还未通过商户认证，请先提交认证申请!" items:items];
+                
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                
+                [alertView show];
+                
+                
+            }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+                
+                
+                /////
+                
+                //---
+                NSIndexPath *myIndex=[mainCollectionView indexPathForCell:(SearchCollectionViewCell*)[btn superview]];
+                SearchCollectionViewCell *cell1 = [mainCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:btn.tag inSection:myIndex.section]];
+                //后期可能会有此需求(商品首页回显加入购物车数量)下面一行需要删掉
+                // [cell1.cartBtn removeFromSuperview];
+                
+                if (self.dataMarray.count != 0)
+                {
+                    HomePageModel *model = self.dataMarray[myIndex.row];
+                    
+                    [self addCartPostDataWithProductId:model.id homePageModel:model NSIndexPath:myIndex cell:cell1 isFirstClick:YES tableView:self.baseSearchTableView];
+                    
+                    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:myIndex.row inSection:myIndex.section];
+                    // [self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+                    
+                }
+
+                
+                
+            }
+            
+            
             
         }
+        
+        
+        
+        
         
     }else
     {
@@ -1413,6 +1570,15 @@
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
     
     [dic setObject:@"1" forKey:@"quatity"];
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
     DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         //
@@ -1485,11 +1651,9 @@
             SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
        // [tableView reloadData];
     } failureBlock:^(NSError *error) {
         
-        DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
         
     } showHUD:NO];
     
@@ -1548,11 +1712,11 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_ten_commodity?mtype=%@&appVersionNumber=%@&user=%@" , baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"热门推荐数据== %@" ,returnData);
+    NSString *showType = [GlobalHelper shareInstance].showType;
+    
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_ten_commodity?mtype=%@&appVersionNumber=%@&user=%@&showType=%@" , baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"] , showType] params:nil successBlock:^(NSDictionary *returnData) {
 
-       
-
+        
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
 
             [self.dataMarray removeAllObjects];
@@ -1563,6 +1727,16 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
               
+                if ([showType isEqualToString:@"PERSON"]) {
+                    model.goodsTypes = @"0";
+                    self.isShowShareString = @"0";
+                }else if ([showType isEqualToString:@"SOGO"]){
+                    model.goodsTypes = @"1";
+                    self.isShowShareString = @"1";
+
+
+                }
+                
                 [self.dataMarray addObject:model];
             }
 
@@ -1642,7 +1816,6 @@
     
     
     
-    NSLog(@"iiii==== %ld" ,indexPath.item);
 }
 
 

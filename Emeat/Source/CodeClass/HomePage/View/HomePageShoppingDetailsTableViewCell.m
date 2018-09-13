@@ -32,7 +32,6 @@
 
 -(void)configCell:(HomePageModel *)model forIndexPath:(NSIndexPath *)indexPath tableView:(UITableView*)tableView{
 //    [self.detailsImv sd_setImageWithURL:[NSURL URLWithString:model.commodityDetail]];
-   DLog(@"aaaaaaasdddddddddddddddd===========%@" ,model.commodityDetail);
     
 //    // 先从缓存中查找图片
 //    UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey: self.imgArray[indexPath.row]];

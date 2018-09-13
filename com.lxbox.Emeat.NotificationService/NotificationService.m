@@ -26,7 +26,7 @@
     
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
-    NSLog(@"----将APNs信息交由个推处理----");
+    //NSLog(@"----将APNs信息交由个推处理----");
 
  
     [GeTuiExtSdk handelNotificationServiceRequest:request withAttachmentsComplete:^(NSArray *attachments, NSArray* errors) {
@@ -36,7 +36,7 @@
         
         self.bestAttemptContent.attachments = attachments; //设置通知中的多媒体附件
         
-        NSLog(@"个推处理APNs消息遇到错误：%@",errors); //如果APNs处理有错误，可以在这里查看相关错误详情
+       // NSLog(@"个推处理APNs消息遇到错误：%@",errors); //如果APNs处理有错误，可以在这里查看相关错误详情
         
         self.contentHandler(self.bestAttemptContent); //展示推送的回调处理需要放到个推回执完成的回调中
         
@@ -73,7 +73,7 @@
     [[session downloadTaskWithURL:attachmentURL
                 completionHandler:^(NSURL *temporaryFileLocation, NSURLResponse *response, NSError *error) {
                     if (error != nil) {
-                        NSLog(@"%@", error.localizedDescription);
+                        //NSLog(@"%@", error.localizedDescription);
                     } else {
                         NSFileManager *fileManager = [NSFileManager defaultManager];
                         NSURL *localURL = [NSURL fileURLWithPath:[temporaryFileLocation.path stringByAppendingString:fileExt]];
@@ -82,7 +82,7 @@
                         NSError *attachmentError = nil;
                         attachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:localURL options:nil error:&attachmentError];
                         if (attachmentError) {
-                            NSLog(@"%@", attachmentError.localizedDescription);
+                           // NSLog(@"%@", attachmentError.localizedDescription);
                         }
                     }
                     completionHandler(attachment);

@@ -29,15 +29,9 @@
 
     [self requestDataWithTotalPage:totalPage];
 
-    DLog(@"付款将要出现视图");
 }
--(void)viewWillDisappear:(BOOL)animated{
-    DLog(@"付款将要 === 消失 视图");
 
-}
 - (void)viewDidLoad {
-    DLog(@"付款 ji === 消失 视图");
-
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.orderImvArray = [NSMutableArray array];
@@ -115,13 +109,12 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"待付款 ============ %@" ,dic);
+
     [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/queryByStatus?currentPage=%ld" , baseUrl ,(long)totalPage] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"待付款 订单=== %@" ,returnData);
-        
+
         NSInteger pages = [returnData[@"data"][@"pages"] integerValue];
         NSInteger pageSize = [returnData[@"data"][@"pageSize"] integerValue];
         NSInteger total = [returnData[@"data"][@"total"] integerValue];
@@ -175,7 +168,6 @@
 
         
     } failureBlock:^(NSError *error) {
-        DLog(@"待付款 订单error=== %@" ,error);
 
     } showHUD:NO];
     
@@ -270,7 +262,6 @@
     OrderDetailesViewController *VC = [OrderDetailesViewController new];
     OrderModel *model = self.orderListMarray[indexPath.section];
     VC.orderNo = model.orderNo;
-    DLog(@"llll=== %@" ,model.orderNo);
 
     [self.navigationController pushViewController:VC animated:YES];
 }

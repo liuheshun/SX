@@ -66,12 +66,11 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"售后============ %@" ,dic);
+
     [MHAsiNetworkHandler startMonitoring];
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/queryByStatus" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"售后 订单=== %@" ,returnData);
         
         if ([returnData[@"status"] integerValue] == 200) {
             if (totalPage == 1) {
@@ -114,7 +113,6 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"售后 订单error=== %@" ,error);
         
     } showHUD:NO];
     

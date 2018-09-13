@@ -60,7 +60,7 @@
     [SVProgressHUD show];
     NSMutableDictionary *dic = [self checkoutData];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/get_card_ticket_center" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"卡券数据 ==%@" ,returnData);
+        //DLog(@"卡券数据 ==%@" ,returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -97,8 +97,9 @@
 -(void)requsetCanUsedCardData{
     [SVProgressHUD show];
     NSMutableDictionary *dic = [self checkoutData];
+    [dic setValue:self.businessType forKey:@"businessType"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/get_approve_ticket" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"可以使用的卡券数据 ==%@" ,returnData);
+       // DLog(@"可以使用的卡券数据 ==%@" ,returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -277,73 +278,86 @@
 }
 
 
-
--(void)selectCardGetOrderInfoDataWithTicketId:(NSInteger)ticketId CardPrices:(NSInteger)cardPrices{
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    dic = [self checkoutData];
-    [dic setValue:mTypeIOS forKey:@"mtype"];
-    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
-    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    [dic setValue:[NSString stringWithFormat:@"%ld" ,ticketId] forKey:@"ticketId"];
-    
-    
-    DLog(@"获取订单信息 dic == %@" ,dic);
-    NSMutableArray *orderListMarray = [NSMutableArray array];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"获取订单信息returnData == %@" ,returnData);
-        NSMutableArray *cardMarray = [NSMutableArray array];
-        if ([returnData[@"status"] integerValue] == 200)
-        {
-            
-                
-                CardModel *model = [CardModel yy_modelWithJSON:returnData[@"data"][@"ticket"]];
-                model.productTotalPrice = returnData[@"data"][@"productTotalPrice"];
-                model.cardId = [returnData[@"data"][@"ticket"][@"id"] integerValue];
-                [cardMarray addObject:model];
-    
-
-            if ([self respondsToSelector:@selector(selectCardPrice)]) {
-                
-                self.selectCardPrice(cardMarray);
-            }
-            [self.navigationController popViewControllerAnimated:YES];
-            
-           
-            
-            
-            
 //
-//            NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
+//-(void)selectCardGetOrderInfoDataWithTicketId:(NSInteger)ticketId CardPrices:(NSInteger)cardPrices{
+//    
+//    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//    dic = [self checkoutData];
+//    [dic setValue:mTypeIOS forKey:@"mtype"];
+//    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+//    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+//    [dic setValue:[NSString stringWithFormat:@"%ld" ,ticketId] forKey:@"ticketId"];
+//    
+//    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+//        
+//        [dic setValue:@"PERSON" forKey:@"showType"];
+//        
+//    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+//        
+//        [dic setValue:@"SOGO" forKey:@"showType"];
+//        
+//    }
+//    
+//    DLog(@"获取订单信息 dic == %@" ,dic);
+//    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product_new" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+//        DLog(@"获取订单信息returnData == %@" ,returnData);
+//        NSMutableArray *cardMarray = [NSMutableArray array];
+//        if ([returnData[@"status"] integerValue] == 200){
+//            
+//            CardModel *model = [CardModel yy_modelWithJSON:returnData[@"data"][@"ticket"]];
+//            
+//            model.productTotalPrice = returnData[@"data"][@"productTotalPrice"];
+//            
+//            model.cardId = [returnData[@"data"][@"ticket"][@"id"] integerValue];
+//            
+//            model.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]] ;
+//            model.businessType = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"businessType"]];
 //
-//            for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
+//            
+//            [cardMarray addObject:model];
+//    
 //
-//                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
-//                model.productTotalPrice = productTotalPrice;
-//                model.needTotalPrices = productTotalPrice;
-//                [orderListMarray addObject:model];
+//            if ([self respondsToSelector:@selector(selectCardPrice)]) {
+//                
+//                self.selectCardPrice(cardMarray);
 //            }
-//
-//            [SVProgressHUD dismiss];
-//            ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController new];
-//            VC.hidesBottomBarWhenPushed = YES;
-//            VC.orderListMarray = orderListMarray;
-//            [self.navigationController pushViewController:VC animated:YES];
-//            NSLog(@"去结算");
-//            DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
- }
-//        else
-//        {
-//            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
-//        }
-    } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
-        
-    } showHUD:NO];
-    
-    
-}
+//            [self.navigationController popViewControllerAnimated:YES];
+//            
+//           
+//            
+//            
+//            
+////
+////            NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
+////
+////            for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
+////
+////                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+////                model.productTotalPrice = productTotalPrice;
+////                model.needTotalPrices = productTotalPrice;
+////                [orderListMarray addObject:model];
+////            }
+////
+////            [SVProgressHUD dismiss];
+////            ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController new];
+////            VC.hidesBottomBarWhenPushed = YES;
+////            VC.orderListMarray = orderListMarray;
+////            [self.navigationController pushViewController:VC animated:YES];
+////            NSLog(@"去结算");
+////            DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
+// }
+////        else
+////        {
+////            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
+////        }
+//    } failureBlock:^(NSError *error) {
+//        DLog(@"获取订单信息err0r=== %@  " ,error);
+//        
+//    } showHUD:NO];
+//    
+//    
+//}
 
 
 

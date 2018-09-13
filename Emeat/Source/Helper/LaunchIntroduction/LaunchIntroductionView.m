@@ -234,7 +234,7 @@ NSString *storyboard;
 
 - (void)holedView:(JMHoledView *)holedView didSelectHoleAtIndex:(NSUInteger)index
 {
-    NSLog(@"%s %ld", __PRETTY_FUNCTION__,(long)index);
+    //NSLog(@"%s %ld", __PRETTY_FUNCTION__,(long)index);
     
     if (index == 0) {
         newUserCount++;

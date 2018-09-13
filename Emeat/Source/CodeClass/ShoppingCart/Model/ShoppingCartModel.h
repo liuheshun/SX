@@ -44,17 +44,23 @@
 
 /// 商品价格
 @property (nonatomic,strong) NSString *productPrice;
+///商品原价
+@property (nonatomic,strong) NSString *costPrice;
+
+
 ///商品重量规格
 @property (nonatomic,strong) NSString *productSize;
+////标准规格
+@property (nonatomic,strong) NSString *standardSize;
 
 
 ///商品状态（上架，下架）
 @property (nonatomic,assign) NSInteger productStatus;
 
-///商品总价
+///商品总价 确认订单
 @property (nonatomic,strong) NSString *productTotalPrice;
-///需支付
-@property (nonatomic,strong) NSString *needTotalPrices;
+///需支付 确认订单
+@property (nonatomic,strong) NSString *payment;
 
 
 ///商品库存
@@ -71,15 +77,26 @@
 ///购物车购买全部商品总价
 @property (nonatomic,strong) NSString *cartTotalPrice;
 
+
 /// 一种商品的总价(购买数量一个 多个)
 @property (nonatomic,strong) NSString *totalPrice;
 ///邮费
-@property (nonatomic,assign) NSInteger postage;
+@property (nonatomic,strong) NSString * postMoney;
 ///加工耗材费
 @property (nonatomic,strong) NSString *slicePrices;
 
 ///
 @property (nonatomic,strong) NSString *servicePrice;
+
+///
+@property (nonatomic,strong) NSString *currentUnitPrice;
+
+///区分B端 C端 订单
+@property (nonatomic,strong) NSString *businessType;
+
+
+///商品对象新加字段discountPrice 促销价(分)用于判断是否需要划掉原价 , -1为没促销价
+@property (nonatomic,assign) NSInteger discountPrice;
 
 
 ///商品状态

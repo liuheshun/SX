@@ -42,7 +42,7 @@
 }
 
 - (void)dealloc {
-    NSLog(@"ZJScrollPageView--销毁");
+   // NSLog(@"ZJScrollPageView--销毁");
 }
 
 #pragma mark - public helper

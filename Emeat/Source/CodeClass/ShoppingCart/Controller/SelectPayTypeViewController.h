@@ -18,5 +18,8 @@
 
 @property (nonatomic,strong) NSString *fromVC;
 
+///个人专区订单不显示线下支付
+@property (nonatomic,strong) NSString *typeOfBusiness;
+
 
 @end

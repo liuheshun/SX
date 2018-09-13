@@ -49,7 +49,6 @@
 #pragma mark =定位点击事件
 
 -(void)loadinglocation{
-    DLog(@"定位当前位置");
     [self setLocations];
 }
 
@@ -64,7 +63,6 @@
 
 - (void)locationDidEndUpdatingLocation:(Location *)location{
     //self.currentAddressString = location.name;
-    DLog(@"当前定位==== %@" ,location.name);
     self.currenrLocationString = location.name;
     self.currentLocation = location;
 
@@ -78,7 +76,6 @@
         
         [self.otherAddressArray removeAllObjects];
         for (DDSearchPoi *poi in pois) {
-        NSLog(@"附近地址==sss======%@ %@ %@ %@ %@",poi.city ,poi.address,poi.name ,poi.district ,poi.province);
             if (![self.otherAddressArray containsObject:poi.name]) {
                 [self.otherAddressArray addObject:poi.name];
             }
@@ -99,10 +96,8 @@
             [self.searchMarray removeAllObjects];
         }
         for (DDSearchPointAnnotation *poi in pointAnnotaions) {
-            NSLog(@"新曾地址搜索结果======%@ ",poi.name);
             
             [self.searchMarray addObject:poi];
-            DLog(@"cccccccc======= %ld" ,self.searchMarray.count);
         }
         [self.tableView reloadData];
         
@@ -115,7 +110,6 @@
 
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    DLog(@"ssss====%@" ,searchText);
     if (searchText.length ==0) {
         
         _isSearchController = NO;
@@ -133,7 +127,6 @@
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     
-    DLog(@"ddddddddddd==%@" ,searchBar.text);
 
 }
 
@@ -250,7 +243,6 @@
         
         cell1.backgroundColor = [UIColor whiteColor];
         cell1.textLabel.text = self.otherAddressArray[indexPath.row];
-        DLog(@"kkkkkkkk------------------------------------------ %@" ,self.otherAddressArray[indexPath.row]);
         return cell1;
         
     }else{

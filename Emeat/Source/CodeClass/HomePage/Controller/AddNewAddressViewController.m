@@ -46,10 +46,8 @@
     [self.view addSubview:self.addNewAddressView];
     self.addressDic = [NSMutableDictionary dictionary];
 
-    DLog(@"111111111111111111============%@" , self.receiverAddress);
 
     if (_isCanRemove == NO) {
-        DLog(@"22222222222222222============%@" , self.receiverAddress);
         [self.view addSubview:self.removeBtn];
         [self setRemoveBtnFrame];
         [self.addNewAddressView configAddressView:self.postMyAddressModel];
@@ -69,7 +67,6 @@
     NSMutableDictionary *checkDic = [self checkoutData];
     [self.addressDic setValuesForKeysWithDictionary:checkDic];
     
-    DLog(@"地址详细字典======== ==== %@" ,self.addressDic);
     [self.addressDic setValue:mTypeIOS forKey:@"mtype"];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
@@ -86,7 +83,7 @@
     }
     
     [MHNetworkManager postReqeustWithURL:url params:self.addressDic successBlock:^(NSDictionary *returnData) {
-        DLog(@"新增收货地址===== %@ %@ " ,returnData, returnData[@"msg"]);
+
         self.rightButton.enabled = YES;
 
         if ([returnData[@"status"] integerValue] == 200) {
@@ -101,7 +98,6 @@
     } failureBlock:^(NSError *error) {
         [SVProgressHUD dismiss];
 
-        DLog(@"新增收货地址错误=== %@" , error);
         self.rightButton.enabled = YES;
 
     } showHUD:NO];
@@ -113,7 +109,6 @@
 
 -(void)removeBtnAction{
     
-    DLog(@"删除地址");
     [SVProgressHUD show];
     NSMutableDictionary *dic = [self checkoutData];
     
@@ -130,11 +125,9 @@
 
             [self.navigationController popViewControllerAnimated:YES];
         }
-        DLog(@"删除收货地址===== %@ %@ " ,returnData, returnData[@"msg"]);
     } failureBlock:^(NSError *error) {
         [SVProgressHUD dismiss];
 
-        DLog(@"删除收货地址错误=== %@" , error);
     } showHUD:NO];
     
     
@@ -149,7 +142,6 @@
     
     self.rightItemBlockAction = ^{
         [weakSelf.view endEditing:YES]; //实现该方法是需要注意view需要是继承UIControl而来的
-        DLog(@"保存 = = 名字= %@  电话==%@  省== %@    详细地址== %@  shippid== %ld" , weakSelf.receiverName, weakSelf.receiverPhone ,weakSelf.receiverProvince , weakSelf.receiverAddress  ,weakSelf.shippingCategory);
     
         if (weakSelf.receiverName.length == 0 || weakSelf.receiverPhone.length == 0 || weakSelf.receiverProvince.length == 0 || weakSelf.receiverAddress.length == 0) {
             [weakSelf alertMessage:@"请填写完整的收货地址信息" willDo:nil];
@@ -225,7 +217,6 @@
            
         };
         [weakSelf.navigationController pushViewController:VC animated:YES];
-        DLog(@"进入选着地址页面");
         
     };
     
@@ -243,7 +234,6 @@
         textField.text = [textField.text substringToIndex:11];
     }
     
-    DLog(@"sssss== %@" ,textField.text);
     
     if (textField.text.length == 11) {
         if (![self checkTel:textField.text] ) {

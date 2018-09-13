@@ -44,19 +44,19 @@
     RealReachability *reachability = (RealReachability *)notification.object;
     ReachabilityStatus status = [reachability currentReachabilityStatus];
     ReachabilityStatus previousStatus = [reachability previousReachabilityStatus];
-    NSLog(@"networkChanged, currentStatus:%@, previousStatus:%@", @(status), @(previousStatus));
+
     self.reachabilityStatus = status;
     if (status == RealStatusNotReachable)
     {
 //        self.flagLabel.text = @"Network unreachable!";
-        DLog(@"无网络");
+       // DLog(@"无网络");
         
     }
     
     if (status == RealStatusViaWiFi)
     {
 //        self.flagLabel.text = @"Network wifi! Free!";
-        DLog(@"wifi");
+        //DLog(@"wifi");
 
     }
     
@@ -80,7 +80,7 @@
         else if (accessType == WWANType4G)
         {
 //            self.flagLabel.text = @"RealReachabilityStatus4G";
-            DLog(@"4444ggggggggggg");
+           // DLog(@"4444ggggggggggg");
 
         }
         else
@@ -431,7 +431,6 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
         NSString *dateString       = [formatter stringFromDate: date];
-        NSLog(@"服务器返回的时间戳对应的时间是:%@",dateString);
     
     return dateString;
 }
@@ -568,8 +567,16 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    
-    DLog(@"加入购物车 ==== %@" , dic);
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+    //DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
 
         if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
@@ -633,11 +640,11 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
+       // DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
         [tableView reloadData];
     } failureBlock:^(NSError *error) {
 
-        DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
+       // DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
         
     } showHUD:NO];
     
@@ -676,10 +683,10 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        DLog(@"减去购物车==  %@" ,returnData);
+        //DLog(@"减去购物车==  %@" ,returnData);
     } failureBlock:^(NSError *error) {
         
-        DLog(@"减去购物车error==  %@" ,error);
+       // DLog(@"减去购物车error==  %@" ,error);
         
     } showHUD:NO];
     
@@ -714,10 +721,10 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
             [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
         }
         
-        DLog(@"购物车数量==  %@" ,returnData);
+        //DLog(@"购物车数量==  %@" ,returnData);
     } failureBlock:^(NSError *error) {
         
-        DLog(@"购物车数量error==  %@" ,error);
+        //DLog(@"购物车数量error==  %@" ,error);
         
     } showHUD:NO];
 }
@@ -745,10 +752,10 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
         }else{
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        DLog(@"删除 == %@" , returnData);
+        //DLog(@"删除 == %@" , returnData);
         
     } failureBlock:^(NSError *error) {
-        DLog(@"删除error == %@" , error);
+        //DLog(@"删除error == %@" , error);
         
         
     } showHUD:NO];

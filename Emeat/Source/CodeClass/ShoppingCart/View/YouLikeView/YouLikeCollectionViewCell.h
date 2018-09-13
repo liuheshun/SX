@@ -14,8 +14,11 @@
 @property (nonatomic,strong) UIImageView *imv;
 ///商品名称
 @property (nonatomic,strong) UILabel *nameLable;
-///商品价格
-@property (nonatomic,strong) UILabel *priceLable;
+///商品促销价格
+@property (nonatomic,strong) UIButton *newsPriceBtn;
+///商品原价
+@property (nonatomic,strong) UIButton *oldPriceBtn;
+
 ///规格
 @property (nonatomic,strong) UILabel *weightLable;
 ///加入购物车按钮

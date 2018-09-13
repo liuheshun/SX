@@ -17,7 +17,7 @@
 #import "MHUploadParam.h"
 
 #import "AFHTTPSessionManager.h"
-
+#import "HomePageDetailsViewController.h"
 @interface OrderDetailesViewController ()<UITableViewDelegate ,UITableViewDataSource,TZImagePickerControllerDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) MyOrderDetailsStatusHeadView *myOrderDetailsStatusHeadView;
@@ -124,9 +124,7 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"订单详情===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -140,6 +138,7 @@
                 [self.headViewSendAddressMarray addObject:addressModel];
             }
             
+            NSString *typeOfBusiness = returnData[@"data"][@"typeOfBusiness"];
             for (NSMutableDictionary *proDic in returnData[@"data"][@"orderItemVoList"]) {///商品信息数据
                 
                 OrderModel *orderModel = [OrderModel yy_modelWithJSON:proDic];
@@ -150,7 +149,7 @@
                 }
                 
                 orderModel.myAddressModel = addressModel;
-
+                orderModel.typeOfBusiness = typeOfBusiness;
                 [self.productMarray addObject:orderModel];
             }
             
@@ -186,6 +185,7 @@
 
             footModel.returnMoneySum = [returnData[@"data"][@"orderMoney"][@"returnMoneySum"] integerValue];
             footModel.amount = [returnData[@"data"][@"ticket"][@"ticket"][@"amount"] integerValue];
+            footModel.postage = [returnData[@"data"][@"postage"] integerValue];
 
             [self.footViewOrderInfoMarray addObject:footModel];
             [self.view addSubview:self.tableView];
@@ -200,7 +200,6 @@
         }
      
     } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
         [SVProgressHUD dismiss];
     } showHUD:NO];
     
@@ -233,9 +232,7 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
-    DLog(@"取消订单dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"取消订单===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         if ([returnData[@"status"] integerValue] == 200){
             ///取消订单后 刷新数据
             [self requsetOrderDetailsData];
@@ -245,7 +242,6 @@
         [SVProgressHUD dismiss];
         
     } failureBlock:^(NSError *error) {
-        DLog(@"取消订单err0r=== %@  " ,error);
         [SVProgressHUD dismiss];
     } showHUD:NO];
     
@@ -277,9 +273,7 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
-    DLog(@"确认收货dic == %@   orderNo ==== %@ " ,dic , self.orderNo  );
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/confirm" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"确认收货===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -293,7 +287,6 @@
         }
         
     } failureBlock:^(NSError *error) {
-        DLog(@"确认收货订单信息err0r=== %@  " ,error);
         [SVProgressHUD dismiss];
     } showHUD:NO];
     
@@ -305,7 +298,6 @@
 -(void)leftBottomBtnAction:(UIButton *)btn
 {
     if (btn.tag == 10 || btn.tag == 40) {
-        DLog(@"取消订单");
         
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消订单" preferredStyle:1];
@@ -325,7 +317,6 @@
     else if (btn.tag == 60)
     {
         [self confirmOrderData];
-        DLog(@"确认收货");
     }
     
     
@@ -336,7 +327,6 @@
 -(void)rightBottomBtnAction:(UIButton *)btn
 {
     if (btn.tag == 10) {
-        DLog(@"立即支付");
         
         SelectPayTypeViewController *VC = [SelectPayTypeViewController new];
         VC.orderNo = self.orderNo;
@@ -347,13 +337,11 @@
 
         [self.navigationController pushViewController:VC animated:YES];
     }else if (btn.tag == 40){///上传打款凭证
-        DLog(@"-----------上传打款凭证-------------");
         TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:4 delegate:self];
         
         // You can get the photos by block, the same as by delegate.
         // 你可以通过block或者代理，来得到用户选择的照片.
         [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
-            DLog(@"选择的图片=== %@" ,photos);
             [self postImageDta:photos];
         }];
         
@@ -411,10 +399,9 @@
             [formData appendPartWithFileData:imageData name:[NSString stringWithFormat:@"upload%d",i+1] fileName:fileName mimeType:@"image/jpeg"];
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
-        DLog(@"uploadProgress is %lld,总字节 is %lld",uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
+
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
-        DLog(@"responseObject==========  %@",responseObject);
         if ([[NSString stringWithFormat:@"%@" , responseObject[@"status"]] isEqualToString:@"200"]) {
             [SVProgressHUD showSuccessWithStatus:@"上传成功"];
              ///再次请求订单详情数据
@@ -440,7 +427,6 @@
 {
     //先调整分辨率
     CGSize newSize = CGSizeMake(source_image.size.width, source_image.size.height);
-    DLog(@"wwwwwwww=w==w=w==w=w  %f %f " ,newSize.height , newSize.width);
     CGFloat tempHeight = newSize.height / maxSize;
     CGFloat tempWidth = newSize.width / maxSize;
     
@@ -514,17 +500,8 @@
             [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
             self.orderInfoBottomView.rightBottomBtn.tag = 40;
             
-            DLog(@"线下===========打款");
             
         }else{//其余线上支付
-            
-            DLog(@"线上------------打款");
-          
-
-        
-        
-        
-       ///
         
         
         [self.orderInfoBottomView.leftBottomBtn setTitle:@"取消订单" forState:0];
@@ -540,7 +517,6 @@
         NSTimeInterval timeInterval = [date2 timeIntervalSinceDate:date1];
  
         ///20分钟
-        DLog(@"sdfffffffffffffffff============ %f" ,timeInterval);
         timeInterval = 20*60 - timeInterval;
         if (timeInterval >0) {
             
@@ -590,7 +566,6 @@
                                     
                                     
                                 }else{
-                                    DLog(@"--------------------超过限制");
                                 }
                                 
                                 
@@ -661,14 +636,12 @@
                 [self.orderInfoBottomView.rightBottomBtn setTitle:@"上传打款凭证" forState:0];
                 self.orderInfoBottomView.rightBottomBtn.tag = 40;
                 
-                DLog(@"线下===========打款");
             }
        
        
             
         }else{//其余线上支付
             
-            DLog(@"线上------------打款");
 
             
             [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
@@ -811,8 +784,7 @@
         if (orderModel.orderComment.length == 0) {
             strSize.height = 0;
         }
-        DLog(@"---------------------------== %f" ,strSize.height);
-        DLog(@"---------------------------== %f" ,ceil(strSize.height) +1);
+      
 
 
      if (orderModel.status == 50 || orderModel.status == 40 || orderModel.status == 46 || orderModel.status == 10){
@@ -866,8 +838,14 @@
         
         OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
         if ( orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
-            return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale +35*kScale+30*kScale +40*kScale;
+            if ([orderModel.typeOfBusiness isEqualToString:@"B"]) {
+                return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale +35*kScale+30*kScale +40*kScale;
 
+            }else if ([orderModel.typeOfBusiness isEqualToString:@"C"]){
+            
+                return 269*kScale+10*kScale+55*kScale+20*kScale+80*kScale +35*kScale+30*kScale +40*kScale - 95*kScale;
+            }
+               
         }else{
             return 269*kScale+10*kScale+55*kScale+20*kScale+35*kScale +40*kScale;
 
@@ -895,11 +873,10 @@
         __weak __typeof(self) weakSelf = self;
 
         self.myOrderDetailsStatusFootView.returnDeleteClickBlcok = ^(NSInteger clickIndex) {
-            DLog(@"%ld" , clickIndex);
+
             [weakSelf.monetProveMarray removeObjectAtIndex:clickIndex];
             NSString *string = [weakSelf.monetProveMarray  componentsJoinedByString:@","];//分隔符
             [weakSelf deleteMoneyProve:string];
-            DLog(@"%@" ,string );
             
         };
     }
@@ -934,7 +911,6 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/modificationVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[NSString stringWithFormat:@"%@" ,returnData[@"status"]] isEqualToString:@"200"]) {
@@ -947,9 +923,7 @@
 //            self.monetProveMarray = [NSMutableArray arrayWithArray:imvArray];
 //
             [self.tableView reloadData];
-            DLog(@"delete=======================%@" ,returnData);
-            DLog(@"delete=======================%ld" ,self.monetProveMarray.count);
-
+    
 
         }
         
@@ -1006,6 +980,16 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //隐藏tabBar
+    if (self.productMarray.count != 0) {
+        OrderModel *model = self.productMarray[indexPath.row];
+        
+        
+        HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
+        VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId];
+
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+    
     
 }
 

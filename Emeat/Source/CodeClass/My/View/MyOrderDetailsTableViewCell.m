@@ -15,6 +15,7 @@
     if (self) {
         [self addSubview:self.orderImv];
         [self addSubview:self.orderName];
+        [self addSubview:self.orderWeight];
         [self addSubview:self.orderPrices];
         [self addSubview:self.orderCount];
         
@@ -35,13 +36,17 @@
     
     
     
-    if ([orderModel.priceTypes isEqualToString:@"WEIGHT"]) {
-        self.orderPrices.text =[NSString stringWithFormat:@"%@元/kg",orderModel.currentUnitPrice];
+    if ([orderModel.typeOfBusiness isEqualToString:@"C"]) {
+        self.orderPrices.text =[NSString stringWithFormat:@"%@元",orderModel.currentUnitPrice];
+        self.orderWeight.text = orderModel.standardSize;
+
     }else{
-        self.orderPrices.text =[NSString stringWithFormat:@"%@/件",orderModel.currentUnitPrice];
+        self.orderPrices.text =[NSString stringWithFormat:@"%@元/kg",orderModel.currentUnitPrice];
+        self.orderWeight.text = orderModel.productSize;
+
     }
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.orderPrices.text];
-    NSRange range1 = [[str string] rangeOfString:orderModel.currentUnitPrice];
+    NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%@元" ,orderModel.currentUnitPrice]];
     [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
     self.orderPrices.attributedText = str;
     
@@ -54,31 +59,40 @@
 
 -(void)setMainViewFrame{
     [self.orderImv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset(15);
-        make.top.equalTo(self.mas_top).with.offset(10);
-        make.width.equalTo(@70);
-        make.height.equalTo(@55);
+        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+        make.top.equalTo(self.mas_top).with.offset(10*kScale);
+        make.width.equalTo(@(70*kScale));
+        make.height.equalTo(@(55*kScale));
     }];
     
     [self.orderName mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.orderImv.mas_right).with.offset(10);
-        make.right.equalTo(self.mas_right).with.offset(-15);
-        make.top.equalTo(self.mas_top).with.offset(18);
-        make.height.equalTo(@15);
+        make.left.equalTo(self.orderImv.mas_right).with.offset(10*kScale);
+        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+        make.top.equalTo(self.orderImv);
+        make.height.equalTo(@(13*kScale));
     }];
+    
+    
+    [self.orderWeight mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.orderName);
+        make.top.equalTo(self.orderName.mas_bottom).with.offset(10*kScale);
+        make.right.equalTo(self.orderCount.mas_left).with.offset(-10*kScale);
+        make.height.equalTo(@(13*kScale));
+    }];
+    
 
     [self.orderPrices mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.orderName);
-        make.top.equalTo(self.orderName.mas_bottom).with.offset(10);
-        make.right.equalTo(self.orderCount.mas_left).with.offset(-10);
-        make.height.equalTo(@13);
+        make.top.equalTo(self.orderWeight.mas_bottom).with.offset(10*kScale);
+        make.right.equalTo(self.orderCount.mas_left).with.offset(-10*kScale);
+        make.height.equalTo(@(13*kScale));
     }];
    
     [self.orderCount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).with.offset(-15);
+        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
         make.top.equalTo(self.orderPrices);
-        make.width.equalTo(@100);
-        make.height.equalTo(@13);
+        make.width.equalTo(@(100*kScale));
+        make.height.equalTo(@(13*kScale));
     }];
 
     
@@ -117,7 +131,16 @@
     return _orderPrices;
 }
 
-
+-(UILabel *)orderWeight{
+    if (!_orderWeight) {
+        _orderWeight = [[UILabel alloc] init];
+        _orderWeight.textAlignment = NSTextAlignmentLeft;
+        _orderWeight.font = [UIFont systemFontOfSize:12.0f];
+        _orderWeight.textColor = RGB(136, 136, 136, 1);
+        
+    }
+    return _orderWeight;
+}
 
 -(UILabel *)orderCount{
     if (!_orderCount) {

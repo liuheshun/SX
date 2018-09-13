@@ -46,7 +46,7 @@
 }
 
 -(void)configAddressWithModel:(MyAddressModel*)addressModel orderModel:(OrderModel*)orderModel OutBoundProductNameMarray:(NSMutableArray *)nameMarray OutBoundProductSizeMarray:(NSMutableArray *)sizeMarray OutBoundProductCountMarray:(NSMutableArray *)countMarray{
-    DLog(@"sssssssssssssssss=========== 状态码= %ld  周期性用户码 = %ld" ,orderModel.status , orderModel.periodic);
+
     
     if (orderModel.status == 10){
         self.orderStatusLab.text = @"待支付";
@@ -194,11 +194,7 @@
     
     
     orderModel.orderDeatailsCommentHeight = ceil (orderCommentDetailsLabHeight)+1;
-    
-    DLog(@"gggggggggggggggggggggggg=========%f" ,ceil (orderCommentDetailsLabHeight)+1);
-    
-    
-    
+
     
     
     if (orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
@@ -666,7 +662,7 @@
 }
 
 - (void)didSelectRowAtGridIndex:(GridIndex)gridIndex{
-    NSLog(@"selected at\ncol:%ld -- row:%ld", gridIndex.col, gridIndex.row);
+   // NSLog(@"selected at\ncol:%ld -- row:%ld", gridIndex.col, gridIndex.row);
 }
 
 - (BOOL)isTitleFixed{

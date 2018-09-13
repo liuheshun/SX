@@ -115,13 +115,8 @@
             [dic setValue:self.ticketId forKey:@"ticketId"];
         [dic setValue:self.serviceType forKey:@"serviceType"];
 
-    
         
-        
-        DLog(@"q确认订单信息 dic == %@" ,dic);
-        
-        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-            DLog(@"创建确认订单=== %@   %@" ,returnData[@"msg"] , returnData);
+        [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create_order" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
             
             if ([returnData[@"status"] integerValue] == 200) {
                 NSString *orderNo =  returnData[@"data"][@"orderNo"];
@@ -131,6 +126,7 @@
                 VC.orderNo = orderNo;
                 VC.periodic = periodic;
                 VC.fromVC = @"1";
+                VC.typeOfBusiness = returnData[@"data"][@"typeOfBusiness"];
                 [self.navigationController pushViewController:VC animated:YES];
                 
             }else{
@@ -147,7 +143,6 @@
             }
             
         } failureBlock:^(NSError *error) {
-            DLog(@"创建确认订单err0r=== %@  " ,error);
             
         } showHUD:NO];
         
@@ -165,7 +160,6 @@
     self.bottomView.rightBottomBtn.enabled = NO;
     [self performSelector:@selector(changeButtonStatus) withObject:nil afterDelay:1.5f];//防止用户重复点击
     [self makeOrderData];
-        NSLog(@"确认订单");
     
 }
 -(void)changeButtonStatus{
@@ -222,7 +216,7 @@
     }else if (indexPath.section == 3){
         return 40*kScale;
     }else if (indexPath.section == 4){
-        return 30*kScale;
+        return 85*kScale;
     }
     return 65*kScale;
     
@@ -261,7 +255,7 @@
             [self.orderInfoFootView configFootViewWithShoppingModel:model];
             
             [self.bottomView.rightBottomBtn setTitle:@"确认订单" forState:0];
-            [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.needTotalPrices] forState:0];
+            [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.payment] forState:0];
         }
         self.orderInfoFootView.backgroundColor = [UIColor whiteColor];
         return self.orderInfoFootView;
@@ -278,7 +272,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
      if (indexPath.section == 4){
-        
+        ///具体商品
         ConfirmOrderInfoTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"orderInfo_cell1"];
         if (cell1 == nil) {
             cell1 = [[ConfirmOrderInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"orderInfo_cell1"];
@@ -289,7 +283,7 @@
              ShoppingCartModel *model = self.orderListMarray[indexPath.row];
              [cell1 configWithShoppingModel:model];
          }
-        
+         cell1.backgroundColor = [UIColor whiteColor];
         return cell1;
          
     }else{
@@ -357,6 +351,9 @@
 -(void)selectCardAction{
     CardCenterViewController *VC = [CardCenterViewController new];
     VC.isFromCardCenter = @"0";
+    ShoppingCartModel *model = [self.orderListMarray firstObject];
+    
+    VC.businessType = model.businessType;
     [self.navigationController pushViewController:VC animated:YES];
     
     VC.selectCardPrice = ^(NSMutableArray *selectCardMarray) {
@@ -376,19 +373,17 @@
         
     };
     
-    DLog(@"选择优惠券");
 }
 
-#pragma mark  ==================== 点击事件
+#pragma mark  ==================== tableview点击事件
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"%ld" ,indexPath.row);
     if (indexPath.section ==0) {
         
         
         MyAddressViewController *VC = [MyAddressViewController new];
-        
+        VC.orderListMarray = self.orderListMarray;
         VC.myShippingAddressBlock = ^(MyAddressModel *model) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:model.receiverName forKey:@"receiverName"];
@@ -402,13 +397,11 @@
             self.shoppingId = [NSString stringWithFormat:@"%ld" ,model.id];
 //            [user setValue:model forKey:@"myAddressModel"];
 
-            DLog(@"收货地址ID=== %@" ,self.shoppingId);
         };
         VC.hidesBottomBarWhenPushed = YES;
         VC.fromConfirmVC = @"1";
         [self.navigationController pushViewController:VC animated:NO];
         
-        NSLog(@"选择地址");
     } else if (indexPath.section == 1){
         SliceService_ViewController *VC = [SliceService_ViewController new];
         __weak __typeof(self) weakSelf = self;
@@ -419,11 +412,10 @@
 
             self.serviceType = serviceType;
             [self getOrderInfoDataServiceType:serviceType TicketId:self.ticketId];
-            DLog(@"所选服务---------== %@" ,totalPrice);
 
             ShoppingCartModel *model = [self.orderListMarray firstObject];
 
-            model.needTotalPrices = [NSString stringWithFormat:@"%.2f" ,(CGFloat) [totalPrice integerValue]/100] ;
+            model.payment = [NSString stringWithFormat:@"%.2f" ,(CGFloat) [totalPrice integerValue]/100] ;
 //            [self.orderListMarray removeAllObjects];
 //            [self.orderListMarray addObject:model];
 //
@@ -440,7 +432,6 @@
     else if (indexPath.section == 2){
         ConfirmOrderCommentViewController *VC = [ConfirmOrderCommentViewController new];
         VC.conmmentStringBlcok = ^(NSString *conmmentStr) {
-            DLog(@"订单备注---------== %@" ,conmmentStr);
             
             UITableViewCell *cell1 = [tableView cellForRowAtIndexPath:indexPath];
             
@@ -469,10 +460,18 @@
     [dic setValue:ticketId forKey:@"ticketId"];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取订单信息 dic == %@" ,dic);
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+
     NSMutableArray *orderListMarray = [NSMutableArray array];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product_new" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -480,20 +479,29 @@
             
             NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
 
-            NSString *servicePrice = returnData[@"data"][@"servicePrice"];
-            NSInteger  amount = [returnData[@"data"][@"ticket"][@"amount"] integerValue];
-            NSString *ticketName = returnData[@"data"][@"ticket"][@"ticketName"];
-            NSInteger cardId = [returnData[@"data"][@"ticket"][@"id"] integerValue];
+            NSString *payment = returnData[@"data"][@"payment"];
             
+            NSString *servicePrice = returnData[@"data"][@"servicePrice"];
+            
+            NSInteger  amount = [returnData[@"data"][@"ticket"][@"amount"] integerValue];
+            
+            NSString *ticketName = returnData[@"data"][@"ticket"][@"ticketName"];
+            
+            NSInteger cardId = [returnData[@"data"][@"ticket"][@"id"] integerValue];
+            NSString *postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+            NSString *businessType = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"businessType"]];
+
             for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
                 
                 ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
                 model.productTotalPrice = productTotalPrice;
                 model.servicePrice = servicePrice;
-                model.needTotalPrices = productTotalPrice;
+                model.payment = payment;
                 model.ticketName = ticketName;
                 model.amount = amount;
                 model.cardId = cardId;
+                model.postMoney = postMoney;
+                model.businessType = businessType;
                 [orderListMarray addObject:model];
             }
             
@@ -507,7 +515,6 @@
 //            VC.hidesBottomBarWhenPushed = YES;
 //            VC.orderListMarray = orderListMarray;
 //            [self.navigationController pushViewController:VC animated:YES];
-            NSLog(@"去结算");
         }
         else
         {
@@ -516,7 +523,7 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
+       // DLog(@"获取订单信息err0r=== %@  " ,error);
         
     } showHUD:NO];
     

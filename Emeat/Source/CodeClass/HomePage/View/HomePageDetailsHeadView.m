@@ -17,7 +17,8 @@
     if (self) {
         [self addSubview:self.nameLab];
         [self addSubview:self.descLab];
-        [self addSubview:self.pricelab];
+        [self addSubview:self.newspriceBtnLab];
+        [self addSubview:self.oldspriceBtnLab];
         [self addSubview:self.weightLab];
         [self addSubview:self.noticeBtn];
         [self addSubview:self.lineView];
@@ -49,11 +50,96 @@
     [self.descLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(hDesc));
     }];
-    if ([model.isFromBORC isEqualToString:@"c"]) {
+   
+    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*kScale, 20*kScale, 1)];
+    lineView.backgroundColor = RGB(136, 136, 136, 1);
+    if (model.discountPrice == -1) {///只显示原价
+        [lineView removeFromSuperview];
+    }else{
+        [self.oldspriceBtnLab addSubview:lineView];
         
-        self.pricelab.text =[NSString stringWithFormat:@"%.2f元",(float)model.unitPrice/100];
-//        self.noticeBtn.hidden = YES;
-//        self.weightLab.hidden = YES;
+    }
+    
+    if ([model.showType isEqualToString:@"SOGO"]){///b
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        
+        if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+            ///商户认证通过可看到价格可购买
+            
+            if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
+                if (model.discountPrice == -1) {///只显示原价
+                    
+                    [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.costPrice/100] forState:0];
+                    [self.oldspriceBtnLab setTitle:@"" forState:0];
+
+                }else{
+                    [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100] forState:0];
+                    [self.oldspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.costPrice/100] forState:0];
+                }
+                
+                
+                
+            }else{
+                if (model.discountPrice == -1) {///只显示原价
+                    
+                    [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.costPrice/100] forState:0];
+                }else{
+                    [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100] forState:0];
+                    [self.oldspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.costPrice/100] forState:0];
+                    
+                }
+                
+            }
+            
+            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newspriceBtnLab.titleLabel.text];
+            NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.unitPrice/100]];
+            [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+            
+            [self.newspriceBtnLab setAttributedTitle:str forState:UIControlStateNormal];
+            
+            
+            
+            
+        }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){
+            
+            
+            if (model.discountPrice == -1) {///只显示原价
+                
+                [self.newspriceBtnLab setTitleColor:RGB(231, 35, 36, 1) forState:0];
+                [self.newspriceBtnLab setTitle:@"查看价格" forState:0];
+            }else{
+                ///商户未认证或者认证未通过
+                [self.newspriceBtnLab setTitleColor:RGB(231, 35, 36, 1) forState:0];
+                [self.newspriceBtnLab setTitle:@"查看价格" forState:0];
+                [self.oldspriceBtnLab setTitle:@"原价" forState:0];
+                
+            }
+            
+        }
+        
+            
+        [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
+        self.weightLab.text =[NSString stringWithFormat:@"非标商品默认按该规格下最大重量: %@计价后返差",model.size2] ;
+
+    }else{///C端商品
+        ///个人专区
+        if (model.discountPrice == -1) {///只显示原价
+            
+            [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.costPrice/100] forState:0];
+        }else{
+            
+            [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.unitPrice/100] forState:0];
+            [self.oldspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.costPrice/100] forState:0];
+            
+        }
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newspriceBtnLab.titleLabel.text];
+        NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f元" ,(float)model.unitPrice/100]];
+        [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+        
+        
+        [self.newspriceBtnLab setAttributedTitle:str forState:UIControlStateNormal];
+        
         
         [self.noticeBtn removeFromSuperview];
         [self.weightLab removeFromSuperview];
@@ -68,49 +154,46 @@
         
         
         
-        if ([model.isPackage isEqualToString:@"1"]) {
-            [self.goodsDetailsBtn setTitle:@"套餐详情" forState:0];
-
-        }else{
-            [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
-
-        }
-        
-    }else if ([model.isFromBORC isEqualToString:@"b"]){
-        
-        if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
-            self.pricelab.text =[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100];
-        }else{
-            self.pricelab.text =[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100];
-        }
-        [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
-
+      
     }
     
-    
-    
-    
-   
-//    self.pricelab.text = [NSString stringWithFormat:@"¥%.2f元/kg" ,(float)model.unitPrice/100];
-    
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.pricelab.text];
-    NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.unitPrice/100]];
-    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
 
-    self.pricelab.attributedText = str;
+//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newspriceBtnLab.titleLabel.text];
+//    NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.unitPrice/100]];
+//    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+//
+//    [self.newspriceBtnLab setAttributedTitle:str forState:UIControlStateNormal];
+
+//
+//    NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:self.oldspriceBtnLab.titleLabel.text];
+//    NSRange range2 = [[str2 string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.costPrice/100]];
+//    [str2 addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range2];
+//
+//    [self.oldspriceBtnLab setAttributedTitle:str2 forState:UIControlStateNormal];
+    
+    
+    ///
+    [self.newspriceBtnLab mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@([self getOldPricesWidthText:self.newspriceBtnLab heights:20*kScale fontSizes:17*kScale]));
+    }];
+    [self.oldspriceBtnLab mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@([self getOldPricesWidthText:self.oldspriceBtnLab heights:20*kScale fontSizes:17*kScale]));
+        
+    }];
+    
+    CGRect rectlineView = lineView.frame;
+    rectlineView.size.width = [self getOldPricesWidthText:self.oldspriceBtnLab heights:20*kScale fontSizes:17*kScale];
+    lineView.frame = rectlineView;
     
     
     
-    
-    
-    self.weightLab.text =[NSString stringWithFormat:@"非标商品默认按该规格下最大重量: %@计价后返差",model.size2] ;
     
 //    CGRect moreSpecificationsBtnRect = self.moreSpecificationsBgView.frame;
 //    moreSpecificationsBtnRect.origin.y = 408+hDesc;
 //    self.moreSpecificationsBgView.frame = moreSpecificationsBtnRect;
 //
     [self.moreSpecificationsBgView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.pricelab.mas_bottom).with.offset(10*kScale);
+        make.top.equalTo(self.newspriceBtnLab.mas_bottom).with.offset(10*kScale);
     }];
     
     
@@ -126,16 +209,47 @@
     
     
     //[self.pingjiaDetailsBtn setTitle:@"评价详情" forState:0];
+    NSString *tempString;
+    if ([model.isMeal isEqualToString:@"1"]) {
+        [self.goodsDetailsBtn setTitle:@"套餐详情" forState:0];
+        tempString = @"等";
+    }else{
+        [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
+        tempString = @"";
+    }
     
     
-    self.countryLab.text = [NSString stringWithFormat:@"原产地: %@" ,model.origin];
-    self.partLab.text = [NSString stringWithFormat:@"部位: %@" , model.position];
-    self.standardsLab.text = [NSString stringWithFormat:@"规格: %@" ,model.size];
-    self.breedLab.text = [NSString stringWithFormat:@"品种: %@" ,model.varieties];
-    self.environmentLab.text = [NSString stringWithFormat:@"存储条件: %@" ,model.storageConditions];
-    self.brandLab.text = [NSString stringWithFormat:@"品牌: %@" ,model.brand];
-    model.headViewHeight = 426+55+150-13+hDesc;
+    self.countryLab.text = [NSString stringWithFormat:@"原产地: %@%@",model.origin ,tempString];
+    self.partLab.text = [NSString stringWithFormat:@"部位: %@%@" , model.position ,tempString];
+    self.standardsLab.text = [NSString stringWithFormat:@"规格: %@" ,model.size ];
+    self.breedLab.text = [NSString stringWithFormat:@"品种: %@%@" ,model.varieties,tempString];
+    self.environmentLab.text = [NSString stringWithFormat:@"存储条件: %@" ,model.storageConditions ];
+    if ([model.brand isEqualToString:@"无"]) {
+        self.brandLab.text = [NSString stringWithFormat:@"品牌: %@" ,model.brand];
+    }else{
+        self.brandLab.text = [NSString stringWithFormat:@"品牌: %@%@" ,model.brand ,tempString];
+    }
+    model.headViewHeight = (426+55+150-13)*kScale+hDesc;
    
+    
+}
+
+
+
+#pragma mark ========计算原价宽度
+
+-(CGFloat)getOldPricesWidthText:(UIButton*)button heights:(CGFloat)heights fontSizes:(CGFloat)fontSizes{
+    
+    CGSize size=CGSizeMake(MAXFLOAT, heights);
+    UIFont *font=[UIFont systemFontOfSize:fontSizes];
+    NSDictionary *attrs=@{NSFontAttributeName:font};
+    CGSize s=[button.titleLabel.text boundingRectWithSize:size options:NSStringDrawingTruncatesLastVisibleLine |
+              
+              NSStringDrawingUsesLineFragmentOrigin |
+              
+              NSStringDrawingUsesFontLeading attributes:attrs context:nil].size;
+    
+    return s.width+5*kScale;
     
 }
 
@@ -176,10 +290,20 @@
         make.width.equalTo(@(kWidth -30*kScale));
         make.height.equalTo(@(13*kScale));
     }];
-    [self.pricelab mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    ////
+    
+    [self.newspriceBtnLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
         make.top.equalTo(self.descLab.mas_bottom).with.offset(10*kScale);
-        make.width.equalTo(@(kWidth -30*kScale));
+        make.width.equalTo(@(120*kScale));
+        make.height.equalTo(@(20*kScale));
+    }];
+    
+    [self.oldspriceBtnLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.newspriceBtnLab.mas_right).with.offset(5*kScale);
+        make.top.equalTo(self.descLab.mas_bottom).with.offset(10*kScale);
+        make.width.equalTo(@(120*kScale));
         make.height.equalTo(@(20*kScale));
     }];
     
@@ -187,7 +311,7 @@
     [self addSubview:self.moreSpecificationsBgView];
     [self.moreSpecificationsBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(0*kScale);
-        make.top.equalTo(self.pricelab.mas_bottom).with.offset(10*kScale);
+        make.top.equalTo(self.newspriceBtnLab.mas_bottom).with.offset(10*kScale);
         make.width.equalTo(@(kWidth));
         make.height.equalTo(@(40*kScale));
     }];
@@ -197,50 +321,109 @@
     if ([GlobalHelper shareInstance].specsListMarray.count >6) {
         arrayCount = 6;
     }
+    
+    UIButton *firstBtn = nil;
+    UIButton *secondBtn = nil;
+    NSInteger isfirst = 0;
     for (int i = 0; i < arrayCount; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.moreSpecificationsBgView addSubview:btn];
-        btn.frame = CGRectMake(15*kScale+55*i*kScale, 0, 40*kScale, 40*kScale);
-        btn.backgroundColor = [UIColor whiteColor];
+
+        HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[i];
+        
+        [btn setTitle:model.specs forState:0];
         btn.tag = i;
+
+        CGFloat btw = [self getOldPricesWidthText:btn heights:40*kScale fontSizes:11.0f*kScale];
+        //DLog(@"bbb ==== %f        ccc== %f" ,MaxX(firstBtn) ,kWidth-15*kScale);
+
+    
+//        if (MaxX(firstBtn) <kWidth-15*kScale) {
+        
+        
+            if (i == 0) {
+                btn.frame = CGRectMake(15*kScale, 0, btw, 40*kScale);
+                firstBtn = btn;
+       
+            }else{
+                btn.frame = CGRectMake(MaxX(firstBtn)+15*kScale, 0, btw, 40*kScale);
+                
+                firstBtn = btn;
+                if (secondBtn == nil) {
+                    
+                }else{
+                    btn.frame = CGRectMake(MaxX(secondBtn)+15*kScale, 50*kScale, btw, 40*kScale);
+                    secondBtn = btn;
+                    isfirst = 50*kScale;
+                }
+                
+                if (MaxX(firstBtn) >kWidth-15*kScale) {
+                    
+                    btn.frame = CGRectMake(15*kScale, 50*kScale, btw, 40*kScale);
+                    secondBtn = btn;
+                    
+                }
+            
+        
+            }
+   
+
+        btn.backgroundColor = [UIColor whiteColor];
         [btn addTarget:self action:@selector(moreSpecificationsBtnAction:) forControlEvents:1];
 
-        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 3*kScale, WIDTH(btn), HEIGHT(btn)/2-3*kScale)];
-        [btn addSubview:label1];
-        
-        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0, HEIGHT(btn)/2, WIDTH(btn), HEIGHT(btn)/2)];
-        [btn addSubview:label2];
-        label1.font = [UIFont systemFontOfSize:12.0f*kScale];
-        label2.font = [UIFont systemFontOfSize:12.0f*kScale];
-        label1.textAlignment = NSTextAlignmentCenter;
-        label2.textAlignment = NSTextAlignmentCenter;
-        label1.textColor =  RGB(136, 136, 136, 1);
-        label2.textColor =  RGB(136, 136, 136, 1);
+//        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 3*kScale, WIDTH(btn), HEIGHT(btn)/2-3*kScale)];
+//        [btn addSubview:label1];
+//
+//        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0, HEIGHT(btn)/2, WIDTH(btn), HEIGHT(btn)/2)];
+//        [btn addSubview:label2];
+//        label1.font = [UIFont systemFontOfSize:10.0f*kScale];
+//        label2.font = [UIFont systemFontOfSize:10.0f*kScale];
+//        label1.textAlignment = NSTextAlignmentCenter;
+//        label2.textAlignment = NSTextAlignmentCenter;
+//        label1.textColor =  RGB(136, 136, 136, 1);
+//        label2.textColor =  RGB(136, 136, 136, 1);
         btn.layer.borderColor = RGB(191, 191, 191, 1).CGColor;
         btn.layer.borderWidth = 1;
+        //btn.titleLabel.numberOfLines = 0;
         
-        HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[i];
+        
+//        HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[i];
         //3.分隔字符串
-        NSString *string = model.specs;
-        
-        NSArray *array = [string componentsSeparatedByString:@"/"]; //从字符A中分隔成2个元素的数组
-        label1.text =[NSString stringWithFormat:@"%@/" ,[array firstObject]];
-        label2.text = [NSString stringWithFormat:@"%@" ,[array lastObject]];
+        //NSString *string = model.specs;
+       
+        [btn setTitleColor:RGB(136, 136, 136, 1) forState:0];
+        btn.titleLabel.font = [UIFont systemFontOfSize:11.0f*kScale];
+//        if ([model.isMeal isEqualToString:@"1"]) {
+//            label1.text = @"组合";
+//            label2.text = @"套餐";
+//
+//        }else{
+//            NSArray *array = [string componentsSeparatedByString:@"/"]; //从字符A中分隔成2个元素的数组
+//            label1.text =[NSString stringWithFormat:@"%@/" ,[array firstObject]];
+//            label2.text = [NSString stringWithFormat:@"%@" ,[array lastObject]];
+      //  }
+       
        
         if (model.commodityId == [[GlobalHelper shareInstance].homePageDetailsId integerValue]) {
             btn.userInteractionEnabled = NO;
             btn.layer.borderColor = RGB(236, 31, 35, 1).CGColor;
             btn.layer.borderWidth = 1;
-            label1.textColor =  RGB(236, 31, 35, 1);
-            label2.textColor =  RGB(236, 31, 35, 1);
+            [btn setTitleColor:RGB(236, 31, 35, 1) forState:0];
+
+//            label1.textColor =  RGB(236, 31, 35, 1);
+//            label2.textColor =  RGB(236, 31, 35, 1);
         }
         
         self.moreSpecificationsBtn = btn;
-        self.moreSpecificationslabel1 = label1;
-        self.moreSpecificationslabel2 = label2;
+//        self.moreSpecificationslabel1 = label1;
+//        self.moreSpecificationslabel2 = label2;
     }
     
    
+    [self.moreSpecificationsBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+       
+        make.height.equalTo(@(40*kScale + isfirst));
+    }];
     
     
     [self.weightLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -373,14 +556,24 @@
     return _descLab;
 }
 
--(UILabel*)pricelab{
-    if (!_pricelab) {
-        _pricelab = [[UILabel alloc] init];
-        _pricelab.font = [UIFont systemFontOfSize:17.0f*kScale];
-        _pricelab.textColor = RGB(136, 136, 136, 1);
-        
+-(UIButton*)newspriceBtnLab{
+    if (!_newspriceBtnLab) {
+        _newspriceBtnLab = [UIButton buttonWithType:UIButtonTypeCustom];
+        _newspriceBtnLab.titleLabel.font = [UIFont systemFontOfSize:17.0f*kScale];
+        [_newspriceBtnLab setTitleColor:RGB(136, 136, 136, 1) forState:0];
+        _newspriceBtnLab.contentHorizontalAlignment =  UIControlContentHorizontalAlignmentLeft;
     }
-    return _pricelab;
+    return _newspriceBtnLab;
+}
+
+-(UIButton*)oldspriceBtnLab{
+    if (!_oldspriceBtnLab) {
+        _oldspriceBtnLab = [UIButton buttonWithType:UIButtonTypeCustom];
+        _oldspriceBtnLab.titleLabel.font = [UIFont systemFontOfSize:17.0f*kScale];
+        [_oldspriceBtnLab setTitleColor:RGB(136, 136, 136, 1) forState:0];
+        _oldspriceBtnLab.contentHorizontalAlignment =  UIControlContentHorizontalAlignmentCenter;
+    }
+    return _oldspriceBtnLab;
 }
 
 -(UILabel*)weightLab{

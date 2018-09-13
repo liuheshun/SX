@@ -125,13 +125,13 @@
     if ([fromConfirmVC isEqualToString:@"1"]) {//确认订单的时候 点击进来, 进行地址判断,不在配送区域的字体颜色变浅色
         
     if ([addressModel.receiverProvince containsString:@"上海市"] && ![addressModel.receiverProvince containsString:@"崇明区"]) {
-        DLog(@"在范围内");
+       // DLog(@"在范围内");
         self.nameLab.textColor = RGB(51, 51, 51, 1);
         self.phoneNumLab.textColor = RGB(51, 51, 51, 1);
         self.addressLab.textColor = RGB(51, 51, 51, 1);
 
     }else{
-        DLog(@"-------------不在");
+        //DLog(@"-------------不在");
         self.nameLab.textColor = RGB(153, 153, 153, 1);
         self.phoneNumLab.textColor = RGB(153, 153, 153, 1);
         self.addressLab.textColor = RGB(153, 153, 153, 1);

@@ -65,8 +65,7 @@
 
 }
 - (void)dealloc {
-    NSLog(@"DefaultScrollVC - - dealloc");
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 - (void)viewDidLoad {
@@ -138,7 +137,6 @@
 }
 
 - (void)pageTitleView:(SGPageTitleView *)pageTitleView selectedIndex:(NSInteger)selectedIndex {
-    DLog(@"初始化分类切换selectedIndex === %ld" ,(long)selectedIndex);
     [GlobalHelper shareInstance].isEnterDetails = @"0";
 
     [self.pageContentScrollView setPageContentScrollViewCurrentIndex:selectedIndex];
@@ -147,12 +145,12 @@
 }
 
 - (void)pageContentScrollView:(SGPageContentScrollView *)pageContentScrollView progress:(CGFloat)progress originalIndex:(NSInteger)originalIndex targetIndex:(NSInteger)targetIndex {
-    DLog(@"originalIndex ==== %ld  targetIndex=====  %ld" , (long)originalIndex , targetIndex);
+    //DLog(@"originalIndex ==== %ld  targetIndex=====  %ld" , (long)originalIndex , targetIndex);
     [self.pageTitleView setPageTitleViewWithProgress:progress originalIndex:originalIndex targetIndex:targetIndex];
 }
 
 - (void)pageContentScrollView:(SGPageContentScrollView *)pageContentScrollView index:(NSInteger)index {
-    DLog(@"Index ==== %ld " , index );
+   // DLog(@"Index ==== %ld " , index );
     [GlobalHelper shareInstance].isEnterDetails = @"0";
     [[NSNotificationCenter defaultCenter] postNotificationName:@"selectIndexRefreshData" object:[NSString stringWithFormat:@"%ld", (long)index]];
 

@@ -20,6 +20,10 @@
 		160F29D220090D7C00F3295B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D120090D7C00F3295B /* SystemConfiguration.framework */; };
 		160F29D420090D8A00F3295B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D320090D8A00F3295B /* libz.tbd */; };
 		160F29D620090D9500F3295B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 160F29D520090D9500F3295B /* libc++.tbd */; };
+		161016362136DDA100A55A5E /* SaleWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 161016352136DDA100A55A5E /* SaleWebViewController.m */; };
+		161016392137CA5E00A55A5E /* SaleShareImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 161016382137CA5E00A55A5E /* SaleShareImageViewController.m */; };
+		1610163C2137CADA00A55A5E /* SaleShareImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610163B2137CADA00A55A5E /* SaleShareImageView.m */; };
+		161016442138DF3700A55A5E /* 摇2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 161016432138DF3700A55A5E /* 摇2.gif */; };
 		1610A969211196890050335B /* WMPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A95D211196890050335B /* WMPageController.m */; };
 		1610A96A211196890050335B /* WMMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A964211196890050335B /* WMMenuItem.m */; };
 		1610A96B211196890050335B /* WMScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1610A965211196890050335B /* WMScrollView.m */; };
@@ -64,6 +68,8 @@
 		161BBB18212D4059002AA7EC /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB0B212D4059002AA7EC /* 3.png */; };
 		161BBB19212D4059002AA7EC /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 161BBB0C212D4059002AA7EC /* 1.png */; };
 		161BBB1F212D89B6002AA7EC /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBB1E212D89B6002AA7EC /* PersonalViewController.m */; };
+		161BBB3421354061002AA7EC /* SaleMoneyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBB3321354061002AA7EC /* SaleMoneyViewController.m */; };
+		161BBB372135436F002AA7EC /* SaleMoneyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161BBB362135436F002AA7EC /* SaleMoneyTableViewCell.m */; };
 		16285FCB20FC2B290095E261 /* ActionSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC520FC2B290095E261 /* ActionSheetView.m */; };
 		16285FCC20FC2B290095E261 /* VerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FC620FC2B290095E261 /* VerButton.m */; };
 		16285FCD20FC2B290095E261 /* ActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FCA20FC2B290095E261 /* ActionButton.m */; };
@@ -312,6 +318,13 @@
 		160F29D120090D7C00F3295B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		160F29D320090D8A00F3295B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		160F29D520090D9500F3295B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		161016342136DDA100A55A5E /* SaleWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaleWebViewController.h; sourceTree = "<group>"; };
+		161016352136DDA100A55A5E /* SaleWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaleWebViewController.m; sourceTree = "<group>"; };
+		161016372137CA5E00A55A5E /* SaleShareImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaleShareImageViewController.h; sourceTree = "<group>"; };
+		161016382137CA5E00A55A5E /* SaleShareImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaleShareImageViewController.m; sourceTree = "<group>"; };
+		1610163A2137CADA00A55A5E /* SaleShareImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaleShareImageView.h; sourceTree = "<group>"; };
+		1610163B2137CADA00A55A5E /* SaleShareImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaleShareImageView.m; sourceTree = "<group>"; };
+		161016432138DF3700A55A5E /* 摇2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "摇2.gif"; sourceTree = "<group>"; };
 		1610A95D211196890050335B /* WMPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMPageController.m; sourceTree = "<group>"; };
 		1610A95E211196890050335B /* WMPageConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMPageConst.h; sourceTree = "<group>"; };
 		1610A960211196890050335B /* WMScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollView.h; sourceTree = "<group>"; };
@@ -384,6 +397,10 @@
 		161BBB0C212D4059002AA7EC /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		161BBB1D212D89B6002AA7EC /* PersonalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
 		161BBB1E212D89B6002AA7EC /* PersonalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
+		161BBB3221354061002AA7EC /* SaleMoneyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaleMoneyViewController.h; sourceTree = "<group>"; };
+		161BBB3321354061002AA7EC /* SaleMoneyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaleMoneyViewController.m; sourceTree = "<group>"; };
+		161BBB352135436F002AA7EC /* SaleMoneyTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaleMoneyTableViewCell.h; sourceTree = "<group>"; };
+		161BBB362135436F002AA7EC /* SaleMoneyTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaleMoneyTableViewCell.m; sourceTree = "<group>"; };
 		16285FC520FC2B290095E261 /* ActionSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetView.m; sourceTree = "<group>"; };
 		16285FC620FC2B290095E261 /* VerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerButton.m; sourceTree = "<group>"; };
 		16285FC720FC2B290095E261 /* ActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionButton.h; sourceTree = "<group>"; };
@@ -986,6 +1003,8 @@
 		163C9EF32122769C00E367EE /* View */ = {
 			isa = PBXGroup;
 			children = (
+				161BBB352135436F002AA7EC /* SaleMoneyTableViewCell.h */,
+				161BBB362135436F002AA7EC /* SaleMoneyTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -997,6 +1016,14 @@
 				163C9EF7212276B600E367EE /* PersonalPageViewController.m */,
 				161BBB1D212D89B6002AA7EC /* PersonalViewController.h */,
 				161BBB1E212D89B6002AA7EC /* PersonalViewController.m */,
+				161BBB3221354061002AA7EC /* SaleMoneyViewController.h */,
+				161BBB3321354061002AA7EC /* SaleMoneyViewController.m */,
+				161016342136DDA100A55A5E /* SaleWebViewController.h */,
+				161016352136DDA100A55A5E /* SaleWebViewController.m */,
+				161016372137CA5E00A55A5E /* SaleShareImageViewController.h */,
+				161016382137CA5E00A55A5E /* SaleShareImageViewController.m */,
+				1610163A2137CADA00A55A5E /* SaleShareImageView.h */,
+				1610163B2137CADA00A55A5E /* SaleShareImageView.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1367,6 +1394,7 @@
 		16CFD7261FB2A6F20015F2C1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				161016432138DF3700A55A5E /* 摇2.gif */,
 				1683BD701FB008000043CA23 /* PrefixHeader.pch */,
 				16FB31411FAC5D9D00049580 /* LaunchScreen.storyboard */,
 				1683BD711FB020440043CA23 /* Images.xcassets */,
@@ -2013,6 +2041,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				161016442138DF3700A55A5E /* 摇2.gif in Resources */,
 				161BBB17212D4059002AA7EC /* 2.png in Resources */,
 				161BBB16212D4059002AA7EC /* 6.png in Resources */,
 				161BBB13212D4059002AA7EC /* 4.png in Resources */,
@@ -2214,6 +2243,7 @@
 				16885C5E2101C643008A6FB9 /* ZJScrollSegmentView.m in Sources */,
 				1616CE4E212511C2004FF454 /* CardModel.m in Sources */,
 				1683BD671FB004E20043CA23 /* HomePageViewController.m in Sources */,
+				161016362136DDA100A55A5E /* SaleWebViewController.m in Sources */,
 				167FD852211307C200AF44DD /* HomePageSortTableViewCell.m in Sources */,
 				16DC91E9200F7225003C25BE /* ShoppingCartTool.m in Sources */,
 				161BBAFA212D3F0C002AA7EC /* XLCardSwitch.m in Sources */,
@@ -2233,6 +2263,7 @@
 				1610A973211196DE0050335B /* MainTouchTableTableView.m in Sources */,
 				161BBAFC212D3F0C002AA7EC /* XLCard.m in Sources */,
 				16CFD7711FBEB6510015F2C1 /* YouLikeCollectionHeadView.m in Sources */,
+				161BBB372135436F002AA7EC /* SaleMoneyTableViewCell.m in Sources */,
 				16901C9A1FD58E540080762A /* CurrentAddressView.m in Sources */,
 				16DF171A2119266000367CF2 /* SearchCollectionViewCell.m in Sources */,
 				16CD2A692118A26D00A3281A /* UIColor+PYSearchExtension.m in Sources */,
@@ -2286,6 +2317,7 @@
 				161BBB1F212D89B6002AA7EC /* PersonalViewController.m in Sources */,
 				161BBADD212BB9B5002AA7EC /* DefaultViewAnimator.m in Sources */,
 				16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */,
+				161BBB3421354061002AA7EC /* SaleMoneyViewController.m in Sources */,
 				1646C3351FCBC4C9000552A1 /* AddOrCutShoppingCartView.m in Sources */,
 				160F29BE2009040800F3295B /* LHSPayManger.m in Sources */,
 				1610A96B211196890050335B /* WMScrollView.m in Sources */,
@@ -2296,12 +2328,14 @@
 				1610A969211196890050335B /* WMPageController.m in Sources */,
 				16CFD76B1FBE7F930015F2C1 /* YouLikeTableViewCell.m in Sources */,
 				16FF04F31FD4EDF900F8C280 /* RHLocation.m in Sources */,
+				1610163C2137CADA00A55A5E /* SaleShareImageView.m in Sources */,
 				16DF76E02021D14100078F10 /* HomePageAddressNoticeView.m in Sources */,
 				1683BD6A1FB0054E0043CA23 /* ShoppingCartViewController.m in Sources */,
 				16885C592101C643008A6FB9 /* ZJTitleView.m in Sources */,
 				16901C931FD4FB220080762A /* SelectAddressViewController.m in Sources */,
 				16B0994620E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m in Sources */,
 				16EE10341FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.m in Sources */,
+				161016392137CA5E00A55A5E /* SaleShareImageViewController.m in Sources */,
 				16B0994920E1EC9A00D9F101 /* InvoiceSubmitResultsView.m in Sources */,
 				16DC920420130BDE003C25BE /* MBProgressHUD+Add.m in Sources */,
 				16FC44432029B83C00B95546 /* NSString+textFieldCategory.m in Sources */,
@@ -2407,7 +2441,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = com.lxbox.Emeat.NotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lxbox.Emeat.com-lxbox-Emeat-NotificationService";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2427,7 +2461,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YNJV896ZUF;
 				INFOPLIST_FILE = com.lxbox.Emeat.NotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lxbox.Emeat.com-lxbox-Emeat-NotificationService";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -62,5 +62,9 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 @property (nonatomic,strong) NSMutableArray *SortMarray;
 
 
+///个人专区 商户专区
+@property (nonatomic,strong) NSString *showType;
+
+
 
 @end

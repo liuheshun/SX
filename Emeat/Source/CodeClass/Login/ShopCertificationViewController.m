@@ -134,16 +134,15 @@
     }else{
         url = [NSString stringWithFormat:@"%@/m/auth/mobile/store/newStore" ,baseUrl];
     }
-    DLog(@"上传店铺信息dic==== %@      ====== %@" ,dic1 ,url);
     
     __block int index1;
     [MHNetworkManager postReqeustWithURL:url params:dic1 successBlock:^(NSDictionary *returnData) {
-        DLog(@"上传店铺信息returnData==== %@" ,returnData);
+
         if ([returnData[@"status"] integerValue] == 200) {
             
             MMPopupItemHandler block = ^(NSInteger index){
                 
-                NSLog(@"clickd %@ button",@(index));
+                //NSLog(@"clickd %@ button",@(index));
                 //返回到指定的控制器，要保证前面有入栈。
                 index1 = (int)[[self.navigationController viewControllers]indexOfObject:self];
                 if (index1>2) {
@@ -171,7 +170,7 @@
             
         }else{
             MMPopupItemHandler block = ^(NSInteger index){
-                NSLog(@"clickd %@ button",@(index));
+               // NSLog(@"clickd %@ button",@(index));
             };
             NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
             MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 您的店铺信息提交失败，请稍后重试，如需帮助请拨打客服热线 4001106111" items:items];
@@ -187,7 +186,6 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"上传店铺信息error==== %@" ,error);
         
     } showHUD:NO];
     
@@ -226,7 +224,6 @@
     self.ShopInviteCode = self.shopCeritficationView.textFieldInviteCode.text;
     
     
-    DLog(@"保存 = = 名字= %@  dianzhang==%@  电话== %@    详细地址== %@  dizhhi== %@  code= %@" , self.shopCeritficationView.textFieldShopName.text, self.shopCeritficationView.textFieldShopManagerName.text ,self.ShopPhoneNumer , self.ShopAddress  ,self.ShopDetailsAddress ,self.ShopInviteCode);
     
     
     if (self.ShopName.length == 0 || self.ShopManagerName.length == 0 || self.ShopPhoneNumer.length == 0 ) {
@@ -265,7 +262,7 @@
             
             
             [self.addressDic setValue:[NSString stringWithFormat:@"%@" ,self.ShopInviteCode] forKey:@"shopInviteCode"];
-            DLog(@"%@" ,self.addressDic);
+
             [self postShopCertifiDate];
             
             
@@ -319,7 +316,6 @@
             
         };
         [weakSelf.navigationController pushViewController:VC animated:YES];
-        DLog(@"进入选着地址页面");
         
     };
     
@@ -337,7 +333,6 @@
         textField.text = [textField.text substringToIndex:11];
     }
     
-    DLog(@"sssss== %@" ,textField.text);
     
     if (textField.text.length == 11) {
         if (![self checkTel:textField.text] ) {
@@ -352,7 +347,7 @@
     
     NSString *toBeString = textField.text;
     
-    NSLog(@" 打印信息toBeString:%@",toBeString);
+    //NSLog(@" 打印信息toBeString:%@",toBeString);
     
     NSString *lang = [[textField textInputMode] primaryLanguage]; // 键盘输入模式
     if ([lang isEqualToString:@"zh-Hans"]) { // 简体中文输入，包括简体拼音，健体五笔，简体手写

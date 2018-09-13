@@ -208,14 +208,14 @@ detail:(NSString *)detail
                     if ( !firstButton )
                     {
                         firstButton = btn;
-                        make.left.equalTo(self.buttonView.mas_left).offset(-MM_SPLIT_WIDTH);
+                        make.left.equalTo(self.buttonView.mas_left).offset(SpaceLef);
                     }
                     else
                     {
-                        make.left.equalTo(lastButton.mas_right).offset(-MM_SPLIT_WIDTH);
+                        make.left.equalTo(lastButton.mas_right).offset(SpaceLef);
                         make.width.equalTo(firstButton);
                     }
-                    [btn setBackgroundImage:[UIImage mm_imageWithColor:self.backgroundColor] forState:UIControlStateNormal];
+                    [btn setBackgroundImage:[UIImage mm_imageWithColor:config.buttonBackgroundColor] forState:UIControlStateNormal];
                     [btn setBackgroundImage:[UIImage mm_imageWithColor:config.itemPressedColor] forState:UIControlStateHighlighted];
 
                 }
@@ -257,11 +257,11 @@ detail:(NSString *)detail
                 make.right.equalTo(self.buttonView.mas_right).offset(-85*kScale);
             }else if ( items.count == 2 )
             {
-                make.right.equalTo(self.buttonView.mas_right).offset(MM_SPLIT_WIDTH);
+                make.right.equalTo(self.buttonView.mas_right).offset(-SpaceLef);
             }
             else
             {
-                make.bottom.equalTo(self.buttonView.mas_bottom).offset(MM_SPLIT_WIDTH);
+                make.bottom.equalTo(self.buttonView.mas_bottom).offset(SpaceLef);
             }
             
         }];
@@ -275,7 +275,7 @@ detail:(NSString *)detail
             
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             
-            make.bottom.equalTo(self.buttonView.mas_bottom);
+            make.bottom.equalTo(self.buttonView.mas_bottom).with.offset(SpaceLef);
             
         }];
         }

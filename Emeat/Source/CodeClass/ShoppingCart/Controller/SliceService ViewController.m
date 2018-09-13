@@ -35,7 +35,6 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_service_types" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"服务数据====%@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             for (NSDictionary *dic in returnData[@"data"]) {
                 [self.titleMarray addObject:dic];
@@ -142,7 +141,6 @@
  
     NSDictionary *dic = self.titleMarray[indexPath.section];
     
-    DLog(@"qieqieiieieiiei==== %@" ,dic);
     self.returnSelectSliceBlock(dic[@"name"] ,dic[@"types"] , @"" , @"");
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -165,10 +163,8 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"requestSliceServeMoneyDatadic == %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_service_price" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"创requestSliceServeMoneyData=== %@   %@" ,returnData[@"msg"] , returnData);
         
         if ([returnData[@"status"] integerValue] == 200) {
             
@@ -185,7 +181,6 @@
         [SVProgressHUD showErrorWithStatus:@"出错啦 (꒦_꒦) "];
         [self.navigationController popViewControllerAnimated:YES];
 
-        DLog(@"requestSliceServeMoneyDatar=== %@  " ,error);
         
     } showHUD:NO];
     

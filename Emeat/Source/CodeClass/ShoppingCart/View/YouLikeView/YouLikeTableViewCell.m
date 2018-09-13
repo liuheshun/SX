@@ -28,7 +28,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        DLog(@"==xxxxxxxxxxx============= %f" , self.collViewHeight);
         [self setCollectViews];
     }
     return self;
@@ -48,7 +47,6 @@
 }
 
 -(void)setCollectViews{
-    DLog(@"=============== %f" , self.collViewHeight);
 
     
     //1.初始化layout
@@ -98,6 +96,7 @@
     [collcell SetCollCellData:HModel];
     [collcell.joinCartBtn addTarget:self action:@selector(joinCartBtnAction:) forControlEvents:1];
     collcell.joinCartBtn.tag = indexPath.row;
+    collcell.backgroundColor = [UIColor whiteColor];
     
     return collcell;
 }
@@ -106,7 +105,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 //    return CGSizeMake(135, 160);
-    return CGSizeMake(135*kScale, 180*kScale);
+    return CGSizeMake(135*kScale, 200*kScale);
 
 
 }

@@ -43,7 +43,8 @@
 ///创建时间:createTime
 ///修改时间:updateTime
 
-
+///区分订单 是B端商品( productTypes = SOGO;) 还是C端商品( productTypes = PROCEDDED;)
+@property (nonatomic,strong) NSString *businessType;
 
 
 

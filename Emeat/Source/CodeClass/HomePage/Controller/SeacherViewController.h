@@ -15,4 +15,8 @@
 ///部位ID
 @property (nonatomic,strong) NSString *position;
 
+///个人专区 商户专区
+@property (nonatomic,strong) NSString *showType;
+
+
 @end

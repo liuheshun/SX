@@ -103,7 +103,7 @@
 -(void)setOrderImvFrame{
     NSInteger arrayCount = 0;
     MyOrderTableCellConfig *orderConfig = [MyOrderTableCellConfig myOrderTableCellConfig];
-    DLog(@"ccccccccc=========== %ld" , orderConfig.orderImvArray.count);
+
     if (orderConfig.orderImvArray.count >3) {
         arrayCount = 4;
     }else{

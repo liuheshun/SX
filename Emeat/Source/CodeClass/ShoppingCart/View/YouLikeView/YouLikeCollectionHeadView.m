@@ -64,17 +64,17 @@
     
     [self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
        // make.left.equalTo(self).offset(10);
-        make.top.equalTo(self.topShadeView.mas_bottom).offset(10);
-        make.height.equalTo(@15);
-        make.width.equalTo(@80);
-        make.left.equalTo(@((kWidth-80)/2));
+        make.top.equalTo(self.topShadeView.mas_bottom).offset(10*kScale);
+        make.height.equalTo(@(15*kScale));
+        make.width.equalTo(@(80*kScale));
+        make.left.equalTo(@((kWidth-80*kScale)/2));
     }];
     
     [self.leftLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.titleLab.mas_left).offset(-10);
+        make.right.equalTo(self.titleLab.mas_left).offset(-10*kScale);
        // make.top.equalTo(self.topShadeView.mas_bottom).offset(10);
-        make.height.equalTo(@1);
-        make.width.equalTo(@75);
+        make.height.equalTo(@(1*kScale));
+        make.width.equalTo(@(75*kScale));
         make.centerY.equalTo(self.titleLab);
     }];
     
@@ -82,8 +82,8 @@
     [self.rightLineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLab.mas_right).offset(10);
         //make.top.equalTo(self.topShadeView.mas_bottom).offset(10);
-        make.height.equalTo(@1);
-        make.width.equalTo(@75);
+        make.height.equalTo(@(1*kScale));
+        make.width.equalTo(@(75*kScale));
         make.centerY.equalTo(self.titleLab);
     }];
     

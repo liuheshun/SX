@@ -40,7 +40,7 @@
 -(UIButton*)scanBtn{
     if (!_scanBtn) {
         _scanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _scanBtn.frame = CGRectMake(5*kScale, kStatusBarHeight, kTopBarHeight, kTopBarHeight);
+        _scanBtn.frame = CGRectMake(5*kScale, kStatusBarHeight, kTopBarHeight*kScale, kTopBarHeight);
         _scanBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
         [_scanBtn setImage:[UIImage imageNamed:@"saoma"] forState:0];
         [_scanBtn setTitle:@"  扫一扫" forState:0];

@@ -39,7 +39,6 @@
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    DLog(@"9999999999===== %@" , textField.text);
     if (textField.text.length>10) {
         textField.text = [textField.text substringToIndex:10];
     }
@@ -67,7 +66,6 @@
         make.left.equalTo(self.userImv.mas_right).with.offset(10*kScale);
         make.width.equalTo(@(userNameW));
     }];
-    DLog(@"tttttttt====%@" ,textField.text);
 }
 
 

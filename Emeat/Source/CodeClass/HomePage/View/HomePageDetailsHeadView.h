@@ -20,8 +20,16 @@ typedef void(^ReturnSelectIndex)(NSInteger selectIndex);
 @property (nonatomic,strong) UILabel *descLab;
 //商品重量规格
 @property (nonatomic,strong) UILabel *weightLab;
-//商品价格
-@property (nonatomic,strong) UILabel *pricelab;
+//商品促销价价格
+@property (nonatomic,strong) UIButton *newspriceBtnLab;
+
+//商品原价格
+@property (nonatomic,strong) UIButton *oldspriceBtnLab;
+
+
+
+
+
 //提示说明
 @property (nonatomic,strong) UIButton *noticeBtn;
 ///多规格重量

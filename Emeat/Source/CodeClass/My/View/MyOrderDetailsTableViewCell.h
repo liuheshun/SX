@@ -14,6 +14,9 @@
 @property (nonatomic,strong) UILabel *orderPrices;
 @property (nonatomic,strong) UILabel *orderCount;
 
+@property (nonatomic,strong) UILabel *orderWeight;
+
+
 -(void)configCellWithModel:(OrderModel*)orderModel;
 
 

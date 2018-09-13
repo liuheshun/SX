@@ -46,7 +46,7 @@
 
 }
 
-#pragma mark = 收货地址列表
+#pragma mark = 收货地址列表数据
 
 -(void)getMyAddressData{
     
@@ -59,10 +59,16 @@
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/shipping/list" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.addressDataMarray removeAllObjects];
-
+            NSString * businessType;
+            if (self.orderListMarray.count != 0) {
+                ShoppingCartModel *model = [self.orderListMarray firstObject];
+                businessType = model.businessType;
+            }
+            
             for (NSDictionary *dic in returnData[@"data"]) {
                 MyAddressModel *addressModel = [MyAddressModel yy_modelWithJSON:dic];
-               DLog(@"我的地址== %@" ,addressModel.receiverName);
+                addressModel.businessType = businessType;
+
                 [self.addressDataMarray addObject:addressModel];
             }
         }else{
@@ -79,11 +85,9 @@
         
         [self.tableView reloadData];
 
-        DLog(@"收货地址列表===== %@ %@ " ,returnData, returnData[@"status"]);
         
     } failureBlock:^(NSError *error) {
         
-        DLog(@"收货地址错误列表=== %@" , error);
         
     } showHUD:NO];
  
@@ -97,7 +101,6 @@
     __weak __typeof(self) weakSelf = self;
     
     self.rightItemBlockAction = ^{
-        DLog(@"新增收货地址跳转");
         
         AddNewAddressViewController *VC = [AddNewAddressViewController new];
         VC.isCanRemove = YES;
@@ -188,7 +191,6 @@
 
 
 -(void)editBtnAction:(UIButton*)btn{
-    DLog(@"编辑位置=== %ld" ,btn.tag);
     
     AddNewAddressViewController *VC = [AddNewAddressViewController new];
     VC.isCanRemove = NO;
@@ -217,19 +219,46 @@
             
             MyAddressModel *model = self.addressDataMarray[indexPath.section];
             
-            if ([model.receiverProvince containsString:@"上海市"] && ![model.receiverProvince containsString:@"崇明区"]) {
-                DLog(@"在范围内");
-                if ([self respondsToSelector:@selector(myShippingAddressBlock)]) {
-                    self.myShippingAddressBlock(model);
-                    [self.navigationController popViewControllerAnimated:YES];
-                    
+            if ([model.businessType isEqualToString:@"C"]) {///c 江浙沪
+                
+                 if ([model.receiverProvince containsString:@"上海市"] || [model.receiverProvince containsString:@"江苏"] || [model.receiverProvince containsString:@"浙江"]) {
+                     
+                   //  DLog(@"在范围内");
+                     if ([self respondsToSelector:@selector(myShippingAddressBlock)]) {
+                         self.myShippingAddressBlock(model);
+                         [self.navigationController popViewControllerAnimated:YES];
+                     
+                     }
+                     
+                 }else{
+                     
+                    // DLog(@"-------------不在");
+                     SVProgressHUD.minimumDismissTimeInterval = 1;
+                     SVProgressHUD.maximumDismissTimeInterval = 2;
+                     [SVProgressHUD showErrorWithStatus:@"配送范围江浙沪"];
+                     
+                     
+                 }
+                
+                
+            }else{//b 上海
+                
+                if ([model.receiverProvince containsString:@"上海市"] && ![model.receiverProvince containsString:@"崇明区"]) {
+                   // DLog(@"在范围内");
+                    if ([self respondsToSelector:@selector(myShippingAddressBlock)]) {
+                        self.myShippingAddressBlock(model);
+                        [self.navigationController popViewControllerAnimated:YES];
+                        
+                    }
+                }else{
+                   // DLog(@"-------------不在");
+                    SVProgressHUD.minimumDismissTimeInterval = 1;
+                    SVProgressHUD.maximumDismissTimeInterval = 2;
+                    [SVProgressHUD showErrorWithStatus:@"配送范围上海市(除崇明区外)"];
                 }
-            }else{
-                DLog(@"-------------不在");
-                SVProgressHUD.minimumDismissTimeInterval = 1;
-                SVProgressHUD.maximumDismissTimeInterval = 2;
-                [SVProgressHUD showErrorWithStatus:@"不在配送范围内"];
             }
+            
+           
             
             
             

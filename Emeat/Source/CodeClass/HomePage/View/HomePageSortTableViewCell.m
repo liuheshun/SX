@@ -31,7 +31,7 @@
         _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 86, kHeight-kBottomBarHeight-kStatusBarHeight) style:UITableViewStyleGrouped];
         _leftTableView.dataSource = self;
         _leftTableView.delegate = self;
-        _leftTableView.backgroundColor = [UIColor cyanColor];
+        _leftTableView.backgroundColor = [UIColor whiteColor];
         _leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     }
@@ -134,7 +134,7 @@
         
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15*kScale)];
-    view.backgroundColor = [UIColor cyanColor];
+    view.backgroundColor = [UIColor whiteColor];
     
     return view;
 }

@@ -87,7 +87,7 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"开票历史数据== %@" ,dic );
+
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryInvoices" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
@@ -129,7 +129,6 @@
         
         [self.tableView reloadData];
         
-        DLog(@"开票历史数据== jeikou == %@ " ,returnData);
         
         
         

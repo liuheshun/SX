@@ -43,7 +43,6 @@
     __weak __typeof(self) weakSelf = self;
 
     [self setRightItemBlockAction:^{
-        DLog(@"开发票");
         InvoiceListViewController *VC = [InvoiceListViewController new];
         [weakSelf.navigationController pushViewController:VC animated:YES];
     }];

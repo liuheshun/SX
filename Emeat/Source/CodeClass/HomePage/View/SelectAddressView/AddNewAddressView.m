@@ -85,7 +85,6 @@
         [Btn setTitleColor:[UIColor whiteColor] forState:0];
         
         self.btnAddressType = Btn;
-        DLog(@"ccccc====%ld" ,Btn.tag) ;
         if ([self respondsToSelector:@selector(lableTitleBlock)]) {
             self.lableTitleBlock(Btn.tag);
         }

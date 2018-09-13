@@ -12,8 +12,9 @@
 @property (nonatomic,strong) UIButton *selectAll;//全选按钮
 @property (nonatomic,strong) UILabel *priceLabel;//价格
 @property (nonatomic,strong) UIButton *PayBtn;//结算按钮
-@property (nonatomic,strong) UILabel *sendPrices;//配送
+@property (nonatomic,strong) UILabel *sendPricesDesc;//配送
 
+@property (nonatomic,strong) UILabel *sendPrices;///配送费
 
 
 @end

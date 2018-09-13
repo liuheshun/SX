@@ -63,24 +63,69 @@
     }
 }
 
+
+#pragma mark ==========cell赋值
+
 -(void)reloadDataWith:(ShoppingCartModel*)model
 {
     
     [self.imageView_cell sd_setImageWithURL:[NSURL URLWithString:model.mainImage]];
     self.nameLabel.text = model.productName;
-//    self.productPrice.text =[NSString stringWithFormat:@"¥ %@元/kg" ,model.productPrice] ;
     
     
     if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
-        self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.productPrice];
+        
+        if (model.discountPrice == -1) {///只显示原价
+            
+            self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.costPrice];
+        }else{
+            self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.productPrice];
+            self.oldProductPrices.text =[NSString stringWithFormat:@"%@元/kg",model.costPrice];
+        }
+        
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.productPrice.text];
+        NSRange range1 = [[str string] rangeOfString:model.productPrice];
+        [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+        self.productPrice.attributedText = str;
+        
     }else{
-        self.productPrice.text =[NSString stringWithFormat:@"%@/件",model.productPrice];
+    
+       
+        
+        if (model.discountPrice == -1) {///只显示原价
+            
+            self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.costPrice];
+        }else{
+            self.productPrice.text =[NSString stringWithFormat:@"%@元",model.productPrice];
+            self.oldProductPrices.text =[NSString stringWithFormat:@"%@元",model.costPrice];
+            
+            
+        }
+        
+        
+        
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.productPrice.text];
+        NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%@元" ,model.productPrice]];
+        [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+        self.productPrice.attributedText = str;
+        
     }
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.productPrice.text];
-    NSRange range1 = [[str string] rangeOfString:model.productPrice];
-    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
-    self.productPrice.attributedText = str;
-  
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*kScale, [GetWidthAndHeightOfString getWidthForText:self.oldProductPrices height:15.0f*kScale], 1)];
+    lineView.backgroundColor = RGB(136, 136, 136, 1);
+   
+    
+    if (model.discountPrice == -1) {///只显示原价
+        [lineView removeFromSuperview];
+    }else{
+        [self.oldProductPrices addSubview:lineView];
+    }
+    
+    
+    
+   
     self.numberLabel.text = [NSString stringWithFormat:@"%ld",(long)model.quatity];
     self.sizeLabel.text = model.productSize;
     
@@ -179,12 +224,20 @@
     self.sizeLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
     [self.bgView  addSubview:self.sizeLabel];
     
-    //价格
+    //促销价格
     self.productPrice = [[UILabel alloc]init];
     self.productPrice.font = [UIFont systemFontOfSize:15.0f*kScale];
     self.productPrice.textColor =RGBCOLOR(136, 136, 136);
-    //    self.dateLabel.text = @"2015-12-03 17:49";
     [self.bgView  addSubview:self.productPrice];
+    
+    
+    //原价价格
+    self.oldProductPrices = [[UILabel alloc]init];
+    self.oldProductPrices.font = [UIFont systemFontOfSize:15.0f*kScale];
+    self.oldProductPrices.textColor =RGBCOLOR(136, 136, 136);
+    [self.bgView  addSubview:self.oldProductPrices];
+    
+    
     
 //    //价格
 //    self.priceLabel = [[UILabel alloc]init];
@@ -224,7 +277,7 @@
     [self.bgView  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(0);
         make.top.equalTo(self).offset(15*kScale);
-        make.bottom.equalTo(self);
+        make.bottom.equalTo(self.mas_bottom).with.offset(-20*kScale);
         make.right.equalTo(self).offset(0);
         
     }];
@@ -262,15 +315,23 @@
     [self.sizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageBgView.mas_right).offset(10*kScale);
         make.top.equalTo(self.nameLabel.mas_bottom).offset(5*kScale);
-        make.height.equalTo(@(20*kScale));
+        make.height.equalTo(@(13*kScale));
         make.width.equalTo(self.nameLabel);
     }];
     
-    //商品价格
+    //商品促销价格
     [self.productPrice mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageBgView.mas_right).offset(10*kScale);
+        make.top.equalTo(self.sizeLabel.mas_bottom).offset(5*kScale);
+        make.height.equalTo(@(15*kScale));
+        make.right.equalTo(self.cutBtn.mas_left);
+    }];
+    
+    //商品原价价格
+    [self.oldProductPrices mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(imageBgView.mas_right).offset(10*kScale);
         make.bottom.equalTo(self.bgView).offset(0);
-        make.height.equalTo(@(20*kScale));
+        make.height.equalTo(@(15*kScale));
         make.right.equalTo(self.cutBtn.mas_left);
     }];
     

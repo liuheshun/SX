@@ -28,13 +28,11 @@
 }
 
 -(void)ordinaryInvoiceKindBtnAction{
-    DLog(@"普痛发票");
   
     self.selectInvoiceKindsBlock(1);
 }
 
 -(void)specialInvoiceKindBtnAction{
-    DLog(@"专票");
    
     self.selectInvoiceKindsBlock(0);
 

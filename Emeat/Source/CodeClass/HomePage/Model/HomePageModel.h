@@ -49,6 +49,9 @@
 ///原价价格
 @property (nonatomic,assign) NSInteger costPrice;
 
+///商品类型
+@property (nonatomic,strong) NSString *showType;
+
 
 
 ///商品轮播图(字符串数组)
@@ -78,11 +81,15 @@
 @property (nonatomic,strong) NSString *goodsTypes;
 
 ///判断 (isFromBORC=b)B端 还是 (isFromBORC=c)C端
-@property (nonatomic,strong) NSString *isFromBORC;
+//@property (nonatomic,strong) NSString *isFromBORC;
 
 
 ///是否是 C端套餐 isPackage=1
-@property (nonatomic,strong) NSString *isPackage;
+@property (nonatomic,strong) NSString *isMeal;
+
+///商品对象新加字段discountPrice 促销价(分)用于判断是否需要划掉原价 , -1为没促销价
+@property (nonatomic,assign) NSInteger discountPrice;
+
 
 
 

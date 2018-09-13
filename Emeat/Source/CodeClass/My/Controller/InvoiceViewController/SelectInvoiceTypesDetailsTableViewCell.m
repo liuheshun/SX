@@ -57,7 +57,6 @@
 
 
 -(void)lookUpTypeBtn1Action{
-    DLog(@"企业")
     [_lookUpTypeBtn1 setImage:[UIImage imageNamed:@"selected"] forState:0];
     [_lookUpTypeBtn2 setImage:[UIImage imageNamed:@"no_selected"] forState:0];
     self.enioTextField.hidden = NO;
@@ -100,7 +99,6 @@
 
 
 -(void)lookUpTypeBtn2Action{
-    DLog(@"菲企业");
     [_lookUpTypeBtn1 setImage:[UIImage imageNamed:@"no_selected"] forState:0];
 
     [_lookUpTypeBtn2 setImage:[UIImage imageNamed:@"selected"] forState:0];

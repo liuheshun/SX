@@ -12,10 +12,11 @@
 
 ///App Store链接
 #define appStoreURL @"https://itunes.apple.com/cn/app/%E8%B5%9B%E9%B2%9C/id1364356601?mt=8"
+
 #define mTypeIOS @"IOS"
 
 ////URL:
-#define baseUrl @"http://192.168.0.141"
+#define baseUrl @"http://admin.cyberfresh.cn"
 
 
 ///wangxiaoyang

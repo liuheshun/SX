@@ -45,9 +45,15 @@
     [self.view addSubview:self.bottomPayBtn];
     [self setBottomViewFrame];
 
+    if ([self.typeOfBusiness isEqualToString:@"C"]) {
+        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" , nil];
+        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin", nil];
+    }else if ([self.typeOfBusiness isEqualToString:@"B"]){
+        self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" ,@"线下打款", nil];
+        self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin" ,@"qitazhifu", nil];
+    }
     
-    self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" ,@"线下打款", nil];
-    self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin" ,@"qitazhifu", nil];
+
     [self setPopView];
     ///禁止右滑返回
     id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
@@ -177,15 +183,11 @@
 
     switch (indexPath.row) {
         case 0:{
-            DLog(@"支付宝");
-
             self.selectPayType = @"999";
         }
             break;
             
         case 1:{
-            DLog(@"微信");
-
             self.selectPayType = @"888";
 
         }
@@ -196,7 +198,6 @@
 //            [SVProgressHUD showErrorWithStatus:@"开发中"];
 //
 //            self.selectPayType = @"7";
-            DLog(@"线下打款");
             self.selectPayType = @"12";
 
         }
@@ -237,13 +238,10 @@
 }
 
 -(void)bottomPayBtnAction{
-    DLog(@"立即支付");
     if ([self.selectPayType isEqualToString:@"999"]) {
-        DLog(@"调用支付宝支付");
         [self requsetOtherPayTypes:@"999"];
 
     }else if ([self.selectPayType isEqualToString:@"888"]){
-        DLog(@"调用微信支付");
         if (![WXApi isWXAppInstalled]) {
             [SVProgressHUD dismiss];
             
@@ -257,10 +255,8 @@
         
         
     }else if ([self.selectPayType isEqualToString:@"2"]){
-        DLog(@"yinhangka");
 //        [self UPPay];
     }else if ([self.selectPayType isEqualToString:@"12"]){
-        DLog(@"qitafangshi");
         [self requsetOtherPayTypes:@"12"];
         [SVProgressHUD show];
 
@@ -293,10 +289,8 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"周期性付款====== dic == %@ 订单号===%@  支付方式==== %@ " ,dic , self.orderNo ,self.selectPayType );
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/payInfo/pay" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"周期性付款信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
         
         self.returnData = [NSDictionary dictionaryWithDictionary:returnData];
        ///周期性付款
@@ -310,7 +304,6 @@
             
                 VC.fromPayVC = @"1";
            
-                DLog(@"订单号===== %@" ,self.orderNo);
             
                 [self.navigationController pushViewController:VC animated:YES];
        
@@ -332,7 +325,6 @@
 
         }else if ([payId isEqualToString:@"888"]){
             
-            DLog(@"微信支付====%@" , returnData);
             //注册通知
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handlePayResult:) name:@"WX_PAY_RESULT" object:nil];
             [[LHSPayManger sharedManager] sendWXPay:returnData[@"data"]];
@@ -342,7 +334,6 @@
 
 
     } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
         [SVProgressHUD dismiss];
     } showHUD:NO];
     
@@ -351,7 +342,6 @@
 - (void)handlePayResult:(NSNotification *)noti{
     UIAlertController * alert = [[UIAlertController alloc] init];
     
-    DLog(@"通知返回结果=== %@  === %@" ,noti , noti.object);
     
     //结果处理
     //微信pay
@@ -363,7 +353,6 @@
             
         }else {
             // [self payCancel];
-            DLog(@"取消支付");
             //添加按钮
             [alert addAction:[UIAlertAction actionWithTitle:@"重新支付" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 
@@ -387,14 +376,12 @@
                                                                 options:NSJSONReadingMutableContainers
                                                                   error:&err];
             orderStringNO = dic[@"alipay_trade_app_pay_response"][@"out_trade_no"];
-            DLog(@"ssssssssssss==== %@" ,orderStringNO);
             
             [self requsetOrderDetailsData:orderStringNO];
             
             
         }else {
             // [self payCancel];
-            DLog(@"取消支付");
             //添加按钮
             [alert addAction:[UIAlertAction actionWithTitle:@"重新支付" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 
@@ -441,11 +428,9 @@
         
         [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
         [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-        DLog(@"订单详情dic == %@   orderNo ==== %@ " ,dic , orderNo  );
         ///auth/order/mpayed
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/mpayed" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-            DLog(@"支付回调订单结果===msg=%@   returnData == %@" ,returnData[@"msg"] , returnData);
             
             if ([returnData[@"status"] integerValue] == 200)
             {
@@ -489,7 +474,6 @@
             [SVProgressHUD dismiss];
 
         } failureBlock:^(NSError *error) {
-            DLog(@"获取订单信息err0r=== %@  " ,error);
             [SVProgressHUD dismiss];
         } showHUD:NO];
         

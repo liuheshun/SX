@@ -72,7 +72,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     if (launchOptions) {
         NSDictionary *userInfo = [launchOptions       objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         if (userInfo) {
-            DLog(@"-------%@" ,[NSString stringWithFormat:@"%@" ,userInfo]);
+           // DLog(@"-------%@" ,[NSString stringWithFormat:@"%@" ,userInfo]);
             self.isLaunchedByNotification = YES;
             
         }
@@ -97,7 +97,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     CGFloat Y ;
     if (LL_iPhoneX) {
         coverImageNames = @[@"X0",@"X1",@"X2",@"X3"];
-        Y = 505+145-10;
+        Y = (505+145-10)*kScale;
     }else{
         
         coverImageNames = @[@"launch0",@"launch1",@"launch2",@"launch3"];
@@ -131,7 +131,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         center.delegate = self;
         [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionCarPlay) completionHandler:^(BOOL granted, NSError *_Nullable error) {
             if (!error) {
-                NSLog(@"request authorization succeeded!");
+                //NSLog(@"request authorization succeeded!");
             }
         }];
         
@@ -162,14 +162,14 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    DLog(@"\n>>>[DeviceToken Success]:%@\n\n", token);
+   // DLog(@"\n>>>[DeviceToken Success]:%@\n\n", token);
     
     // 向个推服务器注册deviceToken
     [GeTuiSdk registerDeviceToken:token];
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    NSLog(@"---个推注册失败---");
+    //NSLog(@"---个推注册失败---");
     
     //注册失败通知个推服务器
     [GeTuiSdk registerDeviceToken:@""];
@@ -191,10 +191,10 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     [GeTuiSdk handleRemoteNotification:userInfo];
     // [4-EXT]:处理APN
     NSString *record = [NSString stringWithFormat:@"App运行在后台/App运行在前台[APN]%@, %@", [NSDate date], userInfo];
-    NSLog(@"%@", record);
+    //NSLog(@"%@", record);
     
     if (self.offLine == NO) {///收到消息时候 APP在前台
-        DLog(@"收到消息时候 APP在前台");
+       // DLog(@"收到消息时候 APP在前台");
         [self pushMessage:self.payloadMsgDic];
         
         
@@ -215,7 +215,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 //  iOS 10: App在前台获取到通知
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler  API_AVAILABLE(ios(10.0)){
     
-    NSLog(@"willPresentNotification：%@", notification.request.content.userInfo);
+//NSLog(@"willPresentNotification：%@", notification.request.content.userInfo);
     
     // 根据APP需要，判断是否要提示用户Badge、Sound、Alert
     completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
@@ -226,8 +226,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     
    
     if (self.offLine == NO) {///收到消息时候 APP在前台
-        DLog(@"收到消息时候 APP在前台");
-        [self pushMessage:self.payloadMsgDic];
+//        [self pushMessage:self.payloadMsgDic];
 
  
     }else{///后台
@@ -270,7 +269,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         UIViewController *currentVC = nav.visibleViewController;
         NSString *currentVCString = NSStringFromClass([currentVC class]);
         NSString *OtherVCString = NSStringFromClass([OtherVC class]);
-        DLog(@"-----控制器名字---------%@ %@" ,currentVCString ,OtherVCString );
+       // DLog(@"-----控制器名字---------%@ %@" ,currentVCString ,OtherVCString );
         
         if ([currentVCString isEqualToString:OtherVCString]) {
             ///通知刷新页面
@@ -295,7 +294,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         UIViewController *currentVC = nav.visibleViewController;
         NSString *currentVCString = NSStringFromClass([currentVC class]);
         NSString *OtherVCString = NSStringFromClass([OtherVC class]);
-        DLog(@"-----控制器名字---------%@ %@" ,currentVCString ,OtherVCString );
+        //DLog(@"-----控制器名字---------%@ %@" ,currentVCString ,OtherVCString );
 
         if ([currentVCString isEqualToString:OtherVCString]) {
             ///通知刷新页面
@@ -317,7 +316,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 /** SDK启动成功返回cid */
 - (void)GeTuiSdkDidRegisterClient:(NSString *)clientId {
     //个推SDK已注册，返回clientId
-    DLog(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
+   // DLog(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
 }
 
 
@@ -325,7 +324,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 - (void)GeTuiSdkDidOccurError:(NSError *)error
 {
     // [EXT]:个推错误报告，集成步骤发生的任何错误都在这里通知，如果集成后，无法正常收到消息，查看这里的通知。
-    NSLog(@"\n>>[GTSdk error]:%@\n\n", [error localizedDescription]);
+   // NSLog(@"\n>>[GTSdk error]:%@\n\n", [error localizedDescription]);
 }
 
 /** SDK收到透传消息回调 */
@@ -338,7 +337,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     //这里收到透传消息,根据自己服务器返回的格式处理
     NSDictionary * jsonDict = [NSJSONSerialization JSONObjectWithData:payloadData options:NSJSONReadingMutableLeaves error:nil];
     self.payloadMsgDic = [NSMutableDictionary dictionaryWithDictionary:jsonDict];
-    DLog(@"payloadMsgDic========%@" ,self.payloadMsgDic);
+    //DLog(@"payloadMsgDic========%@" ,self.payloadMsgDic);
     // 当app不在前台时，接收到的推送消息offLine值均为YES
     // 判断app是否是点击通知栏消息进行唤醒或开启
     // 如果是点击icon图标使得app进入前台，则不做操作，并且同一条推送通知，此方法只执行一次
@@ -416,7 +415,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     }
     // 控制台打印日志
     NSString *msg = [NSString stringWithFormat:@"SDK收到透传消息回调taskId====%@,messageId=======:%@,payloadMsg=======:%@ =======%@", taskId, msgId, jsonDict, offLine ? @"<离线消息>" : @""];
-    NSLog(@"\n>>[GTSdk ReceivePayload]:%@\n\n", msg);
+   // NSLog(@"\n>>[GTSdk ReceivePayload]:%@\n\n", msg);
 #pragma mark--- 接收到推送后，进行提示或怎样
     
 }
@@ -428,7 +427,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 {
     // 发送上行消息结果反馈
     NSString *msg = [NSString stringWithFormat:@"sendmessage=%@,result=%d", messageId, result];
-    NSLog(@"\n>>[GTSdk DidSendMessage]:SDK收到sendMessage消息回调--------------%@\n\n", msg);
+    //NSLog(@"\n>>[GTSdk DidSendMessage]:SDK收到sendMessage消息回调--------------%@\n\n", msg);
 }
 
 
@@ -436,7 +435,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 - (void)GeTuiSDkDidNotifySdkState:(SdkStatus)aStatus
 {
     // 通知SDK运行状态
-    NSLog(@"通知SDK运行状态======:%u\n\n", aStatus);
+   //NSLog(@"通知SDK运行状态======:%u\n\n", aStatus);
 }
 
 
@@ -474,7 +473,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     }else if ([url.host isEqualToString:@"safepay"]) {//支付宝支付
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            NSLog(@"result = %@",resultDic);
+            //NSLog(@"result = %@",resultDic);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
         }];
@@ -484,7 +483,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
 
-            NSLog(@"result = %@",resultDic);
+          //  NSLog(@"result = %@",resultDic);
             // 解析 auth code
             NSString *result = resultDic[@"result"];
             NSString *authCode = nil;
@@ -497,7 +496,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                     }
                 }
             }
-            NSLog(@"授权结果 authCode = %@", authCode?:@"");
+           // NSLog(@"授权结果 authCode = %@", authCode?:@"");
         }];
     }else if ([url.host isEqualToString:@"pay"]){//微信支付
         
@@ -547,7 +546,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 // NOTE: 9.0以后使用新API接口
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options{
-    DLog(@"hhhhhhhh==== %@  == %@" ,url , options);
+    //DLog(@"hhhhhhhh==== %@  == %@" ,url , options);
     if ([url.host isEqualToString:@"oauth"]) {//微信登陆
         
         [WXApi handleOpenURL:url delegate:self];
@@ -555,7 +554,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     }else if ([url.host isEqualToString:@"safepay"]) {
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            NSLog(@"appppppdpppresult = %@",resultDic);
+           // NSLog(@"appppppdpppresult = %@",resultDic);
             
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Alipay_Result" object:resultDic];
@@ -622,10 +621,10 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 {
     if ([resp isKindOfClass:[PayResp class]]) {
         PayResp *response = (PayResp *)resp;
-        DLog(@"resp=======%@" ,resp);
-
-        DLog(@"response=======%@" ,response);
-        DLog(@"response.errCode========%d" ,response.errCode);
+//        DLog(@"resp=======%@" ,resp);
+//
+//        DLog(@"response=======%@" ,response);
+//        DLog(@"response.errCode========%d" ,response.errCode);
         switch (response.errCode) {
             case WXSuccess:
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WX_PAY_RESULT" object:@"成功"];
@@ -760,7 +759,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                     
                     
                 }else{
-                    DLog(@"微信登陆成功=====%@" ,dicData);
+                   // DLog(@"微信登陆成功=====%@" ,dicData);
                     [self requestTicketReturnWeChatReturnDic:[NSMutableDictionary dictionaryWithDictionary:dicData]];
                 }
                 
@@ -857,10 +856,10 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     [dic setValue:mTypeIOS forKey:@"mtype"];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取ticket== %@" ,dic);
+    //DLog(@"获取ticket== %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/getticket.html" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"ticker=== %@" ,returnData);
+        //DLog(@"ticker=== %@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
             NSString *ticket = returnData[@"ticket"];
             ///保存ticket
@@ -895,17 +894,24 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"微信名字==%@",dic);
+    //DLog(@"微信名字==%@",dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/mobile/checkOpenId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"微信登陆=======  %@",returnData);
+        //DLog(@"微信登陆=======  %@",returnData);
         [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
 
         //获得当前控制器
         UITabBarController *tabBarController = ( UITabBarController*)self.window.rootViewController;
         UINavigationController * nav = (UINavigationController *)tabBarController.selectedViewController;
         UIViewController *currentVC = nav.visibleViewController;
+        
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
+        [user setValue:returnData[@"data"][@"headPic"] forKey:@"headPic"];
+        [user setValue:returnData[@"data"][@"nickname"] forKey:@"nickname"];
+
+        
         if ([returnData[@"code"]integerValue] == 04) {///未认证手机号
             PhoneNumberCertificationViewController *VC  = [PhoneNumberCertificationViewController new];
             VC.openid = dicData[@"openid"];
@@ -915,7 +921,6 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             [currentVC.navigationController pushViewController:VC animated:YES];
             
         }else if ([returnData[@"code"]integerValue] == 00){//已认证
-            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:returnData[@"data"][@"id"]  forKey:@"userId"];
             [user setValue:@"1" forKey:@"isLoginState"];
             
@@ -923,13 +928,13 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
                 
                 //记录店铺认证
-                [user setValue:@"1" forKey:@"approve"];
+                [user setValue:[NSString stringWithFormat:@"%@" ,returnData[@"data"][@"store"][@"isApprove"]] forKey:@"approve"];
 
                 [currentVC.navigationController popViewControllerAnimated:YES];
                 
             }else{//店铺未认证
                 
-                [user setValue:@"1" forKey:@"approve"];
+                [user setValue:@"0" forKey:@"approve"];
                 [currentVC.navigationController pushViewController:[ShopCertificationViewController new] animated:YES];
             }
             
@@ -937,7 +942,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         [SVProgressHUD dismiss];
         
     } failureBlock:^(NSError *error) {
-        DLog(@"微信登陆失败方法=%@" ,error);
+       // DLog(@"微信登陆失败方法=%@" ,error);
         [SVProgressHUD dismiss];
         [SVProgressHUD showErrorWithStatus:error];
         
@@ -1083,6 +1088,12 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     self.tabBars = [[UITabBarController alloc] init];
     self.tabBars.delegate = self;
     self.tabBars.viewControllers = @[navPersonalPageVC,navHomePageVC  , navCartVC , navMyVC];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+        self.tabBars.selectedIndex = 1;
+    }else{
+        self.tabBars.selectedIndex = 0;
+    }
     
     //self.tabBars.viewControllers = @[navHomePageVC  , navCartVC , navMyVC];
 

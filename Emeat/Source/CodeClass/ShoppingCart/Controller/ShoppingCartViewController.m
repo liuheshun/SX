@@ -32,8 +32,19 @@
     
 }
 
-///购物车数据源
-@property (nonatomic,strong) NSMutableArray *ShoppingListDataMarray;
+/////购物车数据源
+//@property (nonatomic,strong) NSMutableArray *ShoppingListDataMarray;
+///小包装商品
+@property (nonatomic,strong) NSMutableArray *xsmallListMarray;
+///原箱商品
+@property (nonatomic,strong) NSMutableArray *yoriginalListMarray;
+///试样商品
+@property (nonatomic,strong) NSMutableArray *ssampleListMarray;
+///失效商品
+@property (nonatomic,strong) NSMutableArray *sloseListMarray;
+
+//@property (nonatomic,strong) NSMutableArray *ShoppingListDataMarray;
+
 
 
 ///猜你喜欢 商品数据源
@@ -50,9 +61,22 @@
 
 ///是否全选allChecked
 @property (nonatomic,strong) NSString *allChecked;
-///
+///购物车总价
 @property (nonatomic,strong) NSString *cartTotalPrice;
+///配送费
+@property (nonatomic,strong) NSString *postMoney;
 
+
+///账号类型 1=商户 0=个人
+@property (nonatomic,strong) NSString *approve;
+
+///
+@property (nonatomic,strong) NSMutableArray *titleArray;
+
+///分组 数量
+@property (nonatomic,strong) NSMutableArray *secionMarray;
+
+@property (nonatomic,strong) NSString *isFirst;
 
 
 @end
@@ -60,21 +84,7 @@
 @implementation ShoppingCartViewController
 -(void)viewWillAppear:(BOOL)animated
 {
-    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
-    if (status == RealStatusNotReachable)
-    {
-        
-    }else{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self requestShoppingListData];
-            [self requestBadNumValue];
-            [self requestGuesslikeData];
-        });
-    
-     
-      
-    }
-  
+   self.navItem.title = @"购物车";
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 
     //禁止页面左侧滑动返回，注意，如果仅仅需要禁止此单个页面返回，还需要在viewWillDisapper下开放侧滑权限
@@ -82,11 +92,20 @@
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
+    if ([self.isFirst isEqualToString:@"1"]) {
+        
+    }else{
+         [self requestStoreStatedData];
+    }
+    self.isFirst = @"2";
+
     
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [SVProgressHUD dismiss];
+    [[GlobalHelper shareInstance] removeErrorView];
+
     // 开启返回手势
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
@@ -100,35 +119,97 @@
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.productIdMarray = [NSMutableArray array];
     self.guessLikeMarray = [NSMutableArray array];
-    self.ShoppingListDataMarray = [NSMutableArray array];
-    self.navItem.title = @"购物车";
+    self.yoriginalListMarray = [NSMutableArray array];
+    self.xsmallListMarray = [NSMutableArray array];
+    self.ssampleListMarray = [NSMutableArray array];
+    self.sloseListMarray = [NSMutableArray array];
+    self.secionMarray = [NSMutableArray array];
+    
+   
+    self.titleArray = [NSMutableArray array];
+    
     [self netWorkIsOnLine];
-//    ///禁止右滑返回
-//    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
-//    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
-//    [self.view addGestureRecognizer:pan];
+    self.isFirst = @"1";
+}
+
+#pragma mark =============检验店铺是否认证
+
+-(void)requestStoreStatedData{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/mobile/store/get_store" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:@"0" forKey:@"isLoginState"];
+            
+        }
+        
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        dic = returnData[@"data"];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        if (dic) {
+            [user setValue:[NSString stringWithFormat:@"%ld" ,[dic[@"isApprove"] integerValue]] forKey:@"approve"];
+            self.approve = [NSString stringWithFormat:@"%ld" ,[dic[@"isApprove"] integerValue]];
+
+        }else{
+            self.approve = @"2";
+
+            [user setValue:@"2" forKey:@"approve"];
+            
+        }
+///请求购物车数据
+        [self requestShoppingListData];
+        [self requestGuesslikeData];
+
+        
+        [myTableView reloadData];
+        
+    } failureBlock:^(NSError *error) {
+        
+    } showHUD:NO];
+    
+    
 }
 
 
+
+
 -(void)netWorkIsOnLine{
+//    [GLobalRealReachability startNotifier];
+//
+//    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
+//        if (status == RealStatusNotReachable)
+//        {
+//            [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+//            [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+//
+//        }else{
     
-    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
-        if (status == RealStatusNotReachable)
-        {
-            [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
-            [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
-            
-        }else{
-            
             [self setupMainView];
             [self setupRefresh];
-            [self requestGuesslikeData];
-            
+            [self requestBadNumValue];
             [[GlobalHelper shareInstance] removeErrorView];
-        }
-        
-    }];
-   
+//        }
+//        
+//    }];
+//   
     
     
     
@@ -139,20 +220,12 @@
 #pragma mark = 重新加载
 
 -(void)errorLoadingBtnAction{
-    
-    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
-        
-        if (status == RealStatusNotReachable){
-            
-        }else{
+   
             [self setupMainView];
             [self setupRefresh];
-            [self requestGuesslikeData];
             
-            [[GlobalHelper shareInstance] removeErrorView];
-        }
-        
-    }];
+    
+    
  
    
 }
@@ -160,10 +233,35 @@
 
 
 
-
+#pragma mark =========计算 购物车底部价格显示
 
 -(void)countPrices{
-    self.bottomView.priceLabel.text = [NSString stringWithFormat:@"¥ %@" ,self.cartTotalPrice];
+    if ([self.cartTotalPrice length] != 0 && ![self.cartTotalPrice isEqualToString:@"(null)"]) {
+        self.bottomView.priceLabel.text = [NSString stringWithFormat:@"¥ %@" ,self.cartTotalPrice];
+    }else{
+        self.bottomView.priceLabel.text = [NSString stringWithFormat:@"¥ %@" ,@"0"];
+    }
+    if ([self.postMoney length] != 0 && ![self.postMoney isEqualToString:@"(null)"]) {
+        
+        if ([self.postMoney isEqualToString:@"0"]) {
+            self.bottomView.sendPrices.text = [NSString stringWithFormat:@"¥ %@" ,self.postMoney];
+        }else{
+        
+//            if ([self.bottomView.sendPrices.text length] == 0) {
+//
+//            }else{
+            self.bottomView.sendPrices.text = [NSString stringWithFormat:@"¥ %@ (满199元享包邮)" ,self.postMoney];
+            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.bottomView.sendPrices.text];
+            NSRange range1 = [[str string] rangeOfString:@" (满199元享包邮)"];
+            [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
+            
+            self.bottomView.sendPrices.attributedText = str;
+           // }
+        }
+        
+    }else{
+        self.bottomView.sendPrices.text = [NSString stringWithFormat:@"¥ %@" ,@"0"];
+    }
 
 }
 
@@ -240,22 +338,41 @@
     [dic setValue:@"" forKey:@"ticketId"];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"获取订单信息 dic == %@" ,dic);
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+    
+    
     NSMutableArray *orderListMarray = [NSMutableArray array];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product_new" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
 
         if ([returnData[@"status"] integerValue] == 200)
         {
-            
+            [orderListMarray removeAllObjects];
         
         NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
-        
+        NSString *payment = returnData[@"data"][@"payment"];
+            
+            NSString *postMoney =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+            NSString *businessType = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"businessType"]];
         for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
             
             ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
             model.productTotalPrice = productTotalPrice;
-            model.needTotalPrices = productTotalPrice;
+            model.payment = payment;
+            model.postMoney = postMoney;
+            model.businessType = businessType;
+            model.mainImage = dic[@"productImage"];
+            NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+            if (mainImvMarray.count!=0) {
+                model.mainImage = [mainImvMarray firstObject];
+            }
             [orderListMarray addObject:model];
         }
         
@@ -271,7 +388,6 @@
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
     } failureBlock:^(NSError *error) {
-        DLog(@"获取订单信息err0r=== %@  " ,error);
         
     } showHUD:NO];
     
@@ -302,17 +418,34 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    
+    if ([self.approve isEqualToString:@"0"] || [self.approve isEqualToString:@"2"]) {
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([self.approve isEqualToString:@"1"]){
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+    
     ///商品
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/select" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"选中商品结算=== %@ " , returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
-            [self.ShoppingListDataMarray removeAllObjects];
+            [self.yoriginalListMarray removeAllObjects];
+            [self.xsmallListMarray removeAllObjects];
+            [self.ssampleListMarray removeAllObjects];
+            [self.sloseListMarray removeAllObjects];
+            [self.secionMarray removeAllObjects];
+            [self.titleArray removeAllObjects];
+//            [self.ShoppingListDataMarray removeAllObjects];
             self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
             //购物车选中总价
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
             
-            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+            ///小包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"smallList"])
             {
                 
                 ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
@@ -321,17 +454,90 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+                [self.xsmallListMarray addObject:model];
+                
             }
+            
+            ////失效商品
+            for (NSDictionary *dic in returnData[@"data"][@"loseList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                model.productStatus = 12;
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.sloseListMarray addObject:model];
+                
+            }
+            
+            
+            ////试样商品
+            for (NSDictionary *dic in returnData[@"data"][@"sampleList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.ssampleListMarray addObject:model];
+                
+                
+            }
+            
+            ////原箱大包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"originalList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.yoriginalListMarray addObject:model];
+                
+                
+            }
+            
+            // self.titleArray = @[@"原箱大包装商品" ,@"小包装商品" ,@"试样品" ,@"失效商品"];
+            
+            
+            if (self.yoriginalListMarray.count != 0) {
+                [self.secionMarray addObject:self.yoriginalListMarray];
+                [self.titleArray addObject:@"原箱大包装商品"];
+            }
+            if (self.xsmallListMarray.count != 0) {
+                [self.secionMarray addObject:self.xsmallListMarray];
+                [self.titleArray addObject:@"小包装商品"];
+                
+            }
+            if (self.ssampleListMarray.count != 0) {
+                [self.secionMarray addObject:self.ssampleListMarray];
+                [self.titleArray addObject:@"试样品"];
+                
+            }
+            if (self.sloseListMarray.count != 0) {
+                [self.secionMarray addObject:self.sloseListMarray];
+                [self.titleArray addObject:@"失效商品"];
+                
+            }
+            [self.secionMarray addObject:@[@"猜你喜欢"]];
+            [self.titleArray addObject:@"猜你喜欢"];
+            
             
             [self countPrices];
             [myTableView reloadData];
             
         }else{
+            
             // [self alertMessage:returnData[@"msg"] willDo:nil];
         }
     } failureBlock:^(NSError *error) {
-        DLog(@"选中商品结算error=== %@   " ,error);
         
     } showHUD:NO];
     
@@ -365,9 +571,16 @@
    
     //[dic setObject:productIds forKey:@"productIds"];
 
+    if ([self.approve isEqualToString:@"0"] || [self.approve isEqualToString:@"2"]) {
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([self.approve isEqualToString:@"1"]){
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+
     ///商品
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/un_select" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"取消选中商品结算=== %@   %@" ,returnData[@"msg"] , returnData);
 //        if ([returnData[@"status"] integerValue] == 200) {
 //            self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
 //            self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]]  ;
@@ -379,12 +592,21 @@
 //        [myTableView reloadData];
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
-            [self.ShoppingListDataMarray removeAllObjects];
+            [self.yoriginalListMarray removeAllObjects];
+            [self.xsmallListMarray removeAllObjects];
+            [self.ssampleListMarray removeAllObjects];
+            [self.sloseListMarray removeAllObjects];
+            [self.secionMarray removeAllObjects];
+            [self.titleArray removeAllObjects];
+            //[self.ShoppingListDataMarray removeAllObjects];
             self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+
             //购物车选中总价
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
             
-            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+            ///小包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"smallList"])
             {
                 
                 ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
@@ -393,8 +615,81 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+                [self.xsmallListMarray addObject:model];
+                
             }
+            
+            ////失效商品
+            for (NSDictionary *dic in returnData[@"data"][@"loseList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                model.productStatus = 12;
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.sloseListMarray addObject:model];
+                
+            }
+            
+            
+            ////试样商品
+            for (NSDictionary *dic in returnData[@"data"][@"sampleList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.ssampleListMarray addObject:model];
+                
+                
+            }
+            
+            ////原箱大包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"originalList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.yoriginalListMarray addObject:model];
+                
+                
+            }
+            
+            // self.titleArray = @[@"原箱大包装商品" ,@"小包装商品" ,@"试样品" ,@"失效商品"];
+            
+            
+            if (self.yoriginalListMarray.count != 0) {
+                [self.secionMarray addObject:self.yoriginalListMarray];
+                [self.titleArray addObject:@"原箱大包装商品"];
+            }
+            if (self.xsmallListMarray.count != 0) {
+                [self.secionMarray addObject:self.xsmallListMarray];
+                [self.titleArray addObject:@"小包装商品"];
+                
+            }
+            if (self.ssampleListMarray.count != 0) {
+                [self.secionMarray addObject:self.ssampleListMarray];
+                [self.titleArray addObject:@"试样品"];
+                
+            }
+            if (self.sloseListMarray.count != 0) {
+                [self.secionMarray addObject:self.sloseListMarray];
+                [self.titleArray addObject:@"失效商品"];
+                
+            }
+            [self.secionMarray addObject:@[@"猜你喜欢"]];
+            [self.titleArray addObject:@"猜你喜欢"];
+            
             
             [self countPrices];
             [myTableView reloadData];
@@ -410,7 +705,6 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"取消选中商品结算error=== %@   " ,error);
         
     } showHUD:NO];
     
@@ -449,8 +743,10 @@
         DLog(@"全部取消选中商品结算=== %@   %@" ,returnData[@"msg"] , returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
-            [self.ShoppingListDataMarray removeAllObjects];
+            //[self.ShoppingListDataMarray removeAllObjects];
             self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+
             //购物车选中总价
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
             
@@ -463,7 +759,7 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+               // [self.ShoppingListDataMarray addObject:model];
             }
             
             [self countPrices];
@@ -508,8 +804,10 @@
         DLog(@"全部选中商品结算=== %@   %@" ,returnData[@"msg"] , returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
-            [self.ShoppingListDataMarray removeAllObjects];
+            //[self.ShoppingListDataMarray removeAllObjects];
             self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+
             //购物车选中总价
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
             
@@ -522,7 +820,7 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+                //[self.ShoppingListDataMarray addObject:model];
             }
             
             [self countPrices];
@@ -552,8 +850,8 @@
 
 
 - (void)headerRereshing{
-    
-    [self requestShoppingListData];
+    [self requestStoreStatedData];
+//    [self requestShoppingListData];
     [self requestBadNumValue];
 
     [myTableView.mj_header endRefreshing];
@@ -564,7 +862,7 @@
 
 
 
-#pragma mark ===== 购物车列表数据接口
+#pragma mark =============== 购物车列表数据接口
 
 
 -(void)requestShoppingListData{
@@ -585,10 +883,26 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/list" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        [self.ShoppingListDataMarray removeAllObjects];
 
+    if ([self.approve isEqualToString:@"0"] || [self.approve isEqualToString:@"2"] ) {
+        [dic setValue:@"PERSON" forKey:@"showType"];
+
+    }else if ([self.approve isEqualToString:@"1"]){
+        [dic setValue:@"SOGO" forKey:@"showType"];
+
+    }
+    
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/select_commodity_by_customer_type" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        [self.yoriginalListMarray removeAllObjects];
+        [self.xsmallListMarray removeAllObjects];
+        [self.ssampleListMarray removeAllObjects];
+        [self.sloseListMarray removeAllObjects];
+        [self.secionMarray removeAllObjects];
+        [self.titleArray removeAllObjects];
         DLog(@"购物车列表数据接口======= %@  %@" , returnData[@"msg"], returnData );
+        
+        [[GlobalHelper shareInstance] removeErrorView];
          ////下面判断可删除
         if ([returnData[@"code"]isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -598,11 +912,24 @@
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
-            self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
-//购物车选中总价
+            
+            
+            [self.yoriginalListMarray removeAllObjects];
+            [self.xsmallListMarray removeAllObjects];
+            [self.ssampleListMarray removeAllObjects];
+            [self.sloseListMarray removeAllObjects];
+            [self.secionMarray removeAllObjects];
+            [self.titleArray removeAllObjects];
+            
+            
+            
+            self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];//购物车选中总价
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
 
-            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+            ///小包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"smallList"])
             {
                 
                 ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
@@ -611,13 +938,104 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+                [self.xsmallListMarray addObject:model];
+                
             }
+            
+            ////失效商品
+            for (NSDictionary *dic in returnData[@"data"][@"loseList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                model.productStatus = 12;
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.sloseListMarray addObject:model];
+
+            }
+            
+            
+            ////试样商品
+            for (NSDictionary *dic in returnData[@"data"][@"sampleList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.ssampleListMarray addObject:model];
+                
+
+            }
+            
+            ////原箱大包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"originalList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.yoriginalListMarray addObject:model];
+                
+
+            }
+            
+           // self.titleArray = @[@"原箱大包装商品" ,@"小包装商品" ,@"试样品" ,@"失效商品"];
+
+            
+            if (self.yoriginalListMarray.count != 0) {
+                [self.secionMarray addObject:self.yoriginalListMarray];
+                [self.titleArray addObject:@"原箱大包装商品"];
+            }
+            if (self.xsmallListMarray.count != 0) {
+                [self.secionMarray addObject:self.xsmallListMarray];
+                [self.titleArray addObject:@"小包装商品"];
+
+            }
+            if (self.ssampleListMarray.count != 0) {
+                [self.secionMarray addObject:self.ssampleListMarray];
+                [self.titleArray addObject:@"试样品"];
+
+            }
+            if (self.sloseListMarray.count != 0) {
+                [self.secionMarray addObject:self.sloseListMarray];
+                [self.titleArray addObject:@"失效商品"];
+
+            }
+            [self.secionMarray addObject:@[@"猜你喜欢"]];
+            [self.titleArray addObject:@"猜你喜欢"];
+
+            DLog(@"///======== %ld" ,self.secionMarray.count);
+            
+            
             
             [self countPrices];
             [myTableView reloadData];
             
         }else{
+            
+            self.bottomView.priceLabel.text = [NSString stringWithFormat:@"¥ %@" ,@"0"];
+            self.bottomView.sendPrices.text = [NSString stringWithFormat:@"¥ %@" ,@"0"];
+
+            [self.yoriginalListMarray removeAllObjects];
+            [self.xsmallListMarray removeAllObjects];
+            [self.ssampleListMarray removeAllObjects];
+            [self.sloseListMarray removeAllObjects];
+            [self.secionMarray removeAllObjects];
+            [self.titleArray removeAllObjects];
+            
+            [self.secionMarray addObject:@[@"猜你喜欢"]];
+            [self.titleArray addObject:@"猜你喜欢"];
+            [myTableView reloadData];
+        
            // [self alertMessage:returnData[@"msg"] willDo:nil];
         }
         
@@ -636,9 +1054,13 @@
 
 -(void)requestGuesslikeData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    
-   
-    NSString *dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *dataUTF8;
+    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {//商户猜你喜欢
+        dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){//个人用户
+         dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=PERSON" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
     [MHNetworkManager getRequstWithURL:dataUTF8 params:nil successBlock:^(NSDictionary *returnData) {
         DLog(@"猜你喜欢 === %@" ,returnData);
         
@@ -694,6 +1116,15 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
     DLog(@"猜你喜欢====dic====%@   %ld" ,dic ,productId);
     
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -726,7 +1157,7 @@
 
 -(void)deleteProductPostDataWithProductId:(NSInteger)productId ShoppingCartModel:(ShoppingCartModel*)model{
     
-    [self.ShoppingListDataMarray removeAllObjects];
+   // [self.ShoppingListDataMarray removeAllObjects];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -747,16 +1178,51 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    if ([self.approve isEqualToString:@"0"] || [self.approve isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([self.approve isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+    
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/delete_product", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"删除 == %@" , returnData);
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
+            [self.yoriginalListMarray removeAllObjects];
+            [self.xsmallListMarray removeAllObjects];
+            [self.ssampleListMarray removeAllObjects];
+            [self.sloseListMarray removeAllObjects];
+            [self.secionMarray removeAllObjects];
+            [self.titleArray removeAllObjects];
+            
+            
             self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
             //购物车选中总价
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
             
-            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+//            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+//            {
+//
+//                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+//                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+//                if (mainImvMarray.count!=0) {
+//                    model.mainImage = [mainImvMarray firstObject];
+//                }
+//                model.cartTotalPrice = self.cartTotalPrice ;
+//                [self.ShoppingListDataMarray addObject:model];
+//            }
+            
+            
+            ///小包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"smallList"])
             {
                 
                 ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
@@ -765,9 +1231,89 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+                [self.xsmallListMarray addObject:model];
+                
             }
-            if (self.ShoppingListDataMarray.count == 0) {
+            
+            ////失效商品
+            for (NSDictionary *dic in returnData[@"data"][@"loseList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                model.productStatus = 12;
+
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.sloseListMarray addObject:model];
+                
+            }
+            
+            
+            ////试样商品
+            for (NSDictionary *dic in returnData[@"data"][@"sampleList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.ssampleListMarray addObject:model];
+                
+                
+            }
+            
+            ////原箱大包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"originalList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.yoriginalListMarray addObject:model];
+                
+                
+            }
+            
+            // self.titleArray = @[@"原箱大包装商品" ,@"小包装商品" ,@"试样品" ,@"失效商品"];
+            
+            
+            if (self.yoriginalListMarray.count != 0) {
+                [self.secionMarray addObject:self.yoriginalListMarray];
+                [self.titleArray addObject:@"原箱大包装商品"];
+            }
+            if (self.xsmallListMarray.count != 0) {
+                [self.secionMarray addObject:self.xsmallListMarray];
+                [self.titleArray addObject:@"小包装商品"];
+                
+            }
+            if (self.ssampleListMarray.count != 0) {
+                [self.secionMarray addObject:self.ssampleListMarray];
+                [self.titleArray addObject:@"试样品"];
+                
+            }
+            if (self.sloseListMarray.count != 0) {
+                [self.secionMarray addObject:self.sloseListMarray];
+                [self.titleArray addObject:@"失效商品"];
+                
+            }
+            [self.secionMarray addObject:@[@"猜你喜欢"]];
+            [self.titleArray addObject:@"猜你喜欢"];
+
+            
+            
+            
+            
+            
+            
+            if (self.secionMarray.count == 1) {
                 ///底部是否全选
                 self.bottomView.selectAll.selected = NO;
             }
@@ -812,19 +1358,51 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    
+    if ([self.approve isEqualToString:@"0"] || [self.approve isEqualToString:@"2"]) {
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([self.approve isEqualToString:@"1"]){
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+    DLog(@"购物车加减购物车===%@" ,dic);
+
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/update" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         
         DLog(@"购物车加减购物车===%@" ,returnData);
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"])
         {
-            [self.ShoppingListDataMarray removeAllObjects];
-
+            
+            [self.yoriginalListMarray removeAllObjects];
+            [self.xsmallListMarray removeAllObjects];
+            [self.ssampleListMarray removeAllObjects];
+            [self.sloseListMarray removeAllObjects];
+            [self.secionMarray removeAllObjects];
+            
             self.cartTotalPrice =  [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"cartTotalPrice"]];
             //购物车选中总价
+            self.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]];
+
             self.allChecked = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"allChecked"]] ;
             
-            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+//            for (NSDictionary *dic in returnData[@"data"][@"cartProductVoList"])
+//            {
+//
+//                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+//                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+//                if (mainImvMarray.count!=0) {
+//                    model.mainImage = [mainImvMarray firstObject];
+//                }
+//                model.cartTotalPrice = self.cartTotalPrice ;
+//                [self.ShoppingListDataMarray addObject:model];
+//            }
+            
+            
+            ///小包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"smallList"])
             {
                 
                 ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
@@ -833,8 +1411,84 @@
                     model.mainImage = [mainImvMarray firstObject];
                 }
                 model.cartTotalPrice = self.cartTotalPrice ;
-                [self.ShoppingListDataMarray addObject:model];
+                [self.xsmallListMarray addObject:model];
+                
             }
+            
+            ////失效商品
+            for (NSDictionary *dic in returnData[@"data"][@"loseList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                model.productStatus = 12;
+
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.sloseListMarray addObject:model];
+                
+            }
+            
+            
+            ////试样商品
+            for (NSDictionary *dic in returnData[@"data"][@"sampleList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.ssampleListMarray addObject:model];
+                
+                
+            }
+            
+            ////原箱大包装商品
+            for (NSDictionary *dic in returnData[@"data"][@"originalList"])
+            {
+                
+                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                model.cartTotalPrice = self.cartTotalPrice ;
+                [self.yoriginalListMarray addObject:model];
+                
+                
+            }
+            
+            // self.titleArray = @[@"原箱大包装商品" ,@"小包装商品" ,@"试样品" ,@"失效商品"];
+            
+            
+            if (self.yoriginalListMarray.count != 0) {
+                [self.secionMarray addObject:self.yoriginalListMarray];
+                [self.titleArray addObject:@"原箱大包装商品"];
+            }
+            if (self.xsmallListMarray.count != 0) {
+                [self.secionMarray addObject:self.xsmallListMarray];
+                [self.titleArray addObject:@"小包装商品"];
+                
+            }
+            if (self.ssampleListMarray.count != 0) {
+                [self.secionMarray addObject:self.ssampleListMarray];
+                [self.titleArray addObject:@"试样品"];
+                
+            }
+            if (self.sloseListMarray.count != 0) {
+                [self.secionMarray addObject:self.sloseListMarray];
+                [self.titleArray addObject:@"失效商品"];
+                
+            }
+            [self.secionMarray addObject:@[@"猜你喜欢"]];
+            [self.titleArray addObject:@"猜你喜欢"];
+
+            
+            
             
             [self countPrices];
             [self requestBadNumValue];
@@ -860,7 +1514,7 @@
 
 -(void)selectAllBtnClick:(UIButton*)button
 {
-    if (self.ShoppingListDataMarray.count != 0) {
+    if (self.secionMarray.count != 1 || self.secionMarray.count != 0) {
         button.selected = !button.selected;
         isSelect = button.selected;
         if (isSelect)
@@ -912,114 +1566,224 @@
 #pragma mark - 设置主视图
 -(void)setupMainView
 {
-    
-    UIView *vi = [self.view viewWithTag:TAG_BACKGROUNDVIEW];
-    [vi removeFromSuperview];
-    CGFloat tbHeight = kHeight - 44 -kBarHeight-kBottomBarHeight;
-    if (self.isShowTabBarBottomView == YES) {
-        tbHeight = kHeight - 44 -kBarHeight;
+    if (myTableView == nil) {
+        UIView *vi = [self.view viewWithTag:TAG_BACKGROUNDVIEW];
+        [vi removeFromSuperview];
+        CGFloat tbHeight = kHeight - 44 -kBarHeight-kBottomBarHeight;
+        if (self.isShowTabBarBottomView == YES) {
+            tbHeight = kHeight - 44 -kBarHeight;
+        }
+        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kBarHeight, kWidth, tbHeight) style:UITableViewStyleGrouped];
+        myTableView.delegate = self;
+        myTableView.dataSource = self;
+        myTableView.rowHeight = 90*kScale;
+        myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        myTableView.backgroundColor = RGB(238, 238, 238, 1);
+        [self.view addSubview:myTableView];
+        [self setupBottomView];
     }
-    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, kBarHeight, kWidth, tbHeight) style:UITableViewStyleGrouped];
-    myTableView.delegate = self;
-    myTableView.dataSource = self;
-    myTableView.rowHeight = 90*kScale;
-    myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    myTableView.backgroundColor = RGB(238, 238, 238, 1);
-    [self.view addSubview:myTableView];
-    [self setupBottomView];
+   
  
 }
 
 #pragma mark - tableView 数据源方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
-    {
-        return self.ShoppingListDataMarray.count;
-        
-    }
-        return 1;
     
+        if (section == 0){
+            return [self.secionMarray[0] count];
+        }else if (section == 1){
+            return [self.secionMarray[1] count];
+            
+        }else if (section == 2){
+            return [self.secionMarray[2] count];
+            
+        }else if (section == 3){
+            return [self.secionMarray[3] count];
+            
+        }else{
+            return [self.secionMarray[4] count];
+            
+        }
+        
+        
+    
+    
+   
+    return 1;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+
+    return self.secionMarray.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        return 90*kScale;
+    if (indexPath.section == self.secionMarray.count-1) {
+        return  [self GetCellHeight:self.guessLikeMarray.count]*200*kScale +85*kScale;
+
     }
-    return  [self GetCellHeight:self.guessLikeMarray.count]*200*kScale;
+    return 90*kScale +20*kScale;
+
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        if (self.ShoppingListDataMarray.count == 0) {
-            return 185;
+    
+        if (self.secionMarray.count == 1) {///此时只有猜你喜欢
+            if (section == 0) {
+                
+                if (self.guessLikeMarray.count == 0) {
+                    
+                    return 185*kScale;
+                 
+                }else{
+                     return 250*kScale;
+                 }
+                
+            }else if (section == 1){
+                
+                if (self.guessLikeMarray.count == 0) {
+                    return 0.01;
+                }
+                return 65*kScale;
+            }
+        }else{
+            
+            if (section == 0) {
+                return 70*kScale;
+            }else if (section == self.secionMarray.count -1){
+                return 65*kScale;
+                
+            }else{
+                return 35*kScale;
+            }
+            
         }
-        return 35*kScale;
-
-    }else{
-        if (self.guessLikeMarray.count == 0) {
-            return 0.01;
-        }
-        return 65*kScale;
-    }
+        
+        
+    return 35*kScale;
+   
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        if (self.ShoppingListDataMarray.count == 0) {
+    
+    if (self.secionMarray.count == 1) {///此时只有猜你喜欢
+        if (section == 0) {
             
-            ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 185)];
-            emptyHeadView.backgroundColor = RGB(238, 238, 238, 1);
-            return emptyHeadView;
-        }else{
-            ShoppingCartAddressHeadView *addressView = [[ShoppingCartAddressHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35)];
-            [addressView.addressBtn setTitle:[GlobalHelper shareInstance].selectAddressString forState:0];
-            addressView.backgroundColor = RGB(238, 238, 238, 1);
-            return addressView;
+            if (self.guessLikeMarray.count == 0) {
+                
+                ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 185*kScale)];
+                emptyHeadView.backgroundColor = [UIColor whiteColor];
+                
+                return emptyHeadView;
+                
+            }else{
+                
+                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 250*kScale)];
+                view.backgroundColor = RGB(238, 238, 238, 1);
+                
+                ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 185*kScale)];
+                emptyHeadView.backgroundColor = [UIColor whiteColor];
+                [view addSubview:emptyHeadView];
+                
+                YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, 195*kScale, kWidth, 55*kScale)];
+                headview.titleLab.text = @"猜你喜欢";
+                headview.backgroundColor = [UIColor whiteColor];
+                
+                [view addSubview:headview];
+                
+                return view;
+            }
+            
+            
+            
+        }else if (section == 1){
+            
+            if (self.guessLikeMarray.count == 0) {
+                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 0.01)];
+                view.backgroundColor = RGB(238, 238, 238, 1);
+                return view;
+            }
+            YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 55*kScale)];
+            headview.titleLab.text = @"猜你喜欢";
+            headview.backgroundColor = [UIColor whiteColor];
+            return headview;
         }
-
-    }else{
-        if (self.guessLikeMarray.count == 0) {
+    }else if (self.secionMarray.count >= 1){
+        
+        if (section == 0) {
+            ShoppingCartAddressHeadView *addressView = [[ShoppingCartAddressHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35*kScale)];
+            [addressView.addressBtn setTitle:[GlobalHelper shareInstance].selectAddressString forState:0];
+            addressView.backgroundColor = [UIColor whiteColor];
+            
+            UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 35*kScale, kWidth, 35*kScale)];
+            labTitle.textColor = RGB(136, 136, 136, 1);
+            labTitle.font = [UIFont systemFontOfSize:15.0f*kScale];
+            labTitle.textAlignment = NSTextAlignmentCenter;
+            labTitle.backgroundColor = RGB(238, 238, 238, 1);
+            labTitle.text = self.titleArray[section];
+            [addressView addSubview:labTitle];
+            
+            
+            
+            return addressView;
+        }else if (section == self.secionMarray.count -1){
+            if (self.guessLikeMarray.count == 0) {
+                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 0.01)];
+                view.backgroundColor = RGB(238, 238, 238, 1);
+                return view;
+            }else{
+            YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 55*kScale)];
+            headview.titleLab.text = @"猜你喜欢";
+            headview.backgroundColor = [UIColor whiteColor];
+            return headview;
+            }
+            
+        }else{
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 0.01)];
             view.backgroundColor = RGB(238, 238, 238, 1);
+            
+            UILabel *labTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35*kScale)];
+
+            labTitle.textColor = RGB(136, 136, 136, 1);
+            labTitle.font = [UIFont systemFontOfSize:15.0f*kScale];
+            labTitle.textAlignment = NSTextAlignmentCenter;
+            labTitle.backgroundColor = RGB(238, 238, 238, 1);
+            
+            labTitle.text = self.titleArray[section];
+            [view addSubview:labTitle];
+            
             return view;
         }
-        else
-        {
-        YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 55*kScale)];
-        headview.titleLab.text = @"猜你喜欢";
-        headview.backgroundColor = [UIColor whiteColor];
-        return headview;
-        }
     }
-   
-   
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 0.01)];
+    view.backgroundColor = RGB(238, 238, 238, 1);
+    return view;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if (section == 0) {
-        if (self.ShoppingListDataMarray.count == 0) {
-            return 0.01;
+    
+    if (self.secionMarray.count == 1) {///此时只有猜你喜欢
+        if (section == 0) {
+            return 0.001*kScale;
+        }else if (section == 1){
+            return 0.001*kScale;
         }
-        return 15*kScale;
+        
     }else{
-       
-        if (self.guessLikeMarray.count == 0) {
-            return 0.01;
+        
+        if (section == self.secionMarray.count -2){
+            return 20*kScale;
         }
-        return 15*kScale;
-
     }
+    return 0.001*kScale;
+
    
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 20)];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = RGB(238, 238, 238, 1);
     return view;
 }
 
@@ -1034,97 +1798,13 @@
         
     }
     
-    if (indexPath.section == 0) {
-        NSString *Identifier = [NSString stringWithFormat:@"cellID_shop%ld" ,indexPath.row];
-        
-    ShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID_shop"];
-    if (!cell) {
-        cell = [[ShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID_shop"];
-         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-        cell.isSelected = isSelect;
-        cell.selectBtn.tag = indexPath.row;
-  
-    //选择回调
-    cell.cartBlock = ^(BOOL isSelec){
-        if (isSelec) {
-#pragma mark ========选中购物车商品
-            ShoppingCartModel *cartModel = self.ShoppingListDataMarray[indexPath.row];
-            [self selectProductsPostDataCommodityId:[NSString stringWithFormat:@"%ld" , cartModel.commodityId]];
-        }
-        else
-        {
-#pragma mark ========取消选中购物车商品
-
-            ShoppingCartModel *cartModel = self.ShoppingListDataMarray[indexPath.row];
-            
-            [self cancelProductsPostDataCommodityId:[NSString stringWithFormat:@"%ld" , cartModel.commodityId]];
-
-        }
-        
-
-        };
-        
-        
-        __block ShoppingCartTableViewCell *weakCell = cell;
-        __weak __typeof(self) weakSelf = self;
-        if (self.ShoppingListDataMarray.count != 0) {
-             ShoppingCartModel *model = self.ShoppingListDataMarray[indexPath.row];
-        ///加入购物车
-        cell.numAddBlock =^(){
-       
-            [weakSelf cutCartPostDataWithProductId:model.commodityId quatity:1 CartStyle:@"1" shoppingTableViewCell:weakCell ShoppingCartModel:model NSIndexPath:indexPath];
-            };
-    
-        
-    
-        cell.numCutBlock =^(){
-            NSInteger count = [weakCell.numberLabel.text integerValue];
-            if (count>1)
-            {
-                [self cutCartPostDataWithProductId:model.commodityId quatity:-1 CartStyle:@"0" shoppingTableViewCell:weakCell ShoppingCartModel:model NSIndexPath:indexPath];
-            }else{
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    ///删除整个商品
-                    
-                    [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
-                    
-                    
-                }];
-                
-                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-                
-                [alert addAction:okAction];
-                [alert addAction:cancel];
-                [self presentViewController:alert animated:YES completion:nil];
-               
-        }
-       
-      
-    };
-        
-      
-            
-                [cell.deleteBtn addTarget:self action:@selector(deleteBtnProductsAction:) forControlEvents:1];
-                cell.deleteBtn.tag = indexPath.row;
-            
-        ///商品cell赋值
-        if (self.ShoppingListDataMarray.count!=0) {
-            [cell reloadDataWith:[self.ShoppingListDataMarray objectAtIndex:indexPath.row]];
-        }
-            
-        }
-    return cell;
-        
-        
-    }else{
+    if (indexPath.section == self.secionMarray.count-1) {///猜你喜欢
         
         YouLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID_like"];
-        if (cell == nil) {
+        //if (cell == nil) {
             cell = [[YouLikeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID_like"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
+       // }
         
         //获取到数据后刷新
         if (self.guessLikeMarray.count != 0) {
@@ -1135,38 +1815,131 @@
             cell.CollView.scrollEnabled = NO;
             cell.delegateColl = self;
             
-            [cell setCollViewHeight:[self GetCellHeight:self.guessLikeMarray.count]*200];
-            [cell configHeight:[self GetCellHeight:self.guessLikeMarray.count]*200];
+            [cell setCollViewHeight:[self GetCellHeight:self.guessLikeMarray.count]*200*kScale +85*kScale];
+            [cell configHeight:[self GetCellHeight:self.guessLikeMarray.count]*200*kScale + 85*kScale];
             
+        }else{
             
-        }
-       
-#pragma mark = 猜你喜欢 加入购物车
+            cell.CollView.backgroundColor = RGB(238, 238, 238, 1);
 
+        }
+        
+#pragma mark = 猜你喜欢 加入购物车
+        
         [cell setClickIndexBlock:^(NSInteger index) {
             
             DLog(@"猜你喜欢点击下标=== %ld" ,index);
             if (self.guessLikeMarray.count != 0)
-                {
-                    HomePageModel *model = [self.guessLikeMarray objectAtIndex:index];
-                    [self addCartPostDataWithProductId:model.id];
-                    [myTableView reloadData];
-                }
-          
+            {
+                HomePageModel *model = [self.guessLikeMarray objectAtIndex:index];
+                [self addCartPostDataWithProductId:model.id];
+                [myTableView reloadData];
+            }
             
-         
+            
+            
         }];
         
         
         
         return cell;
+        
+    }else{
+        
+        NSString *Identifier = [NSString stringWithFormat:@"cellID_shop%ld%ld" ,(long)indexPath.section,indexPath.row];
+        
+        ShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];
+        if (!cell) {
+            cell = [[ShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        cell.isSelected = isSelect;
+        cell.selectBtn.tag = indexPath.row;
+        
+        //选择回调
+        cell.cartBlock = ^(BOOL isSelec){
+            if (isSelec) {
+#pragma mark ========选中购物车商品
+                ShoppingCartModel *cartModel = self.secionMarray[indexPath.section][indexPath.row];
+                [self selectProductsPostDataCommodityId:[NSString stringWithFormat:@"%ld" , (long)cartModel.commodityId]];
+            }
+            else
+            {
+#pragma mark ========取消选中购物车商品
+                
+                ShoppingCartModel *cartModel = self.secionMarray[indexPath.section][indexPath.row];
+                
+                [self cancelProductsPostDataCommodityId:[NSString stringWithFormat:@"%ld" , cartModel.commodityId]];
+                
+            }
+            
+            
+        };
+        
+        
+        __block ShoppingCartTableViewCell *weakCell = cell;
+        __weak __typeof(self) weakSelf = self;
+        if (self.secionMarray.count != 1) {
+            ShoppingCartModel *model = self.secionMarray[indexPath.section][indexPath.row];
+            ///加入购物车
+            cell.numAddBlock =^(){
+                
+                [weakSelf cutCartPostDataWithProductId:model.commodityId quatity:1 CartStyle:@"1" shoppingTableViewCell:weakCell ShoppingCartModel:model NSIndexPath:indexPath];
+            };
+            
+            
+            
+            cell.numCutBlock =^(){
+                NSInteger count = [weakCell.numberLabel.text integerValue];
+                if (count>1)
+                {
+                    [self cutCartPostDataWithProductId:model.commodityId quatity:-1 CartStyle:@"0" shoppingTableViewCell:weakCell ShoppingCartModel:model NSIndexPath:indexPath];
+                }else{
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        ///删除整个商品
+                        
+                        [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
+                        
+                        
+                    }];
+                    
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+                    
+                    [alert addAction:okAction];
+                    [alert addAction:cancel];
+                    [self presentViewController:alert animated:YES completion:nil];
+                    
+                }
+                
+                
+            };
+            
+            
+            
+            [cell.deleteBtn addTarget:self action:@selector(deleteBtnProductsAction:) forControlEvents:1];
+            cell.deleteBtn.tag = indexPath.row;
+            
+            ///商品cell赋值
+            if (self.secionMarray.count !=0 || self.secionMarray.count !=1 ) {
+                [cell reloadDataWith:[self.secionMarray[indexPath.section] objectAtIndex:indexPath.row]];
+            }else{
+                DLog(@"sssssss");
+            }
+            
+        }
+        return cell;
+        
+        
+        
+       
     }
 }
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.ShoppingListDataMarray.count != 0) {
-        ShoppingCartModel *model = self.ShoppingListDataMarray[indexPath.row];
+    if (self.secionMarray.count != 1 && indexPath.section != self.secionMarray.count-1) {
+        ShoppingCartModel *model = self.secionMarray[indexPath.section][indexPath.row];
         if (model.productStatus == 11) {//上架
             HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
             
@@ -1183,7 +1956,7 @@
     
 }
 
-#pragma mark ==商品下架 删除整个商品
+#pragma mark ==失效商品商品下架 删除整个商品
 
 -(void)deleteBtnProductsAction:(UIButton*)btn{
     DLog(@"删除商品tag================ %ld" ,btn.tag)
@@ -1191,11 +1964,15 @@
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
         ///删除整个商品
-        if (self.ShoppingListDataMarray.count != 0) {
+        if (self.secionMarray.count >= 1) {
+            NSInteger section = self.secionMarray.count-2;
             
-            ShoppingCartModel *model = self.ShoppingListDataMarray[btn.tag];
+            ShoppingCartModel *model = self.secionMarray[section][btn.tag];
+            
             [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
+            
         }
        
         
@@ -1246,14 +2023,32 @@
 
 {
     
-    if (indexPath.section == 0) {
-        return YES;
-    }
-    else
-    {
+    if (self.secionMarray.count == 1) {
+        
         return NO;
+    
+    }else{
+        
+        if (indexPath.section == self.secionMarray.count-1) {
+            
+            return NO;
+       
+        }else{
+           
+            return YES;
+        }
+        
+        
     }
     
+//    if (indexPath.section == 0) {
+//        return YES;
+//    }
+//    else
+//    {
+//        return NO;
+//    }
+//
 }
 
 
@@ -1276,8 +2071,9 @@
 
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            ShoppingCartModel *model = self.ShoppingListDataMarray[indexPath.row];
             
+            ShoppingCartModel *model = self.secionMarray[indexPath.section][indexPath.row];
+
             [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
             
             
@@ -1304,10 +2100,10 @@
 
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-     
-        
-   }
+
+    }
+    
+    
     }
 }
 

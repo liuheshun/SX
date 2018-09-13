@@ -23,12 +23,13 @@
 #import "DDSearchManager.h"
 #import "HomePageDetailsViewController.h"
 #import "HomePageOtherDetailsViewController.h"
-
+#import "VersionUpdateView.h"
+#import "HWPopTool.h"
 
 #define headViewHeight (567+18)*kScale
 #define kOpenRefreshHeaderViewHeight 0
 
-@interface PersonalPageViewController ()<UITableViewDelegate ,UITableViewDataSource ,SDCycleScrollViewDelegate ,GYChangeTextViewDelegate ,XLCardSwitchDelegate ,YNPageViewControllerDataSource, YNPageViewControllerDelegate>
+@interface PersonalPageViewController ()<UITableViewDelegate ,UITableViewDataSource ,SDCycleScrollViewDelegate ,GYChangeTextViewDelegate ,XLCardSwitchDelegate ,YNPageViewControllerDataSource, YNPageViewControllerDelegate ,RHLocationDelegate>
 
 @property (nonatomic,strong) HomePageNavView *navView;
 @property (nonatomic,strong) UITableView *tableView;
@@ -37,6 +38,9 @@
 @property (nonatomic,strong) NSMutableArray *PlayTextDataMarray;
 ///轮播图数据
 @property (nonatomic,strong) NSMutableArray *bannerMarray;
+///套餐数据
+@property (nonatomic,strong) NSMutableArray *mealMarray;
+
 ///
 @property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
 
@@ -80,17 +84,133 @@
   //  [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+    [self requestStoreStatedData];
     [self requestBadNumValue];
     [self requsetHomPageBannerData];
     [self requestPlayTextData];
     [self requestHotSearchData];
-
-
+    [self requestMealData];
+    ///版本更新通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+    
 }
+#pragma mark ============== 检查版本更新
+
+-(void)checkVersionUpdate{
+    
+    [self requestVersionUpdateData];
+}
+
+-(void)requestVersionUpdateData{
+    //http://192.168.0.200:8080/m/appversion/index.jhtml?appType=1
+    
+    
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/appversion/index.jhtml?appType=2&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"code"] isEqualToString:@"00"]) {
+            
+            
+            NSString *localVerson= [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前本地app版本号
+            
+            //将版本号按照.切割后存入数组中
+            
+            NSArray *localArray = [localVerson componentsSeparatedByString:@"."];
+            
+            NSArray *appArray = [[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."];
+            
+            NSInteger minArrayLength = MIN(localArray.count, appArray.count);
+            
+            BOOL needUpdate = NO;
+            
+            for(int i=0;i<minArrayLength;i++){//以最短的数组长度为遍历次数,防止数组越界
+                //取出每个部分的字符串值,比较数值大小
+                
+                NSString *localElement = localArray[i];
+                
+                NSString *appElement = appArray[i];
+                
+                NSInteger  localValue =  localElement.integerValue;
+                
+                
+                NSInteger  appValue = appElement.integerValue;
+                
+                
+                
+                if(localValue<appValue) {
+                    
+                    //从前往后比较数字大小,一旦分出大小,跳出循环
+                    
+                    needUpdate = YES;
+                    
+                    break;
+                    
+                }else{
+                    
+                    
+                    
+                    needUpdate = NO;
+                    
+                }
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+            if (needUpdate) {
+                
+                VersionUpdateViewConfig *config = [VersionUpdateViewConfig UpdateViewConfig];
+                config.imageString = @"versionUpdate";
+                config.titleString = returnData[@"content"];
+                config.isShowCancelBtn = returnData[@"isForce"];
+                if ([returnData[@"isForce"] isEqualToString:@"true"]) {//强制更新
+                    VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 150*kScale, 295*kScale, kHeight-100*kScale)];
+                    [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
+                    [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
+                    [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
+                    
+                }else{//非强制更新 只出现一次
+                    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                    if ([[user valueForKey:@"isFirst"] isEqualToString:@"second"]) {
+                        
+                    }else{
+                        VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 0, 295*kScale, kHeight-20*kScale)];
+                        //                        upView.backgroundColor = [UIColor cyanColor];
+                        [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
+                        [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
+                        [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
+                        [user setValue:@"second" forKey:@"isFirst"];
+                    }
+                }
+                
+                
+            }
+            
+            
+            
+            
+        }
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+    
+    
+    
+}
+
 
 -(void)viewWillDisappear:(BOOL)animated{
 //[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 //    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressLabel.text;
 
 }
 
@@ -102,6 +222,7 @@
     self.hotSearchMarray = [NSMutableArray array];
     self.historySearchMarray = [NSMutableArray array];
     self.otherAddressArray = [NSMutableArray array];
+    self.mealMarray = [NSMutableArray array];
     [self setupPageVC];
     [self addHeadView];
    
@@ -114,14 +235,65 @@
 
 }
 
+#pragma mark =============检验店铺是否认证
+
+-(void)requestStoreStatedData{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    //DLog(@"账号店铺是否登录认证= %@" ,dic);
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/mobile/store/get_store" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        //DLog(@"账号店铺是否登录认证hhhh= %@" ,returnData);
+        
+        if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:@"0" forKey:@"isLoginState"];
+            
+        }
+        
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        dic = returnData[@"data"];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        if (dic) {
+            [user setValue:[NSString stringWithFormat:@"%ld" ,[dic[@"isApprove"] integerValue]] forKey:@"approve"];
+        }else{
+            [user setValue:@"2" forKey:@"approve"];
+            
+        }
+        
+        
+    } failureBlock:^(NSError *error) {
+        //DLog(@"账号店铺是否登录认证= %@" ,error);
+        
+    } showHUD:NO];
+    
+    
+}
+
+
+
 
 #pragma mark = ===================商品banner轮播图数据
 
 -(void)requsetHomPageBannerData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    DLog(@"lunbo接口===%@" ,[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@&appVersionNumber=%@&user=%@&ShowTypes=PERSON" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]]);
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@&appVersionNumber=%@&user=%@&ShowTypes=PERSON" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"个人专区轮播图=====%@" ,returnData);
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/banner/queryBannerForWeb?mtype=%@&appVersionNumber=%@&user=%@&showType=PERSON" ,baseUrl ,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+        //DLog(@"个人专区轮播图=====%@" ,returnData);
         
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
             [self.bannerMarray removeAllObjects];
@@ -159,7 +331,7 @@
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/roll/get_roll_order?appVersionNumber=%@&user=%@" ,baseUrl, [user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"获取播报数据=====%@" ,returnData);
+        //DLog(@"获取播报数据=====%@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.PlayTextDataMarray removeAllObjects];
             for (NSDictionary *dic in returnData[@"data"]) {
@@ -179,24 +351,55 @@
 
 
 
+#pragma mark ==================个人专区商品套餐数据
+
+-(void)requestMealData{
+    
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/mobile/commodity/get_commodity_meal_list" ,baseUrl] params:nil successBlock:^(NSDictionary *returnData) {
+        
+        DLog(@"套餐=====%@" ,returnData);
+        if ([returnData[@"status"] integerValue] == 200) {
+            [self.mealMarray removeAllObjects];
+            for (NSDictionary *dic in returnData[@"data"]) {
+                HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                [self.mealMarray addObject:model];
+                
+            }
+            
+            [self addCardSwitch:self.headerView MealData:self.mealMarray];
+        }
+        
+    } failureBlock:^(NSError *error) {
+       // DLog(@"套餐error=====%@" ,error);
+
+    } showHUD:NO];
+    
+}
+
+
+
+
 #pragma mark ================================= 热门搜索数据
 -(void)requestHotSearchData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSInteger usrId = [[user valueForKey:@"userId"] integerValue];
-    DLog(@"热门搜索数据url=== %@" , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld",baseUrl,usrId]);
     
     
     
-    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld&&appVersionNumber=%@&user=%@", baseUrl,usrId ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"] ] params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld&&appVersionNumber=%@&user=%@&showType=PERSON", baseUrl,usrId ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"] ] params:nil successBlock:^(NSDictionary *returnData) {
         
-        DLog(@"热门搜索数据 ==== %@ url=== %@" ,returnData , [NSString stringWithFormat:@"%@/m/search/get_top_search_and_history_search?customerId=%ld", baseUrl,usrId]);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.hotSearchMarray removeAllObjects];
             [self.historySearchMarray removeAllObjects];
             
             [self.hotSearchMarray addObjectsFromArray:returnData[@"data"][@"topSearchList"]];
             [self.historySearchMarray addObjectsFromArray:returnData[@"data"][@"historyList"]];
-            DLog(@"====sss===== hotSearchMarray=== %@  historySearchMarray=%@" , returnData[@"data"][@"topSearchList"] , self.historySearchMarray);
+            //DLog(@"====sss===== hotSearchMarray=== %@  historySearchMarray=%@" , returnData[@"data"][@"topSearchList"] , self.historySearchMarray);
             
             
             //////////数据库搜索历史数据写到本地(暂时去掉)
@@ -206,7 +409,7 @@
         }
     } failureBlock:^(NSError *error) {
         
-        DLog(@"sous ==== url===error %@" ,error);
+       // DLog(@"sous ==== url===error %@" ,error);
     } showHUD:NO];
     
 }
@@ -239,10 +442,10 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
         }
         
-        DLog(@"购物车数量==  %@" ,returnData);
+       // DLog(@"购物车数量==  %@" ,returnData);
     } failureBlock:^(NSError *error) {
         
-        DLog(@"购物车数量error==  %@" ,error);
+        //DLog(@"购物车数量error==  %@" ,error);
         
     } showHUD:NO];
 }
@@ -350,7 +553,7 @@
 
 -(void)addHeadView{
     
-    [self addCardSwitch:self.headerView];
+    
     
 }
 
@@ -386,9 +589,7 @@
 - (void)pageViewController:(YNPageViewController *)pageViewController
             contentOffsetY:(CGFloat)contentOffset
                   progress:(CGFloat)progress {
-    //NSLog(@"--- contentOffset = %f, progress = %f", contentOffset, progress);
     
-    // self.navView.backgroundColor = RGBA(246, 246, 246, progress);
     
 }
 
@@ -409,7 +610,7 @@
     if (self.bannerMarray.count!=0) {
         HomePageModel *model = self.bannerMarray[index];
         
-        DLog(@"轮播图详情页======= %@" ,model.bannerUrl);
+        //DLog(@"轮播图详情页======= %@" ,model.bannerUrl);
         
         if ([model.bannerUrl containsString:@"SP"]) {
             VC.fromBaner = @"1";
@@ -425,7 +626,7 @@
             }else{
                 otherVC.detailsURL = model.bannerUrl;
             }
-            DLog(@"轮播图详情页外部外部链接======= %@" ,otherVC.detailsURL);
+            //DLog(@"轮播图详情页外部外部链接======= %@" ,otherVC.detailsURL);
             [self.navigationController pushViewController:otherVC animated:YES];
             
         }
@@ -451,11 +652,12 @@
     [bgView addSubview:smallbgView];
     
     
+    
     UIImageView *playImage = [[UIImageView alloc] initWithFrame:CGRectMake(15*kScale, 6*kScale, 35*kScale, 34*kScale)];
     playImage.image = [UIImage imageNamed:@"saixianbobao"];
     [smallbgView addSubview:playImage];
 
-    GYChangeTextView *tView = [[GYChangeTextView alloc] initWithFrame:CGRectMake(MaxX(playImage)+25*kScale, 5*kScale, kWidth-140*kScale, 50*kScale)];
+    GYChangeTextView *tView = [[GYChangeTextView alloc] initWithFrame:CGRectMake(MaxX(playImage)+25*kScale, 0*kScale, kWidth-140*kScale, 50*kScale)];
     tView.delegate = self;
 //    tView.backgroundColor =  [UIColorcl];
     [smallbgView addSubview:tView];
@@ -474,58 +676,98 @@
 #pragma mark ===============设置轮播图
 
 -(void)addSDCycleScrollViewWithImageURLArray:(NSMutableArray*)imageURLArray  ParentView:(UIView*)parentView{
+    if (self.cycleScrollView) {
+        self.cycleScrollView.imageURLStringsGroup = imageURLArray;
 
-    SDCycleScrollView*cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"banner加载"]];   //placeholder
-    cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    cycleScrollView.showPageControl = YES;//是否显示分页控件
-    cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
-    cycleScrollView.tag = 1;
-    cycleScrollView.imageURLStringsGroup = imageURLArray;
+    }else{
+    self.cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 176*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"banner加载"]];   //placeholder
+    self.cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
+    self.cycleScrollView.showPageControl = YES;//是否显示分页控件
+    self.cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
+    self.cycleScrollView.tag = 1;
+    self.cycleScrollView.imageURLStringsGroup = imageURLArray;
 
-    [parentView addSubview:cycleScrollView];
+    [parentView addSubview:self.cycleScrollView];
     
     [self.headerView bringSubviewToFront:self.showCurrentAddressBtn];
-
+    }
 
 }
 
 
 #pragma mark ================初始化套餐
 
-- (void)addCardSwitch:(UIView*)headView{
+- (void)addCardSwitch:(UIView*)headView MealData:(NSMutableArray*)items{
     //初始化数据源
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DataPropertyList" ofType:@"plist"];
-    NSArray *arr = [NSArray arrayWithContentsOfFile:filePath];
-    //NSArray *arr = @[@"1" ,@"2" ,@"3" ,@"4"];
-    NSMutableArray *items = [NSMutableArray new];
-    for (NSDictionary *dic in arr) {
-        XLCardItem *item = [[XLCardItem alloc] init];
-        [item setValuesForKeysWithDictionary:dic];
-        [items addObject:item];
-    }
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DataPropertyList" ofType:@"plist"];
+//    NSArray *arr = [NSArray arrayWithContentsOfFile:filePath];
+//    //NSArray *arr = @[@"1" ,@"2" ,@"3" ,@"4"];
+//    NSMutableArray *items = [NSMutableArray new];
+//    for (NSDictionary *dic in arr) {
+//        HomePageModel *item = [[HomePageModel alloc] init];
+//        [item setValuesForKeysWithDictionary:dic];
+//        [items addObject:item];
+//    }
+    if (_cardSwitch == nil) {
+        //设置卡片浏览器
+        _cardSwitch = [[XLCardSwitch alloc] initWithFrame:CGRectMake(0, (176+91+22)*kScale, self.view.bounds.size.width, 250*kScale)];
+        _cardSwitch.backgroundColor = [UIColor clearColor];
+        _cardSwitch.items = items;
+        _cardSwitch.delegate = self;
+        //分页切换
+        _cardSwitch.pagingEnabled = YES;
+        //设置初始位置，默认为0
+        //_cardSwitch.selectedIndex = 0;
+        [headView addSubview:_cardSwitch];
+        
+        ///点击加入购物车按钮
+        __weak __typeof(self) weakSelf = self;
+#pragma mark =============套餐购物车按钮点击事件
 
-    //设置卡片浏览器
-    _cardSwitch = [[XLCardSwitch alloc] initWithFrame:CGRectMake(0, (176+91+22)*kScale, self.view.bounds.size.width, 250*kScale)];
-    _cardSwitch.backgroundColor = [UIColor clearColor];
-    _cardSwitch.items = items;
-    _cardSwitch.delegate = self;
-    //分页切换
-    _cardSwitch.pagingEnabled = YES;
-    //设置初始位置，默认为0
-    _cardSwitch.selectedIndex = 1;
-    [headView addSubview:_cardSwitch];
+        ///购物车按钮
+        _cardSwitch.selectCardAddShoppingIndex = ^(NSInteger addShoppingIndex) {
+            //DLog(@"addShoppingIndex === %ld" ,addShoppingIndex);
+            [weakSelf mealAddShoppingCardIndex:addShoppingIndex];
+        };
+        
+#pragma mark =============套餐点击事件
+        _cardSwitch.selectCellIndex = ^(NSInteger cellIndex) {
+            
+            HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
+            VC.hidesBottomBarWhenPushed = YES;
+            HomePageModel *model = weakSelf.mealMarray[cellIndex];
+            VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.id];
+            ///标记详情页 显示C端详情
+            VC.isFromBORC = @"c";
+            VC.isPackage = @"1";
+            [weakSelf.navigationController pushViewController:VC animated:YES];
+            
+            
+        };
+        
+        
+        
+    }else{
+        _cardSwitch.items = items;
+
+    }
+   
 }
 
 #pragma mark -
 #pragma mark CardSwitchDelegate
 
 - (void)XLCardSwitchDidSelectedAt:(NSInteger)index {
-    NSLog(@"选中了：%zd",index);
 
-    //更新背景图
-    XLCardItem *item = _cardSwitch.items[index];
-    _imageView.image = [UIImage imageNamed:item.imageName];
+    
+    
+    
+//    //更新背景图
+//    HomePageModel *item = _cardSwitch.items[index];
+//    [_imageView sd_setImageWithURL:[NSURL URLWithString:item.mainImage]];
 }
+
+
 
 
 - (void)switchPrevious {
@@ -540,6 +782,119 @@
     index = index > _cardSwitch.items.count - 1 ? _cardSwitch.items.count - 1 : index;
     [_cardSwitch switchToIndex:index animated:true];
 }
+
+#pragma mark =========套餐加入购物车点击事件
+
+-(void)mealAddShoppingCardIndex:(NSInteger)index{
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    if ([user valueForKey:@"isLoginState"]) {
+        [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
+    }
+    if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"])
+    {
+        
+       
+        
+        if (self.mealMarray.count != 0)
+        {
+            HomePageModel *model = self.mealMarray[index];
+            
+            [self addShoppingCardWithProductId:model.id Model:model];
+            
+        }
+        
+    }else
+    {
+        LoginViewController *VC = [LoginViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+        
+        
+    }
+    
+}
+
+#pragma mark ====================套餐加入购物车
+
+-(void)addShoppingCardWithProductId:(NSInteger)productId Model:(HomePageModel*)model{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *ticket = [user valueForKey:@"ticket"];
+    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+    NSString *nonce = [self ret32bitString];//随机数
+    NSString *curTime = [self dateTransformToTimeSp];
+    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+    
+    [dic setValue:secret forKey:@"secret"];
+    [dic setValue:nonce forKey:@"nonce"];
+    [dic setValue:curTime forKey:@"curTime"];
+    [dic setValue:checkSum forKey:@"checkSum"];
+    [dic setValue:ticket forKey:@"ticket"];
+    
+#pragma mark---------------------------------需要更改productID--------------------------------
+    
+    //[dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"productId"];
+    [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
+    
+    [dic setObject:@"1" forKey:@"quatity"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
+        
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+        
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+   // DLog(@"加入购物车 ==== %@" , dic);
+    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+       
+        if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setValue:@"0" forKey:@"isLoginState"];
+            LoginViewController *VC = [LoginViewController new];
+            VC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+        
+        
+        
+        if ([returnData[@"status"] integerValue] == 200){
+    
+          
+            [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];
+            
+            if ([[GlobalHelper shareInstance].addShoppingCartMarray containsObject:model]) {
+                [[GlobalHelper shareInstance].addShoppingCartMarray removeObject:model];
+                [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];
+            }
+            
+            [GlobalHelper shareInstance].shoppingCartBadgeValue += 1;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
+            [SVProgressHUD showSuccessWithStatus:@"加入购物车成功"];
+        }else {
+            //            model.number = 0;
+            
+            SVProgressHUD.minimumDismissTimeInterval = 0.5;
+            SVProgressHUD.maximumDismissTimeInterval = 2;
+            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
+        }
+       // DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
+    } failureBlock:^(NSError *error) {
+        
+      //  DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
+        
+    } showHUD:NO];
+    
+    
+}
+
 
 
 #pragma mark ==========自定义导航栏
@@ -568,7 +923,7 @@
         MessageCenterViewController *VC = [MessageCenterViewController new];
         VC.hidesBottomBarWhenPushed = YES;
         [weakSelf.navigationController pushViewController:VC animated:YES];
-        DLog(@"消息");
+       // DLog(@"消息");
         
     };
     
@@ -579,8 +934,8 @@
         
         NSArray *hotSeaches = [NSArray array];
         hotSeaches =  weakSelf.hotSearchMarray;
-        DLog(@"====sss===== %@" , hotSeaches);
         // 2. Create a search view controller
+        [GlobalHelper shareInstance].showType= @"PERSON";
         
         PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品名称搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
             
@@ -592,6 +947,7 @@
             
             searchViewController.searchResultController = sVc;
             sVc.fromSortString = @"0";
+            sVc.showType = @"PERSON";
             sVc.searchText = searchText;
             
             //
@@ -618,7 +974,6 @@
         [weakSelf presentViewController:nav animated:YES completion:nil];
         
         
-        DLog(@"sousuo");
         
     };
     
@@ -639,12 +994,13 @@
             // [weakSelf.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
             weakSelf.showCurrentAddressLabel.text = currentLocations.name;
             
-            if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
-                DLog(@"在范围内");
+            if (([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) || [currentLocations.administrativeArea containsString:@"浙江省"] || [currentLocations.administrativeArea containsString:@"江苏省"]) {
+                
+                //DLog(@"在范围内");
                 weakSelf.isShowNoticeView = @"1";
                 [weakSelf.addressNoticeView removeFromSuperview];
             }else{
-                DLog(@"-------------不在");
+                //DLog(@"-------------不在");
                 weakSelf.isShowNoticeView = @"0";
                 [weakSelf.cycleScrollView addSubview:weakSelf.addressNoticeView];
             }
@@ -697,14 +1053,14 @@
     [self getAddresspoiWithLocation:location];
     
     ///判断当前地址是否在配送范围内
-    if ([location.city isEqualToString:@"上海市"] && ![location.subLocality isEqualToString:@"崇明区"]) {
-        DLog(@"请求在范围内");
+    if (([location.city isEqualToString:@"上海市"] && ![location.subLocality isEqualToString:@"崇明区"]) || [location.administrativeArea isEqualToString:@"浙江省"] || [location.administrativeArea isEqualToString:@"江苏省"]) {
+        //DLog(@"请求在范围内");
         [self.addressNoticeView removeFromSuperview];
         self.isShowNoticeView = @"1";
         
         
     }else{
-        DLog(@"请求不在");
+        //DLog(@"请求不在");
         self.isShowNoticeView = @"0";
         [self.cycleScrollView addSubview:self.addressNoticeView];
         
@@ -775,8 +1131,8 @@
         // [self.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
         self.showCurrentAddressLabel.text = currentLocations.name;
         
-        if ([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) {
-            DLog(@"在范围内");
+        if (([currentLocations.city containsString:@"上海市"] && ![currentLocations.subLocality containsString:@"崇明区"]) || [currentLocations.administrativeArea containsString:@"浙江省"] || [currentLocations.administrativeArea containsString:@"江苏省"]) {
+           // DLog(@"在范围内");
             
             weakSelf.isShowNoticeView = @"1";
             [weakSelf.addressNoticeView removeFromSuperview];
@@ -786,17 +1142,18 @@
             
         }else{
             
-            DLog(@"-------------不在");
+           // DLog(@"-------------不在");
             
             weakSelf.isShowNoticeView = @"0";
-            
+            [self.cycleScrollView addSubview:self.addressNoticeView];
+
             
         }
         
     };
     
     [self.navigationController pushViewController:VC animated:YES];
-    DLog(@"选择收货地址");
+    //DLog(@"选择收货地址");
 }
 
 -(UIButton *)showCurrentAddressBtn{

@@ -17,14 +17,14 @@
         NSString *s = [self substringWithRange:NSMakeRange(i, 1)];
         if ([self validateChineseChar:s]) {
             
-            NSLog(@" s 打印信息:%@",s);
+          //  NSLog(@" s 打印信息:%@",s);
             
             length +=2;
         }else{
             length +=1;
         }
         
-        NSLog(@" 打印信息:%@  %ld",s,(long)length);
+        //NSLog(@" 打印信息:%@  %ld",s,(long)length);
     }
     return length;
 }

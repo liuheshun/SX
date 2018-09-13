@@ -54,7 +54,7 @@
     
     
     YNPageViewController *vc = (YNPageViewController*)self.parentViewController;
-    DLog(@"====== %ld" ,    vc.pageIndex);
+    //DLog(@"====== %ld" ,    vc.pageIndex);
     self.pageIndex = vc.pageIndex;
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
@@ -65,7 +65,7 @@
         
     }else if (vc.pageIndex == 1){///赛选精选
         ///赛鲜精选
-        self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&ShowTypes=PERSON" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+        self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=PERSON" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
         [self requesSaiXianDataBaseURLString:self.baseURLString];
     }
     
@@ -82,7 +82,7 @@
 -(void)requesSaiXianDataBaseURLString:(NSString*)BaseURLString{
 
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
+        //DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
@@ -100,10 +100,9 @@
         }else if ([[returnData[@"status"] stringValue] isEqualToString:@"201"]){
             [self.dataArray removeAllObjects];
             [[GlobalHelper shareInstance] removeEmptyView];
-            self.currenLoginStated = @"1";
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无商品" NoticeImageString:@"未购买" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
-            [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(showOther) forControlEvents:1];
-            //            [loginBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
+            self.currenLoginStated = @"2";
+            
+          
             [self.tableView reloadData];
 
         }
@@ -137,23 +136,20 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-    DLog(@"经常买1111= %@" ,dic);
+    //DLog(@"经常买1111= %@" ,dic);
     
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager postReqeustWithURL:BaseURLString params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"经常买=sssssd= %@" ,returnData);
+        //DLog(@"经常买=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
         
         if ([[NSString stringWithFormat:@"%@" ,returnData[@"code"]] isEqualToString:@"0404"] || [[NSString stringWithFormat:@"%@" ,returnData[@"code"]] isEqualToString:@"04"]) {
-            DLog(@"未登录");
+            //DLog(@"未登录");
             
             self.currenLoginStated = @"0";
             [self.dataArray removeAllObjects];
             [self.tableView reloadData];
-//            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登陆" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:YES bottomBtnTitle:@"点击登陆"];
-//            [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
-//
-            
+         
             
         }
         NSInteger pages = [returnData[@"data"][@"page"][@"totalPage"] integerValue];
@@ -177,8 +173,7 @@
             [self.dataArray removeAllObjects];
             [[GlobalHelper shareInstance] removeEmptyView];
             self.currenLoginStated = @"1";
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"您还未购买过任何商品,看看大家都买了啥!" NoticeImageString:@"未购买" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:YES bottomBtnTitle:@"瞧一瞧"];
-            [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(showOther) forControlEvents:1];
+           
             //            [loginBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
             [self.tableView reloadData];
             
@@ -187,7 +182,7 @@
         
         
     } failureBlock:^(NSError *error) {
-        DLog(@"经常买=error=%@" ,error);
+        //DLog(@"经常买=error=%@" ,error);
         
     } showHUD:NO];
     
@@ -222,7 +217,7 @@
                     
                 }else if (weakSelf.pageIndex == 1){///赛选精选
                     ///赛鲜精选
-                    weakSelf.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&ShowTypes=PERSON" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+                    weakSelf.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=PERSON" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
                     [weakSelf requesSaiXianDataBaseURLString:self.baseURLString];
                 }
                 [weakSelf suspendTopReloadHeaderViewHeight];
@@ -352,13 +347,15 @@
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15*kScale)];
         view.backgroundColor = [UIColor whiteColor];
         if ([self.currenLoginStated isEqualToString:@"0"]) {
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登陆" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:view isShowBottomBtn:YES bottomBtnTitle:@"点击登陆"];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"如需查看购买过的商品记录,请先登录" NoticeImageString:@"未登录" viewWidth:50 viewHeight:54 UITableView:view isShowBottomBtn:YES bottomBtnTitle:@"点击登录"];
             [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(loginBtnAction) forControlEvents:1];
         }else if ([self.currenLoginStated isEqualToString:@"1"]){
             
             [[GlobalHelper shareInstance] emptyViewNoticeText:@"您还未购买过任何商品,看看大家都买了啥!" NoticeImageString:@"未购买" viewWidth:50 viewHeight:54 UITableView:view isShowBottomBtn:YES bottomBtnTitle:@"瞧一瞧"];
             [[GlobalHelper shareInstance].bottomBtn addTarget:self action:@selector(showOther) forControlEvents:1];
             
+        }else if ([self.currenLoginStated isEqualToString:@"2"]){
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无商品" NoticeImageString:@"未购买" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
         }
        
         
@@ -383,7 +380,7 @@
 #pragma mark ==========经常买 未购买商品 点击事件
 
 -(void)showOther{
-    DLog(@"看一看");
+    //DLog(@"看一看");
       YNPageViewController *vc = (YNPageViewController*)self.parentViewController;
     [vc setSelectedPageIndex:1];
     //    selectIndex
@@ -497,13 +494,23 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    
+    if ([[user  valueForKey:@"approve"] isEqualToString:@"0"] || [[user  valueForKey:@"approve"] isEqualToString:@"2"]) {
+        [dic setValue:@"PERSON" forKey:@"showType"];
+        
+    }else if ([[user  valueForKey:@"approve"] isEqualToString:@"1"]){
+        [dic setValue:@"SOGO" forKey:@"showType"];
+        
+    }
+    
 #pragma mark---------------------------------需要更改productID--------------------------------
     
     //[dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"productId"];
     [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
     
     [dic setObject:@"1" forKey:@"quatity"];
-    DLog(@"加入购物车 ==== %@" , dic);
+    //DLog(@"加入购物车 ==== %@" , dic);
     [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/add",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         //
         //        HomePageModel *modelq = [HomePageModel yy_modelWithJSON:returnData];
@@ -545,7 +552,7 @@
             }else{
                 imageViewRect.origin.y = rect.origin.y+imageViewRect.origin.y;
             }
-            DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
+            //DLog(@"-------------=== %f  %f" ,rect.origin.y , imageViewRect.origin.y );
             
             [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/5*3, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
@@ -574,11 +581,11 @@
             SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
+        //DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
         [tableView reloadData];
     } failureBlock:^(NSError *error) {
         
-        DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
+        //DLog(@"首页加入购物车error ========== id= %ld  %@" ,productId,error);
         
     } showHUD:NO];
     

@@ -74,18 +74,12 @@
 
 #pragma mark = 微信好友
 -(void)wechatBtnAction{
-    DLog(@"微信好友");
     [self shareTypes:WXSceneSession];
-   
-    
 }
 #pragma mark = 微信朋友圈
 
 -(void)wechatTimeLineBtnAction{
     [self shareTypes:WXSceneTimeline];
-
-    DLog(@"微信朋友圈");
-
 }
 - (ShareImageView *)shareImageView{
     if (!_shareImageView) {
