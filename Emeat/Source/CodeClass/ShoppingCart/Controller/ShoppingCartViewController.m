@@ -157,7 +157,8 @@
         if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
-            
+            [user setValue:@"2" forKey:@"approve"];
+
         }
         
         

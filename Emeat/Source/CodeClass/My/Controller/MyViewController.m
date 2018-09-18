@@ -140,6 +140,7 @@
         [dic setValue:mTypeIOS forKey:@"mtype"];
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+   
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
 
     [MHAsiNetworkHandler startMonitoring];

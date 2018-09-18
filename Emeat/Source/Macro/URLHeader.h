@@ -16,8 +16,27 @@
 #define mTypeIOS @"IOS"
 
 ////URL:
+
+#ifdef DEBUG
+//do sth.
+#define baseUrl [[NSUserDefaults standardUserDefaults] objectForKey:@"server"]
+
+#else
+//do sth.
 #define baseUrl @"http://admin.cyberfresh.cn"
 
+#endif
+//
+////服务器
+//#define baseUrl [[NSUserDefaults standardUserDefaults] objectForKey:@"server"]
+//
+////网页服务器
+//#define webServerIP [[NSUserDefaults standardUserDefaults] objectForKey:@"webServer"]
+//
+//
+//
+//#define baseUrl @"http://beta.cyberfresh.cn"
+//
 
 ///wangxiaoyang
 #define WbaseUrl @"http://192.168.0.153/m"

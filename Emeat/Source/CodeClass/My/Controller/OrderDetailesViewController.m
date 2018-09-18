@@ -72,7 +72,8 @@
     self.view.backgroundColor = RGB(238, 238, 238, 1);
    
     [self requsetOrderDetailsData];
-
+    [self showNavBarItemRight];
+    
     if ([self.fromPayVC isEqualToString:@"1"]){
         ///禁止右滑返回
         id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
@@ -81,6 +82,34 @@
     
     }
 }
+
+
+#pragma mark=========设置客服
+
+-(void)showNavBarItemRight{
+    
+  
+    UIBarButtonItem *connectRightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"kefu"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(connectRightItemAction)];
+    
+    
+    
+    [self.navBar pushNavigationItem:self.navItem animated:NO];
+    [self.navItem setRightBarButtonItems:[NSArray arrayWithObjects: connectRightItem, nil]];
+  
+}
+
+-(void)connectRightItemAction{
+    // DLog(@"联系客服");
+    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"4001106111"];
+    UIWebView * callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [self.view addSubview:callWebview];
+}
+
+
+
+
+
 -(void)leftItemAction{
     if ([self.fromPayVC isEqualToString:@"1"])
     {
@@ -796,15 +825,24 @@
          }
 
      }else if (orderModel.status == 60 || orderModel.status == 70|| orderModel.status == 80){
-         if (orderModel.orderComment.length !=0) {
-              return 282*kScale + ceil(strSize.height)+1 +20*kScale+ self.OutboundDetailsHeight+ 45*kScale+95*kScale;
+         
+         if ([orderModel.typeOfBusiness isEqualToString:@"G"]) {
+             
+             return 282*kScale + ceil(strSize.height)+1 + 45*kScale+20*kScale+95*kScale;
          }else{
-         return 282*kScale + ceil(strSize.height)+1 +5*kScale+ self.OutboundDetailsHeight+ 45*kScale+95*kScale;
+         
+             if (orderModel.orderComment.length !=0) {
+              
+                 return 282*kScale + ceil(strSize.height)+1 +20*kScale+ self.OutboundDetailsHeight+ 45*kScale+95*kScale;
+         
+             }else{
+             
+                 return 282*kScale + ceil(strSize.height)+1 +5*kScale+ self.OutboundDetailsHeight+ 45*kScale+95*kScale;
     
+             }
+         
          }
-     }
-     
-     else{
+     }else{
          return 282*kScale + ceil(strSize.height)+1 + 45*kScale+20*kScale+95*kScale;
      }
         
@@ -983,12 +1021,17 @@
     if (self.productMarray.count != 0) {
         OrderModel *model = self.productMarray[indexPath.row];
         
+        if ([model.typeOfBusiness isEqualToString:@"G"]) {
+            
+        }else{
         
         HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
         VC.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId];
 
         [self.navigationController pushViewController:VC animated:YES];
-    }
+        }
+        
+        }
     
     
 }

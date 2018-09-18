@@ -116,15 +116,26 @@ detail:(NSString *)detail
         {
             self.detailLabel = [UILabel new];
             [self addSubview:self.detailLabel];
-            [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(lastAttribute).offset(5);
-                make.left.right.equalTo(self).insets(UIEdgeInsetsMake(0, config.innerMargin, 0, config.innerMargin));
-            }];
             self.detailLabel.textColor = config.detailColor;
             self.detailLabel.font = [UIFont systemFontOfSize:config.detailFontSize];
             self.detailLabel.numberOfLines = 0;
             self.detailLabel.backgroundColor = self.backgroundColor;
             self.detailLabel.text = detail;
+            
+            if (title.length == 0) {
+                self.detailLabel.font = [UIFont boldSystemFontOfSize:15*kScale];
+
+                [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(lastAttribute).offset(30);
+                    make.left.right.equalTo(self).insets(UIEdgeInsetsMake(0, config.innerMargin, 0, config.innerMargin));
+                }];
+            }else{
+            [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(lastAttribute).offset(5);
+                make.left.right.equalTo(self).insets(UIEdgeInsetsMake(0, config.innerMargin, 0, config.innerMargin));
+            }];
+            }
+           
             lastAttribute = self.detailLabel.mas_bottom;
             
             ///拨打电话设置
@@ -135,7 +146,11 @@ detail:(NSString *)detail
             NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:self.detailLabel.text attributes:dict];
             NSRange range = [self.detailLabel.text rangeOfString:@"4001106111"];
             [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];
+            if (title.length == 0) {
+                
+            }else{
             [attr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12.0] range:NSMakeRange(0, self.detailLabel.text.length)];
+            }
             self.detailLabel.attributedText = attr;
             
             

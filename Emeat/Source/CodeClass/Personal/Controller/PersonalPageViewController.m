@@ -262,7 +262,8 @@
         if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setValue:@"0" forKey:@"isLoginState"];
-            
+            [user setValue:@"2" forKey:@"approve"];
+
         }
         
         
@@ -623,7 +624,11 @@
         {
             if ([model.bannerUrl containsString:@"get_coupon"]) {
                 otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/get_coupon_ios.html" ,baseUrl];
-            }else{
+            }else if ([model.bannerUrl containsString:@"collect_stamp.html"]){
+                otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/collect_stamp_iOS.html" ,baseUrl];
+            }
+            
+            else{
                 otherVC.detailsURL = model.bannerUrl;
             }
             //DLog(@"轮播图详情页外部外部链接======= %@" ,otherVC.detailsURL);

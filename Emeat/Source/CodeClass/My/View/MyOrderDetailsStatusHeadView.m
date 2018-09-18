@@ -199,6 +199,10 @@
     
     if (orderModel.status == 60 || orderModel.status == 70 || orderModel.status == 80) {
 
+        if ([orderModel.typeOfBusiness isEqualToString:@"G"]) {
+            
+        }else{
+        
         [self addSubview:self.sendDetailsBgView];
         [self.sendDetailsBgView addSubview:self.sendDetailsLab];
         
@@ -242,7 +246,7 @@
             make.height.equalTo(@(40*kScale));
         }];
         
-        
+        }
         
     }
 

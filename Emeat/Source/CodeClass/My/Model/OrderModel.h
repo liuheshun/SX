@@ -164,7 +164,7 @@
 ///优惠券金额
 @property (nonatomic,assign) NSInteger amount;
 
-///订单 分为C端和B端
+///订单 分为C端和B端 G 团购
 @property (nonatomic,strong) NSString *typeOfBusiness;
 
 /////邮费

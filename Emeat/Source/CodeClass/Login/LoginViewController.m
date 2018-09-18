@@ -140,7 +140,7 @@
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
                 [user setValue:[NSString stringWithFormat:@"%@" ,returnData[@"data"][@"store"][@"isApprove"]] forKey:@"approve"];
                
-                
+
 
                 //
                 [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";

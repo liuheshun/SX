@@ -10,6 +10,10 @@
 
 #import "HomePageDetailsViewController.h"
 #import "WebViewJavascriptBridge.h"
+
+#import "AppDelegate.h"
+#import "PersonalPageViewController.h"
+
 @interface HomePageOtherDetailsViewController ()<UIWebViewDelegate>
 @property (nonatomic,strong) UIWebView *webView;
 @property WebViewJavascriptBridge* bridge;
@@ -44,6 +48,20 @@
     self.navItem.title = @"详情";
     self.view.backgroundColor = RGB(238, 238, 238, 1);
 
+    [MMPopupWindow sharedWindow].touchWildToHide = YES;
+    MMAlertViewConfig1 *alertConfig = [MMAlertViewConfig1 globalConfig1];
+    alertConfig.defaultTextOK = @"确定";
+    alertConfig.defaultTextCancel = @"取消";
+    alertConfig.titleFontSize = 17*kScale;
+    alertConfig.detailFontSize = 14*kScale;
+    alertConfig.buttonFontSize = 15*kScale;
+    alertConfig.buttonHeight = 40*kScale;
+    alertConfig.width = 315*kScale;
+    alertConfig.buttonBackgroundColor = [UIColor redColor];
+    alertConfig.detailColor = RGB(136, 136, 136, 1);
+    alertConfig.itemNormalColor = [UIColor whiteColor];
+    
+    alertConfig.splitColor = [UIColor whiteColor];
     [self setWebView];
 
 
@@ -102,7 +120,7 @@
      @param registerHandler 要注册的事件名称(比如这里我们为loginAction)
      @param handel 回调block函数 当后台触发这个事件的时候会执行block里面的代码
      */
-    [_bridge registerHandler:@"loginAction" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [_bridge registerHandler:@"app.immediatelychange" handler:^(id data, WVJBResponseCallback responseCallback) {
         // data js页面传过来的参数  假设这里是用户名和姓名，字典格式
        // NSLog(@"JS调用OC，并传值过来");
         
@@ -112,7 +130,7 @@
         [self renderButtons:str];
         
         // responseCallback 给后台的回复
-        responseCallback(@"报告，oc已收到js的请求");
+        responseCallback(@"报告，o 'c已收到js的请求");
     }];
     
 }
@@ -139,14 +157,14 @@
     //DLog(@"传过去ticket === %@" ,ticket);
     
     [_bridge callHandler:@"registerAction" data:[NSString stringWithFormat:@"%@,%@" ,islogin ,ticket] responseCallback:^(id responseData) {
-        //NSLog(@"oc请求js后接受的回调结果：%@",responseData);
+        NSLog(@"oc请求js后接受的回调结果：%@",responseData);
     }];
     
 }
 
 
 - (void)renderButtons:(NSString *)str {
-    //NSLog(@"JS调用OC，取到参数为： %@",str);
+    NSLog(@"JS调用OC，取到参数为： %@",str);
     
 }
 
@@ -162,8 +180,10 @@
    // DLog(@"标题 ==== == == = == = == ==== %@" ,tit);
     self.navItem.title = tit;
     
-    //[webView stringByEvaluatingJavaScriptFromString:@"appids(0)"];
-
+  NSString *jsStr =  [webView stringByEvaluatingJavaScriptFromString:@"immediatelychange()"];
+    DLog(@"jsStr==============  %@" ,jsStr);
+//    NSString *jsStr = [NSString stringWithFormat:@"login()"];
+//    NSString *a=   [self.webView stringByEvaluatingJavaScriptFromString:jsStr];
 
 }
 
@@ -171,7 +191,7 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     
     NSString *requestString = [[request URL] absoluteString];
-   // DLog(@"webView========== %@" ,requestString);
+    DLog(@"webView========== %@" ,requestString);
     if ([requestString rangeOfString:@"SP"].location != NSNotFound){
         
         
@@ -216,22 +236,126 @@
        // DLog(@"中秋");
         return NO;
 
+    }else if ([requestString rangeOfString:@"personal_zones_index.html"].location != NSNotFound){///东航大礼包
+        
+        NSArray *array = [requestString componentsSeparatedByString:@"ticket="]; //从字符A中分隔成2个元素的数组
+        DLog(@"ticket= ====== %@" ,array);
+        if (array.count !=0) {
+           array = [[array lastObject] componentsSeparatedByString:@"&statuss="];
+            NSString *ticket = [array firstObject];
+            
+            array = [[array lastObject] componentsSeparatedByString:@"&phonenum="];
+            NSString *status = [array firstObject];
+            
+            array = [[array lastObject] componentsSeparatedByString:@"&ordernos="];
+            NSString *phoneNum = [array firstObject];
+            
+            NSString *orderNo = [array lastObject];
+            
+            DLog(@"ticketsss= ====== %@ = %@ = %@  =%@" ,ticket ,status ,phoneNum ,orderNo);
+            if (ticket.length != 0) {
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//                NSString * currentphoneNum = [user valueForKey:@"phoneNum"];
+//                if ([currentphoneNum isEqualToString:phoneNum]) {
+                     [user setValue:ticket forKey:@"ticket"];
+               // }
+               
+                [user setValue:@"1" forKey:@"isLoginState"];
+                    [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
+            }
+           
+            if ([status isEqualToString:@"200"]){///领券成功
+               
+                MMPopupItemHandler block = ^(NSInteger index){
+                    // NSLog(@"clickd %@ button",@(index));
+                    if (index == 0) {///查看订单
+                        OrderDetailesViewController *VC = [OrderDetailesViewController new];
+                        VC.orderNo = orderNo;
+                        VC.fromPayVC = @"1";
+                        [self.navigationController pushViewController:VC animated:YES];
+                        
+                    }else{//逛逛商场
+
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"查看订单", MMItemTypeNormal, block) , MMItemMake(@"逛逛商城", MMItemTypeNormal, block)];
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"礼盒兑换成功" detail:@"赛鲜正在为您安排发货" items:items];
+                
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                
+                [alertView show];
+                
+            }else if ([status isEqualToString:@"202"] ||[status isEqualToString:@"203"] ||[status isEqualToString:@"204"] ||[status isEqualToString:@"205"] ||[status isEqualToString:@"206"]){///兑换码有误或已失效，请重新输入!
+              
+                MMPopupItemHandler block = ^(NSInteger index){
+                    // NSLog(@"clickd %@ button",@(index));
+                    if (index == 0) {
+                        NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                        dispatch_async(dispatch_get_main_queue(), ^(){
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                        });
+                    }else{///逛逛商场
+                       [self.navigationController popToRootViewControllerAnimated:YES];
+
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"逛逛商城", MMItemTypeNormal, block)];
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"" detail:@"兑换码有误或已失效，请重新输入!" items:items];
+                
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                
+                [alertView show];
+                
+            }else{///礼盒兑换失败，请稍后再试!
+                MMPopupItemHandler block = ^(NSInteger index){
+                    // NSLog(@"clickd %@ button",@(index));
+                    if (index == 0) {
+                        NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                        dispatch_async(dispatch_get_main_queue(), ^(){
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                        });
+                    }else{///逛逛商城
+                         [self.navigationController popToRootViewControllerAnimated:YES];
+
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"逛逛商城", MMItemTypeNormal, block)];
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"" detail:@"礼盒兑换失败，请稍后再试!" items:items];
+                
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                
+                [alertView show];
+                
+            }
+        }
+        return NO;
+
     }else if ([requestString rangeOfString:@"999"].location != NSNotFound){
         
         return  YES;
         
     }else {
         
-//        NSString *jsStr = [NSString stringWithFormat:@"getCount()"];
-//        NSString *a=   [self.myWebView stringByEvaluatingJavaScriptFromString:jsStr];
-//        if ([a isEqualToString:@"1"]) {
-//            self.attendPeople = @"1";
-//        }
+        NSString *jsStr = [NSString stringWithFormat:@"immediatelychange()"];
+        NSString *a=   [self.webView stringByEvaluatingJavaScriptFromString:jsStr];
+        DLog(@"hhh========= %@  ==  %@" ,jsStr ,a);
+        if ([a isEqualToString:@"1"]) {
+        }
+        
         return YES;
     }
    
     
 }
+
+
 
 
 

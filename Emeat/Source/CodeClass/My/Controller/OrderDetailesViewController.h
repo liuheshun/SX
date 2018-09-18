@@ -11,7 +11,7 @@
 @interface OrderDetailesViewController : SHLBaseViewController
 ///订单号
 @property (nonatomic,strong) NSString *orderNo;
-/// 1 的时候表示跳转来自支付页面
+/// 1 的时候表示跳转来自支付页面 ,
 @property (nonatomic,strong) NSString *fromPayVC;
 
 

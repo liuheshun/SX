@@ -49,6 +49,25 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+   
+    
+    
+#ifdef DEBUG
+    //do sth.
+
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    if ([user valueForKey:@"server"]) {
+        
+    }else{
+        [user setValue:@"http://beta.cyberfresh.cn" forKey:@"server"];
+    }
+    
+#else
+    //do sth.
+
+#endif
+
+    
     [NSThread sleepForTimeInterval:1.0];//设置启动页面时间
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];

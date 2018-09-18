@@ -9,9 +9,12 @@
 #import "SettingViewController.h"
 #import "AboutUsViewController.h"
 #import "SuggestionFeedbackViewController.h"
-@interface SettingViewController ()
+@interface SettingViewController ()<UIActionSheetDelegate>
 @property (nonatomic,strong) UIButton *btn;
 @property (nonatomic,strong) UIButton *exitBtn;
+
+@property (nonatomic,assign) BOOL isCanSwitchServer;
+
 
 @end
 
@@ -39,8 +42,22 @@
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navItem.title = @"设置";
+    
+
+
+    ///只有在debug模式下才会出现切换环境
+    
+#ifdef DEBUG
+    //do sth.
+    self.isCanSwitchServer = YES;
+#else
+    //do sth.
+    self.isCanSwitchServer = NO;
+
+#endif
+   
     [self setUI];
-    // Do any additional setup after loading the view.
+    
 }
 
 
@@ -77,6 +94,27 @@
            
             break;
         }
+        case 3:
+        {
+            NSString *string;
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+           
+            
+            if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"admin"]) {
+               
+                string  = [NSString stringWithFormat:@"切换环境 当前环境(admin)"];
+            }else{
+                string  = [NSString stringWithFormat:@"切换环境 当前环境(beat)"];
+            }
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:string delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"admin线上环境", @"beat测试环境", nil];
+            
+            //actionSheet风格，感觉也没什么差别- -
+            actionSheet.actionSheetStyle = UIActionSheetStyleDefault;//默认风格，灰色背景，白色文字
+            [actionSheet showInView:self.view];
+
+            
+            break;
+        }
         default:
             break;
     }
@@ -84,6 +122,20 @@
     
 }
 
+#pragma mark - UIActionSheetDelegate
+//根据被点击的按钮做出反应，0对应destructiveButton，之后的button依次排序
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSLog(@"拍照");
+        [[NSUserDefaults standardUserDefaults] setObject:@"http://admin.cyberfresh.cn" forKey:@"server"];
+
+    }
+    else if (buttonIndex == 1) {
+        NSLog(@"相册");
+        [[NSUserDefaults standardUserDefaults] setObject:@"http://beta.cyberfresh.cn" forKey:@"server"];
+
+    }
+}
 
 -(void)exitBtnAction{
     
@@ -108,7 +160,11 @@
 
             if ([key isEqualToString:@"appVersion"]) {
                 ///此处退出登录不清除记录引导页状态
-            }else{
+            }else if ([key isEqualToString:@"server"]){
+                
+            }
+            
+            else{
             [defatluts removeObjectForKey:key];
             
             [defatluts synchronize];
@@ -141,10 +197,18 @@
 
 -(void)setUI{
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+   
     NSString *currentAppVersion = infoDic[@"CFBundleShortVersionString"];
-
     currentAppVersion = [NSString stringWithFormat:@"版本更新 (当前版本V%@)" ,currentAppVersion];
-    NSArray *textArray = @[@"关于我们" ,@"意见反馈" ,currentAppVersion];
+    NSArray *textArray = [NSArray array];
+    if (self.isCanSwitchServer == YES) {
+        
+        textArray = @[@"关于我们" ,@"意见反馈" ,currentAppVersion,@"切换环境"];
+    }else{
+        textArray = @[@"关于我们" ,@"意见反馈" ,currentAppVersion];
+
+    }
+
     for (int i = 0; i < textArray.count; i ++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.view addSubview:btn];

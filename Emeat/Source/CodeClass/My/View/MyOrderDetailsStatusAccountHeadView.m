@@ -83,7 +83,7 @@
         _accountLable.font = [UIFont systemFontOfSize:15.0f*kScale];
         _accountLable.textAlignment = NSTextAlignmentLeft;
         _accountLable.textColor = RGB(51, 51, 51, 1);
-        _accountLable.text = @"请打款至账户: ";
+        _accountLable.text = @"如未支付,请打款至账户: ";
     
         
         //236 31 35
