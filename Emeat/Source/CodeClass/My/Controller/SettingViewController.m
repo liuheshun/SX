@@ -104,9 +104,9 @@
                
                 string  = [NSString stringWithFormat:@"切换环境 当前环境(admin)"];
             }else{
-                string  = [NSString stringWithFormat:@"切换环境 当前环境(beat)"];
+                string  = [NSString stringWithFormat:@"切换环境 当前环境(beta)"];
             }
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:string delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"admin线上环境", @"beat测试环境", nil];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:string delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"admin线上环境", @"beta测试环境", nil];
             
             //actionSheet风格，感觉也没什么差别- -
             actionSheet.actionSheetStyle = UIActionSheetStyleDefault;//默认风格，灰色背景，白色文字
@@ -133,7 +133,7 @@
     else if (buttonIndex == 1) {
         NSLog(@"相册");
         [[NSUserDefaults standardUserDefaults] setObject:@"http://beta.cyberfresh.cn" forKey:@"server"];
-
+// [[NSUserDefaults standardUserDefaults] setObject:@"http://192.168.0.141" forKey:@"server"];
     }
 }
 

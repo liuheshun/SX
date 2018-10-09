@@ -18,7 +18,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = RGB(238, 238, 238, 1);
-    self.navItem.title = @"代金券使用说明";
+    self.navItem.title = @"卡券使用说明";
 
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight - kBarHeight - LL_TabbarSafeBottomMargin)];
     [self.view addSubview:webView];

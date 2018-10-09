@@ -53,7 +53,7 @@
         [self.addNewAddressView configAddressView:self.postMyAddressModel];
 
         self.receiverName = self.postMyAddressModel.receiverName;
-        self.receiverPhone =[NSString stringWithFormat:@"%ld" , self.postMyAddressModel.receiverPhone] ;
+        self.receiverPhone =[NSString stringWithFormat:@"%ld" , (long)self.postMyAddressModel.receiverPhone] ;
         self.receiverProvince = self.postMyAddressModel.receiverProvince;
         self.receiverAddress = self.postMyAddressModel.receiverAddress;
         
@@ -143,27 +143,27 @@
     self.rightItemBlockAction = ^{
         [weakSelf.view endEditing:YES]; //实现该方法是需要注意view需要是继承UIControl而来的
     
-        if (weakSelf.receiverName.length == 0 || weakSelf.receiverPhone.length == 0 || weakSelf.receiverProvince.length == 0 || weakSelf.receiverAddress.length == 0) {
+        if (weakSelf.addNewAddressView.textFieldName.text.length == 0 || weakSelf.addNewAddressView.textFieldPhoneNumer.text.length == 0 || weakSelf.addNewAddressView.textFieldSubstreet.text.length == 0 || weakSelf.addNewAddressView.textFieldDetailsAddress.text.length == 0) {
             [weakSelf alertMessage:@"请填写完整的收货地址信息" willDo:nil];
         }else{
             
-            if ([weakSelf checkTel:weakSelf.receiverPhone] == NO) {
+            if ([weakSelf checkTel:weakSelf.addNewAddressView.textFieldPhoneNumer.text] == NO) {
                 
                 [weakSelf alertMessage:@"请填写正确格式的手机号" willDo:nil];
 
-            }else if ([weakSelf containTheillegalCharacter:weakSelf.receiverName] == YES){
+            }else if ([weakSelf containTheillegalCharacter:weakSelf.addNewAddressView.textFieldName.text] == YES){
                 
                 [weakSelf alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
 
-            }else if ([weakSelf containTheillegalCharacter:weakSelf.receiverAddress] == YES){
+            }else if ([weakSelf containTheillegalCharacter:weakSelf.addNewAddressView.textFieldDetailsAddress.text] == YES){
                 [weakSelf alertMessage:@"姓名或详细地址不能包含特殊字符" willDo:nil];
             }else{
 
-                [weakSelf.addressDic setValue:weakSelf.receiverName forKey:@"receiverName"];
-                [weakSelf.addressDic setValue:weakSelf.receiverPhone forKey:@"receiverPhone"];
-                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@"  ,weakSelf.receiverAddress] forKey:@"receiverAddress"];///收货人详细地址:receiverAddress
+                [weakSelf.addressDic setValue:weakSelf.addNewAddressView.textFieldName.text forKey:@"receiverName"];
+                [weakSelf.addressDic setValue:weakSelf.addNewAddressView.textFieldPhoneNumer.text forKey:@"receiverPhone"];
+                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@",weakSelf.addNewAddressView.textFieldDetailsAddress.text] forKey:@"receiverAddress"];///收货人详细地址:receiverAddress
         
-                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@" ,weakSelf.receiverProvince] forKey:@"receiverProvince"];
+                [weakSelf.addressDic setValue:[NSString stringWithFormat:@"%@,%@" ,weakSelf.addNewAddressView.textFieldCity.text ,weakSelf.addNewAddressView.textFieldSubstreet.text] forKey:@"receiverProvince"];
         
                 if (weakSelf.shippingCategory ==0 ) {
                     weakSelf.shippingCategory = 1;//默认标签
@@ -178,12 +178,12 @@
     
     };
     
-    self.addNewAddressView.textFieldTitleBlock = ^(NSMutableDictionary *dic) {
-        
-        weakSelf.receiverAddress = [dic valueForKey:@"addressDetails"];
-        weakSelf.receiverName = [dic valueForKey:@"name"];
-        weakSelf.receiverPhone = [dic valueForKey:@"phoneNumer"];
-    };
+//    self.addNewAddressView.textFieldTitleBlock = ^(NSMutableDictionary *dic) {
+//
+//        weakSelf.receiverAddress = [dic valueForKey:@"addressDetails"];
+//        weakSelf.receiverName = [dic valueForKey:@"name"];
+//        weakSelf.receiverPhone = [dic valueForKey:@"phoneNumer"];
+//    };
     
     self.addNewAddressView.lableTitleBlock = ^(NSInteger labelInter) {
         
@@ -209,7 +209,10 @@
                 weakSelf.receiverProvince = location.administrativeArea;
             }
             
-            NSString *s = [NSString stringWithFormat:@"%@%@",location.thoroughfare ,location.name];
+//            NSString *s = [NSString stringWithFormat:@"%@%@",location.thoroughfare ,location.name];
+            NSString *s = [NSString stringWithFormat:@"%@" ,location.name];
+
+
             s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
             weakSelf.addNewAddressView.textFieldSubstreet.text = s;
             

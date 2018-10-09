@@ -18,7 +18,8 @@
 #import "MMMyCustomView.h"
 #import "SliceService ViewController.h"
 
-#import "CardCenterViewController.h"
+#import "CareCenterTwoViewController.h"
+#import "CardCenterVouchersViewController.h"
 
 @interface ConfirmOrderInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -50,6 +51,8 @@
 
 ///优惠券id
 @property (nonatomic,strong) NSString *ticketId;
+///分销商id
+@property (nonatomic,strong) NSString *distributorUid;
 
 @end
 
@@ -57,7 +60,14 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
-
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+   // [user setValue:tickets forKey:@"ticketsCard"];
+    
+    if ([[user valueForKey:@"ticketsCard"] length] !=0 ) {
+        
+         [self getOrderInfoDataServiceType:self.serviceType TicketId:[user valueForKey:@"ticketsCard"]];
+    }
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -86,6 +96,32 @@
 
     alertConfig.splitColor = [UIColor whiteColor];
     
+    [self requestSalePeopleId];
+}
+
+#pragma mark =========请求分销商id
+-(void)requestSalePeopleId{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic = [self checkoutData];
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/d/getDistributor" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"code"] integerValue] == 00 ) {
+            
+            self.distributorUid = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"distributorUid"]];
+            
+        }else{
+            
+        }
+        
+        DLog(@"分销 ===== %@" ,returnData);
+        
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+    
     
 }
 
@@ -93,9 +129,9 @@
 
 
 
-
 #pragma mark = =创建订单(确认订单)
 -(void)makeOrderData{
+    
     if (self.shoppingId.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"请选择您的收货地址"];
 
@@ -115,6 +151,7 @@
             [dic setValue:self.ticketId forKey:@"ticketId"];
         [dic setValue:self.serviceType forKey:@"serviceType"];
 
+        [dic setValue:self.distributorUid forKey:@"distributorUid"];
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create_order" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
             
@@ -349,29 +386,19 @@
 #pragma mark ==================选择优惠券点击事件
 
 -(void)selectCardAction{
-    CardCenterViewController *VC = [CardCenterViewController new];
+    CardCenterVouchersViewController *VC = [CardCenterVouchersViewController new];
     VC.isFromCardCenter = @"0";
     ShoppingCartModel *model = [self.orderListMarray firstObject];
     
     VC.businessType = model.businessType;
     [self.navigationController pushViewController:VC animated:YES];
-    
-    VC.selectCardPrice = ^(NSMutableArray *selectCardMarray) {
-        CardModel *model = [selectCardMarray firstObject];
-        
-//        self.orderInfoFootView.cardPricesLab.text = [NSString stringWithFormat:@"- %.2f" ,(CGFloat)model.amount/100];
-//        self.orderInfoFootView.cardAddPricesLab.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)model.amount/100];
 //
-//        [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.productTotalPrice] forState:0];
-//        
-//        [self.orderInfoFootView.cardUseBtn setTitle:model.ticketName forState:0];
-
-        
-        self.ticketId = [NSString stringWithFormat:@"%ld" ,model.cardId];
-        
-        [self getOrderInfoDataServiceType:self.serviceType TicketId:self.ticketId];
-        
-    };
+//    VC.selectCardPrice = ^(NSString *selectCardString) {
+//
+//
+//        [self getOrderInfoDataServiceType:self.serviceType TicketId:selectCardString];
+//
+//    };
     
 }
 
@@ -410,8 +437,11 @@
         
         VC.returnSelectSliceBlock = ^(NSString *SliceStr, NSString *serviceType, NSString *slicePices, NSString *totalPrice) {
 
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            
+            
             self.serviceType = serviceType;
-            [self getOrderInfoDataServiceType:serviceType TicketId:self.ticketId];
+            [self getOrderInfoDataServiceType:serviceType TicketId:[user valueForKey:@"ticketsCard"]];
 
             ShoppingCartModel *model = [self.orderListMarray firstObject];
 
@@ -469,10 +499,12 @@
         [dic setValue:@"SOGO" forKey:@"showType"];
         
     }
+    DLog(@"结算信息dic=== %@" ,dic);
 
+    
     NSMutableArray *orderListMarray = [NSMutableArray array];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product_new" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
+        DLog(@"结算信息=== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200)
         {
             
@@ -483,7 +515,7 @@
             
             NSString *servicePrice = returnData[@"data"][@"servicePrice"];
             
-            NSInteger  amount = [returnData[@"data"][@"ticket"][@"amount"] integerValue];
+            NSString *ticketMoneySum = returnData[@"data"][@"ticketMoneySum"];
             
             NSString *ticketName = returnData[@"data"][@"ticket"][@"ticketName"];
             
@@ -498,7 +530,7 @@
                 model.servicePrice = servicePrice;
                 model.payment = payment;
                 model.ticketName = ticketName;
-                model.amount = amount;
+                model.ticketMoneySum = ticketMoneySum;
                 model.cardId = cardId;
                 model.postMoney = postMoney;
                 model.businessType = businessType;

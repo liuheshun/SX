@@ -29,14 +29,9 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     //[self receiveCardData];
     
-    if ([self.isFromCardCenter isEqualToString:@"1"]) {
         [self requsetCardData];
         self.navItem.title = @"卡券中心";
-    }else{
-        [self requsetCanUsedCardData];
-        self.navItem.title = @"可用卡券";
-
-    }
+    
 
 }
 
@@ -60,12 +55,16 @@
     [SVProgressHUD show];
     NSMutableDictionary *dic = [self checkoutData];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/get_card_ticket_center" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        //DLog(@"卡券数据 ==%@" ,returnData);
+        DLog(@"卡券数据 ==%@" ,returnData);
         
         if ([returnData[@"status"] integerValue] == 200)
         {
             [[GlobalHelper shareInstance] removeEmptyView];
             [self.cardMarray removeAllObjects];
+            NSMutableArray *array1 = [NSMutableArray array];
+            NSMutableArray *array2 = [NSMutableArray array];
+            [array1 removeAllObjects];
+            [array2 removeAllObjects];
             for (NSDictionary *dic in returnData[@"data"]) {
                 CardModel *model = [CardModel yy_modelWithJSON:dic];
                 NSString *timeString = [self returnTimeStringWithTimeStamp:model.distributeEndTime];
@@ -74,50 +73,20 @@
                 model.cardId = [dic[@"id"] integerValue];
                 
                 model.distributeEndTime = timeString;
-                [self.cardMarray addObject:model];
-            }
-        }else if ([returnData[@"status"] integerValue] == 201){
-            [self.cardMarray removeAllObjects];
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"啊哦, 暂时没有可用的代金券" NoticeImageString:@"无卡券" viewWidth:63*kScale viewHeight:63*kScale UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
-        }
-        [SVProgressHUD dismiss];
-        [self.tableView reloadData];
-        
-    } failureBlock:^(NSError *error) {
-        [SVProgressHUD dismiss];
-
-    } showHUD:NO];
-    
-}
-
-
-#pragma mark ============可使用卡券
-
-
--(void)requsetCanUsedCardData{
-    [SVProgressHUD show];
-    NSMutableDictionary *dic = [self checkoutData];
-    [dic setValue:self.businessType forKey:@"businessType"];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/get_approve_ticket" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-       // DLog(@"可以使用的卡券数据 ==%@" ,returnData);
-        
-        if ([returnData[@"status"] integerValue] == 200)
-        {
-            [[GlobalHelper shareInstance] removeEmptyView];
-            [self.cardMarray removeAllObjects];
-            for (NSDictionary *dic in returnData[@"data"]) {
-                CardModel *model = [CardModel yy_modelWithJSON:dic];
-                NSString *timeString = [self returnTimeStringWithTimeStamp:model.distributeEndTime];
+                if ([model.status isEqualToString:@"未使用"]) {
+                    [array1 addObject:model];
+                }else{
+                    [array2 addObject:model];
+                }
                 
-                model.desc = dic[@"description"];
-                model.cardId = [dic[@"id"] integerValue];
-
-                model.distributeEndTime = timeString;
-                [self.cardMarray addObject:model];
+//                [self.cardMarray addObject:model];
             }
+            [self.cardMarray addObjectsFromArray:array1];
+            [self.cardMarray addObjectsFromArray:array2];
+            
         }else if ([returnData[@"status"] integerValue] == 201){
             [self.cardMarray removeAllObjects];
-            [[GlobalHelper shareInstance] emptyViewNoticeText:@"啊哦, 暂时没有可用的代金券" NoticeImageString:@"无卡券" viewWidth:63*kScale viewHeight:63*kScale UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
+            [[GlobalHelper shareInstance] emptyViewNoticeText:@"啊哦, 暂时没有可用的卡券" NoticeImageString:@"无卡券" viewWidth:63*kScale viewHeight:63*kScale UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
         }
         [SVProgressHUD dismiss];
         [self.tableView reloadData];
@@ -131,20 +100,9 @@
 
 
 
-//
-//-(void)receiveCardData{
-//
-//    NSMutableDictionary *dic = [self checkoutData];
-//    [dic setObject:@"1" forKey:@"ticketId"];
-//    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/get_card_ticket" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-//        DLog(@"领取卡券 ==%@" ,returnData);
-//
-//    } failureBlock:^(NSError *error) {
-//
-//    } showHUD:NO];
-//
-//}
-#pragma mark ==========代金券使用说明
+
+
+#pragma mark ==========卡券使用说明
 
 -(void)cardDescBtnAction{
     CardDescViewController *VC = [CardDescViewController new];
@@ -158,7 +116,7 @@
         _cardDescBtn.frame = CGRectMake(0, kBarHeight+10*kScale, kWidth, 29*kScale);
         _cardDescBtn.backgroundColor = [UIColor whiteColor];
         [_cardDescBtn setImage:[UIImage imageNamed:@"说明"] forState:0];
-        [_cardDescBtn setTitle:@"代金券使用说明" forState:0];
+        [_cardDescBtn setTitle:@"卡券使用说明" forState:0];
         _cardDescBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
         _cardDescBtn.contentHorizontalAlignment =  UIControlContentHorizontalAlignmentLeft;
         _cardDescBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 15*kScale, 0, 0);
@@ -180,7 +138,7 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.backgroundColor = RGB(238, 238, 238, 1);
     }
     return _tableView;
 }
@@ -221,6 +179,7 @@
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     
     CardCenterTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"CardCenterTableViewCell"];
     if (cell1 == nil) {

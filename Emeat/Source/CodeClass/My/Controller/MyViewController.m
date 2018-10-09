@@ -18,6 +18,8 @@
 #import "MHUploadParam.h"
 #import "ShopCertificationViewController.h"
 #import "CardCenterViewController.h"
+#import "SaleMoneyViewController.h"
+
 @interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -573,7 +575,7 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 1) {
-        return 4;
+        return 5;
     }else if (section == 2){
         return 1;
     }
@@ -629,8 +631,8 @@
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *imvArray = @[@"dingwei" ,@"卡券中心", @"kefu" , @"shouhou-1"];
-    NSArray *titleArray = @[@"收货地址管理" ,@"卡券中心", @"联系客服" ,@"售后服务"];
+    NSArray *imvArray = @[@"dingwei" ,@"卡券中心",@"分销", @"kefu" , @"shouhou-1"];
+    NSArray *titleArray = @[@"收货地址管理" ,@"卡券中心",@"分销中心", @"联系客服" ,@"售后服务"];
     UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"my_cell"];
     if (cell1 == nil) {
         cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"my_cell"];
@@ -671,7 +673,7 @@
                 [self.navigationController pushViewController:VC animated:YES];
             }
             
-        }else if (indexPath.row == 1){
+        }else if (indexPath.row == 1){//卡券中心
             if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
                 CardCenterViewController *VC = [CardCenterViewController new];
                 VC.isFromCardCenter = @"1";
@@ -685,7 +687,24 @@
                 [self.navigationController pushViewController:VC animated:YES];
             }
         
-        }else if (indexPath.row == 2){
+        }else if (indexPath.row == 2){//分销中心
+            if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]) {
+                SaleMoneyViewController *VC = [SaleMoneyViewController new];
+                VC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:VC animated:YES];
+                
+            }else{
+                LoginViewController *VC = [LoginViewController new];
+                VC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:VC animated:YES];
+            }
+            
+        }
+        
+        
+        
+        
+        else if (indexPath.row == 3){
             NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"4001106111"];
             UIWebView * callWebview = [[UIWebView alloc] init];
             [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
@@ -694,7 +713,7 @@
 //            ContactServiceViewController *VC = [ContactServiceViewController new];
 //            VC.hidesBottomBarWhenPushed = YES;
 //            [self.navigationController pushViewController:VC animated:YES];
-        }else if (indexPath.row == 3){
+        }else if (indexPath.row == 4){
             
             
             AfterServiceViewController *VC = [AfterServiceViewController new];

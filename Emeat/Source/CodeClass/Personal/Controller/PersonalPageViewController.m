@@ -25,6 +25,7 @@
 #import "HomePageOtherDetailsViewController.h"
 #import "VersionUpdateView.h"
 #import "HWPopTool.h"
+#import "NewUserGiftView.h"
 
 #define headViewHeight (567+18)*kScale
 #define kOpenRefreshHeaderViewHeight 0
@@ -80,21 +81,13 @@
     
     UIImageView *_imageView;
 }
--(void)viewWillAppear:(BOOL)animated{
-  //  [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
-    [self requestStoreStatedData];
-    [self requestBadNumValue];
-    [self requsetHomPageBannerData];
-    [self requestPlayTextData];
-    [self requestHotSearchData];
-    [self requestMealData];
-    ///版本更新通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
-    
-}
+
+
+
+
+
+
+
 #pragma mark ============== 检查版本更新
 
 -(void)checkVersionUpdate{
@@ -170,6 +163,7 @@
                 config.titleString = returnData[@"content"];
                 config.isShowCancelBtn = returnData[@"isForce"];
                 if ([returnData[@"isForce"] isEqualToString:@"true"]) {//强制更新
+                    
                     VersionUpdateView *upView = [[VersionUpdateView alloc] initWithFrame:CGRectMake((kWidth-295*kScale)/2, 150*kScale, 295*kScale, kHeight-100*kScale)];
                     [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
                     [HWPopTool sharedInstance].tapOutsideToDismiss = NO;
@@ -208,10 +202,18 @@
 
 
 -(void)viewWillDisappear:(BOOL)animated{
-//[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-//    [self.navigationController setNavigationBarHidden:NO animated:animated];
+
     [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressLabel.text;
 
+}
+-(void)viewWillAppear:(BOOL)animated{
+    //  [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+ 
+    ///版本更新通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+    
 }
 
 - (void)viewDidLoad {
@@ -227,18 +229,36 @@
     [self addHeadView];
    
     [self requestLocation];//请求当前位置信息
-
-    
     [self addNavigationHeadBlockAction];
-
     [self.headerView addSubview:self.showCurrentAddressBtn];
+    
+    
+    [self requestStoreStatedData];
+    [self requestBadNumValue];
+    [self requsetHomPageBannerData];
+    [self requestPlayTextData];
+    [self requestHotSearchData];
+    [self requestMealData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPersonData) name:@"refreshPersonData" object:nil];
+  
+    
+}
+
+-(void)refreshPersonData{
+    [self requestStoreStatedData];
+    [self requestBadNumValue];
+    [self requsetHomPageBannerData];
+    [self requestPlayTextData];
+    [self requestHotSearchData];
+    [self requestMealData];
+    [self requestLocation];//请求当前位置信息
 
 }
 
 #pragma mark =============检验店铺是否认证
 
 -(void)requestStoreStatedData{
-    
+    DLog(@"bb=== %@" ,baseUrl);
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
@@ -619,16 +639,18 @@
 
             VC.detailsId = model.bannerUrl;
             [self.navigationController pushViewController:VC animated:YES];
-        }
-        else
-        {
+        }else{///外部链接
+            
             if ([model.bannerUrl containsString:@"get_coupon"]) {
+                
                 otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/get_coupon_ios.html" ,baseUrl];
             }else if ([model.bannerUrl containsString:@"collect_stamp.html"]){
                 otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/collect_stamp_iOS.html" ,baseUrl];
-            }
-            
-            else{
+            }else if ([model.bannerUrl containsString:@"new_users_exclusive_package.html"]){///新用户套餐
+                otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/new_users_exclusive_package_iOS.html" ,baseUrl];
+            }else if ([model.bannerUrl containsString:@"new_user_gift_pack.html"]){///新用户大礼包
+                otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/new_user_gift_pack_iOS.html" ,baseUrl];
+            }else{
                 otherVC.detailsURL = model.bannerUrl;
             }
             //DLog(@"轮播图详情页外部外部链接======= %@" ,otherVC.detailsURL);

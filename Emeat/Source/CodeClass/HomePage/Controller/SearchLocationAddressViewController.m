@@ -65,6 +65,7 @@
     //self.currentAddressString = location.name;
     self.currenrLocationString = location.name;
     self.currentLocation = location;
+    DLog(@"xxxxxxx==%@  %@" ,location.thoroughfare ,location.name);
 
     [self getAddresspoiWithLocation:location];
 }
@@ -79,7 +80,6 @@
             if (![self.otherAddressArray containsObject:poi.name]) {
                 [self.otherAddressArray addObject:poi.name];
             }
-            
         }
         [self.otherAddressArray insertObject:self.currenrLocationString atIndex:0];
         [self.tableView reloadData];

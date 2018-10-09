@@ -16,13 +16,6 @@
 
 @property (nonatomic,strong) UITableView *tableView;
 
-@property (nonatomic,strong) UIButton *leftBtn;
-
-@property (nonatomic,strong) UIButton *rightBtn;
-
-///分销商id
-@property (nonatomic,strong) NSString *distributorUid;
-
 
 
 
@@ -30,179 +23,19 @@
 
 @implementation SaleMoneyViewController
 
+
+-(void)viewWillAppear:(BOOL)animated{
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navItem.title = @"赛鲜推手 躺着赚钱";
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.leftBtn];
-    [self.view addSubview:self.rightBtn];
+   
     
-    [self requestSalePeopleId];
-}
-
-
-//////
--(void)requestSalePeopleId{
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    dic = [self checkoutData];
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/d/getDistributor" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
-        if ([returnData[@"code"] integerValue] == 00 ) {
-            
-            self.distributorUid = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"distributorUid"]];
-            
-        }else{
-            
-        }
-        
-       // DLog(@"分销 ===== %@" ,returnData);
-        
-        
-    } failureBlock:^(NSError *error) {
-        
-        
-    } showHUD:NO];
-    
-    
-    
-    
-}
-
-
-
-
-
-
-#pragma mark =======推手链接
--(void)saleURLleftBtnAction{
-    
-    [self linkingOfShare];
-    
-}
-
-#pragma mark=====================链接分享============================
-
--(void)linkingOfShare{
-    
-    
-    NSArray *titlearr = @[@"",@"微信好友",@"微信朋友圈",@""];
-    NSArray *imageArr = @[@"",@"微信",@"朋友圈",@""];
-    ActionSheetView *actionsheet  = [[ActionSheetView alloc] initWithShareHeadOprationWith:titlearr andImageArry:imageArr andProTitle:@"分享至" and:ShowTypeIsShareStyle];
-    actionsheet.otherBtnFont = 14.0f;
-    actionsheet.otherBtnColor = RGB(51, 51, 51, 1);
-    actionsheet.cancelBtnFont = 14.0f;
-    actionsheet.cancelBtnColor = RGB(51, 51, 51, 1);
-    
-    [actionsheet setBtnClick:^(NSInteger btnTag) {
-        
-        
-        if (btnTag ==0) {
-        }else if (btnTag ==1){
-            //分享到聊天
-            [self wxchatWebShare:WXSceneSession];
-        }else if (btnTag ==2){
-            //分享到朋友圈
-            [self wxchatWebShare:WXSceneTimeline];
-        }else if (btnTag == 3){
-        }
-        
-    }];
-    
-    [[UIApplication sharedApplication].keyWindow addSubview:actionsheet];
-}
-
-
-
--(void)wxchatWebShare:(int)scene{
-    WXMediaMessage *message = [WXMediaMessage message];
-    message.title = self.productTitle;
-    message.description = self.productContent;
-    
-    [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
-    WXWebpageObject *webpageObject = [WXWebpageObject object];
-    webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail.html?ds=%@&disuid=%@" ,baseUrl,self.detailsId ,self.distributorUid];
-    message.mediaObject = webpageObject;
-    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-    req.bText = NO;
-    req.message = message;
-    req.scene = scene;
-    
-    [WXApi sendReq:req];
-    
-}
-- (UIImage *)handleImageWithURLStr:(NSString *)imageURLStr {
-    
-    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLStr]];
-    NSData *newImageData = imageData;
-    // 压缩图片data大小
-    newImageData = UIImageJPEGRepresentation([UIImage imageWithData:newImageData scale:0.1], 0.1f);
-    UIImage *image = [UIImage imageWithData:newImageData];
-    
-    // 压缩图片分辨率(因为data压缩到一定程度后，如果图片分辨率不缩小的话还是不行)
-    CGSize newSize = CGSizeMake(200, 200);
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,(NSInteger)newSize.width, (NSInteger)newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
-
-#pragma mark ========推手图片
--(void)saleImageRightBtnAction{
-    
-    SaleShareImageViewController *VC = [SaleShareImageViewController new];
-    VC.productTitle = self.productTitle;
-    VC.productContent = self.productContent;
-    VC.productImageURL = self.productImageURL;
-    VC.detailsId = self.detailsId;
-    VC.productPrices = self.productPrices;
-    VC.priceTypes = self.priceTypes;
-    VC.distributorUid = self.distributorUid;
-    
-    [self.navigationController pushViewController:VC animated:YES];
-}
-
-
--(UIButton *)leftBtn{
-    if (_leftBtn == nil) {
-        _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _leftBtn.frame = CGRectMake(42*kScale, kHeight-40*kScale-25*kScale-LL_TabbarSafeBottomMargin,125*kScale, 40*kScale);
-//        _leftBtn.backgroundColor = RGB(238, 238, 238, 1);
-        [_leftBtn setImage:[UIImage imageNamed:@"推手链接"] forState:0];
-        [_leftBtn setTitle:@"推手链接" forState:0];
-        _leftBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f*kScale];
-        _leftBtn.backgroundColor = RGB(249, 133, 35, 1);
-        _leftBtn.layer.cornerRadius = 10*kScale;
-        _leftBtn.layer.masksToBounds = YES;
-        [_leftBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:10*kScale];
-        [_leftBtn addTarget:self action:@selector(saleURLleftBtnAction) forControlEvents:1];
-
-    }
-    return _leftBtn;
-}
-
--(UIButton *)rightBtn{
-    if (_rightBtn == nil) {
-        _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _rightBtn.frame = CGRectMake(kWidth-125*kScale-42*kScale, kHeight-40*kScale-25*kScale-LL_TabbarSafeBottomMargin, 125*kScale, 40*kScale);
-//        _rightBtn.backgroundColor = RGB(238, 238, 238, 1);
-        [_rightBtn setImage:[UIImage imageNamed:@"推手图片"] forState:0];
-//        [_rightBtn setTitleColor:RGB(51, 51, 51, 1) forState:0];
-        _rightBtn.backgroundColor = RGB(249, 133, 35, 1);
-        _rightBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f*kScale];
-
-        [_rightBtn setTitle:@"推手图片" forState:0];
-        _rightBtn.layer.cornerRadius = 10*kScale;
-        _rightBtn.layer.masksToBounds = YES;
-        
-        [_rightBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleLeft imageTitleSpace:10*kScale];
-        [_rightBtn addTarget:self action:@selector(saleImageRightBtnAction) forControlEvents:1];
-
-    }
-    return _rightBtn;
 }
 
 

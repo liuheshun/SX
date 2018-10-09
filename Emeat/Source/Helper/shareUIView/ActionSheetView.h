@@ -54,6 +54,9 @@ typedef enum {
 
 - (id)initWithShareHeadOprationWith:(NSArray *)titleArray andImageArry:(NSArray *)imageArr andProTitle:(NSString *)protitle and:(ShowType)type;
 
+- (void)tappedCancel;
+
+
 @end
 
 

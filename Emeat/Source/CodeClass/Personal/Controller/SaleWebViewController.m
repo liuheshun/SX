@@ -170,11 +170,11 @@
     
     //[_bridge callHandler:@"registerAction" data:@"我是oc请求js的参数"];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *islogin = [user valueForKey:@"isLoginState"];
+    NSString *types = @"1";
     NSString *ticket = [user valueForKey:@"ticket"];
-   // DLog(@"传过去ticket === %@" ,ticket);
+    DLog(@"传过去ticket === %@" ,ticket);
     
-    [_bridge callHandler:@"registerAction" data:[NSString stringWithFormat:@"%@"  ,ticket] responseCallback:^(id responseData) {
+    [_bridge callHandler:@"registerAction" data:[NSString stringWithFormat:@"%@,%@"  ,ticket,types] responseCallback:^(id responseData) {
         //NSLog(@"oc请求js后接受的回调结果：%@",responseData);
     }];
     
@@ -207,19 +207,12 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     
     NSString *requestString = [[request URL] absoluteString];
-    //DLog(@"webView========== %@" ,requestString);
-    if ([requestString rangeOfString:@"beef_detailxxx.html"].location != NSNotFound || [requestString rangeOfString:@"distribution_copywriter.html"].location != NSNotFound || [requestString rangeOfString:@"payment_details.html"].location != NSNotFound){
+    DLog(@"webView========== %@" ,requestString);
+    if ([requestString rangeOfString:@"beef_detailxxx.html"].location != NSNotFound || [requestString rangeOfString:@"distribution_copywriter.html"].location != NSNotFound || [requestString rangeOfString:@"payment_details.html"].location != NSNotFound || [requestString rangeOfString:@"my_team.html"].location != NSNotFound ){
         
         //
         self.isApp = @"0";
-        
-        NSArray *array = [requestString componentsSeparatedByString:@"SP"]; //从字符A中分隔成2个元素的数组
-//        HomePageDetailsViewController *VC = [HomePageDetailsViewController new];
-//        VC.hidesBottomBarWhenPushed = YES;
-//        VC.fromBaner = @"1";
-//        VC.detailsId = [NSString stringWithFormat:@"SP%@" ,[array lastObject]];
-//        [self.navigationController pushViewController:VC animated:YES];
-        
+   
         return YES;
         
     }else if ([requestString rangeOfString:@"beef_detail.html"].location != NSNotFound){
@@ -234,6 +227,26 @@
 //        VC.fromBaner = @"1";
         VC.detailsId = [NSString stringWithFormat:@"%@" ,[array firstObject]];
         [self.navigationController pushViewController:VC animated:YES];
+        
+        return NO;
+    }else if ([requestString rangeOfString:@"personal_zones_index.html"].location != NSNotFound){
+ 
+        self.tabBarController.selectedIndex = 0;
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        
+        return NO;
+        
+    }else if ([requestString rangeOfString:@"distributor/mine_info.html?imgs"].location != NSNotFound){
+        
+        NSArray *array = [requestString componentsSeparatedByString:@"imgs="]; //从字符A中分隔成2个元素的数组
+      
+            
+        ///保存图片
+        NSString *images = [array lastObject];
+        [self toSaveImage:images];
+        
+     
+        
         
         return NO;
     }
@@ -258,7 +271,47 @@
     
 }
 
+#pragma mark ==========保存图片
 
+- (void)toSaveImage:(NSString *)urlString {
+    
+    NSURL *url = [NSURL URLWithString: urlString];
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+  __block  UIImage *img;
+
+    [manager diskImageExistsForURL:url completion:^(BOOL isInCache) {
+        if (isInCache == YES) {
+            img =  [[manager imageCache] imageFromDiskCacheForKey:url.absoluteString];
+        }else{
+            //从网络下载图片
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            img = [UIImage imageWithData:data];
+        }
+        // 保存图片到相册中
+        UIImageWriteToSavedPhotosAlbum(img,self, @selector(image:didFinishSavingWithError:contextInfo:),nil);
+    }];
+ 
+  
+    
+}
+//保存图片完成之后的回调
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error
+  contextInfo:(void *)contextInfo
+{
+    // Was there an error?
+    if (error != NULL)
+    {
+        [SVProgressHUD showErrorWithStatus:@"图片保存失败"];
+        // Show error message…
+       // [self showHintMiddle:@"图片保存失败"];
+    }
+    else  // No errors
+    {
+        [SVProgressHUD showSuccessWithStatus:@"图片保存成功"];
+        // Show message image successfully saved
+       // [self showHintMiddle:@"图片保存成功"];
+    }
+}
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
    // DLog(@"error=========%@" ,error);

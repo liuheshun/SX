@@ -16,43 +16,43 @@
     return [textField resignFirstResponder];
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField{
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    
-    if (textField.tag == 1) {//姓名
-//        if (textField.text.length == 0) {
+//-(void)textFieldDidEndEditing:(UITextField *)textField{
+//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//    
+//    if (textField.tag == 1) {//姓名
+////        if (textField.text.length == 0) {
+////
+////        }else
+//       // {
+//            [user setValue:textField.text forKey:@"name"];
+//        [self.selectedMdic setValue:textField.text forKey:@"name"];
+//       // }
+//    }else if (textField.tag == 2){//电话
+////        if (textField.text.length == 0) {
+////
+////        }else
+////        {
+//            [user setValue:textField.text forKey:@"phoneNumer"];
 //
-//        }else
-       // {
-            [user setValue:textField.text forKey:@"name"];
-        [self.selectedMdic setValue:textField.text forKey:@"name"];
-       // }
-    }else if (textField.tag == 2){//电话
-//        if (textField.text.length == 0) {
+//        [self.selectedMdic setValue:textField.text forKey:@"phoneNumer"];
+//      //  }
+//    }else if (textField.tag == 3){//详细地址
+////        if (textField.text.length == 0) {
+////
+////        }else
+////        {
+//            [user setValue:textField.text forKey:@"addressDetails"];
 //
-//        }else
-//        {
-            [user setValue:textField.text forKey:@"phoneNumer"];
-
-        [self.selectedMdic setValue:textField.text forKey:@"phoneNumer"];
-      //  }
-    }else if (textField.tag == 3){//详细地址
-//        if (textField.text.length == 0) {
-//
-//        }else
-//        {
-            [user setValue:textField.text forKey:@"addressDetails"];
-
-        [self.selectedMdic setValue:textField.text forKey:@"addressDetails"];
-       // }
-    }
-    
-    if ([self respondsToSelector:@selector(textFieldTitleBlock)]) {
-        self.textFieldTitleBlock(self.selectedMdic);
-    }
-    
-    
-}
+//        [self.selectedMdic setValue:textField.text forKey:@"addressDetails"];
+//       // }
+//    }
+//    
+//    if ([self respondsToSelector:@selector(textFieldTitleBlock)]) {
+//        self.textFieldTitleBlock(self.selectedMdic);
+//    }
+//    
+//    
+//}
 
 
 

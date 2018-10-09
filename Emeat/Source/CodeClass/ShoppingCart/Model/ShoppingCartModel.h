@@ -103,6 +103,7 @@
 @property (nonatomic,strong) NSString *priceTypes;
 
 //代金券价格
+@property (nonatomic,strong) NSString *ticketMoneySum;
 @property (nonatomic,assign) NSInteger amount;
 ///代金券名称
 @property (nonatomic,strong) NSString *ticketName;

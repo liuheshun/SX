@@ -84,6 +84,7 @@
 		1646C3321FC80E0A000552A1 /* HomePageSortListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C3311FC80E0A000552A1 /* HomePageSortListViewController.m */; };
 		1646C3351FCBC4C9000552A1 /* AddOrCutShoppingCartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C3341FCBC4C9000552A1 /* AddOrCutShoppingCartView.m */; };
 		1646C3381FCBF1BB000552A1 /* HomePageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1646C3371FCBF1BB000552A1 /* HomePageModel.m */; };
+		164847F6215244ED00E45FDE /* CareCenterTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164847F5215244ED00E45FDE /* CareCenterTwoViewController.m */; };
 		165259B5211F5EA2004DDC7D /* MerchantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165259B4211F5EA2004DDC7D /* MerchantViewController.m */; };
 		165259B8211F633C004DDC7D /* MerchantOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165259B7211F633C004DDC7D /* MerchantOneViewController.m */; };
 		165259BB212182C9004DDC7D /* MessageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165259BA212182C9004DDC7D /* MessageListViewController.m */; };
@@ -171,8 +172,11 @@
 		16B86A542086E67E00A50614 /* ShopCertificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B86A532086E67E00A50614 /* ShopCertificationViewController.m */; };
 		16B86A572086E75000A50614 /* ShopCeritficationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B86A562086E75000A50614 /* ShopCeritficationView.m */; };
 		16BB3EFA207F500C00623045 /* LaunchIntroductionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */; };
+		16C4D67F215330A6004A56E8 /* CardCenterVouchersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D67E215330A6004A56E8 /* CardCenterVouchersViewController.m */; };
+		16C4D6822153345E004A56E8 /* CardCenterVouchersTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D6812153345E004A56E8 /* CardCenterVouchersTableViewCell.m */; };
 		16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */; };
 		16C91DE320F8838E00B01F8B /* PhoneNumberCertificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */; };
+		16CB26F52150DCC700082A8E /* NewUserGiftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CB26F42150DCC700082A8E /* NewUserGiftView.m */; };
 		16CD2A692118A26D00A3281A /* UIColor+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A5C2118A26D00A3281A /* UIColor+PYSearchExtension.m */; };
 		16CD2A6A2118A26D00A3281A /* PYSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A5D2118A26D00A3281A /* PYSearchViewController.m */; };
 		16CD2A6B2118A26D00A3281A /* PYSearchSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2A5E2118A26D00A3281A /* PYSearchSuggestionViewController.m */; };
@@ -430,6 +434,8 @@
 		1646C3341FCBC4C9000552A1 /* AddOrCutShoppingCartView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddOrCutShoppingCartView.m; sourceTree = "<group>"; };
 		1646C3361FCBF1BB000552A1 /* HomePageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageModel.h; sourceTree = "<group>"; };
 		1646C3371FCBF1BB000552A1 /* HomePageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageModel.m; sourceTree = "<group>"; };
+		164847F4215244ED00E45FDE /* CareCenterTwoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CareCenterTwoViewController.h; sourceTree = "<group>"; };
+		164847F5215244ED00E45FDE /* CareCenterTwoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CareCenterTwoViewController.m; sourceTree = "<group>"; };
 		165259B3211F5EA2004DDC7D /* MerchantViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MerchantViewController.h; sourceTree = "<group>"; };
 		165259B4211F5EA2004DDC7D /* MerchantViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MerchantViewController.m; sourceTree = "<group>"; };
 		165259B6211F633C004DDC7D /* MerchantOneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MerchantOneViewController.h; sourceTree = "<group>"; };
@@ -600,10 +606,16 @@
 		16B86A562086E75000A50614 /* ShopCeritficationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCeritficationView.m; sourceTree = "<group>"; };
 		16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchIntroductionView.m; sourceTree = "<group>"; };
 		16BB3EF9207F500B00623045 /* LaunchIntroductionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchIntroductionView.h; sourceTree = "<group>"; };
+		16C4D67D215330A6004A56E8 /* CardCenterVouchersViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardCenterVouchersViewController.h; sourceTree = "<group>"; };
+		16C4D67E215330A6004A56E8 /* CardCenterVouchersViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardCenterVouchersViewController.m; sourceTree = "<group>"; };
+		16C4D6802153345E004A56E8 /* CardCenterVouchersTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardCenterVouchersTableViewCell.h; sourceTree = "<group>"; };
+		16C4D6812153345E004A56E8 /* CardCenterVouchersTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardCenterVouchersTableViewCell.m; sourceTree = "<group>"; };
 		16C91DDE20F8834800B01F8B /* PhoneNumberCertificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneNumberCertificationViewController.h; sourceTree = "<group>"; };
 		16C91DDF20F8834800B01F8B /* PhoneNumberCertificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberCertificationViewController.m; sourceTree = "<group>"; };
 		16C91DE120F8838E00B01F8B /* PhoneNumberCertificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhoneNumberCertificationView.h; sourceTree = "<group>"; };
 		16C91DE220F8838E00B01F8B /* PhoneNumberCertificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhoneNumberCertificationView.m; sourceTree = "<group>"; };
+		16CB26F32150DCC700082A8E /* NewUserGiftView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewUserGiftView.h; sourceTree = "<group>"; };
+		16CB26F42150DCC700082A8E /* NewUserGiftView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewUserGiftView.m; sourceTree = "<group>"; };
 		16CD2A5B2118A26D00A3281A /* NSBundle+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PYSearchExtension.h"; sourceTree = "<group>"; };
 		16CD2A5C2118A26D00A3281A /* UIColor+PYSearchExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PYSearchExtension.m"; sourceTree = "<group>"; };
 		16CD2A5D2118A26D00A3281A /* PYSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PYSearchViewController.m; sourceTree = "<group>"; };
@@ -1256,8 +1268,8 @@
 		16BB3EF7207F500B00623045 /* LaunchIntroduction */ = {
 			isa = PBXGroup;
 			children = (
-				16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */,
 				16BB3EF9207F500B00623045 /* LaunchIntroductionView.h */,
+				16BB3EF8207F500B00623045 /* LaunchIntroductionView.m */,
 			);
 			path = LaunchIntroduction;
 			sourceTree = "<group>";
@@ -1385,6 +1397,8 @@
 				16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */,
 				165629BB20A051A8002D6EC8 /* VersionUpdateView.h */,
 				165629BC20A051A8002D6EC8 /* VersionUpdateView.m */,
+				16CB26F32150DCC700082A8E /* NewUserGiftView.h */,
+				16CB26F42150DCC700082A8E /* NewUserGiftView.m */,
 				165629BE20A05714002D6EC8 /* HWPopTool.h */,
 				165629BF20A05714002D6EC8 /* HWPopTool.m */,
 			);
@@ -1597,6 +1611,8 @@
 				16EE10301FE269050099DA91 /* MyOrderTableViewCell.m */,
 				168EE98F212416E0007A759A /* CardCenterTableViewCell.h */,
 				168EE990212416E0007A759A /* CardCenterTableViewCell.m */,
+				16C4D6802153345E004A56E8 /* CardCenterVouchersTableViewCell.h */,
+				16C4D6812153345E004A56E8 /* CardCenterVouchersTableViewCell.m */,
 				16EE10321FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.h */,
 				16EE10331FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.m */,
 				16EE10351FE2CC7A0099DA91 /* MyOrderDetailsStatusHeadView.h */,
@@ -1626,6 +1642,10 @@
 				16EE10241FE1915F0099DA91 /* MyAddressViewController.m */,
 				16ED48AF2124057300A440C5 /* CardCenterViewController.h */,
 				16ED48B02124057300A440C5 /* CardCenterViewController.m */,
+				16C4D67D215330A6004A56E8 /* CardCenterVouchersViewController.h */,
+				16C4D67E215330A6004A56E8 /* CardCenterVouchersViewController.m */,
+				164847F4215244ED00E45FDE /* CareCenterTwoViewController.h */,
+				164847F5215244ED00E45FDE /* CareCenterTwoViewController.m */,
 				16ED48B22124089F00A440C5 /* CardDescViewController.h */,
 				16ED48B32124089F00A440C5 /* CardDescViewController.m */,
 				16EE10261FE1989A0099DA91 /* ContactServiceViewController.h */,
@@ -2254,6 +2274,7 @@
 				168130511FC2A5B90045207E /* HomePageDetailsViewController.m in Sources */,
 				166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */,
 				16D677B32018570100318FAA /* HomePageShoppingDetailsTableViewCell.m in Sources */,
+				164847F6215244ED00E45FDE /* CareCenterTwoViewController.m in Sources */,
 				16885C5A2101C643008A6FB9 /* UIViewController+ZJScrollPageController.m in Sources */,
 				16901CEC1FD8EEE50080762A /* AddNewAddressView.m in Sources */,
 				16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */,
@@ -2285,6 +2306,7 @@
 				161BBAE2212BB9B5002AA7EC /* Scheduler.m in Sources */,
 				16ED48B12124057300A440C5 /* CardCenterViewController.m in Sources */,
 				16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */,
+				16C4D6822153345E004A56E8 /* CardCenterVouchersTableViewCell.m in Sources */,
 				16CFD7471FB43F820015F2C1 /* ConfirmOrderInfoPayTypeTableViewCell.m in Sources */,
 				1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */,
 				16E27F30207E006B00F82F9D /* UserAgreementViewController.m in Sources */,
@@ -2314,6 +2336,7 @@
 				16DC91DF200F34BB003C25BE /* HomePageDetailsBuyNoticeView.m in Sources */,
 				16DC920520130BDE003C25BE /* MBProgressHUD.m in Sources */,
 				168130541FC2B2BF0045207E /* HomePageDetailsHeadView.m in Sources */,
+				16CB26F52150DCC700082A8E /* NewUserGiftView.m in Sources */,
 				161BBB1F212D89B6002AA7EC /* PersonalViewController.m in Sources */,
 				161BBADD212BB9B5002AA7EC /* DefaultViewAnimator.m in Sources */,
 				16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */,
@@ -2324,6 +2347,7 @@
 				16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */,
 				16EE10111FE167970099DA91 /* WaitSendViewController.m in Sources */,
 				16FB31461FAC5D9D00049580 /* main.m in Sources */,
+				16C4D67F215330A6004A56E8 /* CardCenterVouchersViewController.m in Sources */,
 				16DC91FC20130A56003C25BE /* MHAsiNetworkItem.m in Sources */,
 				1610A969211196890050335B /* WMPageController.m in Sources */,
 				16CFD76B1FBE7F930015F2C1 /* YouLikeTableViewCell.m in Sources */,

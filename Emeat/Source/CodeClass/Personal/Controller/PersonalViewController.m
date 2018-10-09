@@ -45,7 +45,26 @@
   
     self.dataArray = [NSMutableArray array];
     totalPage = 1;
+    YNPageViewController *vc = (YNPageViewController*)self.parentViewController;
+    self.pageIndex = vc.pageIndex;
+    [self addTableViewRefresh];
+    [self isFirstLoadingData];
+}
+
+-(void)isFirstLoadingData{
     
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    if (self.pageIndex == 0) {///经常买
+        
+        self.baseURLString = [NSString stringWithFormat:@"%@/m/auth/user/get_often_commodity" , baseUrl];
+        [self requestOftenListDataWithBaseURLString:self.baseURLString totalPage:1];
+        
+    }else if (self.pageIndex == 1){///赛选精选
+        ///赛鲜精选
+        self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=PERSON" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+        [self requesSaiXianDataBaseURLString:self.baseURLString];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -53,27 +72,8 @@
     
     
     
-    YNPageViewController *vc = (YNPageViewController*)self.parentViewController;
-    //DLog(@"====== %ld" ,    vc.pageIndex);
-    self.pageIndex = vc.pageIndex;
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    
-    if (vc.pageIndex == 0) {///经常买
-        
-        self.baseURLString = [NSString stringWithFormat:@"%@/m/auth/user/get_often_commodity" , baseUrl];
-        [self requestOftenListDataWithBaseURLString:self.baseURLString totalPage:1];
-        
-    }else if (vc.pageIndex == 1){///赛选精选
-        ///赛鲜精选
-        self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=PERSON" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
-        [self requesSaiXianDataBaseURLString:self.baseURLString];
-    }
-    
-    if (kOpenRefreshHeaderViewHeight) {
-        if (self.tableView.mj_header.ignoredScrollViewContentInsetTop != self.yn_pageViewController.config.tempTopHeight) {
-            [self addTableViewRefresh];
-        }
-    }
+  
+
 }
 
 
@@ -203,6 +203,9 @@
 
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
+        ///通知个人专区其它数据刷新
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshPersonData" object:nil];
+        
         
         [weakSelf.tableView.mj_footer resetNoMoreData];
         
@@ -255,8 +258,7 @@
     /// 需要设置下拉刷新控件UI的偏移位置
     self.tableView.mj_header.ignoredScrollViewContentInsetTop = self.yn_pageViewController.config.tempTopHeight;
     
-//    /// 需要设置下拉刷新控件UI的偏移位置
-//    self.tableView.mj_header.ignoredScrollViewContentInsetTop = self.yn_pageViewController.config.tempTopHeight;
+
 }
 
 

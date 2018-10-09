@@ -29,16 +29,16 @@
 }
 
 -(void)configFootViewWithShoppingModel:(ShoppingCartModel*)model{
-    
-    if (model.ticketName) {
-        [self.cardUseBtn setTitle:model.ticketName forState:0];
-
-    }else{
+//
+//    if (model.ticketName) {
+//        [self.cardUseBtn setTitle:model.ticketName forState:0];
+//
+//    }else{
         [self.cardUseBtn setTitle:@"优惠券" forState:0];
 
-    }
-    if (model.amount) {
-         self.cardPricesLab.text = [NSString stringWithFormat:@"- %.2f" ,(CGFloat)model.amount/100];
+   // }
+    if (model.ticketMoneySum && ![model.ticketMoneySum isEqualToString:@"0"]) {
+         self.cardPricesLab.text = [NSString stringWithFormat:@"-¥%@" ,model.ticketMoneySum];
     }else{
          self.cardPricesLab.text = @" ";
     }
@@ -58,10 +58,10 @@
     }
     
     ///卡券折扣
-    if (model.amount) {
-         self.cardAddPricesLab.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)model.amount/100];
+    if (model.ticketMoneySum && ![model.ticketMoneySum isEqualToString:@"0"]) {
+         self.cardAddPricesLab.text =[NSString stringWithFormat:@"-¥ %@" ,model.ticketMoneySum] ;
     }else{
-        self.cardAddPricesLab.text = @"¥ 0";
+        self.cardAddPricesLab.text = @"-¥ 0";
     }
    
 }
@@ -177,10 +177,11 @@
 -(UILabel*)cardPricesLab{
     if (!_cardPricesLab) {
         _cardPricesLab = [[UILabel alloc] init];
-        _cardPricesLab.textAlignment = NSTextAlignmentRight;
+        _cardPricesLab.textAlignment = NSTextAlignmentLeft;
         _cardPricesLab.font = [UIFont systemFontOfSize:15.0f*kScale];
-        _cardPricesLab.textColor = RGB(236, 31, 35, 1);
-        
+//        _cardPricesLab.textColor = RGB(236, 31, 35, 1);
+        _cardPricesLab.textColor = RGB(51, 51, 51, 1);
+
     }
     return _cardPricesLab;
 }

@@ -213,6 +213,9 @@
             footModel.netPrice = [returnData[@"data"][@"orderMoney"][@"netPrice"] integerValue];
 
             footModel.returnMoneySum = [returnData[@"data"][@"orderMoney"][@"returnMoneySum"] integerValue];
+            footModel.ticketMoney = returnData[@"data"][@"ticketMoney"];
+
+            
             footModel.amount = [returnData[@"data"][@"ticket"][@"ticket"][@"amount"] integerValue];
             footModel.postage = [returnData[@"data"][@"postage"] integerValue];
 

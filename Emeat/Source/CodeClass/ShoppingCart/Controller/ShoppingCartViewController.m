@@ -99,7 +99,8 @@
     }
     self.isFirst = @"2";
 
-    
+    ///清空已经选择的优惠券
+    [self deleteCardTickets];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -381,6 +382,8 @@
             ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController new];
             VC.hidesBottomBarWhenPushed = YES;
             VC.orderListMarray = orderListMarray;
+             [user setValue:@"" forKey:@"ticketsCard"];
+
             [self.navigationController pushViewController:VC animated:YES];
             NSLog(@"去结算");
         }
@@ -1510,6 +1513,36 @@
     
     
 }
+
+
+
+-(void)deleteCardTickets{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dic = [self checkoutData];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+   
+    
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/deleteTicket" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"status"] integerValue] == 200)
+        {
+           
+        }else{
+           
+        }
+    } failureBlock:^(NSError *error) {
+        
+    } showHUD:NO];
+    
+    
+}
+
+
 
 #pragma mark ========全选按钮点击事件
 

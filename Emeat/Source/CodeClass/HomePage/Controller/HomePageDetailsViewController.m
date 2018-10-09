@@ -18,6 +18,9 @@
 #import "SaleMoneyViewController.h"
 #import "ShopCertificationViewController.h"
 #import "UIImage+GIF.h"
+#import "SaleShareImageViewController.h"
+#import "SaleMoneyViewController.h"
+
 @interface HomePageDetailsViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
 //轮播图
 @property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
@@ -43,6 +46,12 @@
 
 ///0=分销(C端商品参与分销) 1=分享(B端商品)
 @property (nonatomic,strong) NSString *isShowShareString;
+///分销商id
+@property (nonatomic,strong) NSString *distributorUid;
+
+///分销弹窗view
+@property (nonatomic,strong) ActionSheetView *actionsheet;
+
 
 @end
 
@@ -88,6 +97,7 @@
 
     [self requsetDetailsData];
     [self showNavBarLeftItem ];
+    [self requestSalePeopleId];
     ////
     
 }
@@ -109,6 +119,33 @@
     
 }
 
+#pragma mark ==========//////请求分销商ID
+//////请求分销商ID
+-(void)requestSalePeopleId{
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic = [self checkoutData];
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/cas/d/getDistributor" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        if ([returnData[@"code"] integerValue] == 00 ) {
+            
+            self.distributorUid = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"distributorUid"]];
+            
+        }else{
+            
+        }
+        
+        DLog(@"分销 ===== %@" ,returnData);
+        
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+ 
+    
+}
 
 #pragma mark = 商品详情数据
 
@@ -291,6 +328,7 @@
     return newImage;
 }
 
+///分享
 
 -(void)wxchatWebShare:(int)scene{
     WXMediaMessage *message = [WXMediaMessage message];
@@ -299,7 +337,14 @@
     
     [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
     WXWebpageObject *webpageObject = [WXWebpageObject object];
-    webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail.html?ds=%@" ,baseUrl,self.detailsId];
+    if ([self.isShowShareString isEqualToString:@"0"]) {///分销分享
+    
+        webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail.html?ds=%@&disuid=%@" ,baseUrl,self.detailsId ,self.distributorUid];
+
+    }else{
+    ///分享
+        webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/beef_detail.html?ds=%@" ,baseUrl,self.detailsId];
+    }
     message.mediaObject = webpageObject;
     SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
     req.bText = NO;
@@ -312,24 +357,106 @@
 
 
 
+
+#pragma ma=====================进入分销平台
+
+-(void)ClickSaleMoneyAction{
+    
+    [self.actionsheet tappedCancel];
+
+    SaleMoneyViewController *VC = [SaleMoneyViewController new];
+    [self.navigationController pushViewController:VC animated:YES];
+}
+
 #pragma mark ==================分享
 
 -(void)shareRightItemAction{
-//
-//    if ([self.isShowShareString isEqualToString:@"0"]) {
-//        DLog(@"分销");
-//        SaleMoneyViewController *VC = [SaleMoneyViewController new];
-//        VC.productTitle = self.productTitle;
-//        VC.productContent = self.productContent;
-//        VC.productImageURL = self.productImageURL;
-//        VC.detailsId = self.detailsId;
-//        VC.productPrices = self.productPrices;
-//        VC.priceTypes = self.priceTypes;
-//
-//
-//        [self.navigationController pushViewController:VC animated:YES];
-//
-//    }else{
+
+    if ([self.isShowShareString isEqualToString:@"0"]) {///分销分享
+        
+        DLog(@"分销");
+        NSArray *titlearr = @[@"",@"链接",@"图片",@""];
+        NSArray *imageArr = @[@"",@"链接",@"图片",@""];
+        self.actionsheet  = [[ActionSheetView alloc] initWithShareHeadOprationWith:titlearr andImageArry:imageArr andProTitle:@"分享" and:ShowTypeIsShareStyle];
+        self.actionsheet.otherBtnFont = 14.0f;
+        self.actionsheet.otherBtnColor = RGB(51, 51, 51, 1);
+        self.actionsheet.cancelBtnFont = 14.0f;
+        self.actionsheet.cancelBtnColor = RGB(51, 51, 51, 1);
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setTitle:@"点我了解赛鲜推手计划" forState:0];
+        btn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+        [btn setTitleColor:RGB(231, 35, 36, 1) forState:0];
+        btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [self.actionsheet addSubview:btn];
+        [btn addTarget:self action:@selector(ClickSaleMoneyAction) forControlEvents:1];
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            
+            make.bottom.equalTo(self.actionsheet.mas_bottom).with.offset(-65*kScale);
+            make.right.equalTo(self.actionsheet.mas_right).with.offset(-20*kScale);
+            make.height.equalTo(@(20*kScale));
+            make.width.equalTo(@(140*kScale));
+        }];
+        
+        
+        // underline Terms and condidtions
+        NSMutableAttributedString* tncString = [[NSMutableAttributedString alloc] initWithString:btn.titleLabel.text];
+        
+        //设置下划线...
+        /*
+         NSUnderlineStyleNone                                    = 0x00, 无下划线
+         NSUnderlineStyleSingle                                  = 0x01, 单行下划线
+         NSUnderlineStyleThick NS_ENUM_AVAILABLE(10_0, 7_0)      = 0x02, 粗的下划线
+         NSUnderlineStyleDouble NS_ENUM_AVAILABLE(10_0, 7_0)     = 0x09, 双下划线
+         */
+        [tncString addAttribute:NSUnderlineStyleAttributeName
+                          value:@(NSUnderlineStyleSingle)
+                          range:(NSRange){0,[tncString length]}];
+        //此时如果设置字体颜色要这样
+        //    [tncString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor]  range:NSMakeRange(0,[tncString length])];
+        
+        //设置下划线颜色...
+        [tncString addAttribute:NSUnderlineColorAttributeName value:RGB(231, 35, 36, 1) range:(NSRange){0,[tncString length]}];
+        [btn setAttributedTitle:tncString forState:UIControlStateNormal];
+
+        
+        __weak __typeof(self) weakSelf = self;
+
+        [self.actionsheet setBtnClick:^(NSInteger btnTag) {
+            
+            if (btnTag ==0) {
+                
+            }else if (btnTag ==1){
+                
+                [weakSelf linkingOfShare];//分销链接分享
+                
+            }else if (btnTag ==2){//分销图片分享
+                
+                
+                SaleShareImageViewController *VC = [SaleShareImageViewController new];
+                VC.productTitle = weakSelf.productTitle;
+                VC.productContent = self.productContent;
+                VC.productImageURL = self.productImageURL;
+                VC.detailsId = self.detailsId;
+                VC.productPrices = self.productPrices;
+                VC.priceTypes = self.priceTypes;
+                VC.distributorUid = self.distributorUid;
+                
+                [self.navigationController pushViewController:VC animated:YES];
+                
+            }else if (btnTag ==3){
+                
+            }
+            
+            
+        }];
+        
+        [[UIApplication sharedApplication].keyWindow addSubview:self.actionsheet];
+        
+        
+       
+
+    }else{
 //
    // DLog(@"分享");
     NSArray *titlearr = @[@"",@"链接",@"图片",@""];
@@ -367,7 +494,7 @@
     
     [[UIApplication sharedApplication].keyWindow addSubview:actionsheet];
         
-   // }
+    }
 }
 
 

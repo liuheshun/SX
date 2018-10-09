@@ -8,9 +8,9 @@
 
 #import "LaunchIntroductionView.h"
 #import "JMHoledView.h"
-
-
-
+#import "NewUserGiftView.h"
+#import "HWPopTool.h"
+#import "HomePageOtherDetailsViewController.h"
 
 static NSString *const kAppVersion = @"appVersion";
 
@@ -167,6 +167,9 @@ NSString *storyboard;
             [self removeFromSuperview];
             //后期加上 新手引导
             //[self addNewUserView];
+            
+            //添加新手礼包
+           [self addNewGift];
         });
         
     }];
@@ -209,6 +212,43 @@ NSString *storyboard;
 }
 
 
+
+#pragma mark ========添加新手大礼包
+
+-(void)addNewGift{
+
+    NewUserGiftView *upView = [[NewUserGiftView alloc] initWithFrame:CGRectMake(0, 145*kScale, kWidth, 300*kScale)];
+    [upView.giftBtn addTarget:self action:@selector(clickGiftBtnAction) forControlEvents:1];
+    [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
+    [HWPopTool sharedInstance].tapOutsideToDismiss = YES;
+    [[HWPopTool sharedInstance] showWithPresentView:upView animated:NO];
+
+}
+
+
+
+
+
+
+
+-(void)clickGiftBtnAction{
+    DLog(@"拆礼包");
+    __weak __typeof(self) weakSelf = self;
+    
+    [[HWPopTool sharedInstance] closeWithBlcok:^{
+        HomePageOtherDetailsViewController *otherVC = [HomePageOtherDetailsViewController new];
+        otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/new_user_gift_pack_iOS.html" ,baseUrl];
+        
+        otherVC.hidesBottomBarWhenPushed = YES;
+        //取出根视图控制器
+        UITabBarController *tabBarVc = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        //取出当前选中的导航控制器
+        UINavigationController *Nav = [tabBarVc selectedViewController];
+        [Nav pushViewController:otherVC animated:YES];
+    }];
+    
+    
+}
 
 
 

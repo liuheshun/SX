@@ -132,6 +132,11 @@
     [self requsetHomPageBannerData];
     [self requestHotSearchData];
     
+    
+    ///版本更新通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+    
+    
 }
 -(void)viewDidDisappear:(BOOL)animated{
     self.isLoadingSeg = @"1";
@@ -213,9 +218,7 @@
     //支持下刷新。关闭弹簧效果
     self.mainTableView.bounces =  NO;
     self.canScroll = YES;
-///版本更新通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
-    
+
     ///禁止右滑返回
     id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
     UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];

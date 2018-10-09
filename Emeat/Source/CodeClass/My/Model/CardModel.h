@@ -16,6 +16,8 @@
 @property (nonatomic,strong) NSString *ticketName;
 ///代金券金额
 @property (nonatomic,assign) NSInteger amount;
+@property (nonatomic,strong) NSString *discountAmount;
+@property (nonatomic,assign) NSInteger satisfyAmount;
 ///代金券描述
 @property (nonatomic,strong) NSString *desc;
 
@@ -28,6 +30,9 @@
 @property (nonatomic,strong) NSString *productTotalPrice;
 ///配送费
 @property (nonatomic,strong) NSString *postMoney;
+
+///券类型 VOUCHER= 满减券  CASH_COUPON= 代金券
+@property (nonatomic,strong) NSString *ticketType;
 
 
 
