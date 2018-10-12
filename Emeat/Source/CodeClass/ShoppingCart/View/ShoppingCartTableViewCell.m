@@ -78,6 +78,8 @@
         if (model.discountPrice == -1) {///只显示原价
             
             self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.costPrice];
+            self.oldProductPrices.text = @"";
+
         }else{
             self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.productPrice];
             self.oldProductPrices.text =[NSString stringWithFormat:@"%@元/kg",model.costPrice];
@@ -96,6 +98,8 @@
         if (model.discountPrice == -1) {///只显示原价
             
             self.productPrice.text =[NSString stringWithFormat:@"%@元/kg",model.costPrice];
+            self.oldProductPrices.text = @"";
+
         }else{
             self.productPrice.text =[NSString stringWithFormat:@"%@元",model.productPrice];
             self.oldProductPrices.text =[NSString stringWithFormat:@"%@元",model.costPrice];
@@ -114,13 +118,16 @@
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*kScale, [GetWidthAndHeightOfString getWidthForText:self.oldProductPrices height:15.0f*kScale], 1)];
-    lineView.backgroundColor = RGB(136, 136, 136, 1);
    
     
     if (model.discountPrice == -1) {///只显示原价
         [lineView removeFromSuperview];
+        lineView.backgroundColor = [UIColor whiteColor];
+
     }else{
         [self.oldProductPrices addSubview:lineView];
+        lineView.backgroundColor = RGB(136, 136, 136, 1);
+
     }
     
     

@@ -353,6 +353,7 @@
     
     NSMutableArray *orderListMarray = [NSMutableArray array];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product_new" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        NSLog(@"去结算==== %@" ,returnData);
 
         if ([returnData[@"status"] integerValue] == 200)
         {
@@ -385,7 +386,6 @@
              [user setValue:@"" forKey:@"ticketsCard"];
 
             [self.navigationController pushViewController:VC animated:YES];
-            NSLog(@"去结算");
         }
         else
         {

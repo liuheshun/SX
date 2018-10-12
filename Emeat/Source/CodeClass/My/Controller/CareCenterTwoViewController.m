@@ -25,7 +25,7 @@
 @property (nonatomic,strong) UIButton *selectedBtn;
 
 //
-@property (nonatomic,assign) NSInteger fullTicketId;
+@property (nonatomic,strong) NSString *fullTicketId;
 
 @property (nonatomic,strong) UIButton *confirmBtn;
 
@@ -69,8 +69,9 @@
     
     NSMutableDictionary *dic = [self checkoutData];
     [dic setValue:self.businessType forKey:@"businessType"];
-    [dic setValue:[NSString stringWithFormat:@"%ld" ,self.ticketId] forKey:@"ticketId"];
-    
+    [dic setValue:self.ticketId forKey:@"ticketId"];
+    DLog(@"可以使用的满减卡id ==%@" ,self.ticketId);
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/selectFullReduction" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"可以使用的满减卡券数据 ==%@" ,returnData);
         [SVProgressHUD show];
@@ -223,7 +224,7 @@
         }
         
         CardModel *model = self.cardMarray[btn.tag -100];
-        self.fullTicketId = model.cardId;
+        self.fullTicketId =[NSString stringWithFormat:@"%ld" , model.cardId];
         
     }
     
@@ -270,7 +271,18 @@
     
     NSMutableDictionary *dic = [self checkoutData];
     [dic setValue:self.businessType forKey:@"businessType"];
-    [dic setValue:[NSString stringWithFormat:@"%ld,%ld" ,self.ticketId,self.fullTicketId] forKey:@"ticketId"];
+    
+    if (self.ticketId.length == 0 && self.fullTicketId.length != 0) {
+        [dic setValue:self.fullTicketId forKey:@"ticketId"];
+    }else if (self.ticketId.length != 0 && self.fullTicketId.length == 0){
+        [dic setValue:self.ticketId forKey:@"ticketId"];
+    }else if (self.ticketId.length != 0 && self.fullTicketId.length != 0){
+        [dic setValue:[NSString stringWithFormat:@"%@,%@" ,self.ticketId,self.fullTicketId] forKey:@"ticketId"];
+
+    }else{
+        
+    }
+    
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/submitTicketIds" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"可以使用的满减卡券数据 ==%@" ,returnData);
@@ -278,18 +290,22 @@
         
         if ([returnData[@"status"] integerValue] == 200){
             ///选择优惠券 返回确认订单页面
-           
-        
-            NSString *tickets = [NSString stringWithFormat:@"%ld,%ld" ,self.ticketId ,self.fullTicketId];
+            NSString *tickets;
+            if (self.ticketId.length == 0 && self.fullTicketId.length != 0) {
+               
+                tickets = self.fullTicketId;
+
+            }else if (self.ticketId.length != 0 && self.fullTicketId.length == 0){
+                
+                tickets = self.ticketId;
+
+            }else if (self.ticketId.length != 0 && self.fullTicketId.length != 0){
+                tickets = [NSString stringWithFormat:@"%@,%@" ,self.ticketId ,self.fullTicketId];
+
+            }else{
+                
+            }
             
-            
-            
-//            if ([self respondsToSelector:@selector(selectCardPrice)]) {
-//
-//                self.selectCardPrice(tickets);
-//            }
-//            ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController  new];
-//            [self.navigationController popToViewController:VC animated:YES];
             for(UIViewController *controller in self.navigationController.viewControllers) {
                 
                 if([controller isKindOfClass:[ConfirmOrderInfoViewController class]]) {

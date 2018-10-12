@@ -21,7 +21,13 @@
 #import "SaleShareImageViewController.h"
 #import "SaleMoneyViewController.h"
 
-@interface HomePageDetailsViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
+#import "YNPageViewController.h"
+#import "UIView+YNPageExtend.h"
+#import "HomePageDetailsGoodsViewController.h"
+#import "HomePageDetailsCommentsViewController.h"
+
+
+@interface HomePageDetailsViewController ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate ,YNPageViewControllerDataSource, YNPageViewControllerDelegate>
 //轮播图
 @property (nonatomic,strong) SDCycleScrollView *cycleScrollView;
 
@@ -93,6 +99,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navItem.title = @"商品详情";
+    
+    
+   // [self setupPageVC];
+    
     isClickGoods = YES;
 
     [self requsetDetailsData];
@@ -101,6 +111,120 @@
     ////
     
 }
+
+
+#pragma mark ==========设置子控制器
+
+- (void)setupPageVC {
+    
+    YNPageConfigration *configration = [YNPageConfigration defaultConfig];
+    configration.pageStyle = YNPageStyleSuspensionTop;
+    configration.headerViewCouldScale = YES;
+    /// 控制tabbar 和 nav
+    configration.showTabbar = YES;
+    configration.showNavigation = YES;
+    configration.aligmentModeCenter = NO;
+    configration.lineWidthEqualFontWidth = NO;
+    configration.showBottomLine = YES;
+    configration.scrollMenu = YES;
+    configration.aligmentModeCenter = NO;
+    configration.menuHeight = 30*kScale;
+    configration.showBottomLine = NO;
+    configration.showScrollLine = NO;
+    configration.selectedItemColor = [UIColor whiteColor];
+    configration.selectedItemFont = [UIFont systemFontOfSize:17*kScale weight:0.7];
+    configration.itemFont = [UIFont systemFontOfSize:17*kScale];
+    
+    
+    NSMutableArray *buttonArrayM = @[].mutableCopy;
+    for (int i = 0; i < 2; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setBackgroundImage:[UIImage imageNamed:@"anniu"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"anniuxuanzhong"] forState:UIControlStateSelected];
+        
+        /// seTitle -> sizeToFit -> 自行调整位置
+        /// button.imageEdgeInsets = UIEdgeInsetsMake(0, 100, 0, 0);
+        [buttonArrayM addObject:button];
+    }
+    configration.buttonArray = buttonArrayM;
+    
+    
+    
+    //    configration.contentHeight
+    /// 设置悬浮停顿偏移量
+    configration.suspenOffsetY = -kBarHeight;
+    
+    
+    YNPageViewController *vc = [YNPageViewController pageViewControllerWithControllers:self.getArrayVCs
+                                                                                titles:[self getArrayTitles]
+                                                                                config:configration];
+    vc.dataSource = self;
+    vc.delegate = self;
+    
+    self.headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, (567+18)*kScale)];
+    self.headView.backgroundColor = RGB(238, 238, 238, 1);
+    
+    ///底部白条
+    UIView *whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 567*kScale, kWidth, 18*kScale)];
+    whiteView.backgroundColor = [UIColor whiteColor];
+    [self.headView addSubview:whiteView];
+    
+    vc.headerView = self.headView;
+    /// 指定默认选择index 页面
+    vc.pageIndex = 1;
+    
+    
+    
+    
+    
+    /// 作为自控制器加入到当前控制器
+    [vc addSelfToParentViewController:self];
+    /// 如果隐藏了导航条可以 适当改y值
+    vc.view.yn_y = kBarHeight;
+   // [self.view addSubview:self.navView];
+    
+}
+
+
+
+- (NSArray *)getArrayVCs {
+    
+    HomePageDetailsGoodsViewController *vc_1 = [[HomePageDetailsGoodsViewController alloc] init];
+    
+    HomePageDetailsCommentsViewController *vc_2 = [[HomePageDetailsCommentsViewController alloc] init];
+    
+    
+    
+    return @[vc_1, vc_2];
+}
+
+- (NSArray *)getArrayTitles {
+    return @[@"商品详情", @"评价详情"];
+}
+
+
+
+#pragma mark - YNPageViewControllerDataSource
+- (UIScrollView *)pageViewController:(YNPageViewController *)pageViewController pageForIndex:(NSInteger)index {
+    //PersonalViewController *vc = pageViewController.controllersM[index];
+    UIViewController *vc = pageViewController.controllersM[index];
+    
+        if ([vc isKindOfClass:[HomePageDetailsGoodsViewController class]]) {
+            return [(HomePageDetailsGoodsViewController *)vc tableView];
+        } else {
+            return [(HomePageDetailsCommentsViewController *)vc tableView];
+        }
+   // return [vc tableView];
+}
+#pragma mark - YNPageViewControllerDelegate
+- (void)pageViewController:(YNPageViewController *)pageViewController
+            contentOffsetY:(CGFloat)contentOffset
+                  progress:(CGFloat)progress {
+    
+    
+}
+
+
 
 
 -(void)showNavBarLeftItem{

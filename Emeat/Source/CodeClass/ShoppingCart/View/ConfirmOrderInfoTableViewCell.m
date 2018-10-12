@@ -27,7 +27,9 @@
 
 
 -(void)configWithShoppingModel:(ShoppingCartModel*)model{
+
     [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:model.mainImage] placeholderImage:[UIImage imageNamed:@"small_placeholder"] options:SDWebImageDelayPlaceholder];
+    
     self.nameLab.text = model.productName;
      if ([model.businessType isEqualToString:@"C"] ){///个人专区
         self.weightSizeLab.text = model.standardSize;
@@ -38,8 +40,21 @@
      }
     
     self.countLab.text = [NSString stringWithFormat:@"x %ld" ,(long)model.quantity];
-    self.newspriceLab.text = [NSString stringWithFormat:@" %@元" ,model.currentUnitPrice];
-    self.oldPricesLab.text = [NSString stringWithFormat:@"¥ %@元" ,model.costPrice];
+    
+    
+    if (model.discountPrice == -1) {///只显示原价
+        
+        self.newspriceLab.text = [NSString stringWithFormat:@"¥ %@元" ,model.costPrice];
+        self.oldPricesLab.text = @"";
+        
+    }else{
+        
+        self.newspriceLab.text = [NSString stringWithFormat:@" %@元" ,model.currentUnitPrice];
+        self.oldPricesLab.text = [NSString stringWithFormat:@"¥ %@元" ,model.costPrice];
+    }
+    
+    
+  
     self.allPricesLab.text = [NSString stringWithFormat:@"%@元" ,model.totalPrice];
     
 
@@ -53,10 +68,15 @@
 
     }];
     
-    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 5.5*kScale, [GetWidthAndHeightOfString getWidthForText:self.oldPricesLab height:12.0f*kScale], 1)];
-    lineView.backgroundColor = RGB(136, 136, 136, 1);
-    [self.oldPricesLab addSubview:lineView];
-    
+    if (model.discountPrice == -1) {///只显示原价
+        
+    }else{
+        UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 5.5*kScale, [GetWidthAndHeightOfString getWidthForText:self.oldPricesLab height:12.0f*kScale], 1)];
+        lineView.backgroundColor = RGB(136, 136, 136, 1);
+        [self.oldPricesLab addSubview:lineView];
+        
+    }
+   
     [self.allPricesLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@([GetWidthAndHeightOfString getWidthForText:self.allPricesLab height:12.0f*kScale]));
         

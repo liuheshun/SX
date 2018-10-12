@@ -226,7 +226,6 @@
     self.otherAddressArray = [NSMutableArray array];
     self.mealMarray = [NSMutableArray array];
     [self setupPageVC];
-    [self addHeadView];
    
     [self requestLocation];//请求当前位置信息
     [self addNavigationHeadBlockAction];
@@ -258,6 +257,7 @@
 #pragma mark =============检验店铺是否认证
 
 -(void)requestStoreStatedData{
+    
     DLog(@"bb=== %@" ,baseUrl);
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -274,6 +274,7 @@
     [dic setValue:mTypeIOS forKey:@"mtype"];
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
     //DLog(@"账号店铺是否登录认证= %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/mobile/store/get_store" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
@@ -328,7 +329,7 @@
                     [mArray addObject:bannerModel.bannerImage];
                 }
             }
-           // self.cycleScrollView.imageURLStringsGroup = mArray;
+           //self.cycleScrollView.imageURLStringsGroup = mArray;
             
             [self addSDCycleScrollViewWithImageURLArray:mArray ParentView:self.headerView];
 
@@ -533,33 +534,7 @@
     /// 指定默认选择index 页面
     vc.pageIndex = 1;
     
-    
-//    __weak typeof(YNPageViewController *) weakVC = vc;
-//    
-//    vc.bgScrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        
-//        NSInteger refreshPage = weakVC.pageIndex;
-//        
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            
-//            /// 取到之前的页面进行刷新 pageIndex 是当前页面
-//            PersonalViewController *vc2 = weakVC.controllersM[refreshPage];
-//            [vc2.tableView reloadData];
-//            
-//            if (kOpenRefreshHeaderViewHeight) {
-//                weakVC.headerView.yn_height = 300;
-//                [weakVC.bgScrollView.mj_header endRefreshing];
-//                [weakVC reloadSuspendHeaderViewFrame];
-//            } else {
-//                [weakVC.bgScrollView.mj_header endRefreshing];
-//            }
-//        });
-//    }];
-//    
-//    
-//    
-    
-    
+ 
     
     
     
@@ -571,12 +546,6 @@
     
 }
 
-
--(void)addHeadView{
-    
-    
-    
-}
 
 
 - (NSArray *)getArrayVCs {

@@ -79,6 +79,9 @@
                 if (model.discountPrice == -1) {///只显示原价
                     
                     [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.costPrice/100] forState:0];
+                    
+                    [self.oldPriceBtn setTitle:@"" forState:0];
+                    
                 }else{
                     [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100] forState:0];
                     [self.oldPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.costPrice/100] forState:0];
@@ -90,6 +93,8 @@
                 if (model.discountPrice == -1) {///只显示原价
                     
                     [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.costPrice/100] forState:0];
+                    [self.oldPriceBtn setTitle:@"" forState:0];
+
                 }else{
                     [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100] forState:0];
                     [self.oldPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.costPrice/100] forState:0];
@@ -135,6 +140,8 @@
         if (model.discountPrice == -1) {///只显示原价
             
            [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.costPrice/100] forState:0];
+            [self.oldPriceBtn setTitle:@"" forState:0];
+
         }else{
             
             [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.unitPrice/100] forState:0];

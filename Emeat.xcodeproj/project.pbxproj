@@ -154,6 +154,10 @@
 		1696BF1920EF269200BD9CD3 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696BF1820EF269200BD9CD3 /* NotificationService.m */; };
 		1696BF1D20EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1696BF1520EF269200BD9CD3 /* com.lxbox.Emeat.NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		169F950F2109D8C0004D1D36 /* SliceService ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F950E2109D8C0004D1D36 /* SliceService ViewController.m */; };
+		16A107A4216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A107A3216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.m */; };
+		16A107A7216EE71E00A6C39F /* HomePageDetailsCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A107A6216EE71E00A6C39F /* HomePageDetailsCommentsViewController.m */; };
+		16A107AA216F416D00A6C39F /* OrderCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A107A9216F416D00A6C39F /* OrderCommentsViewController.m */; };
+		16A107AD216F459200A6C39F /* OrderCommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A107AC216F459200A6C39F /* OrderCommentsTableViewCell.m */; };
 		16AA64F7208DBCA0001496E8 /* MMMyCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */; };
 		16B0992B20DB8B7E00D9F101 /* InvoiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992A20DB8B7E00D9F101 /* InvoiceListViewController.m */; };
 		16B0992E20DB909100D9F101 /* InvoiceListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0992D20DB909100D9F101 /* InvoiceListTableViewCell.m */; };
@@ -570,6 +574,14 @@
 		1696BF1A20EF269200BD9CD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		169F950D2109D8C0004D1D36 /* SliceService ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SliceService ViewController.h"; sourceTree = "<group>"; };
 		169F950E2109D8C0004D1D36 /* SliceService ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SliceService ViewController.m"; sourceTree = "<group>"; };
+		16A107A2216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageDetailsGoodsViewController.h; sourceTree = "<group>"; };
+		16A107A3216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageDetailsGoodsViewController.m; sourceTree = "<group>"; };
+		16A107A5216EE71E00A6C39F /* HomePageDetailsCommentsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageDetailsCommentsViewController.h; sourceTree = "<group>"; };
+		16A107A6216EE71E00A6C39F /* HomePageDetailsCommentsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageDetailsCommentsViewController.m; sourceTree = "<group>"; };
+		16A107A8216F416D00A6C39F /* OrderCommentsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderCommentsViewController.h; sourceTree = "<group>"; };
+		16A107A9216F416D00A6C39F /* OrderCommentsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCommentsViewController.m; sourceTree = "<group>"; };
+		16A107AB216F459200A6C39F /* OrderCommentsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderCommentsTableViewCell.h; sourceTree = "<group>"; };
+		16A107AC216F459200A6C39F /* OrderCommentsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCommentsTableViewCell.m; sourceTree = "<group>"; };
 		16AA64F5208DBCA0001496E8 /* MMMyCustomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMMyCustomView.h; sourceTree = "<group>"; };
 		16AA64F6208DBCA0001496E8 /* MMMyCustomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMMyCustomView.m; sourceTree = "<group>"; };
 		16B0992920DB8B7E00D9F101 /* InvoiceListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceListViewController.h; sourceTree = "<group>"; };
@@ -1491,6 +1503,10 @@
 				167FD8542113145E00AF44DD /* HomePageAllSortListViewController.m */,
 				1681304F1FC2A5B90045207E /* HomePageDetailsViewController.h */,
 				168130501FC2A5B90045207E /* HomePageDetailsViewController.m */,
+				16A107A2216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.h */,
+				16A107A3216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.m */,
+				16A107A5216EE71E00A6C39F /* HomePageDetailsCommentsViewController.h */,
+				16A107A6216EE71E00A6C39F /* HomePageDetailsCommentsViewController.m */,
 				1679D1BC204E7C3A009C2E25 /* HomePageOtherDetailsViewController.h */,
 				1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */,
 				16285FCE20FC374F0095E261 /* ShareImageViewController.h */,
@@ -1621,6 +1637,8 @@
 				16E6B28120860B8A00BDB1CB /* MyOrderDetailsStatusAccountHeadView.m */,
 				16EE10381FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.h */,
 				16EE10391FE74F6F0099DA91 /* MyOrderDetailsStatusFootView.m */,
+				16A107AB216F459200A6C39F /* OrderCommentsTableViewCell.h */,
+				16A107AC216F459200A6C39F /* OrderCommentsTableViewCell.m */,
 				16F77E6120FED7AD00E0D2DB /* JHGridView */,
 			);
 			path = View;
@@ -1648,6 +1666,8 @@
 				164847F5215244ED00E45FDE /* CareCenterTwoViewController.m */,
 				16ED48B22124089F00A440C5 /* CardDescViewController.h */,
 				16ED48B32124089F00A440C5 /* CardDescViewController.m */,
+				16A107A8216F416D00A6C39F /* OrderCommentsViewController.h */,
+				16A107A9216F416D00A6C39F /* OrderCommentsViewController.m */,
 				16EE10261FE1989A0099DA91 /* ContactServiceViewController.h */,
 				16EE10271FE1989A0099DA91 /* ContactServiceViewController.m */,
 				16EE10291FE199D90099DA91 /* AfterServiceViewController.h */,
@@ -2258,6 +2278,7 @@
 				16EE10401FECD7080099DA91 /* SuggestionFeedbackViewController.m in Sources */,
 				161BBAE0212BB9B5002AA7EC /* PanGestureRecognizer.m in Sources */,
 				1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */,
+				16A107A7216EE71E00A6C39F /* HomePageDetailsCommentsViewController.m in Sources */,
 				167FD84A2112DE4500AF44DD /* UIButton+SGPagingView.m in Sources */,
 				1683BD6D1FB005AC0043CA23 /* MyViewController.m in Sources */,
 				16885C5E2101C643008A6FB9 /* ZJScrollSegmentView.m in Sources */,
@@ -2279,6 +2300,7 @@
 				16901CEC1FD8EEE50080762A /* AddNewAddressView.m in Sources */,
 				16B750E4201337BF00C4642C /* VPImageCropperViewController.m in Sources */,
 				16EE102B1FE199D90099DA91 /* AfterServiceViewController.m in Sources */,
+				16A107AA216F416D00A6C39F /* OrderCommentsViewController.m in Sources */,
 				16885C5D2101C643008A6FB9 /* ZJSegmentStyle.m in Sources */,
 				16B0994320E1D1FD00D9F101 /* InvoicePreviewView.m in Sources */,
 				1610A973211196DE0050335B /* MainTouchTableTableView.m in Sources */,
@@ -2337,6 +2359,7 @@
 				16DC920520130BDE003C25BE /* MBProgressHUD.m in Sources */,
 				168130541FC2B2BF0045207E /* HomePageDetailsHeadView.m in Sources */,
 				16CB26F52150DCC700082A8E /* NewUserGiftView.m in Sources */,
+				16A107AD216F459200A6C39F /* OrderCommentsTableViewCell.m in Sources */,
 				161BBB1F212D89B6002AA7EC /* PersonalViewController.m in Sources */,
 				161BBADD212BB9B5002AA7EC /* DefaultViewAnimator.m in Sources */,
 				16ED4D611FFCD87C0070AB85 /* ShoppingCartEmptyHeadView.m in Sources */,
@@ -2377,6 +2400,7 @@
 				16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */,
 				16FF04EA1FD4EA2200F8C280 /* Location.m in Sources */,
 				16EE10141FE168070099DA91 /* WaitCommentViewController.m in Sources */,
+				16A107A4216EE6BE00A6C39F /* HomePageDetailsGoodsViewController.m in Sources */,
 				16FB31381FAC5D9D00049580 /* AppDelegate.m in Sources */,
 				16B0993D20E0CF5C00D9F101 /* SelectInvoiceTypesReceiveAddressTableViewCell.m in Sources */,
 				16885C582101C643008A6FB9 /* UIView+ZJFrame.m in Sources */,

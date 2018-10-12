@@ -61,7 +61,7 @@
     if (model.ticketMoneySum && ![model.ticketMoneySum isEqualToString:@"0"]) {
          self.cardAddPricesLab.text =[NSString stringWithFormat:@"-¥ %@" ,model.ticketMoneySum] ;
     }else{
-        self.cardAddPricesLab.text = @"-¥ 0";
+        self.cardAddPricesLab.text = @"¥ 0";
     }
    
 }

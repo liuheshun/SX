@@ -61,12 +61,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-   // [user setValue:tickets forKey:@"ticketsCard"];
     
-    if ([[user valueForKey:@"ticketsCard"] length] !=0 ) {
+   // if ([[user valueForKey:@"ticketsCard"] length] !=0 ) {
         
          [self getOrderInfoDataServiceType:self.serviceType TicketId:[user valueForKey:@"ticketsCard"]];
-    }
+    //}
     
 }
 - (void)viewDidLoad {
@@ -534,6 +533,14 @@
                 model.cardId = cardId;
                 model.postMoney = postMoney;
                 model.businessType = businessType;
+                
+                
+                model.mainImage = dic[@"productImage"];
+                NSMutableArray *mainImvMarray = [NSMutableArray arrayWithArray:[model.mainImage componentsSeparatedByString:@","]];
+                if (mainImvMarray.count!=0) {
+                    model.mainImage = [mainImvMarray firstObject];
+                }
+                
                 [orderListMarray addObject:model];
             }
             

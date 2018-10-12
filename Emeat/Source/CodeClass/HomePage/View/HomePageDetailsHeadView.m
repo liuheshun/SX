@@ -83,6 +83,8 @@
                 if (model.discountPrice == -1) {///只显示原价
                     
                     [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.costPrice/100] forState:0];
+                    [self.oldspriceBtnLab setTitle:@"" forState:0];
+
                 }else{
                     [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.unitPrice/100] forState:0];
                     [self.oldspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元/件",(float)model.costPrice/100] forState:0];
@@ -107,6 +109,8 @@
                 
                 [self.newspriceBtnLab setTitleColor:RGB(231, 35, 36, 1) forState:0];
                 [self.newspriceBtnLab setTitle:@"查看价格" forState:0];
+                [self.oldspriceBtnLab setTitle:@"" forState:0];
+
             }else{
                 ///商户未认证或者认证未通过
                 [self.newspriceBtnLab setTitleColor:RGB(231, 35, 36, 1) forState:0];
@@ -126,6 +130,8 @@
         if (model.discountPrice == -1) {///只显示原价
             
             [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.costPrice/100] forState:0];
+            [self.oldspriceBtnLab setTitle:@"" forState:0];
+
         }else{
             
             [self.newspriceBtnLab setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.unitPrice/100] forState:0];

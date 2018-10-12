@@ -30,7 +30,7 @@
 ///
 @property (nonatomic,strong) UIButton *selectedBtn;
 ///所选代金券ID
-@property (nonatomic,assign) NSInteger ticketId;
+@property (nonatomic,strong) NSString *ticketId;
 
 
 
@@ -40,7 +40,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-
+    self.ticketId = @"";
     [self requsetCanUsedCardData];
 
 }
@@ -72,7 +72,7 @@
     NSMutableDictionary *dic = [self checkoutData];
     [dic setValue:self.businessType forKey:@"businessType"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/selectVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        DLog(@"可以使用的卡券数据 ==%@" ,returnData);
+        DLog(@"可以使用的代金券卡券数据 ==%@" ,returnData);
         [SVProgressHUD show];
         
         if ([returnData[@"status"] integerValue] == 200)
@@ -115,8 +115,9 @@
     
     NSMutableDictionary *dic = [self checkoutData];
     [dic setValue:self.businessType forKey:@"businessType"];
-    [dic setValue:[NSString stringWithFormat:@"%ld" ,self.ticketId] forKey:@"ticketId"];
-    
+    [dic setValue:self.ticketId forKey:@"ticketId"];
+    DLog(@"可以使用的满减卡券数据id ==%@" ,self.ticketId);
+
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/selectFullReduction" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"可以使用的满减卡券数据 ==%@" ,returnData);
         [SVProgressHUD show];
@@ -140,6 +141,8 @@
         }else if ([returnData[@"status"] integerValue] == 201){
             
             [self.cardFullMarray removeAllObjects];
+            
+            
 
         }
 
@@ -330,7 +333,7 @@
             }
             
             CardModel *model = self.cardFullMarray[btn.tag -100];
-            self.ticketId = model.cardId;
+            self.ticketId = [NSString stringWithFormat:@"%ld" ,model.cardId];
             
         }
         
@@ -342,18 +345,21 @@
                 self.selectedBtn.selected = NO;
                 btn.selected = YES;
                 self.selectedBtn = btn;
+                CardModel *model = self.cardMarray[btn.tag -100];
+                self.ticketId = [NSString stringWithFormat:@"%ld" ,model.cardId];
             }else{
                 if (btn.selected == YES) {
                     btn.selected = NO;
-                    
+                    self.ticketId = nil;
                 }else{
                     self.selectedBtn.selected = YES;
+                    CardModel *model = self.cardMarray[btn.tag -100];
+                    self.ticketId = [NSString stringWithFormat:@"%ld" ,model.cardId];
                 }
                 
             }
             
-            CardModel *model = self.cardMarray[btn.tag -100];
-            self.ticketId = model.cardId;
+           
             
         }
     }
@@ -401,28 +407,68 @@
         [self postCardData];
         
     }else if (self.cardMarray.count== 0 && self.cardFullMarray.count == 0) {
+        
         [self.navigationController popViewControllerAnimated:YES];
-
-       // [self postCardData];
         
     }else{
         
-        CareCenterTwoViewController *VC = [CareCenterTwoViewController new];
-        VC.businessType = self.businessType;
-        VC.ticketId = self.ticketId;
-        [self.navigationController pushViewController:VC animated:YES];
+        [self requsetAgainFullCanUsedCardData];
+        
+       
     }
   
     
     
 }
 
+
+
+-(void)requsetAgainFullCanUsedCardData{
+    
+    NSMutableDictionary *dic = [self checkoutData];
+    [dic setValue:self.businessType forKey:@"businessType"];
+    [dic setValue:self.ticketId forKey:@"ticketId"];
+    DLog(@"again可以使用的满减卡券数据id ==%@" ,self.ticketId);
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/selectFullReduction" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        DLog(@"again可以使用的满减卡券数据 ==%@" ,returnData);
+        [SVProgressHUD show];
+        
+        if ([returnData[@"status"] integerValue] == 200)
+        {
+         
+            CareCenterTwoViewController *VC = [CareCenterTwoViewController new];
+            VC.businessType = self.businessType;
+            VC.ticketId = self.ticketId;
+            
+            [self.navigationController pushViewController:VC animated:YES];
+            
+            
+        }else if ([returnData[@"status"] integerValue] == 201){
+            
+            [self postCardData];
+
+            
+        }
+        
+        
+        [SVProgressHUD dismiss];
+        [self.tableView reloadData];
+        
+    } failureBlock:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        
+    } showHUD:NO];
+    
+}
+
+
 #pragma makr===========确认用券
 -(void)postCardData{
     
     NSMutableDictionary *dic = [self checkoutData];
     [dic setValue:self.businessType forKey:@"businessType"];
-    [dic setValue:[NSString stringWithFormat:@"%ld" ,self.ticketId] forKey:@"ticketId"];
+    [dic setValue:[NSString stringWithFormat:@"%@" ,self.ticketId] forKey:@"ticketId"];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/submitTicketIds" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"可以使用的满减卡券数据 ==%@" ,returnData);
@@ -432,7 +478,7 @@
             ///选择优惠券 返回确认订单页面
             
             
-            NSString *tickets = [NSString stringWithFormat:@"%ld" ,self.ticketId ];
+            NSString *tickets = [NSString stringWithFormat:@"%@" ,self.ticketId ];
             
 //            if ([self respondsToSelector:@selector(selectCardPrice)]) {
 //

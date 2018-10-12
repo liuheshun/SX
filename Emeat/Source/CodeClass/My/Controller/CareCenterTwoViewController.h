@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) NSString *businessType;
 
 ///代金券ID
-@property (nonatomic,assign) NSInteger ticketId;
+@property (nonatomic,strong) NSString *ticketId;
 
 
 @end

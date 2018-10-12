@@ -73,6 +73,8 @@
     if (item.discountPrice == -1) {///只显示原价
         
         self.newsPricesLabel.text = [NSString stringWithFormat:@"%.2f元" ,(CGFloat)item.costPrice/100];
+        self.oldsPricesLabel.text = @"";
+
     }else{
         self.newsPricesLabel.text = [NSString stringWithFormat:@"%.2f元" ,(CGFloat)item.unitPrice/100];
         self.oldsPricesLabel.text = [NSString stringWithFormat:@"%.2f元" ,(CGFloat)item.costPrice/100];
