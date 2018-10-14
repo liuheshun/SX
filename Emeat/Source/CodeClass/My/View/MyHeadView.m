@@ -22,7 +22,7 @@
         [self addSubview:self.waitSendGoodsBtn];
         [self addSubview:self.waitReceiveBtn];
         [self addSubview:self.returnGoodsBtn];
-       // [self addSubview:self.waitCommentBtn];
+        [self addSubview:self.waitCommentBtn];
         [self setMainViewFrame];
         self.bgImv.image = [UIImage imageNamed:@"组8"];
      
@@ -232,37 +232,37 @@
     }];
     
     [self.waitPayBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset((kWidth-260*kScale)/5);
+       // make.left.equalTo(self.mas_left).with.offset((kWidth-260*kScale)/5);
 
-       // make.left.equalTo(self.mas_left).with.offset((kWidth-320)/6);
+        make.left.equalTo(self.mas_left).with.offset((kWidth-320*kScale)/6);
         make.top.equalTo(self.myOrderBtn.mas_bottom).with.offset(30*kScale);
         make.width.equalTo(@(60*kScale));
         make.height.equalTo(@(50*kScale));
     }];
     
     [self.waitSendGoodsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.waitPayBtn.mas_right).with.offset((kWidth-260*kScale)/5);
+        make.left.equalTo(self.waitPayBtn.mas_right).with.offset((kWidth-320*kScale)/6);
         make.top.equalTo(self.myOrderBtn.mas_bottom).with.offset(30*kScale);
         make.width.equalTo(@(60*kScale));
         make.height.equalTo(@(50*kScale));
     }];
     [self.waitReceiveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.waitSendGoodsBtn.mas_right).with.offset((kWidth-260*kScale)/5);
+        make.left.equalTo(self.waitSendGoodsBtn.mas_right).with.offset((kWidth-320*kScale)/6);
         make.top.equalTo(self.myOrderBtn.mas_bottom).with.offset(30*kScale);
         make.width.equalTo(@(60*kScale));
         make.height.equalTo(@(50*kScale));
     }];
     
     
-//    [self.waitCommentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.waitReceiveBtn.mas_right).with.offset((kWidth-320)/6);
-//        make.top.equalTo(self.myOrderBtn.mas_bottom).with.offset(30);
-//        make.width.equalTo(@60);
-//        make.height.equalTo(@50);
-//    }];
+    [self.waitCommentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.waitReceiveBtn.mas_right).with.offset((kWidth-320*kScale)/6);
+        make.top.equalTo(self.myOrderBtn.mas_bottom).with.offset(30);
+        make.width.equalTo(@(60*kScale));
+        make.height.equalTo(@(50*kScale));
+    }];
     
     [self.returnGoodsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.waitReceiveBtn.mas_right).with.offset((kWidth-260*kScale)/5);
+        make.left.equalTo(self.waitCommentBtn.mas_right).with.offset((kWidth-320*kScale)/6);
         make.top.equalTo(self.myOrderBtn.mas_bottom).with.offset(30*kScale);
         make.width.equalTo(@(80*kScale));
         make.height.equalTo(@(50*kScale));

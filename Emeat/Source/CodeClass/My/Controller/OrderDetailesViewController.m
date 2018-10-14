@@ -18,6 +18,8 @@
 
 #import "AFHTTPSessionManager.h"
 #import "HomePageDetailsViewController.h"
+#import "OrderCommentsViewController.h"
+
 @interface OrderDetailesViewController ()<UITableViewDelegate ,UITableViewDataSource,TZImagePickerControllerDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) MyOrderDetailsStatusHeadView *myOrderDetailsStatusHeadView;
@@ -326,30 +328,40 @@
 
 
 
-
--(void)leftBottomBtnAction:(UIButton *)btn
-{
-    if (btn.tag == 10 || btn.tag == 40) {
+#pragma mark ======取消订单,确认订单, 去评价
+-(void)leftBottomBtnAction:(UIButton *)btn{
+    
+    if ([self.fromWaitCommentsVC isEqualToString:@"1"]) {
+        ///去评价
         
+        OrderCommentsViewController *VC = [OrderCommentsViewController new];
+        VC.orderNo = self.orderNo;
+        [self.navigationController pushViewController:VC animated:YES];
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消订单" preferredStyle:1];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    }else{
+        if (btn.tag == 10 || btn.tag == 40) {
             
-            [self requsetCancelOrderData];
             
-        }];
-        
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-        
-        [alert addAction:okAction];
-        [alert addAction:cancel];
-        [self presentViewController:alert animated:YES completion:nil];
-        
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消订单" preferredStyle:1];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                [self requsetCancelOrderData];
+                
+            }];
+            
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            
+            [alert addAction:okAction];
+            [alert addAction:cancel];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }
+        else if (btn.tag == 60)
+        {
+            [self confirmOrderData];
+        }
     }
-    else if (btn.tag == 60)
-    {
-        [self confirmOrderData];
-    }
+   
     
     
     
@@ -517,6 +529,24 @@
 //}
 
 -(void)setBottomViewFrames{
+    
+    if ([self.fromWaitCommentsVC isEqualToString:@"1"]) {
+        ///是否显示评价按钮
+        [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
+        [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.height.equalTo(@44);
+            make.bottom.equalTo(self.view.mas_bottom).with.offset(LL_TabbarSafeBottomMargin);
+        }];
+        [self.orderInfoBottomView.leftBottomBtn setTitle:@"去评价" forState:0];
+        [self.orderInfoBottomView.leftBottomBtn setTitleColor:[UIColor whiteColor] forState:0];
+        self.orderInfoBottomView.leftBottomBtn.backgroundColor = RGB(236, 31, 35, 1);
+        self.orderInfoBottomView.leftBottomBtn.tag = 60;
+        
+        [self setTableViewFrames];
+        
+    }else{
+        
     
     if (self.status == 10)////待支付
     {
@@ -700,17 +730,18 @@
     }
     if (self.status == 70)
     {
-                [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
-                [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.left.right.equalTo(self.view);
-                    make.height.equalTo(@44);
-                    make.bottom.equalTo(self.view.mas_bottom).with.offset(LL_TabbarSafeBottomMargin);
-          }];
-                [self.orderInfoBottomView.leftBottomBtn setTitle:@"确认收货" forState:0];
-                [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
-                self.orderInfoBottomView.leftBottomBtn.tag = 60;
+        [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
+        [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.height.equalTo(@44);
+            make.bottom.equalTo(self.view.mas_bottom).with.offset(LL_TabbarSafeBottomMargin);
+        }];
+        [self.orderInfoBottomView.leftBottomBtn setTitle:@"确认收货" forState:0];
+        [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
+        self.orderInfoBottomView.leftBottomBtn.tag = 60;
         
-                [self setTableViewFrames];
+        [self setTableViewFrames];
+        
     }
     
     
@@ -744,7 +775,7 @@
         [self resetTableViewFrames];
     }
     
-    
+    }
 }
 
 -(void)resetTableViewFrames{

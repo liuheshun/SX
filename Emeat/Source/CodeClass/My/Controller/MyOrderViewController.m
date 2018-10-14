@@ -14,6 +14,7 @@
 #import "WaitSendViewController.h"
 #import "WaitReceiveViewController.h"
 #import "WaitCommentViewController.h"
+
 #import "AfterSaleViewController.h"
 #import "ZJScrollPageView.h"
 #import "InvoiceListViewController.h"
@@ -71,7 +72,7 @@
     // 颜色渐变
     style.gradualChangeTitleColor = NO;
     //    style.showExtraButton = YES;
-    self.titles = @[@"全部", @"待付款", @"待确认", @"待收货"  ,@"退货/售后"];
+    self.titles = @[@"全部", @"待付款", @"待确认", @"待收货",@"待评价"  ,@"退货/售后"];
     // 初始化
     ZJScrollPageView *scrollPageView = [[ZJScrollPageView alloc] initWithFrame:CGRectMake(0, kBarHeight, self.view.bounds.size.width, self.view.bounds.size.height - kBarHeight) segmentStyle:style titles:self.titles parentViewController:self delegate:self];
     
@@ -83,8 +84,10 @@
     WaitPayViewController *twoVC = [[WaitPayViewController alloc] init];
     WaitSendViewController *threeVC= [[WaitSendViewController alloc] init];
     WaitReceiveViewController *fourVC = [[WaitReceiveViewController alloc] init];
+    WaitCommentViewController *fourVC1 = [[WaitCommentViewController alloc] init];
+
     AfterSaleViewController *fiveVC = [[AfterSaleViewController alloc] init];
-    self.childVcs = @[oneVC, twoVC, threeVC, fourVC ,fiveVC];
+    self.childVcs = @[oneVC, twoVC, threeVC, fourVC ,fourVC1,fiveVC];
 
 }
 

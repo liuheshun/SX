@@ -77,6 +77,8 @@
 		16285FD320FC3E050095E261 /* ShareImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD220FC3E050095E261 /* ShareImageView.m */; };
 		16285FD620FC82ED0095E261 /* ShareImageBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16285FD520FC82ED0095E261 /* ShareImageBottomView.m */; };
 		16311B0C20909FB2005B2277 /* JMHoledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16311B0B20909FB1005B2277 /* JMHoledView.m */; };
+		163C7BC5217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 163C7BC4217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.m */; };
+		163C7BC82171914C00BE4B08 /* HomePageCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163C7BC72171914C00BE4B08 /* HomePageCommentsModel.m */; };
 		163C9EF8212276B600E367EE /* PersonalPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 163C9EF7212276B600E367EE /* PersonalPageViewController.m */; };
 		1643DA801FCE938900F7162C /* SortListSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA7F1FCE938900F7162C /* SortListSegmentView.m */; };
 		1643DA861FCFE0FF00F7162C /* SeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643DA851FCFE0FF00F7162C /* SeacherViewController.m */; };
@@ -424,6 +426,10 @@
 		162D6E1E20F5922C00292D7E /* com.lxbox.Emeat.NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = com.lxbox.Emeat.NotificationService.entitlements; sourceTree = "<group>"; };
 		16311B0A20909FB1005B2277 /* JMHoledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMHoledView.h; sourceTree = "<group>"; };
 		16311B0B20909FB1005B2277 /* JMHoledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMHoledView.m; sourceTree = "<group>"; };
+		163C7BC3217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageDeatilsHeadSpecificationsView.h; sourceTree = "<group>"; };
+		163C7BC4217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageDeatilsHeadSpecificationsView.m; sourceTree = "<group>"; };
+		163C7BC62171914C00BE4B08 /* HomePageCommentsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageCommentsModel.h; sourceTree = "<group>"; };
+		163C7BC72171914C00BE4B08 /* HomePageCommentsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageCommentsModel.m; sourceTree = "<group>"; };
 		163C9EF6212276B600E367EE /* PersonalPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalPageViewController.h; sourceTree = "<group>"; };
 		163C9EF7212276B600E367EE /* PersonalPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalPageViewController.m; sourceTree = "<group>"; };
 		1643DA7E1FCE938900F7162C /* SortListSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SortListSegmentView.h; sourceTree = "<group>"; };
@@ -1480,6 +1486,8 @@
 			children = (
 				1646C3361FCBF1BB000552A1 /* HomePageModel.h */,
 				1646C3371FCBF1BB000552A1 /* HomePageModel.m */,
+				163C7BC62171914C00BE4B08 /* HomePageCommentsModel.h */,
+				163C7BC72171914C00BE4B08 /* HomePageCommentsModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1541,6 +1549,8 @@
 				167FD851211307C200AF44DD /* HomePageSortTableViewCell.m */,
 				168130521FC2B2BF0045207E /* HomePageDetailsHeadView.h */,
 				168130531FC2B2BF0045207E /* HomePageDetailsHeadView.m */,
+				163C7BC3217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.h */,
+				163C7BC4217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.m */,
 				168130551FC3C1210045207E /* HomePageCommentDetailsTableViewCell.h */,
 				168130561FC3C1210045207E /* HomePageCommentDetailsTableViewCell.m */,
 				16D677B12018570100318FAA /* HomePageShoppingDetailsTableViewCell.h */,
@@ -1670,6 +1680,7 @@
 				16A107A9216F416D00A6C39F /* OrderCommentsViewController.m */,
 				16EE10261FE1989A0099DA91 /* ContactServiceViewController.h */,
 				16EE10271FE1989A0099DA91 /* ContactServiceViewController.m */,
+				16EE100C1FE167860099DA91 /* WaitReceiveViewController.h */,
 				16EE10291FE199D90099DA91 /* AfterServiceViewController.h */,
 				16EE102A1FE199D90099DA91 /* AfterServiceViewController.m */,
 				16EE102C1FE19B670099DA91 /* SettingViewController.h */,
@@ -1682,7 +1693,6 @@
 				16EE10071FE167480099DA91 /* AllOrderViewController.m */,
 				16EE10091FE167660099DA91 /* WaitPayViewController.h */,
 				16EE100A1FE167660099DA91 /* WaitPayViewController.m */,
-				16EE100C1FE167860099DA91 /* WaitReceiveViewController.h */,
 				16EE100D1FE167860099DA91 /* WaitReceiveViewController.m */,
 				16EE100F1FE167970099DA91 /* WaitSendViewController.h */,
 				16EE10101FE167970099DA91 /* WaitSendViewController.m */,
@@ -2280,6 +2290,7 @@
 				1683BD781FB18A0B0043CA23 /* ShoppingCartTableViewCell.m in Sources */,
 				16A107A7216EE71E00A6C39F /* HomePageDetailsCommentsViewController.m in Sources */,
 				167FD84A2112DE4500AF44DD /* UIButton+SGPagingView.m in Sources */,
+				163C7BC82171914C00BE4B08 /* HomePageCommentsModel.m in Sources */,
 				1683BD6D1FB005AC0043CA23 /* MyViewController.m in Sources */,
 				16885C5E2101C643008A6FB9 /* ZJScrollSegmentView.m in Sources */,
 				1616CE4E212511C2004FF454 /* CardModel.m in Sources */,
@@ -2336,6 +2347,7 @@
 				16901C9D1FD5A5B40080762A /* GetWidthAndHeightOfString.m in Sources */,
 				165BCC9F20E1F6C6006883FB /* InvoiceHistoryViewController.m in Sources */,
 				16CFD74D1FB5496A0015F2C1 /* ConfirmOrderInfoTableViewCell.m in Sources */,
+				163C7BC5217085ED00BE4B08 /* HomePageDeatilsHeadSpecificationsView.m in Sources */,
 				16B0993120DBAA2A00D9F101 /* InvoiceListBottomView.m in Sources */,
 				16B0993720DC9F2500D9F101 /* SelectInvoiceTypesHeadView.m in Sources */,
 				16901C961FD5326B0080762A /* AddNewAddressViewController.m in Sources */,

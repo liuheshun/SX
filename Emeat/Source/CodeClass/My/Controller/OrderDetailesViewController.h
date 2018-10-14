@@ -14,5 +14,8 @@
 /// 1 的时候表示跳转来自支付页面 ,
 @property (nonatomic,strong) NSString *fromPayVC;
 
+///1 的时候表示跳转来自待评价页面 ,
+@property (nonatomic,strong) NSString *fromWaitCommentsVC;
+
 
 @end

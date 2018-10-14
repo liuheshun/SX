@@ -114,10 +114,16 @@
             
             NSArray *appArray = [[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."];
             
-            NSInteger minArrayLength = MIN(localArray.count, appArray.count);
+             BOOL needUpdate = NO;
             
-            BOOL needUpdate = NO;
             
+            if (appArray.count > localArray.count) {
+                needUpdate = YES;
+            }else{
+            
+                NSInteger minArrayLength = MIN(localArray.count, appArray.count);
+
+                
             for(int i=0;i<minArrayLength;i++){//以最短的数组长度为遍历次数,防止数组越界
                 //取出每个部分的字符串值,比较数值大小
                 
@@ -127,10 +133,7 @@
                 
                 NSInteger  localValue =  localElement.integerValue;
                 
-                
                 NSInteger  appValue = appElement.integerValue;
-                
-                
                 
                 if(localValue<appValue) {
                     
@@ -142,18 +145,13 @@
                     
                 }else{
                     
-                    
-                    
                     needUpdate = NO;
                     
                 }
                 
-                
+            }
                 
             }
-            
-            
-            
             
             
             if (needUpdate) {

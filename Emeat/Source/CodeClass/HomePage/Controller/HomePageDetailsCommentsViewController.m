@@ -7,8 +7,10 @@
 //
 
 #import "HomePageDetailsCommentsViewController.h"
+#import "HomePageCommentDetailsTableViewCell.h"
 
 @interface HomePageDetailsCommentsViewController ()<UITableViewDataSource ,UITableViewDelegate>
+@property (nonatomic,strong) NSMutableArray *dataArray;
 
 
 @end
@@ -18,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.view addSubview:self.tableView];
 }
 
 
@@ -41,14 +44,12 @@
     return 1;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 180*kScale;
+    return 297*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        return 200*kScale;
-    }
-    return 15*kScale;
+    return 0.001;
+
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -72,15 +73,16 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"list_cell"];
+    HomePageCommentDetailsTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"comment_cell"];
     if (cell1 == nil) {
-        cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"list_cell"];
+        cell1 = [[HomePageCommentDetailsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"comment_cell"];
         
         //[cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
-        cell1.backgroundColor = [UIColor orangeColor];
+        cell1.backgroundColor = [UIColor whiteColor];
+        
         
     }
-    
+    [cell1 setGoodsStartArray:[NSMutableArray arrayWithObjects:@"1" ,@"2", nil] andCommentDescImvArray:[NSMutableArray arrayWithObjects:@"1" ,@"2" ,@"3", nil] CommentsLabsMarray:[NSMutableArray arrayWithObjects:@"1" ,@"2",@"3" ,@"4" ,@"5",@"6", nil] ConfigWithConmmentsModel:nil];
     return cell1;
 }
 

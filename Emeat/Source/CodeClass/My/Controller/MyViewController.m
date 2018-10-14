@@ -496,7 +496,7 @@
         
         MyOrderViewController *VC = [MyOrderViewController new];
         VC.hidesBottomBarWhenPushed = YES;
-        // VC.selectIndex = 4;
+         VC.selectIndex = 4;
         [self.navigationController pushViewController:VC animated:YES];
         
      
@@ -516,7 +516,7 @@
         
         MyOrderViewController *VC = [MyOrderViewController new];
         VC.hidesBottomBarWhenPushed = YES;
-        VC.selectIndex = 4;
+        VC.selectIndex = 5;
         [self.navigationController pushViewController:VC animated:YES];
     }else{
         LoginViewController *VC = [LoginViewController new];

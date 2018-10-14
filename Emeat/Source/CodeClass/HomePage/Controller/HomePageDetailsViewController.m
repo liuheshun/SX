@@ -33,6 +33,9 @@
 
 @property (nonatomic,strong) UITableView *tableView;
 
+@property (nonatomic,strong) UIView *headBgView;
+
+
 @property (nonatomic,strong) HomePageDetailsHeadView *headView;
 @property (nonatomic,strong) HomePageDetailsBottomView *bottomView;
 @property (nonatomic,strong) HomePageDetailsBuyNoticeView *buyNoticeView;
@@ -101,10 +104,9 @@
     self.navItem.title = @"商品详情";
     
     
-   // [self setupPageVC];
     
-    isClickGoods = YES;
-
+//    isClickGoods = YES;
+//
     [self requsetDetailsData];
     [self showNavBarLeftItem ];
     [self requestSalePeopleId];
@@ -123,36 +125,35 @@
     /// 控制tabbar 和 nav
     configration.showTabbar = YES;
     configration.showNavigation = YES;
-    configration.aligmentModeCenter = NO;
-    configration.lineWidthEqualFontWidth = NO;
+    configration.lineWidthEqualFontWidth = YES;
     configration.showBottomLine = YES;
-    configration.scrollMenu = YES;
+    configration.scrollMenu = NO;
     configration.aligmentModeCenter = NO;
-    configration.menuHeight = 30*kScale;
-    configration.showBottomLine = NO;
+    configration.menuHeight = 44*kScale;
+    configration.showBottomLine = YES;
     configration.showScrollLine = NO;
-    configration.selectedItemColor = [UIColor whiteColor];
-    configration.selectedItemFont = [UIFont systemFontOfSize:17*kScale weight:0.7];
-    configration.itemFont = [UIFont systemFontOfSize:17*kScale];
+    configration.selectedItemColor = RGB(231, 35, 36, 1);
+    configration.selectedItemFont = [UIFont systemFontOfSize:15*kScale];
+    configration.itemFont = [UIFont systemFontOfSize:15*kScale];
     
-    
-    NSMutableArray *buttonArrayM = @[].mutableCopy;
-    for (int i = 0; i < 2; i++) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setBackgroundImage:[UIImage imageNamed:@"anniu"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"anniuxuanzhong"] forState:UIControlStateSelected];
-        
-        /// seTitle -> sizeToFit -> 自行调整位置
-        /// button.imageEdgeInsets = UIEdgeInsetsMake(0, 100, 0, 0);
-        [buttonArrayM addObject:button];
-    }
-    configration.buttonArray = buttonArrayM;
-    
+//
+//    NSMutableArray *buttonArrayM = @[].mutableCopy;
+//    for (int i = 0; i < 2; i++) {
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [button setBackgroundImage:[UIImage imageNamed:@"anniu"] forState:UIControlStateNormal];
+//        [button setBackgroundImage:[UIImage imageNamed:@"anniuxuanzhong"] forState:UIControlStateSelected];
+//
+//        /// seTitle -> sizeToFit -> 自行调整位置
+//        /// button.imageEdgeInsets = UIEdgeInsetsMake(0, 100, 0, 0);
+//        [buttonArrayM addObject:button];
+//    }
+//    configration.buttonArray = buttonArrayM;
+//
     
     
     //    configration.contentHeight
     /// 设置悬浮停顿偏移量
-    configration.suspenOffsetY = -kBarHeight;
+    configration.suspenOffsetY = 0;
     
     
     YNPageViewController *vc = [YNPageViewController pageViewControllerWithControllers:self.getArrayVCs
@@ -161,17 +162,13 @@
     vc.dataSource = self;
     vc.delegate = self;
     
-    self.headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, (567+18)*kScale)];
-    self.headView.backgroundColor = RGB(238, 238, 238, 1);
+    self.headBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, self.headViewHeiht)];
+    self.headBgView.backgroundColor = [UIColor purpleColor];
     
-    ///底部白条
-    UIView *whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 567*kScale, kWidth, 18*kScale)];
-    whiteView.backgroundColor = [UIColor whiteColor];
-    [self.headView addSubview:whiteView];
     
-    vc.headerView = self.headView;
+    vc.headerView = self.headBgView;
     /// 指定默认选择index 页面
-    vc.pageIndex = 1;
+    vc.pageIndex = 0;
     
     
     
@@ -183,6 +180,66 @@
     vc.view.yn_y = kBarHeight;
    // [self.view addSubview:self.navView];
     
+    [self addheadViews];
+}
+
+
+-(void)addheadViews{
+    self.headView = [[HomePageDetailsHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, self.headViewHeiht)];
+    [self.headBgView addSubview:self.headView];
+
+    self.headView.backgroundColor = [UIColor whiteColor];
+    SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kWidth, 300*kScale) delegate:self placeholderImage:[UIImage imageNamed:@"商品主图加载"]];   //placeholder
+    cycleScrollView.imageURLStringsGroup = self.bannerDataArray;
+    cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
+    cycleScrollView.showPageControl = YES;//是否显示分页控件
+    cycleScrollView.currentPageDotColor = [UIColor orangeColor]; // 自定义分页控件小圆标颜色
+    [self.headView addSubview:cycleScrollView];
+    self.cycleScrollView = cycleScrollView;
+    
+    
+    ///头部赋值
+    if (self.headDataArray.count!=0) {
+        HomePageModel *model = [self.headDataArray firstObject];
+        [self.headView configHeadViewWithModel:model];
+    }
+    
+    ///是否可以查看价格
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
+        
+        
+    }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){
+        ///点击查看价格点击事件
+        [self.headView.newspriceBtnLab addTarget:self action:@selector(checkPricesAction) forControlEvents:1];
+    }
+    
+    [self.headView.noticeBtn addTarget:self action:@selector(noticeBtnAvtion) forControlEvents:1];
+    
+    __weak __typeof(self) weakSelf = self;
+    self.headView.changeGoodsDetailsBlock = ^{
+        isClickGoods = YES;
+        [weakSelf.tableView reloadData];
+    };
+    
+    self.headView.changeCommentDetailsBlock = ^{
+        isClickGoods = NO;
+        [weakSelf.tableView reloadData];
+    };
+    
+    
+    ///切换规格
+    self.headView.returnSelectIndex = ^(NSInteger selectIndex) {
+        
+        HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[selectIndex];
+        weakSelf.detailsId = [NSString stringWithFormat:@"%ld" ,(long)model.commodityId] ;
+        weakSelf.fromBaner = @"0"; ///此处不能传sp的ID
+        [weakSelf requsetDetailsData];
+        
+    };
+
 }
 
 
@@ -192,8 +249,11 @@
     HomePageDetailsGoodsViewController *vc_1 = [[HomePageDetailsGoodsViewController alloc] init];
     
     HomePageDetailsCommentsViewController *vc_2 = [[HomePageDetailsCommentsViewController alloc] init];
+    vc_1.fromBaner = self.fromBaner;
+    vc_1.detailsId = self.detailsId;
     
-    
+//    vc_2.fromBaner = self.fromBaner;
+//    vc_2.detailsId = self.detailsId;
     
     return @[vc_1, vc_2];
 }
@@ -305,10 +365,10 @@
                 CGSize r = [bannerModel.commodityDesc boundingRectWithSize:CGSizeMake(kWidth-30*kScale, 1000*kScale) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12.0f*kScale]} context:nil].size;
                 
                 if ([bannerModel.showType isEqualToString:@"SOGO"]){///B端
-                    self.headViewHeiht = (650)*kScale +r.height;
+                    self.headViewHeiht = (521-20)*kScale +r.height;
                     self.isShowShareString = @"1";
                 }else{
-                    self.headViewHeiht = (610)*kScale +r.height;
+                    self.headViewHeiht = (471-20)*kScale +r.height;
                     self.isShowShareString = @"0";
                 }
                 
@@ -344,13 +404,13 @@
                         [self.specsListMarray addObject:specsListModel];
                     }
                     [GlobalHelper shareInstance].specsListMarray = self.specsListMarray;
-                    [self.view addSubview:self.tableView];
+                    [self setupPageVC];
                     [self.view addSubview:self.bottomView];
                     [self setBottomViewFrame];
                     
                     [self setButtonBadgeValue:self.bottomView.cartBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)[GlobalHelper shareInstance].shoppingCartBadgeValue ] badgeOriginX:MaxX(self.bottomView.cartBtn.imageView)-5 badgeOriginY:Y(self.bottomView.cartBtn.imageView)-12];
                     
-                    [self.tableView reloadData];
+                   // [self.tableView reloadData];
                 }
               
             }else{
@@ -819,7 +879,7 @@
            
         
         }
-        [cell1 setGoodsStartArray:@[@"1" ,@"2" ,@"3"] sendStarArray:@[@"1" ,@"2" ,@"3"] andCommentDescImvArray:@[@"1" ,@"2" ,@"3"]];
+       // [cell1 setGoodsStartArray:[NSMutableArray arrayWithObjects:@"1" ,@"2", nil] andCommentDescImvArray:[NSMutableArray arrayWithObjects:@"1" ,@"2" ,@"3", nil] CommentsLabsMarray:[NSMutableArray arrayWithObjects:@"1" ,@"2", nil]];
         return cell1;
     }else
     {

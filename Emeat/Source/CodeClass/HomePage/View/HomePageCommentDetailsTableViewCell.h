@@ -7,6 +7,7 @@
 //评价详情cell
 
 #import <UIKit/UIKit.h>
+#import "HomePageCommentsModel.h"
 
 @interface HomePageCommentDetailsTableViewCell : UITableViewCell
 //头像
@@ -28,8 +29,11 @@
 //评论图片
 @property (nonatomic,strong) UIImageView *commentDescImv;
 
+///标签
+@property (nonatomic,strong) UIButton *commentsLabBtn;
 
--(void)setGoodsStartArray:(NSArray*)goodsStatArray sendStarArray :(NSArray*)sendStarArray andCommentDescImvArray:(NSArray*)descImvArray;
+
+-(void)setGoodsStartArray:(NSMutableArray*)goodsStatArray andCommentDescImvArray:(NSMutableArray*)descImvArray CommentsLabsMarray:(NSMutableArray*)commentsLabsMarray ConfigWithConmmentsModel:(HomePageCommentsModel*)commentsModel;
 
 //@property (nonatomic,strong) NSArray *goodsStarArray;
 //

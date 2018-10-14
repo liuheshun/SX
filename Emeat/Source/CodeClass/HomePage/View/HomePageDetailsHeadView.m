@@ -22,18 +22,18 @@
         [self addSubview:self.weightLab];
         [self addSubview:self.noticeBtn];
         [self addSubview:self.lineView];
-        [self addSubview:self.goodsDetailsBtn];
+        //[self addSubview:self.goodsDetailsBtn];
         
         //[self addSubview:self.pingjiaDetailsBtn];
         //[self addSubview:self.lineleftView];
         //[self addSubview:self.lineRightView];
-        [self addSubview:self.countryLab];
-        [self addSubview:self.partLab];
-        [self addSubview:self.standardsLab];
-        [self addSubview:self.breedLab];
-        [self addSubview:self.environmentLab];
-        [self addSubview:self.brandLab];
-        
+//        [self addSubview:self.countryLab];
+//        [self addSubview:self.partLab];
+//        [self addSubview:self.standardsLab];
+//        [self addSubview:self.breedLab];
+//        [self addSubview:self.environmentLab];
+//        [self addSubview:self.brandLab];
+//
         [self setMainViewFrame];
     }
     return self;
@@ -454,15 +454,15 @@
 
     }];
     
-    [self.goodsDetailsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self);
-        make.top.equalTo(self.lineView.mas_bottom).with.offset(0);
-        //make.top.equalTo(self.weightLab.mas_bottom).with.offset(25);
-       // make.width.equalTo(@(kWidth/2));
-        make.width.equalTo(@(kWidth));
-
-        make.height.equalTo(@(45*kScale));
-    }];
+//    [self.goodsDetailsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self);
+//        make.top.equalTo(self.lineView.mas_bottom).with.offset(0);
+//        //make.top.equalTo(self.weightLab.mas_bottom).with.offset(25);
+//       // make.width.equalTo(@(kWidth/2));
+//        make.width.equalTo(@(kWidth));
+//
+//        make.height.equalTo(@(45*kScale));
+//    }];
     
 //    [self.pingjiaDetailsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.equalTo(self.goodsDetailsBtn.mas_right).with.offset(0);
@@ -494,50 +494,50 @@
 //        make.height.equalTo(@12);
 //    }];
     
-    [self.countryLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.goodsDetailsBtn.mas_bottom).with.offset(10*kScale);
-        make.width.equalTo(@((kWidth/2-15)*kScale));
-        make.height.equalTo(@(12*kScale));
-    }];
-    
-    [self.partLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
-        make.top.equalTo(self.countryLab);
-        make.width.equalTo(@((kWidth/2-15)*kScale));
-        make.height.equalTo(@(12*kScale));
-    }];
-    
-    
-    [self.standardsLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.countryLab.mas_bottom).with.offset(15*kScale);
-        make.width.equalTo(@((kWidth/2-15)*kScale));
-        make.height.equalTo(@(12*kScale));
-    }];
-    
-    [self.breedLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
-        make.top.equalTo(self.partLab.mas_bottom).with.offset(15*kScale);
-        make.width.equalTo(@((kWidth/2-15)*kScale));
-        make.height.equalTo(@(12*kScale));
-    }];
-    
-    
-    [self.environmentLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset(15*kScale);
-        make.top.equalTo(self.standardsLab.mas_bottom).with.offset(15*kScale);
-        make.width.equalTo(@((kWidth/2-15)*kScale));
-        make.height.equalTo(@(12*kScale));
-    }];
-    
-    [self.brandLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
-        make.top.equalTo(self.breedLab.mas_bottom).with.offset(15*kScale);
-        make.width.equalTo(@((kWidth/2-15)*kScale));
-        make.height.equalTo(@(12*kScale));
-    }];
-    
+//    [self.countryLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+//        make.top.equalTo(self.goodsDetailsBtn.mas_bottom).with.offset(10*kScale);
+//        make.width.equalTo(@((kWidth/2-15)*kScale));
+//        make.height.equalTo(@(12*kScale));
+//    }];
+//    
+//    [self.partLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+//        make.top.equalTo(self.countryLab);
+//        make.width.equalTo(@((kWidth/2-15)*kScale));
+//        make.height.equalTo(@(12*kScale));
+//    }];
+//    
+//    
+//    [self.standardsLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+//        make.top.equalTo(self.countryLab.mas_bottom).with.offset(15*kScale);
+//        make.width.equalTo(@((kWidth/2-15)*kScale));
+//        make.height.equalTo(@(12*kScale));
+//    }];
+//    
+//    [self.breedLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+//        make.top.equalTo(self.partLab.mas_bottom).with.offset(15*kScale);
+//        make.width.equalTo(@((kWidth/2-15)*kScale));
+//        make.height.equalTo(@(12*kScale));
+//    }];
+//    
+//    
+//    [self.environmentLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+//        make.top.equalTo(self.standardsLab.mas_bottom).with.offset(15*kScale);
+//        make.width.equalTo(@((kWidth/2-15)*kScale));
+//        make.height.equalTo(@(12*kScale));
+//    }];
+//    
+//    [self.brandLab mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
+//        make.top.equalTo(self.breedLab.mas_bottom).with.offset(15*kScale);
+//        make.width.equalTo(@((kWidth/2-15)*kScale));
+//        make.height.equalTo(@(12*kScale));
+//    }];
+//    
 }
 
 
@@ -658,69 +658,69 @@
 
 
 
-
--(UILabel*)countryLab{
-    if (!_countryLab) {
-        _countryLab = [[UILabel alloc] init];
-        _countryLab.font = [UIFont systemFontOfSize:12.0f];
-        _countryLab.textColor = RGB(51 , 51, 51, 51);
-        _countryLab.textAlignment = NSTextAlignmentLeft;
-    }
-    return _countryLab;
-}
-
--(UILabel*)partLab{
-    if (!_partLab) {
-        _partLab = [[UILabel alloc] init];
-        _partLab.font = [UIFont systemFontOfSize:12.0f];
-        _partLab.textColor = RGB(51 , 51, 51, 51);
-        _partLab.textAlignment = NSTextAlignmentLeft;
-    }
-    return _partLab;
-}
-
-
--(UILabel*)standardsLab{
-    if (!_standardsLab) {
-        _standardsLab = [[UILabel alloc] init];
-        _standardsLab.font = [UIFont systemFontOfSize:12.0f];
-        _standardsLab.textColor = RGB(51 , 51, 51, 51);
-        _standardsLab.textAlignment = NSTextAlignmentLeft;
-    }
-    return _standardsLab;
-}
-
-
-
--(UILabel*)breedLab{
-    if (!_breedLab) {
-        _breedLab = [[UILabel alloc] init];
-        _breedLab.font = [UIFont systemFontOfSize:12.0f];
-        _breedLab.textColor = RGB(51 , 51, 51, 51);
-        _breedLab.textAlignment = NSTextAlignmentLeft;
-    }
-    return _breedLab;
-}
-
--(UILabel*)environmentLab{
-    if (!_environmentLab) {
-        _environmentLab = [[UILabel alloc] init];
-        _environmentLab.font = [UIFont systemFontOfSize:12.0f];
-        _environmentLab.textColor = RGB(51 , 51, 51, 51);
-        _environmentLab.textAlignment = NSTextAlignmentLeft;
-    }
-    return _environmentLab;
-}
-
--(UILabel*)brandLab{
-    if (!_brandLab) {
-        _brandLab = [[UILabel alloc] init];
-        _brandLab.font = [UIFont systemFontOfSize:12.0f];
-        _brandLab.textColor = RGB(51 , 51, 51, 51);
-        _brandLab.textAlignment = NSTextAlignmentLeft;
-    }
-    return _brandLab;
-}
+//
+//-(UILabel*)countryLab{
+//    if (!_countryLab) {
+//        _countryLab = [[UILabel alloc] init];
+//        _countryLab.font = [UIFont systemFontOfSize:12.0f];
+//        _countryLab.textColor = RGB(51 , 51, 51, 51);
+//        _countryLab.textAlignment = NSTextAlignmentLeft;
+//    }
+//    return _countryLab;
+//}
+//
+//-(UILabel*)partLab{
+//    if (!_partLab) {
+//        _partLab = [[UILabel alloc] init];
+//        _partLab.font = [UIFont systemFontOfSize:12.0f];
+//        _partLab.textColor = RGB(51 , 51, 51, 51);
+//        _partLab.textAlignment = NSTextAlignmentLeft;
+//    }
+//    return _partLab;
+//}
+//
+//
+//-(UILabel*)standardsLab{
+//    if (!_standardsLab) {
+//        _standardsLab = [[UILabel alloc] init];
+//        _standardsLab.font = [UIFont systemFontOfSize:12.0f];
+//        _standardsLab.textColor = RGB(51 , 51, 51, 51);
+//        _standardsLab.textAlignment = NSTextAlignmentLeft;
+//    }
+//    return _standardsLab;
+//}
+//
+//
+//
+//-(UILabel*)breedLab{
+//    if (!_breedLab) {
+//        _breedLab = [[UILabel alloc] init];
+//        _breedLab.font = [UIFont systemFontOfSize:12.0f];
+//        _breedLab.textColor = RGB(51 , 51, 51, 51);
+//        _breedLab.textAlignment = NSTextAlignmentLeft;
+//    }
+//    return _breedLab;
+//}
+//
+//-(UILabel*)environmentLab{
+//    if (!_environmentLab) {
+//        _environmentLab = [[UILabel alloc] init];
+//        _environmentLab.font = [UIFont systemFontOfSize:12.0f];
+//        _environmentLab.textColor = RGB(51 , 51, 51, 51);
+//        _environmentLab.textAlignment = NSTextAlignmentLeft;
+//    }
+//    return _environmentLab;
+//}
+//
+//-(UILabel*)brandLab{
+//    if (!_brandLab) {
+//        _brandLab = [[UILabel alloc] init];
+//        _brandLab.font = [UIFont systemFontOfSize:12.0f];
+//        _brandLab.textColor = RGB(51 , 51, 51, 51);
+//        _brandLab.textAlignment = NSTextAlignmentLeft;
+//    }
+//    return _brandLab;
+//}
 
 
 

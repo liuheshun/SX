@@ -99,7 +99,7 @@
 
 -(UITextView *)textView{
     if (!_textView) {
-        _textView = [[UITextView alloc] initWithFrame:CGRectMake(15, kBarHeight+15, kWidth-30, 120)]; //初始化大小并自动释放
+        _textView = [[UITextView alloc] initWithFrame:CGRectMake(15*kScale, kBarHeight+15*kScale, kWidth-30*kScale, 120*kScale)]; //初始化大小并自动释放
         
         _textView.textColor = [UIColor blackColor];//设置textview里面的字体颜色
         _textView.layer.borderColor = RGB(138, 138, 138, 1).CGColor;
@@ -125,9 +125,9 @@
 
 -(UILabel *)placeHolderLabel{
     if (!_placeHolderLabel) {
-        _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, 240, 20)];
+        _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(10*kScale, 8*kScale, 240*kScale, 20*kScale)];
         _placeHolderLabel.numberOfLines = 0;
-        _placeHolderLabel.font = [UIFont systemFontOfSize:12.0f];
+        _placeHolderLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
         _placeHolderLabel.text = @"请输入你的反馈意见...";
         _placeHolderLabel.textColor = RGB(136, 136, 136, 1);
         _placeHolderLabel.backgroundColor =[UIColor clearColor];
@@ -141,7 +141,7 @@
     if (!_residueLabel) {
         
         //多余的一步不需要的可以不写  计算textview的输入字数
-        _residueLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(self.textView)-73, HEIGHT(self.textView)-30, 70, 30)];
+        _residueLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(self.textView)-73*kScale, HEIGHT(self.textView)-30*kScale, 70*kScale, 30*kScale)];
         _residueLabel.backgroundColor = [UIColor clearColor];
         _residueLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
         _residueLabel.text =[NSString stringWithFormat:@"140/140"];

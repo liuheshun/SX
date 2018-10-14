@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ReturnComments)(NSString *commets);
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OrderCommentsTableViewCell : UITableViewCell
+@interface OrderCommentsTableViewCell : UITableViewCell<UITextViewDelegate>
 
 @property (nonatomic,strong) UILabel *commentsPlaceholderLab;
 
@@ -20,11 +22,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) UITextView *commentsTextView;
 
+@property(nonatomic,strong)UILabel *placeHolderLabel;
+@property(nonatomic,strong)UILabel *residueLabel;// 输入文本时剩余字数
+@property (nonatomic,strong) NSString *conmmentString;
+
 @property (nonatomic,strong) UIButton *sendImageBtn;
 
+@property (nonatomic,strong) UIButton *sendImageBtn2;
+@property (nonatomic,strong) UIButton *sendImageBtn3;
+
+@property (nonatomic,copy) ReturnComments returnCommentsLabels;
+
+@property (nonatomic,copy) ReturnComments returnCommentsStarts;
 
 @property (nonatomic,strong) UIButton *selectedBtn;
 
+@property (nonatomic,strong) NSMutableArray *selectCommentsLabelsMarray;
 
 
 @end

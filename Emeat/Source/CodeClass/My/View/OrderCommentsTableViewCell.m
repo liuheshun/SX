@@ -16,7 +16,12 @@
     if (self) {
         [self addSubview:self.commentsPlaceholderLab];
         [self addSubview:self.commentsTextView];
+        [self.commentsTextView addSubview:self.residueLabel];
+
         [self addSubview:self.sendImageBtn];
+        [self addSubview:self.sendImageBtn2];
+        [self addSubview:self.sendImageBtn3];
+
         [self setMainFrame];
     }
     return self;
@@ -54,10 +59,31 @@
         make.height.equalTo(@(90*kScale));
         
     }];
+    [self.commentsTextView addSubview:self.placeHolderLabel];
+    
+    [self.residueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).with.offset(-25*kScale);
+        make.width.equalTo(@(60*kScale));
+        make.bottom.equalTo(self.commentsLabBtn.mas_bottom).with.offset(110*kScale);
+        make.height.equalTo(@(13*kScale));
+    }];
+    
+    
     
     [self.sendImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.commentsTextView.mas_bottom).with.offset(15*kScale);
         make.left.equalTo(self.mas_left).with.offset(15*kScale);
+        make.height.width.equalTo(@(60*kScale));
+    }];
+    
+    [self.sendImageBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.commentsTextView.mas_bottom).with.offset(15*kScale);
+        make.left.equalTo(self.sendImageBtn.mas_right).with.offset(15*kScale);
+        make.height.width.equalTo(@(60*kScale));
+    }];
+    [self.sendImageBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.commentsTextView.mas_bottom).with.offset(15*kScale);
+        make.left.equalTo(self.sendImageBtn2.mas_right).with.offset(15*kScale);
         make.height.width.equalTo(@(60*kScale));
     }];
     
@@ -124,8 +150,9 @@
 
 -(void)setCommentsLab{
     
-    NSMutableArray *labMarray = [NSMutableArray arrayWithObjects:@"口感很好",@"口感很好",@"口感很好",@"口感很好",@"口感很好",@"口感很好",@"口感很好",@"口感很好", nil];
+    NSMutableArray *labMarray = [NSMutableArray arrayWithObjects:@"口感很好1",@"口感很好2",@"口感很好3",@"口感很好4",@"口感很好5",@"口感很好6",@"口感很好7",@"口感很好8", nil];
     
+    self.selectCommentsLabelsMarray  = [NSMutableArray arrayWithObjects:@"口感很好1",@"口感很好2", nil];
     for (int i = 0; i<labMarray.count; i++ ) {
         UIButton *commentsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         commentsBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
@@ -167,18 +194,26 @@
     
 }
 
+#pragma mark=====标签选中
+
 -(void)commentsBtnAction:(UIButton*)btn{
-    
+
     if (btn.selected == YES) {
     
         btn.backgroundColor = RGB(220, 220, 220, 1);
         btn.selected = NO;
+        [self.selectCommentsLabelsMarray removeObject:btn.titleLabel.text];
     }else{
        
         btn.backgroundColor = RGB(251,100,35, 1);
         btn.selected = YES;
+        
+        [self.selectCommentsLabelsMarray addObject:btn.titleLabel.text];
+        
     }
-    
+    DLog(@"bbbbbbbb=== %@" ,self.selectCommentsLabelsMarray);
+
+    //self.returnCommentsLabels(@"s");
 }
 
 
@@ -187,7 +222,7 @@
         _commentsTextView = [[UITextView alloc] init];
         _commentsTextView.layer.borderColor = RGB(220, 220, 220, 1).CGColor;
         _commentsTextView.layer.borderWidth = 0.5;
-        _commentsTextView.toolbarPlaceholder = @"说说哪里满意,帮助大家选择";
+        _commentsTextView.delegate = self;
         _commentsTextView.font = [UIFont systemFontOfSize:12.0f*kScale];
     }
     return _commentsTextView;
@@ -202,6 +237,97 @@
     }
     return _sendImageBtn;
 }
+
+
+
+-(UIButton *)sendImageBtn2{
+    if (_sendImageBtn2 == nil) {
+        _sendImageBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+    }
+    return _sendImageBtn2;
+}
+-(UIButton *)sendImageBtn3{
+    if (_sendImageBtn3 == nil) {
+        _sendImageBtn3 = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+    }
+    return _sendImageBtn3;
+}
+
+
+-(UILabel *)placeHolderLabel{
+    if (!_placeHolderLabel) {
+        _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(10*kScale, 8*kScale, 240*kScale, 20*kScale)];
+        _placeHolderLabel.numberOfLines = 0;
+        _placeHolderLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+        _placeHolderLabel.text = @"说说哪里满意,帮助大家选择";
+        _placeHolderLabel.textColor = RGB(136, 136, 136, 1);
+        _placeHolderLabel.backgroundColor =[UIColor clearColor];
+        
+    }
+    return _placeHolderLabel;
+}
+
+
+-(UILabel *)residueLabel{
+    if (!_residueLabel) {
+        
+        //多余的一步不需要的可以不写  计算textview的输入字数
+        _residueLabel = [[UILabel alloc] init];
+        _residueLabel.backgroundColor = [UIColor clearColor];
+        _residueLabel.font = [UIFont fontWithName:@"Arial" size:12.0f*kScale];
+        _residueLabel.text =[NSString stringWithFormat:@"0/300"];
+        _residueLabel.textColor = [[UIColor grayColor]colorWithAlphaComponent:0.5];
+        _residueLabel.textAlignment = NSTextAlignmentRight;
+        
+        
+    }
+    return _residueLabel;
+}
+
+
+
+-(void)textViewDidChange:(UITextView *)textView
+
+{
+    if([textView.text length] == 0){
+        self.placeHolderLabel.text = @"说说哪里满意,帮助大家选择";;
+    }else{
+        self.placeHolderLabel.text = @"";//这里给空
+    }
+    //计算剩余字数   不需要的也可不写
+    NSString *nsTextCotent = textView.text;
+    NSInteger existTextNum = [nsTextCotent length];
+    NSInteger remainTextNum = 300 - existTextNum;
+    self.residueLabel.text = [NSString stringWithFormat:@"%ld/300",existTextNum];
+    self.conmmentString = textView.text;
+    
+}
+
+
+
+
+//设置超出最大字数（140字）即不可输入 也是textview的代理方法
+-(BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range
+replacementText:(NSString*)text
+{
+    if ([text isEqualToString:@"\n"]) {//这里"\n"对应的是键盘的 return 回收键盘之用
+        
+        [textView resignFirstResponder];
+        
+        return YES;
+    }
+    
+    if (range.location >= 300){
+        return  NO;
+    }else{
+        return YES;
+    }
+    
+}
+
+
 
 
 

@@ -8,8 +8,7 @@
 
 #import "OrderCommentsViewController.h"
 #import "OrderCommentsTableViewCell.h"
-
-
+#import "WaitCommentViewController.h"
 
 #import "TZImagePickerController.h"
 #import "MHUploadParam.h"
@@ -18,7 +17,10 @@
 @interface OrderCommentsViewController ()<UITableViewDelegate ,UITableViewDataSource ,TZImagePickerControllerDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) NSMutableArray *allImageMarray;
+@property (nonatomic,strong) OrderCommentsTableViewCell *cell1;
 
+@property (nonatomic,strong) UIButton *submitBtn;
 
 @end
 
@@ -30,15 +32,69 @@
 
     self.view.backgroundColor = RGB(238, 238, 238, 1);
     self.navItem.title = @"评价详情";
+    self.allImageMarray = [NSMutableArray array];
     [self.view addSubview:self.tableView];
     
+    [self.view addSubview:self.submitBtn];
+    [self.submitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(44));
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
+    }];
+}
+
+
+-(void)submitBtnAction{
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic = [self checkoutData];
+    [dic setValue:self.orderNo forKey:@"orderNo"];
+    [dic setValue:self.evaluationStar forKey:@"evaluationStar"];
+    [dic setValue:self.evaluationTable forKey:@"evaluationTable"];
+    [dic setValue:self.evaluationDetail forKey:@"evaluationDetail"];
+    [dic setValue:self.picture forKey:@"picture"];
+    [dic setValue:mTypeIOS forKey:@"mtype"];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/create_order_evaluation",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
+        
+        DLog(@"提交评价 ===%@" ,returnData);
+        
+        if ([returnData[@"status"] integerValue] == 200) {
+            
+            [self.navigationController popToViewController:[WaitCommentViewController new] animated:YES];
+            
+            
+        }else{
+            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
+        }
+        
+    } failureBlock:^(NSError *error) {
+        
+        
+    } showHUD:NO];
+}
+
+-(UIButton *)submitBtn{
+    if (_submitBtn == nil) {
+        _submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _submitBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
+        [_submitBtn setTitleColor:[UIColor whiteColor] forState:0];
+        [_submitBtn setTitle:@"提交" forState:0];
+        _submitBtn.backgroundColor = RGB(231, 35, 36, 1);
+        [_submitBtn addTarget:self action:@selector(submitBtnAction) forControlEvents:1];
+        
+    }
+    return _submitBtn;
 }
 
 
 
 -(UITableView*)tableView{
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight-kBarHeight-LL_TabbarSafeBottomMargin) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight-kBarHeight-LL_TabbarSafeBottomMargin-44) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -94,15 +150,18 @@
         
     }
     
-    [cell1.sendImageBtn addTarget:self action:@selector(sendImageBtnAction) forControlEvents:1];
-    
+    [cell1.sendImageBtn addTarget:self action:@selector(sendImageBtnAction:) forControlEvents:1];
+    [cell1.sendImageBtn2 addTarget:self action:@selector(sendImageBtnAction:) forControlEvents:1];
+    [cell1.sendImageBtn3 addTarget:self action:@selector(sendImageBtnAction:) forControlEvents:1];
+
+    self.cell1 = cell1;
     return cell1;
 }
 
 #pragma mark ========上传评价照片
 
--(void)sendImageBtnAction{
-    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:4 delegate:self];
+-(void)sendImageBtnAction:(UIButton*)btn{
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:3 delegate:self];
     
     // You can get the photos by block, the same as by delegate.
     // 你可以通过block或者代理，来得到用户选择的照片.
@@ -157,7 +216,34 @@
         DLog(@"上传评价照片=%@ ",responseObject);
         if ([[NSString stringWithFormat:@"%@" , responseObject[@"status"]] isEqualToString:@"200"]) {
             [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            NSString *images = responseObject[@"data"];
+            NSArray *array = [images componentsSeparatedByString:@","];
+            [self.allImageMarray removeAllObjects];
+            for (NSString *s in array) {
+                [self.allImageMarray addObject:s];
+            }
+            if (self.allImageMarray.count ==1 ) {
+               [self.cell1.sendImageBtn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.allImageMarray[0]]]] forState:0];
+                [self.cell1.sendImageBtn2 setImage:[UIImage imageNamed:@"上传照片"] forState:0];
+                [self.cell1.sendImageBtn3 setImage:[UIImage imageNamed:@""] forState:0];
+
+            }else if (self.allImageMarray.count ==2){
+                [self.cell1.sendImageBtn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.allImageMarray[0]]]] forState:0];
+                
+                [self.cell1.sendImageBtn2 setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.allImageMarray[1]]]] forState:0];
+
+                [self.cell1.sendImageBtn3 setImage:[UIImage imageNamed:@"上传照片"] forState:0];
+            }else if (self.allImageMarray.count ==3){
+                [self.cell1.sendImageBtn setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.allImageMarray[0]]]] forState:0];
+                
+                [self.cell1.sendImageBtn2 setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.allImageMarray[1]]]] forState:0];
+                
+                [self.cell1.sendImageBtn3 setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.allImageMarray[2]]]] forState:0];
+            }
            
+           
+
+            DLog(@"sss=== %@" ,self.allImageMarray);
             
         }else {
             [SVProgressHUD showErrorWithStatus:responseObject[@"msg"]];
