@@ -172,6 +172,8 @@
         _tableView.dataSource = self;
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         _tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.showsVerticalScrollIndicator = NO;
+
     }
     return _tableView;
 }

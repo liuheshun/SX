@@ -21,5 +21,7 @@
 
 @property (nonatomic,strong) UIButton *addShoppingCardBtn;
 
+@property (nonatomic,strong) UIView *lineView;
+
 
 @end

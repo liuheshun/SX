@@ -50,7 +50,8 @@
 
 ///是否认证审核通过
 @property (nonatomic,assign) NSInteger isApprove;
-
+///是否认证审核通过
+@property (nonatomic,assign) NSInteger effectivity;
 
 
 

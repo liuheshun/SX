@@ -125,13 +125,17 @@
     /// 控制tabbar 和 nav
     configration.showTabbar = YES;
     configration.showNavigation = YES;
-    configration.lineWidthEqualFontWidth = YES;
+    //configration.lineWidthEqualFontWidth = YES;
     configration.showBottomLine = YES;
     configration.scrollMenu = NO;
     configration.aligmentModeCenter = NO;
     configration.menuHeight = 44*kScale;
     configration.showBottomLine = YES;
-    configration.showScrollLine = NO;
+//    configration.showScrollLine = NO;
+    configration.bottomLineBgColor = RGB(136, 136, 136, 1);
+    configration.converColor = [UIColor redColor];
+   // configration.lineHeight = 0.5;
+    configration.bottomLineHeight = 0.5;
     configration.selectedItemColor = RGB(231, 35, 36, 1);
     configration.selectedItemFont = [UIFont systemFontOfSize:15*kScale];
     configration.itemFont = [UIFont systemFontOfSize:15*kScale];
@@ -252,13 +256,22 @@
     vc_1.fromBaner = self.fromBaner;
     vc_1.detailsId = self.detailsId;
     
-//    vc_2.fromBaner = self.fromBaner;
-//    vc_2.detailsId = self.detailsId;
+    vc_2.fromBaner = self.fromBaner;
+    vc_2.detailsId = self.detailsId;
     
     return @[vc_1, vc_2];
 }
 
 - (NSArray *)getArrayTitles {
+    if (self.specsListMarray.count != 0) {
+        HomePageModel *specsListModel = [self.specsListMarray firstObject];
+        if ([specsListModel.isMeal isEqualToString:@"1"]) {
+            return @[@"套餐详情", @"评价详情"];
+
+        }else{
+             return @[@"商品详情", @"评价详情"];
+        }
+    }
     return @[@"商品详情", @"评价详情"];
 }
 
@@ -404,6 +417,7 @@
                         [self.specsListMarray addObject:specsListModel];
                     }
                     [GlobalHelper shareInstance].specsListMarray = self.specsListMarray;
+                    
                     [self setupPageVC];
                     [self.view addSubview:self.bottomView];
                     [self setBottomViewFrame];

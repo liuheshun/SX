@@ -15,6 +15,7 @@
 
 @interface SHLBaseViewController ()
 
+
 @end
 
 @implementation SHLBaseViewController
@@ -760,10 +761,6 @@ static void addRoundedRectToPath(CGContextRef context,CGRect rect, float ovalWid
         
     } showHUD:NO];
 }
-
-
-
-
 
 
 

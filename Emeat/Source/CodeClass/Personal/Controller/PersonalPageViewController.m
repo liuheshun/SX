@@ -37,6 +37,9 @@
 
 ///播报数据
 @property (nonatomic,strong) NSMutableArray *PlayTextDataMarray;
+///播报背景
+@property (nonatomic,strong) UIView *PlayTextBgView ;
+
 ///轮播图数据
 @property (nonatomic,strong) NSMutableArray *bannerMarray;
 ///套餐数据
@@ -102,7 +105,7 @@
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/appversion/index.jhtml?appType=2&mtype=%@&appVersionNumber=%@&user=%@" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
-        
+        DLog(@"版本更新数据 ===%@" ,returnData);
         if ([returnData[@"code"] isEqualToString:@"00"]) {
             
             
@@ -273,10 +276,10 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
-    //DLog(@"账号店铺是否登录认证= %@" ,dic);
+    DLog(@"账号店铺是否登录认证= %@" ,dic);
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/mobile/store/get_store" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        //DLog(@"账号店铺是否登录认证hhhh= %@" ,returnData);
+        DLog(@"账号店铺是否登录认证hhhh= %@" ,returnData);
         
         if ([returnData[@"code"]  isEqualToString:@"0404"] || [returnData[@"code"]  isEqualToString:@"04"]) {
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -637,13 +640,16 @@
 #pragma mark ===============添加播报视图view
 
 -(void)addChangeTextViewToHeadView:(UIView*)headView{
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 176*kScale, kWidth, 91*kScale)];
-    bgView.backgroundColor = [UIColor whiteColor];
-    [headView addSubview:bgView];
+    if (self.PlayTextBgView == nil) {
+        
+    
+    self.PlayTextBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 176*kScale, kWidth, 91*kScale)];
+    self.PlayTextBgView.backgroundColor = [UIColor whiteColor];
+    [headView addSubview:self.PlayTextBgView];
 
     UIView *smallbgView = [[UIView alloc] initWithFrame:CGRectMake(0, 27*kScale, kWidth, 50*kScale)];
     smallbgView.backgroundColor =  RGB(238, 238, 238, 1);
-    [bgView addSubview:smallbgView];
+    [self.PlayTextBgView addSubview:smallbgView];
     
     
     
@@ -659,7 +665,7 @@
     NSArray * listArray = self.PlayTextDataMarray;
     [tView animationWithTexts:listArray];
     [self.headerView bringSubviewToFront:self.showCurrentAddressBtn];
-
+    }
 
 }
 

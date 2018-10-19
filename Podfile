@@ -21,7 +21,7 @@ target 'Emeat' do
 
    pod 'RealReachability'
 
-   pod 'TZImagePickerController'
+   pod 'TZImagePickerController', '~> 3.0.9'
 
    pod 'MMPopupView'
 

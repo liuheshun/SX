@@ -103,10 +103,17 @@
             if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"admin"]) {
                
                 string  = [NSString stringWithFormat:@"切换环境 当前环境(admin)"];
-            }else{
+            }else if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"test测试"]){
+                string  = [NSString stringWithFormat:@"切换环境 当前环境(test)"];
+
+            }else if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"徐立测试"]){
+                string  = [NSString stringWithFormat:@"切换环境 当前环境(徐立)"];
+                
+            }
+            else{
                 string  = [NSString stringWithFormat:@"切换环境 当前环境(beta)"];
             }
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:string delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"admin线上环境", @"beta测试环境", nil];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:string delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"admin线上环境", @"beta测试环境",@"test测试 ",@"徐立测试", nil];
             
             //actionSheet风格，感觉也没什么差别- -
             actionSheet.actionSheetStyle = UIActionSheetStyleDefault;//默认风格，灰色背景，白色文字
@@ -126,14 +133,22 @@
 //根据被点击的按钮做出反应，0对应destructiveButton，之后的button依次排序
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        NSLog(@"拍照");
+        NSLog(@"线上环境");
         [[NSUserDefaults standardUserDefaults] setObject:@"http://admin.cyberfresh.cn" forKey:@"server"];
 
     }
     else if (buttonIndex == 1) {
-        NSLog(@"相册");
+        NSLog(@"beta环境");
         [[NSUserDefaults standardUserDefaults] setObject:@"http://beta.cyberfresh.cn" forKey:@"server"];
 // [[NSUserDefaults standardUserDefaults] setObject:@"http://192.168.0.141" forKey:@"server"];
+    }else if (buttonIndex == 2){
+        [[NSUserDefaults standardUserDefaults] setObject:@"http://test.cyberfresh.cn" forKey:@"server"];
+
+        DLog(@"test测试环境")
+    }else if (buttonIndex == 3){
+        [[NSUserDefaults standardUserDefaults] setObject:@"http://192.168.0.141" forKey:@"server"];
+        
+        DLog(@"test测试环境")
     }
 }
 

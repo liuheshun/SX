@@ -42,7 +42,8 @@
 
 -(void)configHomePageCellWithModel:(HomePageModel *)model{
     
-    [self.mainImv sd_setImageWithURL:[NSURL URLWithString:model.mainImage]];
+    //[self.mainImv sd_setImageWithURL:[NSURL URLWithString:model.mainImage]];
+    
     [self.mainImv sd_setImageWithURL:[NSURL URLWithString:model.mainImage] placeholderImage:[UIImage imageNamed:@"列表图加载"]];
     
     self.nameLab.text = model.commodityName;
@@ -56,13 +57,13 @@
     
     self.weightLab.text = model.size;
     
-    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*kScale, 20*kScale, 1)];
-    lineView.backgroundColor = RGB(136, 136, 136, 1);
+    [self.lineView removeFromSuperview];
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*kScale, 20*kScale, 1)];
+    self.lineView.backgroundColor = RGB(136, 136, 136, 1);
     if (model.discountPrice == -1) {///只显示原价
-        [lineView removeFromSuperview];
+        [self.lineView removeFromSuperview];
     }else{
-        [self.oldPriceBtn addSubview:lineView];
-        
+        [self.oldPriceBtn addSubview:self.lineView];
     }
   
     
@@ -86,7 +87,11 @@
                     [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100] forState:0];
                     [self.oldPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.costPrice/100] forState:0];
                 }
-
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
+                NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%@" ,@"元/kg"]];
+                [str addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:range1];
+                
+                [self.newsPriceBtn setAttributedTitle:str forState:UIControlStateNormal];
                 
             }else{
                 
@@ -101,16 +106,15 @@
 
                 }
                 
-               
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
+                NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%@" ,@"元/件"]];
+                [str addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:range1];
+                
+                [self.newsPriceBtn setAttributedTitle:str forState:UIControlStateNormal];
                 
             }
             
-            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
-            NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.unitPrice/100]];
-            [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
-            
-            [self.newsPriceBtn setAttributedTitle:str forState:UIControlStateNormal];
-            
+           
           
         
             
@@ -150,13 +154,13 @@
         }
         
         
-      
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
-        NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f元" ,(float)model.unitPrice/100]];
-        [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
         
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
+        NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%@" ,@"元"]];
+        [str addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:range1];
         
         [self.newsPriceBtn setAttributedTitle:str forState:UIControlStateNormal];
+        
 
     }
     
@@ -169,9 +173,9 @@
         
     }];
     
-    CGRect rectlineView = lineView.frame;
+    CGRect rectlineView = self.lineView.frame;
     rectlineView.size.width = [self getOldPricesWidthText:self.oldPriceBtn];
-    lineView.frame = rectlineView;
+    self.lineView.frame = rectlineView;
     
 
     
@@ -192,7 +196,7 @@
         [self.lableBtn setImage:[UIImage imageNamed:@"wu"] forState:0];
 
     }
-    self.cartView.numberLabel.text =[NSString stringWithFormat:@"%ld" ,model.number];
+    self.cartView.numberLabel.text =[NSString stringWithFormat:@"%ld" ,(long)model.number];
     
     [self.cartBtn setImage:[UIImage imageNamed:@"join_cart"] forState:0];
 
@@ -307,7 +311,7 @@
     if (!_newsPriceBtn) {
         _newsPriceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _newsPriceBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
-        [_newsPriceBtn setTitleColor:RGB(136, 136, 136, 1) forState:0];
+        [_newsPriceBtn setTitleColor:RGB(231, 35, 36, 1) forState:0];
         _newsPriceBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _newsPriceBtn;

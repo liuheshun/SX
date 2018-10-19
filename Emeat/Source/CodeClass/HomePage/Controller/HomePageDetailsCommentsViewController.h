@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HomePageDetailsCommentsViewController : UIViewController
+@interface HomePageDetailsCommentsViewController : SHLBaseViewController
 @property (nonatomic,strong) UITableView *tableView;
 
 @property (nonatomic,strong) NSString *fromBaner;

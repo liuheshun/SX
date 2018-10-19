@@ -168,6 +168,30 @@
             
             
             
+        }else if ([returnData[@"status"] integerValue] == 203){
+            MMPopupItemHandler block = ^(NSInteger index){
+                // NSLog(@"clickd %@ button",@(index));
+            };
+            NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 该手机号已经注册过店铺，如需帮助请拨打客服热线 4001106111" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+        }else if ([returnData[@"status"] integerValue] == 202){
+            MMPopupItemHandler block = ^(NSInteger index){
+                // NSLog(@"clickd %@ button",@(index));
+            };
+            NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 已有相同店铺名称门店，请重新编辑，如需帮助请拨打客服热线 4001106111" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
         }else{
             MMPopupItemHandler block = ^(NSInteger index){
                // NSLog(@"clickd %@ button",@(index));

@@ -93,7 +93,7 @@
 
         }
         
-        if (model.isApprove == 1) {
+        if (model.isApprove == 1 && model.effectivity == 1) {
             self.shopCertifiImv.image = [UIImage imageNamed:@"已认证"];
         }else{
             self.shopCertifiImv.image = [UIImage imageNamed:@"dairenzheng"];
@@ -104,6 +104,11 @@
         [self setButtonBadgeValue:self.waitSendGoodsBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.waitTransport] badgeOriginX:MaxX(self.waitSendGoodsBtn.imageView)-5 badgeOriginY:-5];
         
         [self setButtonBadgeValue:self.waitReceiveBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.waitRecive] badgeOriginX:MaxX(self.waitReceiveBtn.imageView)-5 badgeOriginY:-5];
+        
+        
+        [self setButtonBadgeValue:self.waitCommentBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.waitEvaluation] badgeOriginX:MaxX(self.waitCommentBtn.imageView)-5 badgeOriginY:-5];
+
+        
         
         [self setButtonBadgeValue:self.returnGoodsBtn badgeValue:[NSString stringWithFormat:@"%ld",(long)model.salesReturn] badgeOriginX:MaxX(self.returnGoodsBtn.imageView)-5 badgeOriginY:-5];
         

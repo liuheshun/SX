@@ -35,6 +35,7 @@
 -(void)configHomePageCellWithModel:(HomePageModel*)model;
 
 
+@property (nonatomic,strong) UIView*lineView;
 
 
 

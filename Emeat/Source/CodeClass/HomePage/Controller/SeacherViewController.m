@@ -616,7 +616,7 @@
 #pragma mark---------------------------------需要更改productID--------------------------------
 
     //[dic setObject:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"productId"];
-    [dic setValue:[NSString stringWithFormat:@"%ld" ,productId] forKey:@"commodityId"];
+    [dic setValue:[NSString stringWithFormat:@"%ld" ,(long)productId] forKey:@"commodityId"];
 
     [dic setObject:@"1" forKey:@"quatity"];
     [dic setValue:mTypeIOS forKey:@"mtype"];

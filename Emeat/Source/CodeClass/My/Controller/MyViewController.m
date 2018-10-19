@@ -93,15 +93,32 @@
 
 -(void)netWorkIsOnLine{
     
+    
+    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
+        
+        if (status == RealStatusNotReachable) {
+            
+            [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+            [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+            
+        }else{
+ 
+            [self requsetMyData];
+        }
+        
+      
+    }];
+
+    
+    
 //    ReachabilityStatus status = [GLobalRealReachability currentReachabilityStatus];
 //
 //    if (status == RealStatusNotReachable)
 //    {
-//        [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
-//        [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+//
 //
 //    }else{
-        [self requsetMyData];
+//        [self requsetMyData];
 
    // }
 }
@@ -148,7 +165,8 @@
     [MHAsiNetworkHandler startMonitoring];
         
         [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/user/my", baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-            
+            DLog(@"我的信息 === %@" ,returnData);
+            [[GlobalHelper shareInstance] removeErrorView];
                [self.view addSubview:self.tableView];
             
             if ([returnData[@"code"] isEqualToString:@"0404"] || [returnData[@"code"] isEqualToString:@"04"]) {

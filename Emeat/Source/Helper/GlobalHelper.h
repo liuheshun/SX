@@ -27,6 +27,7 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 
 ///空状态view
 -(void)emptyViewNoticeText:(NSString*)noticeText NoticeImageString:(NSString*)noticeImageString viewWidth:(CGFloat)width viewHeight:(CGFloat)height UITableView:(UITableView*)tableView isShowBottomBtn:(BOOL)isShowBottomBtn bottomBtnTitle:(NSString*)bottomBtnTitle;
+
 -(void)removeEmptyView;
 @property (nonatomic,strong) UIImageView *emptyImv;
 @property (nonatomic,strong) UILabel *emptyLable;

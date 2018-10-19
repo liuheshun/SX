@@ -32,13 +32,17 @@
 ///标签
 @property (nonatomic,strong) UIButton *commentsLabBtn;
 
+///折叠按钮
+@property (nonatomic,strong) UIButton *isFoldingBtn;
 
--(void)setGoodsStartArray:(NSMutableArray*)goodsStatArray andCommentDescImvArray:(NSMutableArray*)descImvArray CommentsLabsMarray:(NSMutableArray*)commentsLabsMarray ConfigWithConmmentsModel:(HomePageCommentsModel*)commentsModel;
 
-//@property (nonatomic,strong) NSArray *goodsStarArray;
-//
-//@property (nonatomic,strong) NSArray *sendStarArray;
-//
+
+-(void)configWithModel:(HomePageCommentsModel*)model;
+
+
+
+
+
 
 
 

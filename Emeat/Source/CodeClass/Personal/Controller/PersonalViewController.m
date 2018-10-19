@@ -82,7 +82,7 @@
 -(void)requesSaiXianDataBaseURLString:(NSString*)BaseURLString{
 
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        //DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
+        DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {
@@ -407,8 +407,9 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *CellIdentifier = [NSString stringWithFormat:@"person_CellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
-    
+//    NSString *CellIdentifier = [NSString stringWithFormat:@"person_CellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
+    NSString *CellIdentifier = @"person_CellIdentifier_cell";
+
     HomePageTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell1 == nil) {
         cell1 = [[HomePageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -416,21 +417,16 @@
         cell1.backgroundColor = [UIColor whiteColor];
     }
     
-    cell1.cartBtn.tag = indexPath.row;
-    [cell1.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];
+   
     if (self.dataArray.count!=0) {
+        cell1.cartBtn.tag = indexPath.row;
+        [cell1.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];
         HomePageModel *model =  self.dataArray[indexPath.row];
         totalPageCount = model.pages;
         model.goodsTypes = @"0";
         [cell1 configHomePageCellWithModel:model];
-        
-       
-        
     }
     
-    
-    
-    return cell1;
     return cell1;
 }
 

@@ -39,6 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) NSMutableArray *selectCommentsLabelsMarray;
 
+///照片删除按钮
+@property (nonatomic,strong) UIButton *deleteImvBtn;
+@property (nonatomic,strong) UIButton *deleteImvBtn2;
+@property (nonatomic,strong) UIButton *deleteImvBtn3;
+
 
 @end
 

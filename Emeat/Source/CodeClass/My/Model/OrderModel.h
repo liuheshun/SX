@@ -173,6 +173,9 @@
 /////邮费
 @property (nonatomic,assign) NSInteger postage;
 
+///是否评价
+@property (nonatomic,assign) NSInteger haveEvaluate;
+
 
 
 ///退货原因

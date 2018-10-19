@@ -91,13 +91,14 @@
     oldPricesRect.origin.x = MaxX(self.newsPricesLabel)+5*kScale;
     self.oldsPricesLabel.frame = oldPricesRect;
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 5.5*kScale, WIDTH(self.oldsPricesLabel), 1*kScale)];
-    lineView.backgroundColor = RGB(136, 136, 136, 1);
-    
+    [self.lineView removeFromSuperview];
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 5.5*kScale, WIDTH(self.oldsPricesLabel), 1*kScale)];
+    [self.oldsPricesLabel addSubview:self.lineView];
+
     if (item.discountPrice == -1) {///只显示原价
-        [lineView removeFromSuperview];
+        self.lineView.backgroundColor = [UIColor whiteColor];
     }else{
-        [self.oldsPricesLabel addSubview:lineView];
+        self.lineView.backgroundColor = RGB(136, 136, 136, 1);
 
     }
    

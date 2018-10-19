@@ -51,7 +51,7 @@
         make.height.equalTo(@(hDesc));
     }];
    
-    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*kScale, 20*kScale, 1)];
+    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 8*kScale, 20*kScale, 1)];
     lineView.backgroundColor = RGB(136, 136, 136, 1);
     if (model.discountPrice == -1) {///只显示原价
         [lineView removeFromSuperview];

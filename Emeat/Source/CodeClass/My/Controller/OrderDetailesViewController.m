@@ -54,6 +54,9 @@
 ///出库商品配送数量
 @property (nonatomic,strong) NSMutableArray *outBoundProductCountMarray;
 
+///是否评价
+@property (nonatomic,strong) NSString *haveEvaluate;
+
 
 
 @end
@@ -192,13 +195,16 @@
                 
                 [self.outBoundProductNameMarray addObject:orderModel.productName];
                 [self.outBoundProductSizeMarray addObject:orderModel.size];
-                [self.outBoundProductCountMarray addObject:[NSString stringWithFormat:@"%ld" ,orderModel.count]];
+                [self.outBoundProductCountMarray addObject:[NSString stringWithFormat:@"%ld" ,(long)orderModel.count]];
             }
         
             OrderModel *footModel = [OrderModel yy_modelWithJSON:returnData[@"data"]];
+           
             self.status = footModel.status;
+            ///是否评价状态
+            self.haveEvaluate = [NSString stringWithFormat:@"%ld" ,footModel.haveEvaluate];
             
-            NSString *outCount =[NSString stringWithFormat:@"%ld" ,footModel.outCount];
+            NSString *outCount =[NSString stringWithFormat:@"%ld" ,(long)footModel.outCount];
             [self.outBoundProductNameMarray addObject:@""];
             [self.outBoundProductSizeMarray addObject:@"总计"];
             [self.outBoundProductCountMarray addObject:outCount];
@@ -331,15 +337,14 @@
 #pragma mark ======取消订单,确认订单, 去评价
 -(void)leftBottomBtnAction:(UIButton *)btn{
     
-    if ([self.fromWaitCommentsVC isEqualToString:@"1"]) {
+    if ( btn.tag == 80  && [self.haveEvaluate isEqualToString:@"0"]) {
         ///去评价
         
         OrderCommentsViewController *VC = [OrderCommentsViewController new];
         VC.orderNo = self.orderNo;
         [self.navigationController pushViewController:VC animated:YES];
         
-    }else{
-        if (btn.tag == 10 || btn.tag == 40) {
+    }else if (btn.tag == 10 || btn.tag == 40) {
             
             
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消订单" preferredStyle:1];
@@ -355,11 +360,11 @@
             [alert addAction:cancel];
             [self presentViewController:alert animated:YES completion:nil];
             
-        }
-        else if (btn.tag == 60)
-        {
-            [self confirmOrderData];
-        }
+        
+    }else if (btn.tag == 70){
+        ///确认订单
+        [self confirmOrderData];
+        
     }
    
     
@@ -530,23 +535,7 @@
 
 -(void)setBottomViewFrames{
     
-    if ([self.fromWaitCommentsVC isEqualToString:@"1"]) {
-        ///是否显示评价按钮
-        [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
-        [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(self.view);
-            make.height.equalTo(@44);
-            make.bottom.equalTo(self.view.mas_bottom).with.offset(LL_TabbarSafeBottomMargin);
-        }];
-        [self.orderInfoBottomView.leftBottomBtn setTitle:@"去评价" forState:0];
-        [self.orderInfoBottomView.leftBottomBtn setTitleColor:[UIColor whiteColor] forState:0];
-        self.orderInfoBottomView.leftBottomBtn.backgroundColor = RGB(236, 31, 35, 1);
-        self.orderInfoBottomView.leftBottomBtn.tag = 60;
-        
-        [self setTableViewFrames];
-        
-    }else{
-        
+    
     
     if (self.status == 10)////待支付
     {
@@ -734,11 +723,11 @@
         [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.right.equalTo(self.view);
             make.height.equalTo(@44);
-            make.bottom.equalTo(self.view.mas_bottom).with.offset(LL_TabbarSafeBottomMargin);
+            make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
         }];
         [self.orderInfoBottomView.leftBottomBtn setTitle:@"确认收货" forState:0];
         [self.orderInfoBottomView.leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
-        self.orderInfoBottomView.leftBottomBtn.tag = 60;
+        self.orderInfoBottomView.leftBottomBtn.tag = 70;
         
         [self setTableViewFrames];
         
@@ -765,9 +754,27 @@
         
     }else if (self.status == 80)///已完成
     {
+        if ([self.haveEvaluate isEqualToString:@"0"]) {
+            ///是否显示评价按钮
+            [self.orderInfoBottomView.rightBottomBtn removeFromSuperview];
+            [self.orderInfoBottomView.leftBottomBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.equalTo(self.view);
+                make.height.equalTo(@44);
+                make.bottom.equalTo(self.view.mas_bottom).with.offset(-LL_TabbarSafeBottomMargin);
+            }];
+            [self.orderInfoBottomView.leftBottomBtn setTitle:@"去评价" forState:0];
+            [self.orderInfoBottomView.leftBottomBtn setTitleColor:[UIColor whiteColor] forState:0];
+            self.orderInfoBottomView.leftBottomBtn.backgroundColor = RGB(236, 31, 35, 1);
+            self.orderInfoBottomView.leftBottomBtn.tag = 80;
+            
+            [self setTableViewFrames];
+            
+        }else{
+        
+        
         [self.orderInfoBottomView removeFromSuperview];
         [self resetTableViewFrames];
-
+        }
     }
     else if (self.status == 0 || self.status == 51 || self.status == 52)///已取消
     {
@@ -775,7 +782,7 @@
         [self resetTableViewFrames];
     }
     
-    }
+    
 }
 
 -(void)resetTableViewFrames{

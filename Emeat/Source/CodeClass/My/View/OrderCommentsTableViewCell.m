@@ -21,6 +21,11 @@
         [self addSubview:self.sendImageBtn];
         [self addSubview:self.sendImageBtn2];
         [self addSubview:self.sendImageBtn3];
+        [self.sendImageBtn addSubview:self.deleteImvBtn];
+        [self.sendImageBtn2 addSubview:self.deleteImvBtn2];
+        [self.sendImageBtn3 addSubview:self.deleteImvBtn3];
+
+        
 
         [self setMainFrame];
     }
@@ -87,7 +92,27 @@
         make.height.width.equalTo(@(60*kScale));
     }];
     
+    
+    [self.deleteImvBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.sendImageBtn.mas_top).with.offset(0*kScale);
+        make.right.equalTo(self.sendImageBtn.mas_right).with.offset(0*kScale);
+        make.height.width.equalTo(@(20*kScale));
+    }];
+    
+    
+    [self.deleteImvBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.sendImageBtn2.mas_top).with.offset(0*kScale);
+        make.right.equalTo(self.sendImageBtn2.mas_right).with.offset(0*kScale);
+        make.height.width.equalTo(@(20*kScale));
+    }];
+    [self.deleteImvBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.sendImageBtn3.mas_top).with.offset(0*kScale);
+        make.right.equalTo(self.sendImageBtn3.mas_right).with.offset(0*kScale);
+        make.height.width.equalTo(@(20*kScale));
+    }];
 }
+
+
 
 -(void)setPingJiaStar{
     
@@ -96,8 +121,12 @@
         UIButton *pingjiaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [self addSubview:pingjiaBtn];
-        
-        [pingjiaBtn setImage:[UIImage imageNamed:@"bigstart_no_sel"] forState:0];
+        //if (i == 0) {
+            [pingjiaBtn setImage:[UIImage imageNamed:@"bigstart_sel"] forState:0];
+
+//        }else{
+//        [pingjiaBtn setImage:[UIImage imageNamed:@"bigstart_no_sel"] forState:0];
+//        }
         [pingjiaBtn mas_makeConstraints:^(MASConstraintMaker *make) {
           
             make.centerY.equalTo(self.commentsPlaceholderLab.mas_centerY);
@@ -119,6 +148,7 @@
     
     DLog(@"评价");
     // 从左往右遍历每个小星星
+    NSInteger startCount = 0;
     if (btn.selected == NO) {
         for (int i = 0; i <= btn.tag; i++) {
             UIButton *pingjiaBtn = [self.starMarray objectAtIndex:i];
@@ -128,14 +158,28 @@
             pingjiaBtn.selected = YES;
             
         }
+        startCount = btn.tag + 1;
         
     }else if (btn.selected == YES) {
         
         for (int i = (int)btn.tag; i < self.starMarray.count; i++) {
+            
             UIButton *pingjiaBtn = [self.starMarray objectAtIndex:i];
+            if (i == 0) {
+                [pingjiaBtn setImage:[UIImage imageNamed:@"bigstart_sel"] forState:0];
+                startCount = btn.tag + 1;
+
+                
+            }else{
             
-            [pingjiaBtn setImage:[UIImage imageNamed:@"bigstart_no_sel"] forState:0];
-            
+                [pingjiaBtn setImage:[UIImage imageNamed:@"bigstart_no_sel"] forState:0];
+                startCount = btn.tag;
+
+            }
+            if (btn.tag == 0) {
+                startCount = btn.tag + 1;
+
+            }
             pingjiaBtn.selected = NO;
             
         }
@@ -144,15 +188,15 @@
     
     //self.selectStarCounts(btn.tag+1);
     
-    
+    self.returnCommentsStarts([NSString stringWithFormat:@"%ld" ,(long)startCount]);
 }
 
 
 -(void)setCommentsLab{
     
-    NSMutableArray *labMarray = [NSMutableArray arrayWithObjects:@"口感很好1",@"口感很好2",@"口感很好3",@"口感很好4",@"口感很好5",@"口感很好6",@"口感很好7",@"口感很好8", nil];
+    NSMutableArray *labMarray = [NSMutableArray arrayWithObjects:@"口感很棒",@"价格便宜",@"配送快",@"服务态度好",@"包装精美",@"正关行货",@"质量上乘",@"原切优品", nil];
     
-    self.selectCommentsLabelsMarray  = [NSMutableArray arrayWithObjects:@"口感很好1",@"口感很好2", nil];
+    self.selectCommentsLabelsMarray  = [NSMutableArray arrayWithObjects:@"口感很棒",@"价格便宜", nil];
     for (int i = 0; i<labMarray.count; i++ ) {
         UIButton *commentsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         commentsBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
@@ -212,7 +256,10 @@
         
     }
     DLog(@"bbbbbbbb=== %@" ,self.selectCommentsLabelsMarray);
+    NSString *string = [self.selectCommentsLabelsMarray componentsJoinedByString:@","];
+    
 
+    self.returnCommentsLabels(string);
     //self.returnCommentsLabels(@"s");
 }
 
@@ -254,6 +301,45 @@
     }
     return _sendImageBtn3;
 }
+
+
+
+
+
+
+
+-(UIButton *)deleteImvBtn{
+    if (_deleteImvBtn == nil) {
+        _deleteImvBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+//        [_deleteImvBtn setImage:[UIImage imageNamed:@"评价删除"] forState:0];
+    }
+    return _deleteImvBtn;
+}
+
+
+-(UIButton *)deleteImvBtn2{
+    if (_deleteImvBtn2 == nil) {
+        _deleteImvBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+//        [_deleteImvBtn2 setImage:[UIImage imageNamed:@"评价删除"] forState:0];
+    }
+    return _deleteImvBtn2;
+}
+
+-(UIButton *)deleteImvBtn3{
+    if (_deleteImvBtn3 == nil) {
+        _deleteImvBtn3 = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+//        [_deleteImvBtn3 setImage:[UIImage imageNamed:@"评价删除"] forState:0];
+    }
+    return _deleteImvBtn3;
+}
+
+
+
+
+
 
 
 -(UILabel *)placeHolderLabel{
@@ -300,7 +386,7 @@
     NSString *nsTextCotent = textView.text;
     NSInteger existTextNum = [nsTextCotent length];
     NSInteger remainTextNum = 300 - existTextNum;
-    self.residueLabel.text = [NSString stringWithFormat:@"%ld/300",existTextNum];
+    self.residueLabel.text = [NSString stringWithFormat:@"%ld/300",(long)existTextNum];
     self.conmmentString = textView.text;
     
 }
@@ -312,6 +398,27 @@
 -(BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range
 replacementText:(NSString*)text
 {
+    
+    NSString *str = [NSString stringWithFormat:@"%@%@", textView.text, text];
+    
+    if (str.length > 300)
+    {
+        NSRange rangeIndex = [str rangeOfComposedCharacterSequenceAtIndex:300];
+        self.placeHolderLabel.text = @"";//这里给空
+
+        if (rangeIndex.length == 1)//字数超限
+        {
+            textView.text = [str substringToIndex:300];
+            //这里重新统计下字数，字数超限，我发现就不走textViewDidChange方法了，你若不统计字数，忽略这行
+            self.residueLabel.text = [NSString stringWithFormat:@"%lu/%d", (unsigned long)textView.text.length, 300];
+        }else{
+            NSRange rangeRange = [str rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 300)];
+            textView.text = [str substringWithRange:rangeRange];
+        }
+        return NO;
+    }
+    
+    
     if ([text isEqualToString:@"\n"]) {//这里"\n"对应的是键盘的 return 回收键盘之用
         
         [textView resignFirstResponder];
@@ -320,6 +427,8 @@ replacementText:(NSString*)text
     }
     
     if (range.location >= 300){
+
+
         return  NO;
     }else{
         return YES;
