@@ -105,7 +105,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [SVProgressHUD dismiss];
-    [[GlobalHelper shareInstance] removeErrorView];
+    //[[GlobalHelper shareInstance] removeErrorView];
 
     // 开启返回手势
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {

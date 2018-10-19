@@ -133,8 +133,7 @@
     [self requestHotSearchData];
     
     
-    ///版本更新通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+   
     
     
 }
@@ -143,7 +142,7 @@
     self.isleaveCurrentVc = @"1";
 //    [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressl.titleLabel.text;
     [GlobalHelper shareInstance].selectAddressString = self.showCurrentAddressLabel.text;
-
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -160,7 +159,9 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:@"0" forKey:@"selectIndex"];
     
-    //self.pageVC.selectIndex = [[user valueForKey:@"selectIndex"] intValue];
+
+    ///版本更新通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
 
     
    // self.selectIndex = 0;
@@ -306,48 +307,37 @@
             NSString *localVerson= [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前本地app版本号
             
             //将版本号按照.切割后存入数组中
+            NSMutableArray *localArray = [NSMutableArray arrayWithArray:[localVerson componentsSeparatedByString:@"."]] ;
             
-            NSArray *localArray = [localVerson componentsSeparatedByString:@"."];
+            NSMutableArray *appArray = [NSMutableArray arrayWithArray:[[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."]];
             
-            NSArray *appArray = [[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."];
+            // 补全版本信息为相同位数
+            while (localArray.count < appArray.count) {
+                [localArray addObject:@"0"];
+            }
+            while (appArray.count < localArray.count) {
+                [appArray addObject:@"0"];
+            }
+            
             BOOL needUpdate = NO;
             
-            
-            if (appArray.count > localArray.count) {
-                needUpdate = YES;
-            }else{
+            for(NSUInteger i = 0; i < localArray.count; i++){
                 
-                NSInteger minArrayLength = MIN(localArray.count, appArray.count);
-            for(int i=0;i<minArrayLength;i++){//以最短的数组长度为遍历次数,防止数组越界
-                //取出每个部分的字符串值,比较数值大小
-                
-                NSString *localElement = localArray[i];
-                
-                NSString *appElement = appArray[i];
- 
-                NSInteger  localValue =  localElement.integerValue;
-    
-                
-                NSInteger  appValue = appElement.integerValue;
-                
-                
-                
-                if(localValue<appValue) {
-                    
-                    //从前往后比较数字大小,一旦分出大小,跳出循环
-                    
+                NSInteger localversionNumber1 = [localArray[i] integerValue];
+                NSInteger versionNumber2 = [appArray[i] integerValue];
+                if (localversionNumber1 < versionNumber2) {
                     needUpdate = YES;
-                    
                     break;
-                    
-                }else{
-        
+                }
+                else if (versionNumber2 < localversionNumber1){
+                    needUpdate = NO;
+                    break;
+                }
+                else{
                     needUpdate = NO;
                 }
-            
             }
-                
-            }
+ 
             
             if (needUpdate) {
                 

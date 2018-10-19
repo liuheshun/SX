@@ -394,7 +394,7 @@
                 [self.cell1.deleteImvBtn2 setImage:[UIImage imageNamed:@"评价删除"] forState:0];
                 [self.cell1.deleteImvBtn3 setImage:[UIImage imageNamed:@"评价删除"] forState:0];
 
-            }           
+            }
             self.commentsPicture = [self.allImageMarray componentsJoinedByString:@","];
             DLog(@"评价照片=== %@" ,self.commentsPicture);
             }

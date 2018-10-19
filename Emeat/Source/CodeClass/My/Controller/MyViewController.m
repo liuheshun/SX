@@ -59,7 +59,7 @@
 
 }
 -(void)viewWillDisappear:(BOOL)animated{
-    [SVProgressHUD dismiss];
+   // [SVProgressHUD dismiss];
     [[GlobalHelper shareInstance] removeErrorView];
     
     // 开启返回手势
@@ -94,20 +94,20 @@
 -(void)netWorkIsOnLine{
     
     
-    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
-        
-        if (status == RealStatusNotReachable) {
-            
-            [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
-            [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
-            
-        }else{
+//    [GLobalRealReachability reachabilityWithBlock:^(ReachabilityStatus status) {
+//
+//        if (status == RealStatusNotReachable) {
+//
+//            [[GlobalHelper shareInstance] showErrorIView:self.view errorImageString:@"wuwangluo" errorBtnString:@"重新加载" errorCGRect:CGRectMake(0, 0, kWidth, kHeight)];
+//            [[GlobalHelper shareInstance].errorLoadingBtn addTarget:self action:@selector(errorLoadingBtnAction) forControlEvents:1];
+//
+//        }else{
  
             [self requsetMyData];
-        }
-        
-      
-    }];
+//        }
+//        
+//      
+//    }];
 
     
     

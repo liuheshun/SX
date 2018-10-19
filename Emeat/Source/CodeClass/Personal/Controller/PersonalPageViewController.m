@@ -110,51 +110,41 @@
             
             
             NSString *localVerson= [[[NSBundle mainBundle]infoDictionary ]objectForKey:@"CFBundleShortVersionString"];//当前本地app版本号
-            
             //将版本号按照.切割后存入数组中
             
-            NSArray *localArray = [localVerson componentsSeparatedByString:@"."];
+            NSMutableArray *localArray = [NSMutableArray arrayWithArray:[localVerson componentsSeparatedByString:@"."]] ;
             
-            NSArray *appArray = [[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."];
+            NSMutableArray *appArray = [NSMutableArray arrayWithArray:[[NSString stringWithFormat:@"%@" ,returnData[@"version"]] componentsSeparatedByString:@"."]];
             
+            // 补全版本信息为相同位数
+            while (localArray.count < appArray.count) {
+                [localArray addObject:@"0"];
+            }
+            while (appArray.count < localArray.count) {
+                [appArray addObject:@"0"];
+            }
+    
              BOOL needUpdate = NO;
             
-            
-            if (appArray.count > localArray.count) {
-                needUpdate = YES;
-            }else{
-            
-                NSInteger minArrayLength = MIN(localArray.count, appArray.count);
+            for(NSUInteger i = 0; i < localArray.count; i++){
+                NSInteger localversionNumber1 = [localArray[i] integerValue];
+                NSInteger versionNumber2 = [appArray[i] integerValue];
+                if (localversionNumber1 < versionNumber2) {
+                    needUpdate = YES;
+                    break;
+                }
+                else if (versionNumber2 < localversionNumber1){
+                    needUpdate = NO;
+                    break;
+                }
+                else{
+                    needUpdate = NO;
+                }
+            }
+          
 
                 
-            for(int i=0;i<minArrayLength;i++){//以最短的数组长度为遍历次数,防止数组越界
-                //取出每个部分的字符串值,比较数值大小
-                
-                NSString *localElement = localArray[i];
-                
-                NSString *appElement = appArray[i];
-                
-                NSInteger  localValue =  localElement.integerValue;
-                
-                NSInteger  appValue = appElement.integerValue;
-                
-                if(localValue<appValue) {
-                    
-                    //从前往后比较数字大小,一旦分出大小,跳出循环
-                    
-                    needUpdate = YES;
-                    
-                    break;
-                    
-                }else{
-                    
-                    needUpdate = NO;
-                    
-                }
-                
-            }
-                
-            }
+            
             
             
             if (needUpdate) {
@@ -212,8 +202,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
  
-    ///版本更新通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
+ 
     
 }
 
@@ -241,7 +230,8 @@
     [self requestMealData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPersonData) name:@"refreshPersonData" object:nil];
   
-    
+    ///版本更新通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkVersionUpdate)name:@"versionUpdate" object:nil];
 }
 
 -(void)refreshPersonData{
