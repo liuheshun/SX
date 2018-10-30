@@ -246,6 +246,7 @@
         VC.segmentTitleMarray = weakSelf.segmentTitleMarray;
         VC.sortId = model.bigClassifyId;
         VC.sortType = model.type;
+        VC.hotSearchMarray = weakSelf.hotSearchMarray;
         if (index == 9) {
             VC.sortId = 9999;
             VC.sortType = @"STAIR";

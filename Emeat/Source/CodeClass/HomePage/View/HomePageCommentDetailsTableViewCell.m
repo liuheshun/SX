@@ -58,7 +58,7 @@
     if (model.picture.length != 0) {
         imageMarray = [model.picture componentsSeparatedByString:@","];
     }
-    
+    self.commentsImageArray = [NSArray arrayWithArray:imageMarray];
     
     NSArray *labelsMarray = @[];
     if (model.evaluationTable.length != 0) {
@@ -244,7 +244,12 @@
                     make.left.equalTo(lastView.mas_right).with.offset(15*kScale);
                 }
             }];
-
+            imv.tag = i;
+            imv.userInteractionEnabled = YES;
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickImage:)];
+            [imv addGestureRecognizer:tapGesture];
+            
+        
             self.commentDescImv = imv;
             lastView = imv;
         }
@@ -252,6 +257,18 @@
    
    
 }
+
+
+-(void)clickImage:(UITapGestureRecognizer*)tap{
+    
+    DLog(@"cccclick === %ld" ,tap.view.tag);
+    if ([self respondsToSelector:@selector(returnClickImaeTag)]) {
+        
+        self.returnClickImaeTag(tap.view.tag, self.commentsImageArray);
+        
+    }
+}
+
 
 
 

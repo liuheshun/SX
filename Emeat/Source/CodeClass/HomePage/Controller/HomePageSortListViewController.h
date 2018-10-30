@@ -33,7 +33,8 @@
 ///所以一级分类(model)
 @property (nonatomic,strong) NSMutableArray *segmentTitleMarray;
 
-
+///热搜标签数据
+@property (nonatomic,strong) NSMutableArray *hotSearchMarray;
 
 
 @end

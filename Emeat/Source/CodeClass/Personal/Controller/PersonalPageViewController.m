@@ -291,7 +291,7 @@
         
         
     } failureBlock:^(NSError *error) {
-        //DLog(@"账号店铺是否登录认证= %@" ,error);
+        DLog(@"账号店铺是否登录认证= %@" ,error);
         
     } showHUD:NO];
     

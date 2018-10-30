@@ -8,6 +8,7 @@
 
 #import "HomePageDetailsCommentsViewController.h"
 #import "HomePageCommentDetailsTableViewCell.h"
+#import "GQImageVideoViewer.h"
 
 @interface HomePageDetailsCommentsViewController ()<UITableViewDataSource ,UITableViewDelegate>
 @property (nonatomic,strong) NSMutableArray *dataArray;
@@ -200,6 +201,21 @@
         [cell1.isFoldingBtn addTarget:self action:@selector(isFoldingBtnAction:) forControlEvents:1];
         cell1.isFoldingBtn.tag = indexPath.section;
         [cell1 configWithModel:model];
+        
+        cell1.returnClickImaeTag = ^(NSInteger imageViewTag, NSArray *commentsImageArray) {
+            
+            DLog(@"%ld  == %@" ,imageViewTag , commentsImageArray);
+            //基本调用
+           [[GQImageVideoViewer sharedInstance] setDataArray:commentsImageArray];//这是图片和视频数组
+            [GQImageVideoViewer sharedInstance].usePageControl = YES;//设置是否使用pageControl
+            [GQImageVideoViewer sharedInstance].selectIndex = imageViewTag;//设置选中的图片索引
+            [GQImageVideoViewer sharedInstance].achieveSelectIndex = ^(NSInteger selectIndex){
+                NSLog(@"%ld",selectIndex);
+            };//获取当前选中的图片索引
+            [GQImageVideoViewer sharedInstance].backgroundColor = [UIColor blackColor];
+            [GQImageVideoViewer sharedInstance].laucnDirection = GQLaunchDirectionRight;//设置推出方向
+            [[GQImageVideoViewer sharedInstance] showInView:self.navigationController.view];//显示GQImageViewer到指定view上
+        };
         
     }
    

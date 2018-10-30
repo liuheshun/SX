@@ -18,6 +18,7 @@ PODS:
   - AMapSearch-NO-IDFA (5.7.0):
     - AMapFoundation-NO-IDFA (~> 1.4)
   - FDFullscreenPopGesture (1.1)
+  - GQImageVideoViewer (0.0.4)
   - GTExtensionSDK (2.1.0)
   - GTSDK (2.2.0.0-noidfa)
   - IQKeyboardManager (5.0.8)
@@ -26,6 +27,7 @@ PODS:
   - MMPopupView (1.7.2):
     - Masonry
   - MOFSPickerManager (2.0.0)
+  - QIYU_iOS_SDK (4.4.0)
   - RealReachability (1.1.9):
     - RealReachability/Connection (= 1.1.9)
     - RealReachability/Ping (= 1.1.9)
@@ -46,6 +48,7 @@ DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - AMapSearch-NO-IDFA
   - FDFullscreenPopGesture (= 1.1)
+  - GQImageVideoViewer
   - GTExtensionSDK
   - GTSDK (= 2.2.0.0-noidfa)
   - IQKeyboardManager (~> 5.0.4)
@@ -53,6 +56,7 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.14.1)
   - MMPopupView
   - MOFSPickerManager
+  - QIYU_iOS_SDK (~> 4.4.0)
   - RealReachability
   - SDCycleScrollView (~> 1.73)
   - SVProgressHUD (~> 2.2.2)
@@ -67,6 +71,7 @@ SPEC REPOS:
     - AMapFoundation-NO-IDFA
     - AMapSearch-NO-IDFA
     - FDFullscreenPopGesture
+    - GQImageVideoViewer
     - GTExtensionSDK
     - GTSDK
     - IQKeyboardManager
@@ -74,6 +79,7 @@ SPEC REPOS:
     - MJRefresh
     - MMPopupView
     - MOFSPickerManager
+    - QIYU_iOS_SDK
     - RealReachability
     - SDCycleScrollView
     - SDWebImage
@@ -88,6 +94,7 @@ SPEC CHECKSUMS:
   AMapFoundation-NO-IDFA: b6cbefab250ae8ab2e31aa9bb3dbbb98137cd76f
   AMapSearch-NO-IDFA: 612a92f75ff20544f42d376dfcf3c034da4ad0b6
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
+  GQImageVideoViewer: 6f201f65e6355e1a17ace21324c97720c270abfe
   GTExtensionSDK: e15415fa5a41c96c3545e78e7084267b01580940
   GTSDK: 2cb8f5df1fbb250f596698443edd0191f77024f1
   IQKeyboardManager: 266cb7b1d11f94a3e71229d77f960f9a1b538e5b
@@ -95,6 +102,7 @@ SPEC CHECKSUMS:
   MJRefresh: 238e6a37e2dba12160ee3b79f6d2a2b26abcab42
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   MOFSPickerManager: 65973d99de9e598239d46783dc3466e76115b76f
+  QIYU_iOS_SDK: 0a662e130085bf48a5960325fc0c32902cf74989
   RealReachability: a8c483900986a0f3305733961effbfbb00637a02
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
@@ -104,6 +112,6 @@ SPEC CHECKSUMS:
   YNPageViewController: 38dd5441005b4472fc59ed9e57ae73e72de86564
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 88cedf6836f1db42e27f7605bc35bd129f3c9cad
+PODFILE CHECKSUM: c28943607351e3948de2e26be59ba704b47d7075
 
 COCOAPODS: 1.5.3

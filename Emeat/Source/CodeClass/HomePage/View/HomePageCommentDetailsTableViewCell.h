@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "HomePageCommentsModel.h"
 
+typedef void(^ClickImageViewTag)(NSInteger imageViewTag ,NSArray *commentsImageArray);
+
+
 @interface HomePageCommentDetailsTableViewCell : UITableViewCell
 //头像
 @property (nonatomic,strong) UIImageView *commentUserImv;
@@ -35,6 +38,9 @@
 ///折叠按钮
 @property (nonatomic,strong) UIButton *isFoldingBtn;
 
+@property (nonatomic,copy) ClickImageViewTag returnClickImaeTag;
+
+@property (nonatomic,strong) NSArray *commentsImageArray;
 
 
 -(void)configWithModel:(HomePageCommentsModel*)model;

@@ -18,7 +18,7 @@
 #import "SGPagingView.h"
 #import "HomePageAllSortListViewController.h"
 
-@interface HomePageSortListViewController ()<UITableViewDelegate,UITableViewDataSource  ,SGPageTitleViewDelegate, SGPageContentScrollViewDelegate >
+@interface HomePageSortListViewController ()<UITableViewDelegate,UITableViewDataSource  ,SGPageTitleViewDelegate, SGPageContentScrollViewDelegate ,PYSearchViewControllerDelegate>
 
 @property (nonatomic, strong) SGPageTitleView *pageTitleView;
 @property (nonatomic, strong) SGPageContentScrollView *pageContentScrollView;
@@ -43,8 +43,7 @@
 
 
 
-///热搜标签数据
-@property (nonatomic,strong) NSMutableArray *hotSearchMarray;
+
 ///历史搜索数据
 @property (nonatomic,strong) NSMutableArray *historySearchMarray;
 
@@ -76,10 +75,79 @@
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSelectedIndex:) name:@"changeSelectedIndex" object:nil];
     [self setupPageView];
     
+    [self showNavBarItemRight];
+    
+}
+
+
+
+#pragma mark=========设置客服
+
+-(void)showNavBarItemRight{
+    
+    
+    UIBarButtonItem *connectRightItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"sousuo"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]style:UIBarButtonItemStylePlain target:self action:@selector(connectRightItemAction)];
+    
+    
+    
+    [self.navBar pushNavigationItem:self.navItem animated:NO];
+    [self.navItem setRightBarButtonItems:[NSArray arrayWithObjects: connectRightItem, nil]];
+    
+}
+
+-(void)connectRightItemAction{
+   
+    NSArray *hotSeaches = [NSArray array];
+    hotSeaches =  self.hotSearchMarray;
+    
+    [GlobalHelper shareInstance].showType= @"SOGO";
+    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"请输入商品名称搜索", @"搜索") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
+        
+        
+        searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+        searchViewController.showSearchResultWhenSearchBarRefocused = YES;
+        
+        SeacherViewController *sVc = [[SeacherViewController alloc] init];
+        
+        searchViewController.searchResultController = sVc;
+        sVc.fromSortString = @"0";
+        sVc.showType = @"SOGO";
+        sVc.searchText = searchText;
+        
+        //
+        //            SeacherViewController *sVc = [[SeacherViewController alloc] init];
+        //            sVc.searchText = searchText;
+        //            [searchViewController.navigationController pushViewController:sVc animated:YES];
+        
+        
+    }];
+    searchViewController.searchResultShowMode = PYSearchResultShowModeEmbed;
+    
+    searchViewController.showSearchHistory = YES;
+    searchViewController.searchHistoryStyle = PYSearchHistoryStyleBorderTag;
+    searchViewController.showHotSearch = YES;
+    //        searchViewController.searchHistories = weakSelf.hotSearchMarray;
+    searchViewController.delegate = self;
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    
+    // 5. Present a navigation controller
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    
+    [self presentViewController:nav animated:YES completion:nil];
 
     
     
+    
+    
 }
+
+
+
+
+
+
 
 - (void)changeSelectedIndex:(NSNotification *)noti {
     _pageTitleView.resetSelectedIndex = [noti.object integerValue];

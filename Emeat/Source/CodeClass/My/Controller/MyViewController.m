@@ -20,7 +20,12 @@
 #import "CardCenterViewController.h"
 #import "SaleMoneyViewController.h"
 
-@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+#import "QYPOPSDK.h"
+//#import "QYSettingViewController.h"
+//#import "QYSessionListViewController.h"
+
+
+@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate ,QYConversationManagerDelegate, QYSessionViewDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) MyHeadView *headView;
@@ -722,15 +727,39 @@
         
         
         
-        else if (indexPath.row == 3){
+        else if (indexPath.row == 3){///联系客服
+            
             NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",@"4001106111"];
             UIWebView * callWebview = [[UIWebView alloc] init];
             [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
             [self.view addSubview:callWebview];
+
+            
+//            QYSource *source = [[QYSource alloc] init];
+//            source.title =  @"七鱼金融";
+//            source.urlString = @"https://8.163.com/";
 //
-//            ContactServiceViewController *VC = [ContactServiceViewController new];
-//            VC.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:VC animated:YES];
+//            QYSessionViewController *sessionViewController = [[QYSDK sharedSDK] sessionViewController];
+//            sessionViewController.delegate = self;
+//            sessionViewController.sessionTitle = @"七鱼金融";
+//            sessionViewController.source = source;
+////            sessionViewController.groupId = g_groupId;
+////            sessionViewController.staffId = g_staffId;
+////            sessionViewController.commonQuestionTemplateId = g_questionId;
+////            sessionViewController.openRobotInShuntMode = g_openRobotInShuntMode;
+//
+////            if (iPadDevice) {
+////                UINavigationController* navi = [[UINavigationController alloc]initWithRootViewController:sessionViewController];
+////                navi.modalPresentationStyle = UIModalPresentationFormSheet;
+////                [self presentViewController:navi animated:YES completion:nil];
+////            }
+////            else{
+//                sessionViewController.hidesBottomBarWhenPushed = YES;
+//                [self.navigationController pushViewController:sessionViewController animated:YES];
+//           // }
+//
+//            [[QYSDK sharedSDK] customUIConfig].bottomMargin = 0;
+//
         }else if (indexPath.row == 4){
             
             

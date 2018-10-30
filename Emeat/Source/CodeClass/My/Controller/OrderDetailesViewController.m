@@ -715,7 +715,7 @@
 
         [self.orderInfoBottomView removeFromSuperview];
         [self resetTableViewFrames];
-
+ 
     }
     if (self.status == 70)
     {

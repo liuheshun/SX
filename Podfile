@@ -35,7 +35,9 @@ target 'Emeat' do
 
    pod 'WebViewJavascriptBridge', '~> 6.0.3'
 
+   pod 'GQImageVideoViewer'
   
+   pod 'QIYU_iOS_SDK', '~> 4.4.0'
 
 
 
