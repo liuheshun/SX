@@ -12,7 +12,7 @@
 #import "HomePageDetailsViewController.h"
 
 
-@interface SaleWebViewController ()<UIWebViewDelegate>
+@interface SaleWebViewController ()<UIWebViewDelegate ,UIGestureRecognizerDelegate>
 
 @property (nonatomic,strong) UIWebView *webView;
 @property WebViewJavascriptBridge* bridge;
@@ -101,8 +101,8 @@
     
     
     
-    
-    
+  
+ 
     
     // NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
     NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/distributor/distribution_login_ios.html" ,baseUrl]];//创建URL
@@ -124,6 +124,12 @@
     //    });
     
     [self OC2JS];
+    
+    
+    UILongPressGestureRecognizer* longPressed = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
+    longPressed.delegate = self;
+    [self.webView addGestureRecognizer:longPressed];
+    
     
 }
 
@@ -190,8 +196,44 @@
     [self.bridge disableJavscriptAlertBoxSafetyTimeout];
 }
 
+#pragma mark ======长按选品库页面保存图片
 
+- (void)longPressed:(UILongPressGestureRecognizer*)recognizer
+{
+    if (recognizer.state != UIGestureRecognizerStateBegan) {
+        return;
+    }
+    
+    CGPoint touchPoint = [recognizer locationInView:self.webView];
+    
+    NSString *imgURL = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).src", touchPoint.x, touchPoint.y];
+    NSString *urlToSave = [self.webView stringByEvaluatingJavaScriptFromString:imgURL];
+    
+    if (urlToSave.length == 0) {
+        return;
+    }
+    UIAlertController *actionSheetController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *showAllInfoAction = [UIAlertAction actionWithTitle:@"保存到相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self toSaveImage:urlToSave];
 
+    }];
+  
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [actionSheetController addAction:cancelAction];
+    [actionSheetController addAction:showAllInfoAction];
+    
+    [self presentViewController:actionSheetController animated:YES completion:nil];
+    
+   
+    
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
+}
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     NSString *tit = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];//获取当前页面的title
