@@ -1292,7 +1292,8 @@
             SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-       // DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
+    
+        DLog(@"商户首页加入购物车== id=== %ld  %@" ,productId,returnData);
         [tableView reloadData];
     } failureBlock:^(NSError *error) {
         

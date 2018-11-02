@@ -23,7 +23,6 @@
 #import "LaunchIntroductionView.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <CommonCrypto/CommonDigest.h>
-#import <QYSDK.h>
 ////
 #import "MerchantViewController.h"
 
@@ -79,9 +78,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
         UITableView.appearance.estimatedSectionFooterHeight = 0;
         UITableView.appearance.estimatedSectionHeaderHeight = 0;
     }
-    ///网易七鱼e客服
-    [[QYSDK sharedSDK] registerAppId:@"3f0e34f4cee29e2ef40c34d00eb1f5db" appName:@"赛鲜"];
-
+    
     
     
     //个推

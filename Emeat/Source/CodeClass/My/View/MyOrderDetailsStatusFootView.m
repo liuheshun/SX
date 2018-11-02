@@ -73,9 +73,10 @@
                         make.left.equalTo(lastView.mas_right).with.offset(15*kScale);
                         
                     }
-                    if (model.status == 10 || model.status == 0 ) {
+                    if (model.status == 10 || model.status == 0 || model.status == 51 || model.status == 52) {
                     
                         make.top.equalTo(self.orderTime.mas_bottom).with.offset(18*kScale);
+                        
                     }else if (model.status == 50 || model.status == 40 || model.status == 46){
                         
                         make.top.equalTo(self.payTime.mas_bottom).with.offset(18*kScale);

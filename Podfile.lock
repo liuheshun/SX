@@ -27,7 +27,6 @@ PODS:
   - MMPopupView (1.7.2):
     - Masonry
   - MOFSPickerManager (2.0.0)
-  - QIYU_iOS_SDK (4.4.0)
   - RealReachability (1.1.9):
     - RealReachability/Connection (= 1.1.9)
     - RealReachability/Ping (= 1.1.9)
@@ -56,7 +55,6 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.14.1)
   - MMPopupView
   - MOFSPickerManager
-  - QIYU_iOS_SDK (~> 4.4.0)
   - RealReachability
   - SDCycleScrollView (~> 1.73)
   - SVProgressHUD (~> 2.2.2)
@@ -79,7 +77,6 @@ SPEC REPOS:
     - MJRefresh
     - MMPopupView
     - MOFSPickerManager
-    - QIYU_iOS_SDK
     - RealReachability
     - SDCycleScrollView
     - SDWebImage
@@ -102,7 +99,6 @@ SPEC CHECKSUMS:
   MJRefresh: 238e6a37e2dba12160ee3b79f6d2a2b26abcab42
   MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   MOFSPickerManager: 65973d99de9e598239d46783dc3466e76115b76f
-  QIYU_iOS_SDK: 0a662e130085bf48a5960325fc0c32902cf74989
   RealReachability: a8c483900986a0f3305733961effbfbb00637a02
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
@@ -112,6 +108,6 @@ SPEC CHECKSUMS:
   YNPageViewController: 38dd5441005b4472fc59ed9e57ae73e72de86564
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: c28943607351e3948de2e26be59ba704b47d7075
+PODFILE CHECKSUM: 972c68512859c74c419ad64cee6f60dc2d355941
 
 COCOAPODS: 1.5.3

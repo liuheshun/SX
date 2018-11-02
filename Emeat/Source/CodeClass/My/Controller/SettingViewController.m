@@ -175,12 +175,14 @@
 
             if ([key isEqualToString:@"appVersion"]) {
                 ///此处退出登录不清除记录引导页状态
-            }else if ([key isEqualToString:@"server"]){
+            }else if ([key isEqualToString: @"appVersionNumber"]){
                 
             }
+            else if ([key isEqualToString:@"server"]){
+                
+            }else{
             
-            else{
-            [defatluts removeObjectForKey:key];
+                [defatluts removeObjectForKey:key];
             
             [defatluts synchronize];
             }

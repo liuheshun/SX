@@ -108,7 +108,9 @@ NSString *storyboard;
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
     NSString *currentAppVersion = infoDic[@"CFBundleShortVersionString"];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    [user setValue:currentAppVersion forKey:@"appVersionNumber"];
+    [user setValue:currentAppVersion forKey:@"appVersionNumbers"];
+    [user setValue:@"2.2" forKey:@"appVersionNumber"];
+
     //获取上次启动应用保存的appVersion
     NSString *version = [[NSUserDefaults standardUserDefaults] objectForKey:kAppVersion];
     //版本升级或首次登录

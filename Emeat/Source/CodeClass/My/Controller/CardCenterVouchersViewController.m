@@ -68,8 +68,11 @@
 
 
 -(void)requsetCanUsedCardData{
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
     NSMutableDictionary *dic = [self checkoutData];
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+
     [dic setValue:self.businessType forKey:@"businessType"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/selectVoucher" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         DLog(@"可以使用的代金券卡券数据 ==%@" ,returnData);
@@ -112,10 +115,13 @@
 
 
 -(void)requsetFullCanUsedCardData{
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
     NSMutableDictionary *dic = [self checkoutData];
     [dic setValue:self.businessType forKey:@"businessType"];
     [dic setValue:self.ticketId forKey:@"ticketId"];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     DLog(@"可以使用的满减卡券数据id ==%@" ,self.ticketId);
 
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/ticket/selectFullReduction" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

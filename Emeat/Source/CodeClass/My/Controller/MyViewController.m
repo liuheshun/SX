@@ -20,12 +20,9 @@
 #import "CardCenterViewController.h"
 #import "SaleMoneyViewController.h"
 
-#import "QYPOPSDK.h"
-//#import "QYSettingViewController.h"
-//#import "QYSessionListViewController.h"
 
 
-@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate ,QYConversationManagerDelegate, QYSessionViewDelegate>
+@interface MyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate >
 
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) MyHeadView *headView;

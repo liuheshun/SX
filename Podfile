@@ -37,7 +37,6 @@ target 'Emeat' do
 
    pod 'GQImageVideoViewer'
   
-   pod 'QIYU_iOS_SDK', '~> 4.4.0'
 
 
 

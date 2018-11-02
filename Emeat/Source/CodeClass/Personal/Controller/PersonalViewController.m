@@ -407,8 +407,8 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    NSString *CellIdentifier = [NSString stringWithFormat:@"person_CellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
-    NSString *CellIdentifier = @"person_CellIdentifier_cell";
+    NSString *CellIdentifier = [NSString stringWithFormat:@"person_CellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
+    //NSString *CellIdentifier = @"person_CellIdentifier_cell";
 
     HomePageTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell1 == nil) {
@@ -474,6 +474,7 @@
 
 
 -(void)addCartPostDataWithProductId:(NSInteger)productId homePageModel:(HomePageModel*)model NSIndexPath:(NSIndexPath*)indexPath cell:(HomePageTableViewCell*)weakCell isFirstClick:(BOOL)isFirst tableView:(UITableView*)tableView{
+    
     //[SVProgressHUD show];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -528,10 +529,7 @@
         
         if ([returnData[@"status"] integerValue] == 200)
         {
-            //            SVProgressHUD.minimumDismissTimeInterval = 0.5;
-            //            SVProgressHUD.maximumDismissTimeInterval = 1;
-            //            [SVProgressHUD showSuccessWithStatus:returnData[@"msg"]];
-            //加入购物车动画
+            
             NSInteger count = [weakCell.cartView.numberLabel.text integerValue];
             count++;
             weakCell.cartView.numberLabel.text = [NSString stringWithFormat:@"%ld",(long)count];
@@ -579,7 +577,7 @@
             SVProgressHUD.maximumDismissTimeInterval = 2;
             [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
         }
-        //DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
+        DLog(@"首页加入购物车== id=== %ld  %@" ,productId,returnData);
         [tableView reloadData];
     } failureBlock:^(NSError *error) {
         
