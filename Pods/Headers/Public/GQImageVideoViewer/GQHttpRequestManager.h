@@ -1,0 +1,1 @@
+../../../GQImageVideoViewer/GQImageVideoViewer/GQImageDownload/GQHttpRequestManager.h
