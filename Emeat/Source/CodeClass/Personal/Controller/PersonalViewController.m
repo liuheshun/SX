@@ -12,6 +12,8 @@
 
 
 #import "HomePageDetailsViewController.h"
+#import "HWPopTool.h"
+#import "FeedBackView.h"
 
 /// 开启刷新头部高度
 #define kOpenRefreshHeaderViewHeight 1
@@ -28,6 +30,7 @@
 ///记录当前登录状态
 @property (nonatomic,strong) NSString *currenLoginStated;
 
+@property (nonatomic,strong) FeedBackView *popupView ;
 
 @end
 
@@ -48,7 +51,7 @@
     YNPageViewController *vc = (YNPageViewController*)self.parentViewController;
     self.pageIndex = vc.pageIndex;
     [self addTableViewRefresh];
-    [self isFirstLoadingData];
+   //  [self isFirstLoadingData];
 }
 
 -(void)isFirstLoadingData{
@@ -71,7 +74,8 @@
    
     
     
-    
+    [self isFirstLoadingData];
+
   
 
 }
@@ -82,6 +86,8 @@
 -(void)requesSaiXianDataBaseURLString:(NSString*)BaseURLString{
 
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
+        DLog(@"赛鲜精选数据=sssssd= %@" ,BaseURLString);
+
         DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
 
@@ -393,16 +399,108 @@
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 0.0001*kScale;
+     if (self.pageIndex == 0) {///经常买
+         return 0.001*kScale;
+
+     }
+    return 100*kScale;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 15*kScale)];
-    view.backgroundColor = [UIColor cyanColor];
-    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 100*kScale)];
+    view.backgroundColor = [UIColor whiteColor];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(0, 0, kWidth, 100*kScale);
+    btn.backgroundColor = [UIColor whiteColor];
+    [btn setTitle:@"  没有商品啦~告诉我你想买点啥" forState:0];
+    [btn setTitleColor:RGB(136, 136, 136, 1) forState:0];
+    btn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+    [btn setImage:[UIImage imageNamed:@"bianji"] forState:0];
+    [btn addTarget:self action:@selector(postfeedbackAction) forControlEvents:1];
+    if (self.pageIndex == 0) {///经常买
+        [btn removeFromSuperview];
+        
+    }else{
+        [view addSubview:btn];
+
+    }
     return view;
 }
 
+-(void)postfeedbackAction{
+    self.popupView = [[FeedBackView alloc] initWithFrame:CGRectMake((kWidth-315*kScale)/2, (kHeight -250*kScale)/2, 315*kScale, 250*kScale)];
+    self.popupView.backgroundColor = [UIColor whiteColor];
+    self.popupView.layer.cornerRadius = 5;
+    self.popupView.layer.masksToBounds = YES;
+    [self.popupView.submitBtn addTarget:self action:@selector(submitBtnAction) forControlEvents:1];
+    [HWPopTool sharedInstance].shadeBackgroundType = ShadeBackgroundTypeSolid;
+    [HWPopTool sharedInstance].closeButtonType = ButtonPositionTypeNone;
+    [[HWPopTool sharedInstance] showWithPresentView:self.popupView animated:YES];
+    
+    
+}
+
+#pragma mark ====≠≠≠======提交反馈建议
+
+-(void)submitBtnAction{
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    if ([user valueForKey:@"isLoginState"]) {
+        [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
+    }
+    if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"])
+    {///登陆
+        [self pustDataIsLoginStated:@"1" URL:[NSString stringWithFormat:@"%@/m/auth/user/feedback" ,baseUrl]];
+        
+    }else{
+        //未登录
+        [self pustDataIsLoginStated:@"0" URL:[NSString stringWithFormat:@"%@/m/user/feedback" ,baseUrl]];
+    }
+}
+
+#pragma mark ===============反馈建议
+
+
+-(void)pustDataIsLoginStated:(NSString*)isLoginState URL:(NSString*)URL{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    if ([isLoginState isEqualToString:@"1"]) {///登陆
+        NSString *ticket = [user valueForKey:@"ticket"];
+        NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
+        NSString *nonce = [self ret32bitString];//随机数
+        NSString *curTime = [self dateTransformToTimeSp];
+        NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
+        
+        [dic setValue:secret forKey:@"secret"];
+        [dic setValue:nonce forKey:@"nonce"];
+        [dic setValue:curTime forKey:@"curTime"];
+        [dic setValue:checkSum forKey:@"checkSum"];
+        [dic setValue:ticket forKey:@"ticket"];
+        [dic setValue:mTypeIOS forKey:@"mtype"];
+        [dic setValue:self.popupView.textView.text forKey:@"feedBack"];
+    }else{
+        //未登录
+        [dic setValue:mTypeIOS forKey:@"mtype"];
+        [dic setValue:self.popupView.textView.text forKey:@"feedBack"];
+    }
+    [MHNetworkManager postReqeustWithURL:URL params:dic successBlock:^(NSDictionary *returnData) {
+         DLog(@"反馈==== %@" ,returnData);
+        if ([returnData[@"status"] integerValue] == 200) {
+            
+            [[HWPopTool sharedInstance] closeWithBlcok:^{
+                
+            }];
+            
+        }
+        
+    } failureBlock:^(NSError *error) {
+        
+    } showHUD:NO];
+    
+}
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

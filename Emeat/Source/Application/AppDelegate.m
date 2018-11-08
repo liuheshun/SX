@@ -950,6 +950,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
                 
                 //记录店铺认证
                 [user setValue:[NSString stringWithFormat:@"%@" ,returnData[@"data"][@"store"][@"isApprove"]] forKey:@"approve"];
+                [GlobalHelper shareInstance].isPushLoginView = @"抽奖登陆";
 
                 [currentVC.navigationController popViewControllerAnimated:YES];
                 

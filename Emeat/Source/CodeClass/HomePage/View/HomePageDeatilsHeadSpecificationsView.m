@@ -21,7 +21,7 @@
         [self addSubview:self.breedLab];
         [self addSubview:self.environmentLab];
         [self addSubview:self.brandLab];
-        
+        [self addSubview:self.factoryNumLab];
         [self setMainViewFrame];
     }
     return self;
@@ -50,6 +50,12 @@
     }else{
         self.brandLab.text = [NSString stringWithFormat:@"品牌: %@%@" ,model.brand ,tempString];
     }
+    if (model.factoryNum.length == 0) {
+        model.factoryNum = @"";
+    }
+    self.factoryNumLab.text = [NSString stringWithFormat:@"厂号: %@" ,model.factoryNum];
+
+    
 }
 
 
@@ -100,6 +106,15 @@
             make.height.equalTo(@(12*kScale));
         }];
     
+    
+    [self.factoryNumLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).with.offset(15*kScale);
+        make.top.equalTo(self.brandLab.mas_bottom).with.offset(15*kScale);
+        make.width.equalTo(@((kWidth/2-15)*kScale));
+        make.height.equalTo(@(12*kScale));
+    }];
+    
+    
 }
 
 
@@ -108,7 +123,7 @@
 -(UILabel*)countryLab{
     if (!_countryLab) {
         _countryLab = [[UILabel alloc] init];
-        _countryLab.font = [UIFont systemFontOfSize:12.0f];
+        _countryLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _countryLab.textColor = RGB(51 , 51, 51, 51);
         _countryLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -118,7 +133,7 @@
 -(UILabel*)partLab{
     if (!_partLab) {
         _partLab = [[UILabel alloc] init];
-        _partLab.font = [UIFont systemFontOfSize:12.0f];
+        _partLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _partLab.textColor = RGB(51 , 51, 51, 51);
         _partLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -129,7 +144,7 @@
 -(UILabel*)standardsLab{
     if (!_standardsLab) {
         _standardsLab = [[UILabel alloc] init];
-        _standardsLab.font = [UIFont systemFontOfSize:12.0f];
+        _standardsLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _standardsLab.textColor = RGB(51 , 51, 51, 51);
         _standardsLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -141,7 +156,7 @@
 -(UILabel*)breedLab{
     if (!_breedLab) {
         _breedLab = [[UILabel alloc] init];
-        _breedLab.font = [UIFont systemFontOfSize:12.0f];
+        _breedLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _breedLab.textColor = RGB(51 , 51, 51, 51);
         _breedLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -151,7 +166,7 @@
 -(UILabel*)environmentLab{
     if (!_environmentLab) {
         _environmentLab = [[UILabel alloc] init];
-        _environmentLab.font = [UIFont systemFontOfSize:12.0f];
+        _environmentLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _environmentLab.textColor = RGB(51 , 51, 51, 51);
         _environmentLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -161,12 +176,23 @@
 -(UILabel*)brandLab{
     if (!_brandLab) {
         _brandLab = [[UILabel alloc] init];
-        _brandLab.font = [UIFont systemFontOfSize:12.0f];
+        _brandLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _brandLab.textColor = RGB(51 , 51, 51, 51);
         _brandLab.textAlignment = NSTextAlignmentLeft;
     }
     return _brandLab;
 }
+
+-(UILabel*)factoryNumLab{
+    if (!_factoryNumLab) {
+        _factoryNumLab = [[UILabel alloc] init];
+        _factoryNumLab.font = [UIFont systemFontOfSize:12.0f*kScale];
+        _factoryNumLab.textColor = RGB(51 , 51, 51, 51);
+        _factoryNumLab.textAlignment = NSTextAlignmentLeft;
+    }
+    return _factoryNumLab;
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -201,7 +201,10 @@
 
         if ([orderModel.typeOfBusiness isEqualToString:@"G"]) {
             
-        }else{
+        }else if ([orderModel.typeOfBusiness isEqualToString:@"C"]){
+            
+        }
+        else{
         
         [self addSubview:self.sendDetailsBgView];
         [self.sendDetailsBgView addSubview:self.sendDetailsLab];

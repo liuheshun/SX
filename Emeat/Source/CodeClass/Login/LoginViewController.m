@@ -102,6 +102,10 @@
     } showHUD:NO];
     
 }
+
+
+#pragma mark =========登录请求
+
 -(void)requestLogin{
     
     NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
@@ -144,6 +148,7 @@
 
                 //
                 [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
+                [GlobalHelper shareInstance].isPushLoginView = @"抽奖登陆";
                 [self.navigationController popViewControllerAnimated:YES];
 
             }else{//未认证

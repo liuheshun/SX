@@ -211,7 +211,7 @@
         return [self placeHolderCellHeight];
     }
     
-    return 100*kScale;
+    return 125*kScale;
 
 }
 
@@ -224,7 +224,7 @@
 
 -(HomePageDeatilsHeadSpecificationsView *)specificationsView{
     if (_specificationsView == nil) {
-        _specificationsView = [[HomePageDeatilsHeadSpecificationsView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 100*kScale)];
+        _specificationsView = [[HomePageDeatilsHeadSpecificationsView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 125*kScale)];
         _specificationsView.backgroundColor = [UIColor whiteColor];
     }
     ///头部赋值

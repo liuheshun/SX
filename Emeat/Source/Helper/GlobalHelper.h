@@ -53,6 +53,8 @@ typedef void(^ReturnBlock)(BOOL isOpen);
 @property (nonatomic,strong) NSString *merchantsIsLoginStated;
 @property (nonatomic,strong) NSString *isMerchantsIsLoginEnter;
 
+///抽奖页面 是否跳转到登陆页面
+@property (nonatomic,strong) NSString *isPushLoginView;
 
 ///
 @property (nonatomic,strong) NSMutableArray *segmentTitleMarray;

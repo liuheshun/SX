@@ -412,7 +412,7 @@
 -(void)requesSaiXianDataBaseURLString:(NSString*)BaseURLString{
     
     [MHNetworkManager getRequstWithURL:BaseURLString params:nil successBlock:^(NSDictionary *returnData) {
-        //DLog(@"赛鲜精选数据=sssssd= %@" ,returnData);
+        DLog(@"商户专区赛鲜精选数据=sssssd= %@" ,returnData);
         [[GlobalHelper shareInstance] removeEmptyView];
 
         if ([[returnData[@"status"] stringValue] isEqualToString:@"200"]) {

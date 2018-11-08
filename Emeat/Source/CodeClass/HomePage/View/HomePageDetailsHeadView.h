@@ -74,6 +74,7 @@ typedef void(^ReturnSelectIndex)(NSInteger selectIndex);
 ///品牌
 @property (nonatomic,strong) UILabel *brandLab;
 
+
 -(void)configHeadViewWithModel:(HomePageModel*)model;
 
 

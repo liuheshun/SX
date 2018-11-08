@@ -32,7 +32,12 @@
     NSNotificationCenter * center = [NSNotificationCenter defaultCenter];
     //添加当前类对象为一个观察者
     [center addObserver:self selector:@selector(InfoNotificationAction:) name:@"refreshControllerWithNotification" object:nil];
-    //[self setWebView];
+    if ([[GlobalHelper shareInstance].isPushLoginView  isEqualToString:@"抽奖登陆"]) {
+        self.detailsURL = [NSString stringWithFormat:@"%@/breaf/sweepstakes_ios.html",baseUrl];
+        DLog(@"hahhahahahhahahahhhh=============ahah ");
+        [self setWebView];
+
+    }
 
 }
 -(void)InfoNotificationAction:(NSNotification*)notification{
@@ -69,7 +74,7 @@
     [self setWebView];
 
     ///新用户套餐才有分享
-    if ([self.detailsURL containsString:@"new_users_exclusive_package_iOS.html"] || [self.detailsURL containsString:@"new_user_gift_pack_iOS.html"]) {
+    if ([self.detailsURL containsString:@"new_users_exclusive_package_iOS.html"] || [self.detailsURL containsString:@"new_user_gift_pack_iOS.html"] || [self.detailsURL containsString:@"sweepstakes_ios.html"] || [self.detailsURL containsString:@"power_list_ios.html"]) {
         
         [self showNavBarItemRight];
     }
@@ -92,6 +97,7 @@
 #pragma mark ============分享
 
 -(void)shareRightItemAction{
+    self.detailsURL = [NSString stringWithFormat:@"%@/breaf/sweepstakes_ios.html" ,baseUrl];
     [self linkingOfShare];
 
 }
@@ -167,7 +173,26 @@
        // [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
         [message setThumbImage:[UIImage imageNamed:@"弹窗"]];
         webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/new_user_gift_pack.html" ,baseUrl];
+    }else if ([self.detailsURL containsString:@"sweepstakes_ios.html"]){
+        
+        ///抽奖页面分享
+        message.title = @"官宣：双十一抽赛鲜豪礼";
+        message.description = @"888双十一购物津贴+牛排免费吃一年，等你来抽";
+        
+        // [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
+        [message setThumbImage:[UIImage imageNamed:@"抽奖"]];
+        webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/sweepstakes_ios.html" ,baseUrl];
+    }else if ([self.detailsURL containsString:@"power_list_ios.html"]){
+        
+        ///抽奖助力页面分享
+        message.title = @"我正在抽赛鲜双十一大奖,帮我点击助力,赢取豪礼!";
+        message.description = @"888双十一购物津贴+牛排免费吃一年，等你来抽";
+        
+        // [message setThumbImage:[self handleImageWithURLStr:self.productImageURL]];
+        [message setThumbImage:[UIImage imageNamed:@"抽奖"]];
+        webpageObject.webpageUrl = [NSString stringWithFormat:@"%@/breaf/power_list.html?customerid=%@&tickets=%@" ,baseUrl ,[[NSUserDefaults standardUserDefaults] valueForKey:@"userId"] ,[[NSUserDefaults standardUserDefaults] valueForKey:@"ticket"]];
     }
+    
    
  
   
@@ -187,12 +212,25 @@
 
 
 -(void)setWebView{
+   
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, kBarHeight, kWidth, kHeight-kBarHeight-LL_TabbarSafeBottomMargin)];
     
     self.webView.scalesPageToFit = YES;//自动对页面进行缩放以适应屏幕
     self.webView.detectsPhoneNumbers = NO;//自动检测网页上的电话号码，单击可以拨打
     self.webView.delegate = self;
     [self.view addSubview:self.webView];
+    // NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
+    if ([self.detailsURL containsString:@"sweepstakes_ios.html"]) {
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSString *ticket = [user valueForKey:@"ticket"];
+        self.detailsURL = [NSString stringWithFormat:@"%@/breaf/sweepstakes_ios.html?ticket=%@" ,baseUrl ,ticket];
+    }
+    NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
+    
+    
+    NSURLRequest* request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];//创建NSURLRequest
+    
+    [self.webView loadRequest:request];//加载
     
     //初始化  WebViewJavascriptBridge
     if (_bridge) { return; }
@@ -205,13 +243,7 @@
     
     
     
-   // NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
-    NSURL* url = [NSURL URLWithString:self.detailsURL];//创建URL
-
-    
-    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
-    [self.webView loadRequest:request];//加载
-    
+  
     
     //申明js调用oc方法的处理事件，这里写了后，h5那边只要请求了，oc内部就会响应
     [self JS2OC];
@@ -245,7 +277,7 @@
         
         // 利用data参数处理自己的逻辑
         NSDictionary *dict = (NSDictionary *)data;
-        NSString *str = [NSString stringWithFormat:@"用户名：%@  姓名：%@",@"余小鱼",@"你为什么这么可爱啊"];
+        NSString *str = [NSString stringWithFormat:@"用户名：%@  姓名：%@",@"余小鱼",@"你"];
         [self renderButtons:str];
         
         // responseCallback 给后台的回复
@@ -316,7 +348,7 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
     
     NSString *requestString = [[request URL] absoluteString];
-    DLog(@"webView========== %@" ,requestString);
+    DLog(@"webViewq请求链接========== %@" ,requestString);
     if ([requestString rangeOfString:@"SP"].location != NSNotFound){
         
         
@@ -614,9 +646,28 @@
         
         return  NO;
         
+    }else if ([requestString rangeOfString:@"breaf/login.html"].location != NSNotFound){///抽奖登陆 跳转到登陆页面
+     
+        LoginViewController *VC = [LoginViewController new];
+        [self.navigationController pushViewController:VC animated:YES];
+        
+        return  NO;
+        
+    }else if ([requestString rangeOfString:@"feedback.html"].location != NSNotFound){///抽奖\ 直接用券跳转
+        
+//        PersonalPageViewController *VC = [PersonalPageViewController new];
+        [self.navigationController popViewControllerAnimated:YES];
+        
+        return  NO;
+        
+    }else if ([requestString rangeOfString:@"breaf/power_list.html"].location != NSNotFound){///邀请好友助力 分享
+        
+        self.detailsURL = [NSString stringWithFormat:@"%@/breaf/power_list_ios.html?customerid=%@" ,baseUrl ,[[NSUserDefaults standardUserDefaults] valueForKey:@"userId"] ];
+        [self linkingOfShare];
+
+        return  NO;
+        
     }
-    
-    
     
     
     else {
@@ -632,9 +683,6 @@
    
     
 }
-
-
-
 
 
 

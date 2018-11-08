@@ -153,6 +153,9 @@
                 }
                 
                 [GlobalHelper shareInstance].merchantsIsLoginStated = @"2";
+                [GlobalHelper shareInstance].isPushLoginView = @"抽奖登陆";
+
+                
 
             };
             NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
@@ -222,12 +225,12 @@
 
 -(void)skipBtnAction{
     //返回到指定的控制器，要保证前面有入栈。
+    [GlobalHelper shareInstance].isPushLoginView = @"抽奖登陆";
 
     int index1 = (int)[[self.navigationController viewControllers]indexOfObject:self];
     if (index1>2) {
         [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:(index1-2)] animated:YES];
-    }else
-    {
+    }else{
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     

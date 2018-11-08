@@ -483,6 +483,7 @@
     configration.menuHeight = 30*kScale;
     configration.showBottomLine = NO;
     configration.showScrollLine = NO;
+    
     configration.selectedItemColor = [UIColor whiteColor];
     configration.selectedItemFont = [UIFont systemFontOfSize:17*kScale weight:0.7];
     configration.itemFont = [UIFont systemFontOfSize:17*kScale];
@@ -504,7 +505,7 @@
     
 //    configration.contentHeight
     /// 设置悬浮停顿偏移量
-    configration.suspenOffsetY = -kBarHeight;
+    configration.suspenOffsetY = 10*kScale;
     
     
     YNPageViewController *vc = [YNPageViewController pageViewControllerWithControllers:self.getArrayVCs
@@ -610,6 +611,10 @@
                 otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/new_users_exclusive_package_iOS.html" ,baseUrl];
             }else if ([model.bannerUrl containsString:@"new_user_gift_pack.html"]){///新用户大礼包
                 otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/new_user_gift_pack_iOS.html" ,baseUrl];
+            }else if ([model.bannerUrl containsString:@"sweepstakes.html"]){
+                ///抽奖
+                otherVC.detailsURL = [NSString stringWithFormat:@"%@/breaf/sweepstakes_ios.html" ,baseUrl];
+                
             }else{
                 otherVC.detailsURL = model.bannerUrl;
             }

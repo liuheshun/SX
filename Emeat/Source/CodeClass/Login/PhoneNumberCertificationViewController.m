@@ -142,6 +142,8 @@
             NSDictionary *data = returnData[@"data"];
             if ([data isKindOfClass:[NSDictionary class]] && [data objectForKey:@"store"]) {
                 [user setValue:[NSString stringWithFormat:@"%@" ,returnData[@"data"][@"store"][@"isApprove"]] forKey:@"approve"];
+                [GlobalHelper shareInstance].isPushLoginView = @"抽奖登陆";
+
                 [self.navigationController popToRootViewControllerAnimated:YES];
 
             }else{//未认证

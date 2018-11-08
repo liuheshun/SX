@@ -867,7 +867,7 @@
 
      }else if (orderModel.status == 60 || orderModel.status == 70|| orderModel.status == 80){
          
-         if ([orderModel.typeOfBusiness isEqualToString:@"G"]) {
+         if ([orderModel.typeOfBusiness isEqualToString:@"G"] || [orderModel.typeOfBusiness isEqualToString:@"C"]) {
              
              return 282*kScale + ceil(strSize.height)+1 + 45*kScale+20*kScale+95*kScale;
          }else{

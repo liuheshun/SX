@@ -24,6 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///品牌
 @property (nonatomic,strong) UILabel *brandLab;
 
+///厂号
+@property (nonatomic,strong) UILabel *factoryNumLab;
+
+
 -(void)configSpecialHeadViewWithModel:(HomePageModel*)model;
 
 

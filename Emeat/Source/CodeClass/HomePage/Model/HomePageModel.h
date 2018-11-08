@@ -73,6 +73,8 @@
 @property (nonatomic,strong) NSString * storageConditions;
 ///品牌
 @property (nonatomic,strong) NSString *brand;
+///厂号
+@property (nonatomic,strong) NSString *factoryNum;
 
 ///app端所有商品对象里面添加一个对象 priceTypes （两个字段private Integer index用于判断直接定价还是按重量计价
 @property (nonatomic,strong) NSString *priceTypes;
