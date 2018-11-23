@@ -99,7 +99,7 @@
 
 -(UITextView *)textView{
     if (!_textView) {
-        _textView = [[UITextView alloc] initWithFrame:CGRectMake(15*kScale, kBarHeight+15*kScale, kWidth-30*kScale, 120*kScale)]; //初始化大小并自动释放
+        _textView = [[UITextView alloc] initWithFrame:CGRectMake(15*kScale, kBarHeight+15*kScale, kWidth-30*kScale, 125*kScale)]; //初始化大小并自动释放
         
         _textView.textColor = [UIColor blackColor];//设置textview里面的字体颜色
         _textView.layer.borderColor = RGB(138, 138, 138, 1).CGColor;
@@ -141,9 +141,9 @@
     if (!_residueLabel) {
         
         //多余的一步不需要的可以不写  计算textview的输入字数
-        _residueLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(self.textView)-73*kScale, HEIGHT(self.textView)-30*kScale, 70*kScale, 30*kScale)];
+        _residueLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(self.textView)-73*kScale, HEIGHT(self.textView)-15*kScale, 70*kScale, 15*kScale)];
         _residueLabel.backgroundColor = [UIColor clearColor];
-        _residueLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
+        _residueLabel.font = [UIFont fontWithName:@"Arial" size:12.0f*kScale];
         _residueLabel.text =[NSString stringWithFormat:@"140/140"];
         _residueLabel.textColor = [[UIColor grayColor]colorWithAlphaComponent:0.5];
         _residueLabel.textAlignment = NSTextAlignmentRight;
@@ -186,11 +186,25 @@ replacementText:(NSString*)text
         return YES;
     }
     
-    if (range.location >= 140){
-        return  NO;
-    }else{
-        return YES;
+    NSString *str = [NSString stringWithFormat:@"%@%@", textView.text, text];
+
+    if (str.length > 140)
+    {
+        NSRange rangeIndex = [str rangeOfComposedCharacterSequenceAtIndex:140];
+        
+        if (rangeIndex.length == 1)//字数超限
+        {
+            textView.text = [str substringToIndex:140];
+            //这里重新统计下字数，字数超限，我发现就不走textViewDidChange方法了，你若不统计字数，忽略这行
+            self.residueLabel.text = [NSString stringWithFormat:@"%lu/%d",140-(unsigned long)textView.text.length, 140];
+        }else{
+            NSRange rangeRange = [str rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 140)];
+            textView.text = [str substringWithRange:rangeRange];
+        }
+        return NO;
     }
+    return YES;
+    
     
 }
 

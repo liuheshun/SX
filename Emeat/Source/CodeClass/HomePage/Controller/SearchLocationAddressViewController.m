@@ -11,6 +11,8 @@
 #import "DDSearchManager.h"
 #import "AddNewAddressViewController.h"
 #import "Location.h"
+#import "SearchLocationAddressTableViewCell.h"
+
 @interface SearchLocationAddressViewController ()<UITableViewDelegate,UITableViewDataSource,CLLocationManagerDelegate,RHLocationDelegate , UISearchBarDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -25,7 +27,6 @@
 //当前定位地址信息
 @property (nonatomic,strong) Location *currentLocation;
 
-@property (nonatomic,strong) NSString *currenrLocationString;
 
 @property (nonatomic,assign) BOOL isSearchController;
 
@@ -63,7 +64,6 @@
 
 - (void)locationDidEndUpdatingLocation:(Location *)location{
     //self.currentAddressString = location.name;
-    self.currenrLocationString = location.name;
     self.currentLocation = location;
     DLog(@"xxxxxxx==%@  %@" ,location.thoroughfare ,location.name);
 
@@ -76,12 +76,39 @@
     [[DDSearchManager sharedManager] poiReGeocode:CLLocationCoordinate2DMake(location.latitude,location.longitude) returnBlock:^(NSArray<__kindof DDSearchPoi *> *pois) {
         
         [self.otherAddressArray removeAllObjects];
+        
+//        ///详细地址名称
+//        @property (nonatomic, copy) NSString               *name;
+//        ///地址
+//        @property (nonatomic, copy) NSString               *address;
+//        ///经纬度
+//        @property (nonatomic      ) CLLocationCoordinate2D coordinate;
+//        ///城市
+//        @property (nonatomic, copy) NSString *city;
+//        ///城市编码
+//        @property (nonatomic, copy) NSString *cityCode;
+//        //省
+//        @property (nonatomic,strong) NSString *province;
+//        ///区域名称
+//        @property (nonatomic, copy)   NSString *district;
+//
+        
         for (DDSearchPoi *poi in pois) {
-            if (![self.otherAddressArray containsObject:poi.name]) {
-                [self.otherAddressArray addObject:poi.name];
+            Location *model = [Location new];
+
+            DLog(@"附近地址xxx ===== %@ =%@ =%@ =%@= %@" , self.currentLocation.administrativeArea , self.currentLocation.locality , self.currentLocation.subLocality, poi.address, poi.name)
+
+            model.administrativeArea = self.currentLocation.administrativeArea;
+            model.city = self.currentLocation.city;
+            model.subLocality = self.currentLocation.subLocality;
+            model.thoroughfare = poi.address;
+            model.name = poi.name;
+
+            if (![self.otherAddressArray containsObject:model]) {
+                [self.otherAddressArray addObject:model];
             }
         }
-        [self.otherAddressArray insertObject:self.currenrLocationString atIndex:0];
+        [self.otherAddressArray insertObject:self.currentLocation atIndex:0];
         [self.tableView reloadData];
         
     }];
@@ -186,7 +213,9 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MaxY(self.searchBar)+10, kWidth, kHeight-kBarHeight-49 - LL_TabbarSafeBottomMargin) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+//        [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+
         _tableView.backgroundColor = [UIColor whiteColor];
     }
     return _tableView;
@@ -206,7 +235,7 @@
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 45;
+    return 60*kScale;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -235,27 +264,37 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
    
     if (_isSearchController == NO) {
-        UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"NOSearch_cell"];
+        SearchLocationAddressTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"NOSearch_cell"];
         if (cell1 == nil) {
-            cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NOSearch_cell"];
+            cell1 = [[SearchLocationAddressTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NOSearch_cell"];
            // [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
         }
         
         cell1.backgroundColor = [UIColor whiteColor];
-        cell1.textLabel.text = self.otherAddressArray[indexPath.row];
+        Location *model = self.otherAddressArray[indexPath.row];
+        cell1.addressDetailLab.text =model.name;
+        if (model.administrativeArea == model.city) {
+            model.administrativeArea = @"";
+        }
+        cell1.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@" , model.administrativeArea ,model.city , model.subLocality ,model.thoroughfare];
         return cell1;
         
     }else{
         
-        UITableViewCell *cell2 = [tableView dequeueReusableCellWithIdentifier:@"Search_cell"];
+        SearchLocationAddressTableViewCell *cell2 = [tableView dequeueReusableCellWithIdentifier:@"Search_cell"];
         if (cell2 == nil) {
-            cell2 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search_cell"];
+            cell2 = [[SearchLocationAddressTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Search_cell"];
           //  [cell2 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
         }
         cell2.backgroundColor = [UIColor whiteColor];
         if (self.searchMarray.count!=0) {
             DDSearchPointAnnotation *poi = self.searchMarray[indexPath.row];
-            cell2.textLabel.text = poi.name ;
+            cell2.addressDetailLab.text = poi.name ;
+            if (poi.province == poi.city) {
+                poi.province = @"";
+            }
+            cell2.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@" , poi.province ,poi.city , poi.district ,poi.address];
+
         }
         
         
@@ -270,9 +309,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (_isSearchController == NO) {
         
-        self.currentLocation.name = self.otherAddressArray[indexPath.row];
+        Location *model = self.otherAddressArray[indexPath.row];
         if ([self respondsToSelector:@selector(returnSearchAddressBlock)]) {
-            self.returnSearchAddressBlock(self.currentLocation);
+            self.returnSearchAddressBlock(model);
             
         }
         

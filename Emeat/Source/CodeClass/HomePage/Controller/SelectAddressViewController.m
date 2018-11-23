@@ -14,6 +14,8 @@
 #import "MyAddressView.h"
 #import "IQKeyboardManager.h"
 #import "MyAddressTableViewCell.h"
+#import "SearchLocationAddressTableViewCell.h"
+
 @interface SelectAddressViewController ()<UITableViewDelegate,UITableViewDataSource,CLLocationManagerDelegate,RHLocationDelegate ,UISearchResultsUpdating, UISearchBarDelegate>
 
 #define searchBgViewHeight 55
@@ -236,16 +238,16 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.searchController.active) {
-        return 45;
+        return 60*kScale;
     }else{
     if (self.myAddressArray.count!=0) {
         
         if (indexPath.section == 1) {
-            return 75;
+            return 75*kScale;
         }
-        return 45;
+        return 60*kScale;
     }
-    return 45;
+    return 60*kScale;
     }
 }
 
@@ -298,9 +300,9 @@
     if (self.searchController.active) {
         
         NSString * Identifier = @"cell_search";
-        UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:Identifier];
+        SearchLocationAddressTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:Identifier];
         if (cell1 == nil) {
-            cell1 = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+            cell1 = [[SearchLocationAddressTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
             
             //[cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
             cell1.backgroundColor = [UIColor whiteColor];
@@ -309,8 +311,13 @@
         
         
         if (self.results.count!=0) {
-            Location *location =self.results[indexPath.row];
-            cell1.textLabel.text = location.name;
+            Location *model =self.results[indexPath.row];
+            cell1.addressDetailLab.text = model.name;
+            if (model.administrativeArea == model.city) {
+                model.administrativeArea = @"";
+            }
+            cell1.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@" , model.administrativeArea ,model.city , model.subLocality ,model.thoroughfare];
+
         }
         
         return cell1;
@@ -344,8 +351,26 @@
     if (self.myAddressArray.count == 0) {///我的收货地址不存在
         if (indexPath.section == 1){
             
-            Location *locat = self.otherAddressArray[indexPath.row];
-            cell1.textLabel.text = locat.name ;
+//            Location *locat = self.otherAddressArray[indexPath.row];
+//            cell1.textLabel.text = locat.name ;
+            NSString * Identifier = @"otherAddresss_cell";
+            SearchLocationAddressTableViewCell *myAddressCell = [tableView dequeueReusableCellWithIdentifier:Identifier];
+            if (myAddressCell == nil) {
+                myAddressCell = [[SearchLocationAddressTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+                
+                [myAddressCell setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
+                myAddressCell.backgroundColor = [UIColor whiteColor];
+                
+            }
+            
+            Location *model = self.otherAddressArray[indexPath.row];
+            myAddressCell.addressDetailLab.text = model.name;
+            if (model.administrativeArea == model.city) {
+                model.administrativeArea = @"";
+            }
+            myAddressCell.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@" , model.administrativeArea ,model.city , model.subLocality ,model.thoroughfare];
+            
+            return myAddressCell;
         }
         
     }else{///我的收货地址存在
@@ -377,9 +402,27 @@
             return myAddressCell;
         
         }else if (indexPath.section == 2){
-            Location *locat = self.otherAddressArray[indexPath.row];
-            cell1.textLabel.text = locat.name;
-
+            
+            
+            NSString * Identifier = @"otherAddresss_cell";
+            SearchLocationAddressTableViewCell *myAddressCell = [tableView dequeueReusableCellWithIdentifier:Identifier];
+            if (myAddressCell == nil) {
+                myAddressCell = [[SearchLocationAddressTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+                
+                [myAddressCell setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的阴影效果
+                myAddressCell.backgroundColor = [UIColor whiteColor];
+                
+            }
+            
+            Location *model = self.otherAddressArray[indexPath.row];
+            myAddressCell.addressDetailLab.text = model.name;
+            if (model.administrativeArea == model.city) {
+                model.administrativeArea = @"";
+            }
+            myAddressCell.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@" , model.administrativeArea ,model.city , model.subLocality ,model.thoroughfare];
+            
+            return myAddressCell;
+          
         }
         
         
@@ -484,7 +527,7 @@
             locat.longitude = poi.coordinate.longitude;
             locat.latitude = poi.coordinate.latitude;
             locat.name = poi.name;
-
+            locat.thoroughfare = poi.address;
             
             [self.results addObject:locat];
 
@@ -683,8 +726,10 @@
             poi.district = self.currentAddressSubLocality;
             Location *locat = [Location new];
             
-            locat.administrativeArea = poi.province;
-            locat.city = poi.city;
+            locat.administrativeArea = self.currentLocation.administrativeArea;
+            locat.city = self.currentLocation.city;
+            locat.thoroughfare = poi.address;
+
             locat.subLocality = poi.district;
             locat.longitude = poi.coordinate.longitude;
             locat.latitude = poi.coordinate.latitude;

@@ -19,6 +19,7 @@
 #import "AFHTTPSessionManager.h"
 #import "HomePageDetailsViewController.h"
 #import "OrderCommentsViewController.h"
+#import "CancelOredrReasonView.h"
 
 @interface OrderDetailesViewController ()<UITableViewDelegate ,UITableViewDataSource,TZImagePickerControllerDelegate>
 @property (nonatomic,strong) UITableView *tableView;
@@ -56,7 +57,7 @@
 
 ///是否评价
 @property (nonatomic,strong) NSString *haveEvaluate;
-
+@property (nonatomic,strong) CancelOredrReasonView *cancelView;
 
 
 @end
@@ -159,7 +160,7 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/detail" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
+        DLog(@"订单详情 == %@" , returnData);
         if ([returnData[@"status"] integerValue] == 200)
         {
             [SVProgressHUD dismiss];
@@ -251,7 +252,8 @@
 #pragma mark =====取消订单
 
 
--(void)requsetCancelOrderData{
+-(void)requsetCancelOrderDataCancelOrderType:(NSString*)cancelOrderType otherReasonString:(NSString*)otherReasonString{
+    
     [SVProgressHUD show];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -271,6 +273,9 @@
     
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
+    
+    [dic setValue:cancelOrderType forKey:@"cancelOrderType"];
+    [dic setValue:otherReasonString forKey:@"cancelOrderResult"];
     
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/cancel" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
         if ([returnData[@"status"] integerValue] == 200){
@@ -334,7 +339,11 @@
 
 
 
+
+
+
 #pragma mark ======取消订单,确认订单, 去评价
+
 -(void)leftBottomBtnAction:(UIButton *)btn{
     
     if ( btn.tag == 80  && [self.haveEvaluate isEqualToString:@"0"]) {
@@ -345,32 +354,45 @@
         [self.navigationController pushViewController:VC animated:YES];
         
     }else if (btn.tag == 10 || btn.tag == 40) {
-            
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否取消订单" preferredStyle:1];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                
-                [self requsetCancelOrderData];
-                
-            }];
-            
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-            
-            [alert addAction:okAction];
-            [alert addAction:cancel];
-            [self presentViewController:alert animated:YES completion:nil];
-            
         
+        self.cancelView = [[CancelOredrReasonView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kHeight)];
+        self.cancelView.backgroundColor = RGB(0, 0, 0, 0.7);
+        [self.view addSubview:self.cancelView];
+       
+        __weak __typeof(self) weakSelf = self;
+       
+            
+       self.cancelView.confirmBtnActions = ^(NSString *reasonIndexString, NSString *otherReasonString) {
+           DLog(@"---订单sdsdsdds=== %@ == %@" ,reasonIndexString , otherReasonString);
+           if (reasonIndexString.length == 0) {
+               [weakSelf alertMessage:@"请选择取消原因" willDo:^{
+                   
+               }];
+           }else{
+               if ([reasonIndexString isEqualToString:@"OTHER"] && otherReasonString.length == 0) {
+                   [weakSelf alertMessage:@"请填写其它取消订单的原因" willDo:^{
+                       
+                   }];
+               }else{
+                   DLog(@"取消订单成功");
+                   [weakSelf.cancelView hideAllView];
+                   [weakSelf requsetCancelOrderDataCancelOrderType:reasonIndexString otherReasonString:otherReasonString];
+               }
+           }
+           
+          
+            
+        };
+       
+//        [weakSelf requsetCancelOrderData];
+
     }else if (btn.tag == 70){
         ///确认订单
         [self confirmOrderData];
-        
     }
-   
-    
-    
-    
+
 }
+
 
 
 -(void)rightBottomBtnAction:(UIButton *)btn
@@ -381,7 +403,9 @@
         VC.orderNo = self.orderNo;
         if (self.footViewOrderInfoMarray.count != 0) {
             OrderModel *orderModel = [self.footViewOrderInfoMarray firstObject];
-            VC.periodic = orderModel.periodic;
+            //VC.periodic = orderModel.periodic;
+            VC.typeOfBusiness = orderModel.typeOfBusiness;
+
         }
 
         [self.navigationController pushViewController:VC animated:YES];
@@ -579,13 +603,13 @@
                     _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
                     dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
                     dispatch_source_set_event_handler(_timer, ^{
-                        if(timeout<=0){ //倒计时结束，关闭
+                        if(timeout<0){ //倒计时结束，关闭
                             dispatch_source_cancel(_timer);
                             _timer = nil;
                             dispatch_async(dispatch_get_main_queue(), ^{
                              
-                                //取消订单
-                                [self requsetCancelOrderData];
+                                //后台自动取消订单
+                                [self requsetOrderDetailsData];
                                 
                             });
                         }else{
@@ -628,11 +652,11 @@
                 }
             }
 
-        }
-        else
-        {
+        }else{
+            //后台自动取消订单
+           // [self requsetOrderDetailsData];
             //取消订单
-           // [self requsetCancelOrderData];
+//            [self requsetCancelOrderData];
         }
         
  
@@ -1013,13 +1037,7 @@
     } showHUD:NO];
     
 
-    
-    
-    
 }
-
-
-
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -1041,16 +1059,6 @@
     return cell1;
 }
 
-
-//#pragma mark ==========================更改打款凭证======================
-//
-//-(void)deleteImvBtnAction:(UIButton*)btn{
-//
-//    DLog(@"--------tag==%ld" ,btn.tag);
-//
-//
-//
-//}
 
 
 
@@ -1078,21 +1086,6 @@
 }
 
 
-
-//UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要删除该商品?删除后无法恢复!" preferredStyle:1];
-//UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//    ///删除整个商品
-//
-//    [self deleteProductPostDataWithProductId:model.commodityId ShoppingCartModel:model];
-//
-//
-//}];
-//
-//UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-//
-//[alert addAction:okAction];
-//[alert addAction:cancel];
-//[self presentViewController:alert animated:YES completion:nil];
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

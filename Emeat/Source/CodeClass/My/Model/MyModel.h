@@ -53,6 +53,10 @@
 ///是否认证审核通过
 @property (nonatomic,assign) NSInteger effectivity;
 
+///门店重新认证。门店的2个字段进行判定，bdId和approveDate，2个都为null的情况下，才可输入邀请码
+@property (nonatomic,strong) NSString *approveDate;
+@property (nonatomic,strong) NSString *bdId;
+
 
 
 @end

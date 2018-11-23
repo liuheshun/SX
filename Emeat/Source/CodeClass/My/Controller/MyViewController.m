@@ -207,14 +207,16 @@
                 model.storeId = storeId;
                 [self.myDataMarray addObject:model];
                 
+                NSInteger effectivity = [returnData[@"data"][@"user"][@"effectivity"] integerValue];
                 
                 NSDictionary *dic1 = returnData[@"data"][@"store"];
                 if (dic1) {
-                    MyModel *model1 = [MyModel yy_modelWithJSON:dic1];
+                    MyModel *shopCertifiModel1 = [MyModel yy_modelWithJSON:dic1];
                     NSInteger storeId1 = [returnData[@"data"][@"store"][@"id"] integerValue];
-                    model1.storeId = storeId1;
+                    shopCertifiModel1.storeId = storeId1;
+                    shopCertifiModel1.effectivity = effectivity;
                     [self.shopCertifiMarray removeAllObjects];
-                    [self.shopCertifiMarray addObject:model1];
+                    [self.shopCertifiMarray addObject:shopCertifiModel1];
                 }else{
                     //清空认证信息 ,不能重新认证店铺,需新增
                     [self.shopCertifiMarray removeAllObjects];
@@ -418,8 +420,8 @@
         VC.isRemakeShopCerific = @"1";
         VC.shopCertifiMyModel = [self.shopCertifiMarray firstObject];
         [self.navigationController pushViewController:VC animated:YES];
-    }else{                    [self.shopCertifiMarray removeAllObjects];
-
+    }else{
+        [self.shopCertifiMarray removeAllObjects];
         //首次认证
         ShopCertificationViewController *VC = [ShopCertificationViewController new];
         VC.isRemakeShopCerific = @"0";

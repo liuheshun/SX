@@ -48,6 +48,7 @@
     if ([self.typeOfBusiness isEqualToString:@"C"]) {
         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" , nil];
         self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin", nil];
+        
     }else if ([self.typeOfBusiness isEqualToString:@"B"]){
         self.payTypeMarray = [NSMutableArray arrayWithObjects:@"支付宝" ,@"微信" ,@"线下打款", nil];
         self.payTypeIconMarray = [NSMutableArray arrayWithObjects:@"zhifubao",@"weixin" ,@"qitazhifu", nil];

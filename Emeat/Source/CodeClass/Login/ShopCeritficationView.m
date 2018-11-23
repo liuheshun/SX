@@ -69,16 +69,22 @@
     self.textFieldShopName.text = model.storeName;
     self.textFieldShopManagerName.text = model.kp;
     if (model.callNumber) {
-        self.textFieldPhoneNumer.text = [NSString stringWithFormat:@"%ld" ,model.callNumber];
+        self.textFieldPhoneNumer.text = [NSString stringWithFormat:@"%ld" ,(long)model.callNumber];
     }
     
     self.textFieldCity.text = model.address;
     self.textFieldDetailsAddress.text = model.addressDetail;
-    if (model.bdName) {
-        self.textFieldInviteCode.text = [NSString stringWithFormat:@"%ld" ,model.bdName];
+    ///是否可以更改邀请码
+    if (model.approveDate.length!=0 && model.bdId.length!=0) {
+        self.textFieldInviteCode.userInteractionEnabled = NO;
+
+    }else{
+        self.textFieldInviteCode.userInteractionEnabled = YES;
     }
-    
-    
+    if (model.bdName) {
+        
+        self.textFieldInviteCode.text = [NSString stringWithFormat:@"%ld" ,(long)model.bdName];
+    }
     
 }
 

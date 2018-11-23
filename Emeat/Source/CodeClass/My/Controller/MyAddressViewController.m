@@ -189,6 +189,7 @@
 
 
 
+#pragma mark ============编辑收货地址点击事件
 
 -(void)editBtnAction:(UIButton*)btn{
     
@@ -243,7 +244,7 @@
                 
             }else{//b 上海
                 
-                if ([model.receiverProvince containsString:@"上海市"] && ![model.receiverProvince containsString:@"崇明区"]) {
+                if ([model.receiverProvince containsString:@"上海市"] && ![model.receiverProvince containsString:@"崇明区"] && ![model.receiverProvince containsString:@"金山区"]&& ![model.receiverProvince containsString:@"滴水湖"]&& ![model.receiverProvince containsString:@"南汇区"]&& ![model.receiverProvince containsString:@"淀山湖"]) {
                    // DLog(@"在范围内");
                     if ([self respondsToSelector:@selector(myShippingAddressBlock)]) {
                         self.myShippingAddressBlock(model);
@@ -254,7 +255,7 @@
                    // DLog(@"-------------不在");
                     SVProgressHUD.minimumDismissTimeInterval = 1;
                     SVProgressHUD.maximumDismissTimeInterval = 2;
-                    [SVProgressHUD showErrorWithStatus:@"配送范围上海市(除崇明区外)"];
+                    [SVProgressHUD showErrorWithStatus:@"不在配送范围内"];
                 }
             }
             

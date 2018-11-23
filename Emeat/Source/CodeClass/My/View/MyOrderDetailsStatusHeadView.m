@@ -142,9 +142,28 @@
         
     }else if (orderModel.status == 0 || orderModel.status == 51 || orderModel.status == 52){
         self.orderStatusLab.text = @"已取消";
-        self.orderStatusDetailsLab.text = @"用户已取消订单";
+        NSString *temp;
+        if ([orderModel.cancelOrderType isEqualToString:@"REORDER"]) {
+            temp = @"信息填错了，重新下单";
+        }else if ([orderModel.cancelOrderType isEqualToString:@"SIMPLE_SERVICE"]){
+            temp = @"商家缺货";
+
+        }else if ([orderModel.cancelOrderType isEqualToString:@"LET_IT_GO"]){
+            temp = @"不想要了";
+            
+        }else if ([orderModel.cancelOrderType isEqualToString:@"TEST_COMMODITY"]){
+            temp = @"测试商品";
+            
+        }else if ([orderModel.cancelOrderType isEqualToString:@"OTHER"]){
+            temp = @"其他原因";
+            
+        }else{
+            temp = @"支付超时";
+        }
         
-        [self.statusImv setImage:[UIImage imageNamed:@"quxiaotuihuo"] forState:0];
+        self.orderStatusDetailsLab.text =[NSString stringWithFormat:@"取消原因: %@" ,temp];
+        
+        [self.statusImv setImage:[UIImage imageNamed:@"quxiaodingdan"] forState:0];
     }
     
     
@@ -506,7 +525,7 @@
     }];
     
     [self.orderStatusLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.statusBgImv.mas_left).with.offset(30*kScale);
+        make.left.equalTo(self.statusBgImv.mas_left).with.offset(15*kScale);
         make.top.equalTo(self.statusBgImv.mas_top).with.offset(25*kScale);
         make.width.equalTo(@(60*kScale));
         make.height.equalTo(@(15*kScale));
@@ -514,7 +533,7 @@
     }];
     
     [self.orderStatusDetailsLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.statusBgImv.mas_left).with.offset(30*kScale);
+        make.left.equalTo(self.statusBgImv.mas_left).with.offset(15*kScale);
         make.top.equalTo(self.orderStatusLab.mas_bottom).with.offset(10*kScale);
         make.width.equalTo(@(260*kScale));
         make.height.equalTo(@(15*kScale));

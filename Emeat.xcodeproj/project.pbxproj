@@ -104,6 +104,10 @@
 		165BCCAB20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCAA20E23AFA006883FB /* InvoiceHistoryDetailsTableViewCell.m */; };
 		165BCCAE20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCAD20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m */; };
 		165BCCB120E35D82006883FB /* InvoiceDetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 165BCCB020E35D82006883FB /* InvoiceDetailsModel.m */; };
+		165EAA87219C184700959625 /* CancelOredrReasonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 165EAA86219C184700959625 /* CancelOredrReasonView.m */; };
+		165EAA8A219C1CD300959625 /* CancelOrderReasonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 165EAA89219C1CD300959625 /* CancelOrderReasonTableViewCell.m */; };
+		165EAA8D219D039C00959625 /* CancelOrderReasonBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 165EAA8C219D039C00959625 /* CancelOrderReasonBottomView.m */; };
+		165EAA90219EBE4B00959625 /* SearchLocationAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 165EAA8F219EBE4B00959625 /* SearchLocationAddressTableViewCell.m */; };
 		166DACF81FC6B9F500119444 /* HomePageNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166DACF71FC6B9F500119444 /* HomePageNavView.m */; };
 		1679D1B5204D249A009C2E25 /* MyAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */; };
 		1679D1BE204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1679D1BD204E7C3A009C2E25 /* HomePageOtherDetailsViewController.m */; };
@@ -479,6 +483,14 @@
 		165BCCAD20E32D5F006883FB /* InvoiceHistoryCheckOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceHistoryCheckOrderViewController.m; sourceTree = "<group>"; };
 		165BCCAF20E35D82006883FB /* InvoiceDetailsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvoiceDetailsModel.h; sourceTree = "<group>"; };
 		165BCCB020E35D82006883FB /* InvoiceDetailsModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvoiceDetailsModel.m; sourceTree = "<group>"; };
+		165EAA85219C184700959625 /* CancelOredrReasonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CancelOredrReasonView.h; sourceTree = "<group>"; };
+		165EAA86219C184700959625 /* CancelOredrReasonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CancelOredrReasonView.m; sourceTree = "<group>"; };
+		165EAA88219C1CD300959625 /* CancelOrderReasonTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CancelOrderReasonTableViewCell.h; sourceTree = "<group>"; };
+		165EAA89219C1CD300959625 /* CancelOrderReasonTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CancelOrderReasonTableViewCell.m; sourceTree = "<group>"; };
+		165EAA8B219D039C00959625 /* CancelOrderReasonBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CancelOrderReasonBottomView.h; sourceTree = "<group>"; };
+		165EAA8C219D039C00959625 /* CancelOrderReasonBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CancelOrderReasonBottomView.m; sourceTree = "<group>"; };
+		165EAA8E219EBE4B00959625 /* SearchLocationAddressTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLocationAddressTableViewCell.h; sourceTree = "<group>"; };
+		165EAA8F219EBE4B00959625 /* SearchLocationAddressTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLocationAddressTableViewCell.m; sourceTree = "<group>"; };
 		166DACF61FC6B9F500119444 /* HomePageNavView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageNavView.h; sourceTree = "<group>"; };
 		166DACF71FC6B9F500119444 /* HomePageNavView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageNavView.m; sourceTree = "<group>"; };
 		1679D1B3204D249A009C2E25 /* MyAddressTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAddressTableViewCell.h; sourceTree = "<group>"; };
@@ -1197,6 +1209,8 @@
 				1679D1B4204D249A009C2E25 /* MyAddressTableViewCell.m */,
 				16901CFC1FDE6A0A0080762A /* MyAddressView.h */,
 				16901CFD1FDE6A0A0080762A /* MyAddressView.m */,
+				165EAA8E219EBE4B00959625 /* SearchLocationAddressTableViewCell.h */,
+				165EAA8F219EBE4B00959625 /* SearchLocationAddressTableViewCell.m */,
 			);
 			path = SelectAddressView;
 			sourceTree = "<group>";
@@ -1419,6 +1433,12 @@
 				16CB26F42150DCC700082A8E /* NewUserGiftView.m */,
 				165629BE20A05714002D6EC8 /* HWPopTool.h */,
 				165629BF20A05714002D6EC8 /* HWPopTool.m */,
+				165EAA85219C184700959625 /* CancelOredrReasonView.h */,
+				165EAA86219C184700959625 /* CancelOredrReasonView.m */,
+				165EAA88219C1CD300959625 /* CancelOrderReasonTableViewCell.h */,
+				165EAA89219C1CD300959625 /* CancelOrderReasonTableViewCell.m */,
+				165EAA8B219D039C00959625 /* CancelOrderReasonBottomView.h */,
+				165EAA8C219D039C00959625 /* CancelOrderReasonBottomView.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2213,6 +2233,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				165EAA87219C184700959625 /* CancelOredrReasonView.m in Sources */,
 				16CE1EDF2003611000E919C7 /* AF_BrandCell.h in Sources */,
 				163C9EF8212276B600E367EE /* PersonalPageViewController.m in Sources */,
 				16CE1EE02003611000E919C7 /* AF_BrandCell.m in Sources */,
@@ -2353,6 +2374,7 @@
 				16901C961FD5326B0080762A /* AddNewAddressViewController.m in Sources */,
 				16DC91FD20130A56003C25BE /* MHNetworkManager.m in Sources */,
 				16DF171D211AF66700367CF2 /* FeedBackView.m in Sources */,
+				165EAA90219EBE4B00959625 /* SearchLocationAddressTableViewCell.m in Sources */,
 				16EE100E1FE167860099DA91 /* WaitReceiveViewController.m in Sources */,
 				16285FD320FC3E050095E261 /* ShareImageView.m in Sources */,
 				165BCCA220E215A8006883FB /* InvoiceHistoryTableViewCell.m in Sources */,
@@ -2380,6 +2402,7 @@
 				160F29BE2009040800F3295B /* LHSPayManger.m in Sources */,
 				1610A96B211196890050335B /* WMScrollView.m in Sources */,
 				16C91DE020F8834800B01F8B /* PhoneNumberCertificationViewController.m in Sources */,
+				165EAA8A219C1CD300959625 /* CancelOrderReasonTableViewCell.m in Sources */,
 				16EE10111FE167970099DA91 /* WaitSendViewController.m in Sources */,
 				16FB31461FAC5D9D00049580 /* main.m in Sources */,
 				16C4D67F215330A6004A56E8 /* CardCenterVouchersViewController.m in Sources */,
@@ -2392,6 +2415,7 @@
 				1683BD6A1FB0054E0043CA23 /* ShoppingCartViewController.m in Sources */,
 				16885C592101C643008A6FB9 /* ZJTitleView.m in Sources */,
 				16901C931FD4FB220080762A /* SelectAddressViewController.m in Sources */,
+				165EAA8D219D039C00959625 /* CancelOrderReasonBottomView.m in Sources */,
 				16B0994620E1EA6000D9F101 /* InvoiceSubmitResultsViewController.m in Sources */,
 				16EE10341FE2CB7A0099DA91 /* MyOrderDetailsTableViewCell.m in Sources */,
 				161016392137CA5E00A55A5E /* SaleShareImageViewController.m in Sources */,

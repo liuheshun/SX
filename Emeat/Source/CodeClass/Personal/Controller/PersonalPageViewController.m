@@ -27,7 +27,7 @@
 #import "HWPopTool.h"
 #import "NewUserGiftView.h"
 
-#define headViewHeight (567+18)*kScale
+#define headViewHeight (567+18-91)*kScale
 #define kOpenRefreshHeaderViewHeight 0
 
 @interface PersonalPageViewController ()<UITableViewDelegate ,UITableViewDataSource ,SDCycleScrollViewDelegate ,GYChangeTextViewDelegate ,XLCardSwitchDelegate ,YNPageViewControllerDataSource, YNPageViewControllerDelegate ,RHLocationDelegate>
@@ -352,7 +352,7 @@
                 [self.PlayTextDataMarray addObject:model];
                 
             }
-            [self addChangeTextViewToHeadView:self.headerView];
+           // [self addChangeTextViewToHeadView:self.headerView];
 
         }
         
@@ -501,12 +501,9 @@
     }
     configration.buttonArray = buttonArrayM;
     
-    
-    
 //    configration.contentHeight
     /// 设置悬浮停顿偏移量
     configration.suspenOffsetY = 10*kScale;
-    
     
     YNPageViewController *vc = [YNPageViewController pageViewControllerWithControllers:self.getArrayVCs
                                                                                 titles:[self getArrayTitles]
@@ -514,22 +511,17 @@
     vc.dataSource = self;
     vc.delegate = self;
    
-    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, (567+18)*kScale)];
+    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kWidth, (567+18-91)*kScale)];
     self.headerView.backgroundColor = RGB(238, 238, 238, 1);
 
     ///底部白条
-    UIView *whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 567*kScale, kWidth, 18*kScale)];
+    UIView *whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 567*kScale -91*kScale, kWidth, 18*kScale)];
     whiteView.backgroundColor = [UIColor whiteColor];
     [self.headerView addSubview:whiteView];
     
     vc.headerView = self.headerView;
     /// 指定默认选择index 页面
     vc.pageIndex = 1;
-    
- 
-    
-    
-    
     /// 作为自控制器加入到当前控制器
     [vc addSelfToParentViewController:self];
     /// 如果隐藏了导航条可以 适当改y值
@@ -541,13 +533,8 @@
 
 
 - (NSArray *)getArrayVCs {
-    
     PersonalViewController *vc_1 = [[PersonalViewController alloc] init];
-    
     PersonalViewController *vc_2 = [[PersonalViewController alloc] init];
-    
-   
-    
     return @[vc_1, vc_2];
 }
 
@@ -572,6 +559,44 @@
             contentOffsetY:(CGFloat)contentOffset
                   progress:(CGFloat)progress {
     
+    /*
+     *  处理联动事件z地址
+     */
+    
+    //获取滚动视图y值的偏移量
+  
+    CGFloat offsetY = contentOffset;
+    
+    if (offsetY >= -452*kScale+91*kScale) {
+        [UIView animateWithDuration:0.4  animations:^{
+            self.showCurrentAddressBtn.hidden = YES;
+            self.navView.selectAddressBtn.hidden = NO;
+            CGRect rect = self.navView.searchBtn.frame;
+            rect.origin.x = MaxX(self.navView.selectAddressBtn)+10*kScale;
+            rect.size.width = 210*kScale;
+            self.navView.searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, kWidth-190*kScale, 0, 0);
+            [self.navView.selectAddressBtn layoutButtonWithEdgeInsetsStyle:MKButtonEdgeInsetsStyleTop imageTitleSpace:5*kScale];
+            
+            self.navView.searchBtn.frame = rect;
+            
+        }];
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            self.showCurrentAddressBtn.hidden = NO;
+            self.navView.selectAddressBtn.hidden = YES;
+            CGRect rect = self.navView.searchBtn.frame;
+            
+            rect.origin.x = 60*kScale;
+            rect.origin.y = kStatusBarHeight+5;
+            rect.size.height = 30*kScale;
+            rect.size.width = kWidth-110*kScale;
+            self.navView.searchBtn.frame = rect;
+            self.navView.searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, kWidth-140*kScale, 0, 0);
+            
+        }];
+
+    }
+
     
 }
 
@@ -693,19 +718,12 @@
 #pragma mark ================初始化套餐
 
 - (void)addCardSwitch:(UIView*)headView MealData:(NSMutableArray*)items{
-    //初始化数据源
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DataPropertyList" ofType:@"plist"];
-//    NSArray *arr = [NSArray arrayWithContentsOfFile:filePath];
-//    //NSArray *arr = @[@"1" ,@"2" ,@"3" ,@"4"];
-//    NSMutableArray *items = [NSMutableArray new];
-//    for (NSDictionary *dic in arr) {
-//        HomePageModel *item = [[HomePageModel alloc] init];
-//        [item setValuesForKeysWithDictionary:dic];
-//        [items addObject:item];
-//    }
+ 
     if (_cardSwitch == nil) {
         //设置卡片浏览器
-        _cardSwitch = [[XLCardSwitch alloc] initWithFrame:CGRectMake(0, (176+91+22)*kScale, self.view.bounds.size.width, 250*kScale)];
+        //176+91+22
+
+        _cardSwitch = [[XLCardSwitch alloc] initWithFrame:CGRectMake(0, (176+22)*kScale, self.view.bounds.size.width, 250*kScale)];
         _cardSwitch.backgroundColor = [UIColor clearColor];
         _cardSwitch.items = items;
         _cardSwitch.delegate = self;
@@ -1072,21 +1090,21 @@
     [self.otherAddressArray removeAllObjects];
     //逆地理编码，请求附近兴趣点数据
     [[DDSearchManager sharedManager] poiReGeocode:CLLocationCoordinate2DMake(location.latitude,location.longitude) returnBlock:^(NSArray<__kindof DDSearchPoi *> *pois) {
-        
+
         
         for (DDSearchPoi *poi in pois) {
+          
+
             poi.district = self.currentAddressSubLocality;
             if (![self.otherAddressArray containsObject:poi]) {
-                //                DLog(@"qu==== %@  %@" ,poi.district , poi.province)
                 Location *locat = [Location new];
                 
-                locat.administrativeArea = poi.province;
+                locat.administrativeArea = self.currentLocation.administrativeArea;
                 locat.city = poi.city;
                 locat.subLocality = poi.district;
                 locat.longitude = poi.coordinate.longitude;
                 locat.latitude = poi.coordinate.latitude;
                 locat.name = poi.name;
-                
                 [self.otherAddressArray addObject:locat];
             }
         }
@@ -1121,7 +1139,7 @@
     __weak __typeof(self) weakSelf = self;
     
     VC.selectAddressBL = ^(Location *currentLocations) {//地址传值
-        //        DLog(@"区域=== %@" ,currentLocations.subLocality);
+                DLog(@"区域=== %@" ,currentLocations.subLocality);
         // [self.navView.selectAddressBtn setTitle:currentLocations.name forState:0];
         // [self.showCurrentAddressBtn setTitle:currentLocations.name forState:0];
         self.showCurrentAddressLabel.text = currentLocations.name;
@@ -1186,6 +1204,17 @@
     }
     return _showCurrentAddressBtn;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 - (void)didReceiveMemoryWarning {

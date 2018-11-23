@@ -147,7 +147,7 @@
             
             
         }else{ ///b端是上海除崇明岛区域
-            if ([addressModel.receiverProvince containsString:@"上海市"] && ![addressModel.receiverProvince containsString:@"崇明区"]) {
+            if ([addressModel.receiverProvince containsString:@"上海市"] && ![addressModel.receiverProvince containsString:@"崇明区"] && ![addressModel.receiverProvince containsString:@"金山区"]&& ![addressModel.receiverProvince containsString:@"滴水湖"]&& ![addressModel.receiverProvince containsString:@"南汇区"]&& ![addressModel.receiverProvince containsString:@"淀山湖"]) {
                 //DLog(@"在范围内");
                 self.nameLab.textColor = RGB(51, 51, 51, 1);
                 self.phoneNumLab.textColor = RGB(51, 51, 51, 1);
@@ -166,9 +166,7 @@
         
        
         
-    }
-    else
-    {
+    }else{
         self.nameLab.textColor = RGB(51, 51, 51, 1);
         self.phoneNumLab.textColor = RGB(51, 51, 51, 1);
         self.addressLab.textColor = RGB(51, 51, 51, 1);

@@ -76,8 +76,7 @@
     
     ///赋值回显
     [self.shopCeritficationView configShopCertifiViewWithModel:self.shopCertifiMyModel];
-    
-    
+
     
     [MMPopupWindow sharedWindow].touchWildToHide = YES;
     MMAlertViewConfig1 *alertConfig = [MMAlertViewConfig1 globalConfig1];
@@ -158,6 +157,10 @@
                 
 
             };
+            
+            
+            
+            
             NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
             
             MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 您的店铺信息已成功提交，请耐心等待工作人员与您联系，客服热线4001106111" items:items];
@@ -171,36 +174,12 @@
             
             
             
-        }else if ([returnData[@"status"] integerValue] == 203){
-            MMPopupItemHandler block = ^(NSInteger index){
-                // NSLog(@"clickd %@ button",@(index));
-            };
-            NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
-            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 该手机号已经注册过店铺，如需帮助请拨打客服热线 4001106111" items:items];
-            
-            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
-            
-            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
-            
-            [alertView show];
-        }else if ([returnData[@"status"] integerValue] == 202){
-            MMPopupItemHandler block = ^(NSInteger index){
-                // NSLog(@"clickd %@ button",@(index));
-            };
-            NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
-            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 已有相同店铺名称门店，请重新编辑，如需帮助请拨打客服热线 4001106111" items:items];
-            
-            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
-            
-            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
-            
-            [alertView show];
         }else{
             MMPopupItemHandler block = ^(NSInteger index){
                // NSLog(@"clickd %@ button",@(index));
             };
             NSArray *items = @[MMItemMake(@"知道了", MMItemTypeNormal, block),];
-            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@" 您的店铺信息提交失败，请稍后重试，如需帮助请拨打客服热线 4001106111" items:items];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:[NSString stringWithFormat:@"%@,如需帮助请拨打客服热线 4001106111" ,returnData[@"msg"]] items:items];
             
             alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
             
@@ -290,7 +269,33 @@
             
             [self.addressDic setValue:[NSString stringWithFormat:@"%@" ,self.ShopInviteCode] forKey:@"shopInviteCode"];
 
-            [self postShopCertifiDate];
+            
+            if (self.shopCertifiMyModel.isApprove == 1 && self.shopCertifiMyModel.effectivity == 1) {///已认证状态
+               
+                MMPopupItemHandler block = ^(NSInteger index){
+                    // NSLog(@"clickd %@ button",@(index));
+                    if (index == 1) {
+                        [self postShopCertifiDate];
+
+                    }
+                };
+                NSArray *items = @[MMItemMake(@"取消", MMItemTypeNormal, block) , MMItemMake(@"确认提交", MMItemTypeNormal, block)];
+                MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"重新提交认证后，原店铺认证信息将失效。新认证信息审核通过后生效（24小时内）。请谨慎操作！" items:items];
+                
+                alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+                
+                alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+                
+                [alertView show];
+                
+                
+            }else{
+                [self postShopCertifiDate];
+
+            }
+            
+            
+            
             
             
         }

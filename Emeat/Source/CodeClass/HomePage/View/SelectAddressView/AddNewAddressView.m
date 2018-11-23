@@ -100,13 +100,26 @@
     self.textFieldName.text = model.receiverName;
     self.textFieldPhoneNumer.text = [NSString stringWithFormat:@"%ld" ,model.receiverPhone];
     
-   
     
-    NSArray *array = [model.receiverProvince componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
-    if (array.count!=0) {
-        self.textFieldCity.text = [NSString stringWithFormat:@"%@" , [array firstObject] ];
-        self.textFieldSubstreet.text =  [NSString stringWithFormat:@"%@" , [array lastObject] ];
+    if ([model.receiverProvince rangeOfString:@","].location == NSNotFound) {        
+        NSArray *array = [model.receiverProvince componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
+        
+        if (array.count!=0) {
+            self.textFieldCity.text = [NSString stringWithFormat:@"%@" , [array firstObject] ];
+            //self.textFieldSubstreet.text =  [NSString stringWithFormat:@"%@" , [array lastObject] ];
+        }
+        
+    } else {
+        NSLog(@"string 包含 martin");
+        NSArray *array = [model.receiverProvince componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
+        
+        if (array.count!=0) {
+            self.textFieldCity.text = [NSString stringWithFormat:@"%@" , [array firstObject] ];
+            self.textFieldSubstreet.text =  [NSString stringWithFormat:@"%@" , [array lastObject] ];
+        }
     }
+  
+   
    
     self.textFieldDetailsAddress.text = model.receiverAddress;
     

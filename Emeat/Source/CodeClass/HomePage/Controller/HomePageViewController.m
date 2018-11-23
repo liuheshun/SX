@@ -178,16 +178,8 @@
     self.homePageSortDataMarray = [NSMutableArray array];
     self.PlayTextDataMarray = [NSMutableArray array];
     isFirstLoading = 0;
-//    ///初始数据
-//    NSArray *titleArray = @[@{@"classifyName":@"经常买"} ,@{@"classifyName":@"大家都在买"} ,@{@"classifyName":@"赛鲜精选"}];
-//    for (NSDictionary *dic in titleArray) {
-//        HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
-//        [self.segmentTitleMarray addObject:model];
-//    }
-   
- 
-//    [self netWorkIsOnLine];
 
+    
     [self.view addSubview:self.mainTableView];
     [self.view addSubview:self.navView];
     [self.mainTableView addSubview:self.headImageView];
@@ -767,8 +759,9 @@
             if (![self.otherAddressArray containsObject:poi]) {
 //                DLog(@"qu==== %@  %@" ,poi.district , poi.province)
                 Location *locat = [Location new];
+                locat.administrativeArea = self.currentLocation.administrativeArea;
 
-                locat.administrativeArea = poi.province;
+//                locat.administrativeArea = poi.province;
                 locat.city = poi.city;
                 locat.subLocality = poi.district;
                 locat.longitude = poi.coordinate.longitude;
@@ -939,15 +932,7 @@
      * 这里可以任意替换你喜欢的pageView
      *作者这里使用一款github较多人使用的 WMPageController 地址https://github.com/wangmchn/WMPageController
      */
-    for (UIView *v in cell.contentView.subviews) {
-         //   DLog(@"v==== %@" ,v);
-            
-    
-    }
-    if (self.segmentTitleMarray.count >3) {
-          //  [cell.contentView addSubview:self.setPageViewControllers];
-
-    }
+  
     [cell.contentView addSubview:self.pageVC.view];
 
     return cell;
