@@ -46,11 +46,13 @@
 #pragma mark===开票历史详情
 
 -(void)requestInvoiceHistoryDetails:(NSString*)InvoiceHistoryDetailsId{
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
     
     [MHAsiNetworkHandler startMonitoring];
@@ -93,11 +95,13 @@
 #pragma mark===开票订单数量
 
 -(void)requestInvoiceHistoryOrderCount:(NSString*)InvoiceHistoryDetailsId{
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+
     NSDictionary *dic = [self checkoutData];
     [dic setValue:self.invoiceId forKey:@"invoiceId"];
     [dic setValue:mTypeIOS forKey:@"mtype"];
-    
+    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
+    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
     [MHAsiNetworkHandler startMonitoring];
     [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/auth/appInvoice/queryOrderNumByInoviceId" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {

@@ -26,7 +26,7 @@
     [self requestServeData];
     [self.view addSubview:self.tableView];
 }
-
+#pragma mark =============获取加工服务类型
 -(void)requestServeData{
     NSDictionary *dic = [NSDictionary dictionary];
     dic = [self checkoutData];

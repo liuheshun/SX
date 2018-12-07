@@ -255,10 +255,8 @@
         [self.selectCommentsLabelsMarray addObject:btn.titleLabel.text];
         
     }
-    DLog(@"bbbbbbbb=== %@" ,self.selectCommentsLabelsMarray);
+//    DLog(@"bbbbbbbb=== %@" ,self.selectCommentsLabelsMarray);
     NSString *string = [self.selectCommentsLabelsMarray componentsJoinedByString:@","];
-    
-
     self.returnCommentsLabels(string);
     //self.returnCommentsLabels(@"s");
 }

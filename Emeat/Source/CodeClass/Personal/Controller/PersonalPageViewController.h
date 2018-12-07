@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZLSwipeableView.h"
 
 @interface PersonalPageViewController : SHLBaseViewController
 

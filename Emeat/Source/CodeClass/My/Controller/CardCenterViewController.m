@@ -50,7 +50,7 @@
     
 }
 
-
+#pragma mark ===========卡券列表
 -(void)requsetCardData{
     [SVProgressHUD show];
     NSMutableDictionary *dic = [self checkoutData];
@@ -78,8 +78,6 @@
                 }else{
                     [array2 addObject:model];
                 }
-                
-//                [self.cardMarray addObject:model];
             }
             [self.cardMarray addObjectsFromArray:array1];
             [self.cardMarray addObjectsFromArray:array2];
@@ -224,100 +222,12 @@
             self.selectCardPrice(array);
         }
         [self.navigationController popViewControllerAnimated:YES];
-        
-        
-        
-        
-        
-        //[self selectCardGetOrderInfoDataWithTicketId:model.cardId CardPrices:9];
+    
         
     }
    
 
 }
-
-
-//
-//-(void)selectCardGetOrderInfoDataWithTicketId:(NSInteger)ticketId CardPrices:(NSInteger)cardPrices{
-//    
-//    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//    dic = [self checkoutData];
-//    [dic setValue:mTypeIOS forKey:@"mtype"];
-//    [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
-//    [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
-//    [dic setValue:[NSString stringWithFormat:@"%ld" ,ticketId] forKey:@"ticketId"];
-//    
-//    if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]) {
-//        
-//        [dic setValue:@"PERSON" forKey:@"showType"];
-//        
-//    }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
-//        
-//        [dic setValue:@"SOGO" forKey:@"showType"];
-//        
-//    }
-//    
-//    DLog(@"获取订单信息 dic == %@" ,dic);
-//    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/order/get_order_cart_product_new" , baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-//        DLog(@"获取订单信息returnData == %@" ,returnData);
-//        NSMutableArray *cardMarray = [NSMutableArray array];
-//        if ([returnData[@"status"] integerValue] == 200){
-//            
-//            CardModel *model = [CardModel yy_modelWithJSON:returnData[@"data"][@"ticket"]];
-//            
-//            model.productTotalPrice = returnData[@"data"][@"productTotalPrice"];
-//            
-//            model.cardId = [returnData[@"data"][@"ticket"][@"id"] integerValue];
-//            
-//            model.postMoney = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"postMoney"]] ;
-//            model.businessType = [NSString stringWithFormat:@"%@" ,returnData[@"data"][@"businessType"]];
-//
-//            
-//            [cardMarray addObject:model];
-//    
-//
-//            if ([self respondsToSelector:@selector(selectCardPrice)]) {
-//                
-//                self.selectCardPrice(cardMarray);
-//            }
-//            [self.navigationController popViewControllerAnimated:YES];
-//            
-//           
-//            
-//            
-//            
-////
-////            NSString *productTotalPrice = returnData[@"data"][@"productTotalPrice"];
-////
-////            for (NSMutableDictionary *dic in returnData[@"data"][@"orderItemVoList"]) {
-////
-////                ShoppingCartModel *model = [ShoppingCartModel yy_modelWithJSON:dic];
-////                model.productTotalPrice = productTotalPrice;
-////                model.needTotalPrices = productTotalPrice;
-////                [orderListMarray addObject:model];
-////            }
-////
-////            [SVProgressHUD dismiss];
-////            ConfirmOrderInfoViewController *VC = [ConfirmOrderInfoViewController new];
-////            VC.hidesBottomBarWhenPushed = YES;
-////            VC.orderListMarray = orderListMarray;
-////            [self.navigationController pushViewController:VC animated:YES];
-////            NSLog(@"去结算");
-////            DLog(@"获取订单信息===msg=  %@   returnData == %@" ,returnData[@"msg"] , returnData);
-// }
-////        else
-////        {
-////            [SVProgressHUD showErrorWithStatus:returnData[@"msg"]];
-////        }
-//    } failureBlock:^(NSError *error) {
-//        DLog(@"获取订单信息err0r=== %@  " ,error);
-//        
-//    } showHUD:NO];
-//    
-//    
-//}
-
 
 
 

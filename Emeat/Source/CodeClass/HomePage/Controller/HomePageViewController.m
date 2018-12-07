@@ -535,7 +535,7 @@
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/classify/get_home_classify?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/classify/get_home_classify?appVersionNumber=%@&user=%@" ,baseUrl ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
         //DLog(@"=首页分类数据 = %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {
             [self.homePageSortDataMarray removeAllObjects];
@@ -609,7 +609,7 @@
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
-    [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/roll/get_roll_order?appVersionNumber=%@&user=%@" ,baseUrl, [user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
+    [MHNetworkManager getRequstWithURL:[NSString stringWithFormat:@"%@/m/roll/get_roll_order?appVersionNumber=%@&user=%@" ,baseUrl, [user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]] params:nil successBlock:^(NSDictionary *returnData) {
         
        // DLog(@"获取播报数据=====%@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {

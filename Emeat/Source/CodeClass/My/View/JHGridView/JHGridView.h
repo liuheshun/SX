@@ -4,7 +4,7 @@
 //
 //  Created by 307A on 16/9/25.
 //  Copyright © 2016年 徐嘉宏. All rights reserved.
-//表格
+//表格 显示出库明细
 
 #import <UIKit/UIKit.h>
 /* GridIndex. */

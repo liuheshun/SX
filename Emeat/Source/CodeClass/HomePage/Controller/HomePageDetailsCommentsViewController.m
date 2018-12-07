@@ -41,9 +41,7 @@
     [dic setValue:[user valueForKey:@"appVersionNumber"] forKey:@"appVersionNumber"];
     [dic setValue:[user valueForKey:@"user"] forKey:@"user"];
     
-    DLog(@"%@" ,dic);
     [MHNetworkManager postReqeustWithURL:[NSString stringWithFormat:@"%@/m/evaluation/get_evaluation_by_commodity_id",baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-        
        
         DLog(@"评价列表 ==== %@" ,returnData);
         if ([returnData[@"status"] integerValue] == 200) {

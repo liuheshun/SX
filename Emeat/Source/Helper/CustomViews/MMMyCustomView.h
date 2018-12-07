@@ -4,7 +4,7 @@
 //
 //  Created by liuheshun on 2018/4/23.
 //  Copyright © 2018年 liuheshun. All rights reserved.
-//文本中 电话号码可拨打
+//文本中 电话号码可拨打  提示框
 
 #import <MMPopupView/MMPopupView.h>
 #import "MMPopupDefine.h"

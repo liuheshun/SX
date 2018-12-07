@@ -249,7 +249,6 @@
 
 -(void)requestStoreStatedData{
     
-    DLog(@"bb=== %@" ,baseUrl);
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *ticket = [user valueForKey:@"ticket"];
