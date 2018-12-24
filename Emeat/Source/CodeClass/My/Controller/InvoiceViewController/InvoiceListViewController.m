@@ -67,7 +67,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self setupRefresh];
-    self.bottomView.priceLabel.text = @"¥:0.00";
+   // self.bottomView.priceLabel.text = @"¥:0.00";
     [self.idMarray removeAllObjects];
 
 }
@@ -151,6 +151,9 @@
                      [[GlobalHelper shareInstance] emptyViewNoticeText:@"暂无已完成订单" NoticeImageString:@"wushangpin" viewWidth:50 viewHeight:54 UITableView:self.tableView isShowBottomBtn:NO bottomBtnTitle:@""];
                 }else{
                     if (currentPage == 1) {
+                        [self.idMarray removeAllObjects];
+                        self.invoiceTotalPrice = @"0.00";
+                        [self countTotalInvoicePrices];
                         [self.invoiceListMarray removeAllObjects];
                         [self.invoiceImageListMarray removeAllObjects];
 

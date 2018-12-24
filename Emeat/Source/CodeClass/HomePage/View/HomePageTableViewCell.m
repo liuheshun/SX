@@ -68,8 +68,7 @@
   
     
    
-    if ([model.goodsTypes isEqualToString:@"1"]) {//商户专区
-        
+    
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         
         if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {
@@ -124,9 +123,12 @@
                 
                 [self.newsPriceBtn setTitleColor:RGB(231, 35, 36, 1) forState:0];
                 [self.newsPriceBtn setTitle:@"查看价格" forState:0];
+                [self.oldPriceBtn setTitle:@"" forState:0];
+
             }else{
                 ///商户未认证或者认证未通过
                 [self.newsPriceBtn setTitleColor:RGB(231, 35, 36, 1) forState:0];
+                [self.newsPriceBtn setTitle:@" " forState:0];
                 [self.newsPriceBtn setTitle:@"查看价格" forState:0];
                 [self.oldPriceBtn setTitle:@"原价" forState:0];
                 
@@ -138,31 +140,7 @@
         
         
         
-    }else if ([model.goodsTypes isEqualToString:@"0"]){
-        ///个人专区
-        
-        if (model.discountPrice == -1) {///只显示原价
-            
-           [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.costPrice/100] forState:0];
-            [self.oldPriceBtn setTitle:@"" forState:0];
-
-        }else{
-            
-            [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.unitPrice/100] forState:0];
-            [self.oldPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元",(float)model.costPrice/100] forState:0];
-
-        }
-        
-        
-        
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
-        NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%@" ,@"元"]];
-        [str addAttribute:NSForegroundColorAttributeName value:RGB(136, 136, 136, 1) range:range1];
-        
-        [self.newsPriceBtn setAttributedTitle:str forState:UIControlStateNormal];
-        
-
-    }
+    
     
     
     [self.newsPriceBtn mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -200,23 +178,7 @@
     
     [self.cartBtn setImage:[UIImage imageNamed:@"join_cart"] forState:0];
 
-//    后期可能会有此需求(商品首页回显加入购物车数量)
-//    if (model.number == 0) {
-//        [self.cartView removeFromSuperview];
-//        [self addSubview:self.cartBtn];
-//        [self.cartBtn setImage:[UIImage imageNamed:@"join_cart"] forState:0];
-//
-//        [self.cartBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.bottom.equalTo(self.mainImv.mas_bottom).with.offset(0);
-//            make.right.equalTo(self.mas_right).with.offset(-15);
-//            make.height.width.equalTo(@40);
-//        }];
-//    }else{
-//        [self.cartBtn removeFromSuperview];
-//        [self addSubview:self.cartView];
-//        [self setCartViewFrame];
-//    }
-   
+
 }
 
 #pragma mark ========计算原价宽度

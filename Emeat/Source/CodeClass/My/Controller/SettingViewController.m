@@ -103,10 +103,10 @@
             if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"admin"]) {
                
                 string  = [NSString stringWithFormat:@"切换环境 当前环境(admin)"];
-            }else if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"test测试"]){
+            }else if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"test"]){
                 string  = [NSString stringWithFormat:@"切换环境 当前环境(test)"];
 
-            }else if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"徐立测试"]){
+            }else if ([[NSString stringWithFormat:@"%@" ,[user valueForKey:@"server"]] containsString:@"192.168.0.141"]){
                 string  = [NSString stringWithFormat:@"切换环境 当前环境(徐立)"];
                 
             }

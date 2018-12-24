@@ -16,6 +16,7 @@
 #import "ShoppingCartEmptyHeadView.h"
 #import "ShoppingCartAddressHeadView.h"
 #import "HomePageDetailsViewController.h"
+#import "ShopCertificationViewController.h"
 #define  TAG_BACKGROUNDVIEW 100
 
 #define SCREEN_HEIGHT [[UIScreen mainScreen]bounds].size.height
@@ -98,7 +99,7 @@
          [self requestStoreStatedData];
     }
     self.isFirst = @"2";
-
+    [self requestBadNumValue];
     ///清空已经选择的优惠券
     [self deleteCardTickets];
 }
@@ -125,8 +126,6 @@
     self.ssampleListMarray = [NSMutableArray array];
     self.sloseListMarray = [NSMutableArray array];
     self.secionMarray = [NSMutableArray array];
-    
-   
     self.titleArray = [NSMutableArray array];
     
     [self netWorkIsOnLine];
@@ -286,47 +285,6 @@
     
 }
 
-
-//#pragma mark =====购物车数量
-//-(void)requestBadNumValue{
-//    
-//    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-//    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-//    NSString *ticket = [user valueForKey:@"ticket"];
-//    NSString *secret = @"UHnyKzP5sNmh2EV0Dflgl4VfzbaWc4crQ7JElfw1cuNCbcJUau";
-//    NSString *nonce = [self ret32bitString];//随机数
-//    NSString *curTime = [self dateTransformToTimeSp];
-//    NSString *checkSum = [self sha1:[NSString stringWithFormat:@"%@%@%@" ,secret ,  nonce ,curTime]];
-//    
-//    [dic setValue:secret forKey:@"secret"];
-//    [dic setValue:nonce forKey:@"nonce"];
-//    [dic setValue:curTime forKey:@"curTime"];
-//    [dic setValue:checkSum forKey:@"checkSum"];
-//    [dic setValue:ticket forKey:@"ticket"];
-//    
-//    
-//    [MHNetworkManager  postReqeustWithURL:[NSString stringWithFormat:@"%@/m/auth/cart/get_cart_product_count" ,baseUrl] params:dic successBlock:^(NSDictionary *returnData) {
-//        
-//        if ([returnData[@"status"] integerValue] == 200)
-//        {
-//            [GlobalHelper shareInstance].shoppingCartBadgeValue = [returnData[@"data"] integerValue];
-//            
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"shoppingCart" object:nil userInfo:nil];
-//        }
-//        
-//        DLog(@"购物车数量==  %@" ,returnData);
-//    } failureBlock:^(NSError *error) {
-//        
-//        DLog(@"购物车数量error==  %@" ,error);
-//        
-//    } showHUD:NO];
-//    
-//    
-//    
-//    
-//    
-//    
-//}
 
 #pragma mark = =获取订单信息(去结算)
 
@@ -1058,13 +1016,13 @@
 
 -(void)requestGuesslikeData{
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *dataUTF8;
-    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {//商户猜你喜欢
-        dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-    }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){//个人用户
-         dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=PERSON" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    }
+    NSString *dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {//商户猜你喜欢
+//        dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//
+//    }else if ([[user valueForKey:@"approve"] isEqualToString:@"0"] || [[user valueForKey:@"approve"] isEqualToString:@"2"]){//个人用户
+//         dataUTF8 = [[NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?promotionId=1&mtype=%@&appVersionNumber=%@&user=%@&showType=PERSON" ,baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] , [user valueForKey:@"user"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    }
     [MHNetworkManager getRequstWithURL:dataUTF8 params:nil successBlock:^(NSDictionary *returnData) {
         DLog(@"猜你喜欢 === %@" ,returnData);
         
@@ -1097,7 +1055,7 @@
 #pragma mark = 加入购物车数据(猜你喜欢)
 
 -(void)addCartPostDataWithProductId:(NSInteger)productId{
-    //  ：http://192.168.0.124:8085/cart/add?userId=7&productId=112&quatity=100
+
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -1155,6 +1113,12 @@
     } showHUD:NO];
     
 }
+
+
+
+
+
+
 
 
 #pragma mark = 加入购物车商品数量为0时 删除整个商品
@@ -1668,10 +1632,10 @@
                 
                 if (self.guessLikeMarray.count == 0) {
                     
-                    return 185*kScale;
+                    return 215*kScale;
                  
                 }else{
-                     return 250*kScale;
+                     return 250*kScale+35*kScale;
                  }
                 
             }else if (section == 1){
@@ -1706,7 +1670,14 @@
             
             if (self.guessLikeMarray.count == 0) {
                 
-                ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 185*kScale)];
+                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 215*kScale)];
+                view.backgroundColor = RGB(238, 238, 238, 1);
+                ShoppingCartAddressHeadView *addressView = [[ShoppingCartAddressHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35*kScale)];
+                [addressView.addressBtn setTitle:[GlobalHelper shareInstance].selectAddressString forState:0];
+                addressView.backgroundColor = [UIColor whiteColor];
+                [view addSubview:addressView];
+                
+                ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, MaxY(addressView), kWidth, 185*kScale)];
                 emptyHeadView.backgroundColor = [UIColor whiteColor];
                 
                 return emptyHeadView;
@@ -1715,12 +1686,18 @@
                 
                 UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 250*kScale)];
                 view.backgroundColor = RGB(238, 238, 238, 1);
+                ShoppingCartAddressHeadView *addressView = [[ShoppingCartAddressHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35*kScale)];
+                [addressView.addressBtn setTitle:[GlobalHelper shareInstance].selectAddressString forState:0];
+                addressView.backgroundColor = [UIColor whiteColor];
+                [view addSubview:addressView];
                 
-                ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 185*kScale)];
+    
+                
+                ShoppingCartEmptyHeadView *emptyHeadView = [[ShoppingCartEmptyHeadView alloc] initWithFrame:CGRectMake(0, MaxY(addressView), kWidth, 185*kScale)];
                 emptyHeadView.backgroundColor = [UIColor whiteColor];
                 [view addSubview:emptyHeadView];
                 
-                YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, 195*kScale, kWidth, 55*kScale)];
+                YouLikeCollectionHeadView *headview = [[YouLikeCollectionHeadView alloc] initWithFrame:CGRectMake(0, MaxY(emptyHeadView)+10*kScale, kWidth, 55*kScale)];
                 headview.titleLab.text = @"猜你喜欢";
                 headview.backgroundColor = [UIColor whiteColor];
                 
@@ -1859,20 +1836,21 @@
         }
         
 #pragma mark = 猜你喜欢 加入购物车
-        
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [cell setClickIndexBlock:^(NSInteger index) {
-            
             DLog(@"猜你喜欢点击下标=== %ld" ,index);
-            if (self.guessLikeMarray.count != 0)
-            {
+            if (self.guessLikeMarray.count != 0){
                 HomePageModel *model = [self.guessLikeMarray objectAtIndex:index];
-                [self addCartPostDataWithProductId:model.id];
+                
+                [self cartBtnActionWithProductId:model.id];
+                
                 [myTableView reloadData];
             }
-            
-            
-            
         }];
+        cell.checkPricesBlock = ^(NSInteger index) {
+            [self checkPricesAction];
+            
+        };
         
         
         
@@ -1883,10 +1861,10 @@
         NSString *Identifier = [NSString stringWithFormat:@"cellID_shop%ld%ld" ,(long)indexPath.section,indexPath.row];
         
         ShoppingCartTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];
-        if (!cell) {
+//        if (!cell) {
             cell = [[ShoppingCartTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
+//        }
         cell.isSelected = isSelect;
         cell.selectBtn.tag = indexPath.row;
         
@@ -1896,9 +1874,7 @@
 #pragma mark ========选中购物车商品
                 ShoppingCartModel *cartModel = self.secionMarray[indexPath.section][indexPath.row];
                 [self selectProductsPostDataCommodityId:[NSString stringWithFormat:@"%ld" , (long)cartModel.commodityId]];
-            }
-            else
-            {
+            }else{
 #pragma mark ========取消选中购物车商品
                 
                 ShoppingCartModel *cartModel = self.secionMarray[indexPath.section][indexPath.row];
@@ -1969,6 +1945,144 @@
        
     }
 }
+
+#pragma mark ==============查看价格
+
+-(void)checkPricesAction{
+    
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    if ([[user valueForKey:@"isLoginState"] isEqualToString:@"0"]) {
+        LoginViewController *VC = [LoginViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+    }else if ([[user valueForKey:@"isLoginState"] isEqualToString:@"1"]){
+        
+        
+        if ([[user valueForKey:@"approve"] isEqualToString:@"0"]) {///认证未通过
+            MMPopupItemHandler block = ^(NSInteger index){
+                //  NSLog(@"clickd %@ button",@(index));
+                if (index == 0) {
+                    NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                    dispatch_async(dispatch_get_main_queue(), ^(){
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                    });
+                }
+            };
+            NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"再等等", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您的认证申请还未通过，请耐心等待！\n客服热线：4001106111" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+            
+        }else  if ([[user valueForKey:@"approve"] isEqualToString:@"2"]) {///未认证
+            MMPopupItemHandler block = ^(NSInteger index){
+                // NSLog(@"clickd %@ button",@(index));
+                if (index == 0) {
+                    
+                    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+                    VC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:VC animated:YES];
+                }
+            };
+            NSArray *items = @[MMItemMake(@"去认证", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您还未通过商户认证，请先提交认证申请!" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+        }
+        
+    }
+}
+
+
+
+#pragma mark =============== 加入购物车点击事件
+
+
+-(void)cartBtnActionWithProductId:(NSInteger)productId{
+    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    if ([user valueForKey:@"isLoginState"]) {
+        [GlobalHelper shareInstance].isLoginState = [user valueForKey:@"isLoginState"];
+    }
+    if ([[GlobalHelper shareInstance].isLoginState isEqualToString:@"1"]){
+        
+        if ([[user valueForKey:@"approve"] isEqualToString:@"0"]) {///认证未通过
+            MMPopupItemHandler block = ^(NSInteger index){
+                // NSLog(@"clickd %@ button",@(index));
+                if (index == 0) {
+                    NSString *str = [NSString stringWithFormat:@"tel:%@",@"4001106111"];
+                    dispatch_async(dispatch_get_main_queue(), ^(){
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                    });
+                }
+            };
+            NSArray *items = @[MMItemMake(@"联系客服", MMItemTypeNormal, block) , MMItemMake(@"再等等", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您的认证申请还未通过，请耐心等待！\n客服热线：4001106111" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+            
+        }else  if ([[user valueForKey:@"approve"] isEqualToString:@"2"]) {///未认证
+            MMPopupItemHandler block = ^(NSInteger index){
+                if (index == 0) {
+                    
+                    ShopCertificationViewController *VC = [ShopCertificationViewController new];
+                    VC.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:VC animated:YES];
+                }
+            };
+            NSArray *items = @[MMItemMake(@"去认证", MMItemTypeNormal, block)];
+            MMMyCustomView *alertView =  [[MMMyCustomView alloc] initWithTitle:@"认证提示" detail:@"您还未通过商户认证，请先提交认证申请!" items:items];
+            
+            alertView.attachedView.mm_dimBackgroundBlurEnabled = NO;
+            
+            alertView.attachedView.mm_dimBackgroundBlurEffectStyle = UIBlurEffectStyleDark;
+            
+            [alertView show];
+            
+            
+        }else if ([[user valueForKey:@"approve"] isEqualToString:@"1"]){
+            [self addCartPostDataWithProductId:productId];
+
+        }
+        
+    }else{
+        LoginViewController *VC = [LoginViewController new];
+        VC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:VC animated:YES];
+        
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

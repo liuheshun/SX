@@ -26,7 +26,7 @@
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     
-    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {//商户
+    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {//商户已认证
         if ([model.priceTypes isEqualToString:@"WEIGHT"]) {
             if (model.discountPrice == -1) {///只显示原价
                 
@@ -37,10 +37,6 @@
                 [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.unitPrice/100] forState:0];
                 [self.oldPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元/kg",(float)model.costPrice/100] forState:0];
             }
-            
-            
-            
-            
             
         }else{
             
@@ -72,18 +68,18 @@
         
         
         
-    }else{//个人
+    }else{//商户未认证
         
         
         if (model.discountPrice == -1) {///只显示原价
             
-            [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元" , (float)model.costPrice/100] forState:0];
+            [self.newsPriceBtn setTitle:@"查看价格" forState:0];
             [self.oldPriceBtn setTitle:@"" forState:0];
 
         }else{
             
-            [self.newsPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元" , (float)model.unitPrice/100] forState:0];
-            [self.oldPriceBtn setTitle:[NSString stringWithFormat:@"%.2f元" , (float)model.costPrice/100] forState:0];
+            [self.newsPriceBtn setTitle:@"查看价格" forState:0];
+            [self.oldPriceBtn setTitle:@"原价" forState:0];
             
         }
         
@@ -92,7 +88,7 @@
         
         
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newsPriceBtn.titleLabel.text];
-        NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f元" ,(float)model.unitPrice/100]];
+        NSRange range1 = [[str string] rangeOfString:self.newsPriceBtn.titleLabel.text];
         [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
         
         

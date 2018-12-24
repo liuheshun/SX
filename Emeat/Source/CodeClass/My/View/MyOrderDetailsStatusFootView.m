@@ -325,7 +325,7 @@
     self.sendPricesLab.text = @"配送费";
     self.sendPricesCount.text = [NSString stringWithFormat:@"¥ %ld" ,model.postage];
     self.selicePricesLab.text = @"加工耗材费";
-    self.selicePricesCount.text = [NSString stringWithFormat:@"¥ %@" ,@((CGFloat)[model.servicePrice integerValue]/100)];
+    self.selicePricesCount.text = [NSString stringWithFormat:@"¥ %.2f" ,(CGFloat)[model.servicePrice integerValue]/100];
     self.cardPricePlaceholderLab.text = @"卡券抵扣";
     
 //     self.cardPricesLab.text =[NSString stringWithFormat:@"¥ %.2f" , (CGFloat)model.amount/100];
