@@ -58,7 +58,7 @@ static NSString * const amapServiceKey = @"e18a4fcdbab49ef870d1d5700a033163";
     if ([user valueForKey:@"server"]) {
         
     }else{
-        [user setValue:@"http://beta.cyberfresh.cn" forKey:@"server"];
+        [user setValue:@"http://test.cyberfresh.cn" forKey:@"server"];
     }
     
 #else
