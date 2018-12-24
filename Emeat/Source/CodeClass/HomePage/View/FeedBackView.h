@@ -15,7 +15,9 @@
 @property (nonatomic,strong) UITextView *textView;
 @property (nonatomic,strong) UIButton *submitBtn;
 @property (nonatomic,strong) UIButton *cancelBtn;
+@property (nonatomic,strong) UILabel *residueLabel;// 输入文本时剩余字数
 
+@property (nonatomic,strong) NSString *conmmentString;
 
 
 

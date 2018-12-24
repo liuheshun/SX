@@ -96,6 +96,15 @@
     [collcell SetCollCellData:HModel];
     [collcell.joinCartBtn addTarget:self action:@selector(joinCartBtnAction:) forControlEvents:1];
     collcell.joinCartBtn.tag = indexPath.row;
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    
+    if ([[user valueForKey:@"approve"] isEqualToString:@"1"]) {//商户已认证
+        
+    }else{
+        [collcell.newsPriceBtn addTarget:self action:@selector(newsPriceBtn:) forControlEvents:1];
+        collcell.newsPriceBtn.tag = indexPath.row;
+
+    }
     collcell.backgroundColor = [UIColor whiteColor];
     
     return collcell;
@@ -150,12 +159,20 @@
     self.HomeArray = homeArray;
 }
 
+#pragma mark ======查看价格
 
+-(void)newsPriceBtn:(UIButton*)btn{
 
-
+    DLog(@"价格查看");
+    if ([self respondsToSelector:@selector(checkPricesBlock)]) {
+        self.checkPricesBlock(btn.tag);
+    }
+    
+}
+#pragma mark=======加入购物车
 
 -(void)joinCartBtnAction:(UIButton*)btn{
-    if ([self respondsToSelector:@selector(joinCartBtnAction:)]) {
+    if ([self respondsToSelector:@selector(clickIndexBlock)]) {
         self.clickIndexBlock(btn.tag);
     }
     

@@ -11,40 +11,13 @@
 @implementation FeedBackView
 
 
-//- (instancetype)init
-//{
-//    if (self = [super init]) {
-////        //点击半透明背景使界面自动消失
-////        [MMPopupWindow sharedWindow].touchWildToHide = YES;
-////        //设置类型
-////        self.type = MMPopupTypeCustom;
-////
-//        //设置尺寸,self只需设置宽高,会根据类型来确定在屏幕中的位置
-//#//请使用Masonry相关方法来设置宽高，否则会有问题
-//        [self mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.width.mas_equalTo(315*kScale);
-//            make.height.mas_equalTo(250*kScale);
-//            make.centerX.equalTo(self);
-//            make.centerY.equalTo(self);
-//        }];
-//        self.backgroundColor = [UIColor whiteColor];
-//        self.layer.cornerRadius = 10;
-//        self.layer.masksToBounds = YES;
-//        //使用[self addSubview:subview];来添加其他控件
-//        [self addSubview:self.titleLabBtn];
-//        [self addSubview:self.textView];
-//        [self addSubview:self.submitBtn];
-//        [self addSubview:self.cancelBtn];
-//        [self setMainFrame];
-//    }
-//    return self;
-//}
 
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
         [self addSubview:self.titleLabBtn];
         [self addSubview:self.textView];
+        [self.textView addSubview:self.residueLabel];
         [self addSubview:self.submitBtn];
         [self addSubview:self.cancelBtn];
         [self setMainFrame];
@@ -64,6 +37,14 @@
         make.right.equalTo(self.mas_right).with.offset(-15*kScale);
         make.top.equalTo(self.titleLabBtn.mas_bottom).with.offset(0);
         make.height.equalTo(@(110*kScale));
+    }];
+    
+    
+    [self.residueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).with.offset(-23*kScale);
+        make.top.equalTo(self.mas_top).with.offset(147*kScale);
+        make.width.equalTo(@(60*kScale));
+        make.height.equalTo(@(15*kScale));
     }];
     
     [self.submitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -104,6 +85,26 @@
 }
 
 
+
+-(UILabel *)residueLabel{
+    if (!_residueLabel) {
+        
+        //多余的一步不需要的可以不写  计算textview的输入字数
+        _residueLabel = [[UILabel alloc] init];
+        _residueLabel.backgroundColor = [UIColor clearColor];
+        _residueLabel.font = [UIFont fontWithName:@"Arial" size:12.0f*kScale];
+        _residueLabel.text =[NSString stringWithFormat:@"140/140"];
+        _residueLabel.textColor = [[UIColor grayColor]colorWithAlphaComponent:0.5];
+        _residueLabel.textAlignment = NSTextAlignmentRight;
+        
+        
+    }
+    return _residueLabel;
+}
+
+
+
+
 -(UIButton *)submitBtn{
     if (_submitBtn == nil) {
         _submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -138,8 +139,16 @@
     
         self.submitBtn.userInteractionEnabled = YES;
         _submitBtn.backgroundColor = RGB(231, 35, 35, 1);
-
     }
+ 
+    //计算剩余字数   不需要的也可不写
+    NSString *nsTextCotent = textView.text;
+    NSInteger existTextNum = [nsTextCotent length];
+    NSInteger remainTextNum = 140 - existTextNum;
+    self.residueLabel.text = [NSString stringWithFormat:@"%ld/140",remainTextNum];
+    self.conmmentString = textView.text;
+    
+    
 }
 
 
@@ -150,6 +159,56 @@
         
     }];
 }
+
+
+
+
+
+
+
+
+//设置超出最大字数（140字）即不可输入 也是textview的代理方法
+-(BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range
+replacementText:(NSString*)text
+{
+    NSString *str = [NSString stringWithFormat:@"%@%@", textView.text, text];
+    
+    if (str.length > 140)
+    {
+        NSRange rangeIndex = [str rangeOfComposedCharacterSequenceAtIndex:140];
+        
+        if (rangeIndex.length == 1)//字数超限
+        {
+            textView.text = [str substringToIndex:140];
+            //这里重新统计下字数，字数超限，我发现就不走textViewDidChange方法了，你若不统计字数，忽略这行
+            self.residueLabel.text = [NSString stringWithFormat:@"%lu/%d", 140-(unsigned long)textView.text.length, 140];
+        }else{
+            NSRange rangeRange = [str rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 140)];
+            textView.text = [str substringWithRange:rangeRange];
+        }
+        return NO;
+    }
+    
+    
+    if ([text isEqualToString:@"\n"]) {//这里"\n"对应的是键盘的 return 回收键盘之用
+        
+        [textView resignFirstResponder];
+        
+        return YES;
+    }
+    
+    if (range.location >= 140){
+        
+        
+        return  NO;
+    }else{
+        return YES;
+    }
+    
+}
+
+
+
 
 
 

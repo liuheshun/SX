@@ -67,11 +67,11 @@
         make.left.equalTo(self.newspriceLab.mas_right).with.offset(10*kScale);
 
     }];
-    
+    UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 5.5*kScale, [GetWidthAndHeightOfString getWidthForText:self.oldPricesLab height:12.0f*kScale], 1)];
+
     if (model.discountPrice == -1) {///只显示原价
-        
+        [lineView removeFromSuperview];
     }else{
-        UIView*lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 5.5*kScale, [GetWidthAndHeightOfString getWidthForText:self.oldPricesLab height:12.0f*kScale], 1)];
         lineView.backgroundColor = RGB(136, 136, 136, 1);
         [self.oldPricesLab addSubview:lineView];
         

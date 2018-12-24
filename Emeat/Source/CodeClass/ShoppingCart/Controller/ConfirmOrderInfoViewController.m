@@ -300,6 +300,14 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth, 10*kScale)];
     view.backgroundColor = [UIColor whiteColor];
     
+    if (self.orderListMarray.count != 0) {
+        ShoppingCartModel *model = [self.orderListMarray firstObject];
+        model.slicePrices = self.slicePrices;
+        [self.bottomView.rightBottomBtn setTitle:@"确认订单" forState:0];
+        [self.bottomView.leftBottomBtn setTitle:[NSString stringWithFormat:@"需支付:¥ %@" ,model.payment] forState:0];
+    }
+    
+    
     return view;
 }
 
@@ -310,11 +318,11 @@
      if (indexPath.section == 4){
         ///具体商品
         ConfirmOrderInfoTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:@"orderInfo_cell1"];
-        if (cell1 == nil) {
+       // if (cell1 == nil) {
             cell1 = [[ConfirmOrderInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"orderInfo_cell1"];
             
             [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone]; //取消选中的
-        }
+        //}
          if (self.orderListMarray.count != 0) {
              ShoppingCartModel *model = self.orderListMarray[indexPath.row];
              [cell1 configWithShoppingModel:model];
@@ -388,16 +396,9 @@
     CardCenterVouchersViewController *VC = [CardCenterVouchersViewController new];
     VC.isFromCardCenter = @"0";
     ShoppingCartModel *model = [self.orderListMarray firstObject];
-    
     VC.businessType = model.businessType;
     [self.navigationController pushViewController:VC animated:YES];
-//
-//    VC.selectCardPrice = ^(NSString *selectCardString) {
-//
-//
-//        [self getOrderInfoDataServiceType:self.serviceType TicketId:selectCardString];
-//
-//    };
+
     
 }
 
