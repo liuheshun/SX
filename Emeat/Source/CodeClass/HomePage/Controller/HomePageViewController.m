@@ -578,7 +578,7 @@
         if ([returnData[@"status"] integerValue] == 200) {
             [self.segmentTitleMarray removeAllObjects];
             ///初始数据
-            NSArray *titleArray = @[@{@"classifyName":@"经常买"} ,@{@"classifyName":@"大家都在买"} ,@{@"classifyName":@"赛鲜精选"}];
+            NSArray *titleArray = @[@{@"classifyName":@"经常买"} ,@{@"classifyName":@"赛鲜精选"} ,@{@"classifyName":@"大家都在买"}];
             for (NSDictionary *dic in titleArray) {
                 HomePageModel *model = [HomePageModel yy_modelWithJSON:dic];
                 [self.segmentTitleMarray addObject:model];

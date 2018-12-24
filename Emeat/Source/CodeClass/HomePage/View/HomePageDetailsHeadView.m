@@ -22,18 +22,7 @@
         [self addSubview:self.weightLab];
         [self addSubview:self.noticeBtn];
         [self addSubview:self.lineView];
-        //[self addSubview:self.goodsDetailsBtn];
-        
-        //[self addSubview:self.pingjiaDetailsBtn];
-        //[self addSubview:self.lineleftView];
-        //[self addSubview:self.lineRightView];
-//        [self addSubview:self.countryLab];
-//        [self addSubview:self.partLab];
-//        [self addSubview:self.standardsLab];
-//        [self addSubview:self.breedLab];
-//        [self addSubview:self.environmentLab];
-//        [self addSubview:self.brandLab];
-//
+       
         [self setMainViewFrame];
     }
     return self;
@@ -123,8 +112,7 @@
         
             
         [self.goodsDetailsBtn setTitle:@"商品详情" forState:0];
-        self.weightLab.text =[NSString stringWithFormat:@"非标商品默认按该规格下最大重量: %@计价后返差",model.size2] ;
-
+        self.weightLab.text =[NSString stringWithFormat:@"非标商品默认按该规格下最大重量: %@计价后返差",model.size2];
     }else{///C端商品
         ///个人专区
         if (model.discountPrice == -1) {///只显示原价
@@ -164,20 +152,6 @@
     }
     
 
-//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.newspriceBtnLab.titleLabel.text];
-//    NSRange range1 = [[str string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.unitPrice/100]];
-//    [str addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range1];
-//
-//    [self.newspriceBtnLab setAttributedTitle:str forState:UIControlStateNormal];
-
-//
-//    NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:self.oldspriceBtnLab.titleLabel.text];
-//    NSRange range2 = [[str2 string] rangeOfString:[NSString stringWithFormat:@"%.2f" ,(float)model.costPrice/100]];
-//    [str2 addAttribute:NSForegroundColorAttributeName value:RGB(236, 31, 35, 1) range:range2];
-//
-//    [self.oldspriceBtnLab setAttributedTitle:str2 forState:UIControlStateNormal];
-    
-    
     ///
     [self.newspriceBtnLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@([self getOldPricesWidthText:self.newspriceBtnLab heights:20*kScale fontSizes:17*kScale]));
@@ -205,13 +179,27 @@
     
     
     CGFloat wPrice =   [GetWidthAndHeightOfString getWidthForText:self.weightLab height:20*kScale] +5*kScale;
+    
+    if (wPrice >330) {
+        wPrice = 330;
+        
+        [self.weightLab mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(wPrice));
+            make.height.equalTo(@(40*kScale));
+            
+        }];
+        [self.noticeBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.moreSpecificationsBtn.mas_bottom).with.offset(13*kScale);
+        }];
+    }else{
+    
     [self.weightLab mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(wPrice));
+        make.height.equalTo(@(20*kScale));
+
     }];
     
-    
-   
-    
+    }
     
     
     //[self.pingjiaDetailsBtn setTitle:@"评价详情" forState:0];
@@ -377,38 +365,11 @@
         btn.backgroundColor = [UIColor whiteColor];
         [btn addTarget:self action:@selector(moreSpecificationsBtnAction:) forControlEvents:1];
 
-//        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 3*kScale, WIDTH(btn), HEIGHT(btn)/2-3*kScale)];
-//        [btn addSubview:label1];
-//
-//        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(0, HEIGHT(btn)/2, WIDTH(btn), HEIGHT(btn)/2)];
-//        [btn addSubview:label2];
-//        label1.font = [UIFont systemFontOfSize:10.0f*kScale];
-//        label2.font = [UIFont systemFontOfSize:10.0f*kScale];
-//        label1.textAlignment = NSTextAlignmentCenter;
-//        label2.textAlignment = NSTextAlignmentCenter;
-//        label1.textColor =  RGB(136, 136, 136, 1);
-//        label2.textColor =  RGB(136, 136, 136, 1);
         btn.layer.borderColor = RGB(191, 191, 191, 1).CGColor;
         btn.layer.borderWidth = 1;
-        //btn.titleLabel.numberOfLines = 0;
-        
-        
-//        HomePageModel *model = [GlobalHelper shareInstance].specsListMarray[i];
-        //3.分隔字符串
-        //NSString *string = model.specs;
        
         [btn setTitleColor:RGB(136, 136, 136, 1) forState:0];
         btn.titleLabel.font = [UIFont systemFontOfSize:11.0f*kScale];
-//        if ([model.isMeal isEqualToString:@"1"]) {
-//            label1.text = @"组合";
-//            label2.text = @"套餐";
-//
-//        }else{
-//            NSArray *array = [string componentsSeparatedByString:@"/"]; //从字符A中分隔成2个元素的数组
-//            label1.text =[NSString stringWithFormat:@"%@/" ,[array firstObject]];
-//            label2.text = [NSString stringWithFormat:@"%@" ,[array lastObject]];
-      //  }
-       
        
         if (model.commodityId == [[GlobalHelper shareInstance].homePageDetailsId integerValue]) {
             btn.userInteractionEnabled = NO;
@@ -453,91 +414,7 @@
         make.height.equalTo(@(10*kScale));
 
     }];
-    
-//    [self.goodsDetailsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self);
-//        make.top.equalTo(self.lineView.mas_bottom).with.offset(0);
-//        //make.top.equalTo(self.weightLab.mas_bottom).with.offset(25);
-//       // make.width.equalTo(@(kWidth/2));
-//        make.width.equalTo(@(kWidth));
-//
-//        make.height.equalTo(@(45*kScale));
-//    }];
-    
-//    [self.pingjiaDetailsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.goodsDetailsBtn.mas_right).with.offset(0);
-//        make.top.equalTo(self.lineView.mas_bottom).with.offset(0);
-//        make.width.equalTo(@(kWidth/2));
-//        make.height.equalTo(@45);
-//    }];
-//
-//    [self.lineleftView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self);
-//        make.top.equalTo(self.goodsDetailsBtn.mas_bottom).with.offset(0);
-//        make.width.equalTo(@(kWidth/2));
-//        make.height.equalTo(@2);
-//        
-//    }];
-//    
-//    [self.lineRightView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(@(kWidth/2));
-//        make.top.equalTo(self.goodsDetailsBtn.mas_bottom).with.offset(0);
-//        make.width.equalTo(@(kWidth/2));
-//        make.height.equalTo(@2);
-//        
-//    }];
-    
-//    [self.speDescLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.mas_left).with.offset(15);
-//        make.top.equalTo(self.goodsDetailsBtn.mas_bottom).with.offset(10);
-//        make.width.equalTo(@50);
-//        make.height.equalTo(@12);
-//    }];
-    
-//    [self.countryLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.mas_left).with.offset(15*kScale);
-//        make.top.equalTo(self.goodsDetailsBtn.mas_bottom).with.offset(10*kScale);
-//        make.width.equalTo(@((kWidth/2-15)*kScale));
-//        make.height.equalTo(@(12*kScale));
-//    }];
-//    
-//    [self.partLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
-//        make.top.equalTo(self.countryLab);
-//        make.width.equalTo(@((kWidth/2-15)*kScale));
-//        make.height.equalTo(@(12*kScale));
-//    }];
-//    
-//    
-//    [self.standardsLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.mas_left).with.offset(15*kScale);
-//        make.top.equalTo(self.countryLab.mas_bottom).with.offset(15*kScale);
-//        make.width.equalTo(@((kWidth/2-15)*kScale));
-//        make.height.equalTo(@(12*kScale));
-//    }];
-//    
-//    [self.breedLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
-//        make.top.equalTo(self.partLab.mas_bottom).with.offset(15*kScale);
-//        make.width.equalTo(@((kWidth/2-15)*kScale));
-//        make.height.equalTo(@(12*kScale));
-//    }];
-//    
-//    
-//    [self.environmentLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.mas_left).with.offset(15*kScale);
-//        make.top.equalTo(self.standardsLab.mas_bottom).with.offset(15*kScale);
-//        make.width.equalTo(@((kWidth/2-15)*kScale));
-//        make.height.equalTo(@(12*kScale));
-//    }];
-//    
-//    [self.brandLab mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.mas_right).with.offset(-15*kScale);
-//        make.top.equalTo(self.breedLab.mas_bottom).with.offset(15*kScale);
-//        make.width.equalTo(@((kWidth/2-15)*kScale));
-//        make.height.equalTo(@(12*kScale));
-//    }];
-//    
+ 
 }
 
 
@@ -588,7 +465,8 @@
         _weightLab.font = [UIFont systemFontOfSize:12.0f*kScale];
         _weightLab.textColor = RGB(236 , 32, 35, 1);
         _weightLab.backgroundColor = RGB(251, 210, 211, 1);
-        _weightLab.textAlignment = NSTextAlignmentCenter;
+        _weightLab.textAlignment = NSTextAlignmentLeft;
+        _weightLab.numberOfLines = 0;
     }
     return _weightLab;
 }

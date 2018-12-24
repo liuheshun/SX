@@ -189,14 +189,14 @@
     if (NULL == self.searchResultController.parentViewController) {
         [self.searchBar becomeFirstResponder];
     } else if (YES == self.showKeyboardWhenReturnSearchResult) {
-        [self.searchBar becomeFirstResponder];
+        [self.searchBar resignFirstResponder];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     if (self.cancelButtonWidth == 0) { // Just adapt iOS 11.2
         [self viewDidLayoutSubviews];
     }
@@ -209,6 +209,7 @@
             self.navigationController.navigationBar.barTintColor = PYSEARCH_COLOR(249, 249, 249);
         }
     }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated

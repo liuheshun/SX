@@ -198,12 +198,12 @@
             
             if ([location.administrativeArea isEqualToString:location.city]) {//判断是否为直辖市
                 NSString *s = [NSString stringWithFormat:@"%@%@" ,location.city,location.subLocality];
-                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"null"]];//该方法是去掉指定符号
                  weakSelf.addNewAddressView.textFieldCity.text = s;
                 weakSelf.receiverProvince = location.city;
             }else{
                 NSString *s = [NSString stringWithFormat:@"%@%@%@" ,location.administrativeArea ,location.city,location.subLocality];
-                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+                s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"null"]];//该方法是去掉指定符号
             weakSelf.addNewAddressView.textFieldCity.text = s;
                 
                 weakSelf.receiverProvince = location.administrativeArea;
@@ -213,10 +213,10 @@
             NSString *s = [NSString stringWithFormat:@"%@" ,location.name];
 
 
-            s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];//该方法是去掉指定符号
+            s = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"null"]];//该方法是去掉指定符号
             weakSelf.addNewAddressView.textFieldSubstreet.text = s;
             
-            weakSelf.receiverProvince = [[NSString stringWithFormat:@"%@,%@" ,weakSelf.addNewAddressView.textFieldCity.text ,weakSelf.addNewAddressView.textFieldSubstreet.text ] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"(null)"]];
+            weakSelf.receiverProvince = [[NSString stringWithFormat:@"%@,%@" ,weakSelf.addNewAddressView.textFieldCity.text ,weakSelf.addNewAddressView.textFieldSubstreet.text ] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"null"]];
            
         };
         [weakSelf.navigationController pushViewController:VC animated:YES];

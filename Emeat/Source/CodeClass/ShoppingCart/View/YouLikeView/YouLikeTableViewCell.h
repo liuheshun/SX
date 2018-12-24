@@ -42,6 +42,9 @@ typedef void(^collectionClickIndexBlock)(NSInteger index);
 
 @property (nonatomic, copy) collectionClickIndexBlock clickIndexBlock;
 
+@property (nonatomic, copy) collectionClickIndexBlock checkPricesBlock;
+
+
 @property (nonatomic,assign) CGFloat collViewHeight;
 
 

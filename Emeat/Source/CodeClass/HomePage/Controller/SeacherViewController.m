@@ -41,9 +41,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBarHidden = NO;
-//    [self setNavBar ];
-//    [self showNavBarLeftItem];
-//    self.navItem.title = @"搜索结果";
+
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -523,7 +522,7 @@
             [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/5*3, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
                 
-                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[3];
+                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[2];
                 [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
             }];
             [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];
