@@ -22,7 +22,6 @@
 -(UIButton*)leftBottomBtn{
     if (!_leftBottomBtn) {
         _leftBottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _leftBottomBtn.frame = CGRectMake(0, 0, kWidth/2, HEIGHT(self));
         [_leftBottomBtn setTitleColor:RGB(236, 31, 35, 1) forState:0];
         _leftBottomBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
     }
@@ -32,10 +31,10 @@
 -(UIButton*)rightBottomBtn{
     if (!_rightBottomBtn) {
         _rightBottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _rightBottomBtn.frame = CGRectMake(MaxX(self.leftBottomBtn), 0, kWidth/2, HEIGHT(self));
         [_rightBottomBtn setTitleColor:[UIColor whiteColor] forState:0];
         [_rightBottomBtn setBackgroundColor:RGB(236, 31, 35, 1)];
         _rightBottomBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f*kScale];
+        [_rightBottomBtn setTitle:@"确认订单" forState:0];
 
     }
     return _rightBottomBtn;

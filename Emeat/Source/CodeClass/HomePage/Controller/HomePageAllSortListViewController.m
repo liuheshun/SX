@@ -178,15 +178,15 @@
             [self requestOftenListData:totalPage BaseURLString:self.baseURLString totalPage:totalPage];
     
         }else if (self.titleIndexs == 1){
-            ///大家都在买
-            self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/commodity/get_other_buy?mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
-            [self requestALLPeopleDataBaseURLString:self.baseURLString];
-    
-        }else if (self.titleIndexs == 2){
             ///赛鲜精选
             self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
             [self requesSaiXianDataBaseURLString:self.baseURLString];
+            ///大家都在买
     
+        }else if (self.titleIndexs == 2){
+           
+            self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/commodity/get_other_buy?mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+            [self requestALLPeopleDataBaseURLString:self.baseURLString];
         }else if (self.titleIndexs >=3){
             ///一级分类请求数据
             
@@ -935,7 +935,7 @@
     if (tableView == self.leftTableView) {
         return 0.001*kScale;
     }
-    return 100*kScale;
+    return 200*kScale;
     }
 }
 
@@ -968,23 +968,30 @@
             view.backgroundColor = RGB(238, 238, 238, 1);
             return view;
         }
-       
+        CGFloat postHeight=0;
+        if (self.dataArray.count == 0) {
+            postHeight = 200*kScale;
+        }else{
+            postHeight = 100*kScale;
+        }
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kWidth-85*kScale, 100*kScale)];
         view.backgroundColor = [UIColor whiteColor];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(0, 0, kWidth-85*kScale, 100*kScale);
+        btn.frame = CGRectMake(0, 0, kWidth-85*kScale, postHeight);
         btn.backgroundColor = [UIColor whiteColor];
         [btn setTitle:@"  没有商品啦~告诉我你想买点啥" forState:0];
         [btn setTitleColor:RGB(136, 136, 136, 1) forState:0];
         btn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
         [btn setImage:[UIImage imageNamed:@"bianji"] forState:0];
         [btn addTarget:self action:@selector(postfeedbackAction) forControlEvents:1];
-        if (self.dataArray.count != 0) {
-            [view addSubview:btn];
+        [view addSubview:btn];
 
-        }else{
-            [btn removeFromSuperview];
-        }
+//        if (self.dataArray.count != 0) {
+//            [view addSubview:btn];
+//
+//        }else{
+//            [btn removeFromSuperview];
+//        }
         return view;
     
     }

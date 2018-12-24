@@ -1296,7 +1296,6 @@
 				16CFD7221FB2A6F20015F2C1 /* CodeClass */,
 				16CFD72B1FB2A7E90015F2C1 /* Macro */,
 				16CFD7231FB2A6F20015F2C1 /* EnNetWork */,
-				16CFD7241FB2A6F20015F2C1 /* Global */,
 				16CFD7251FB2A6F20015F2C1 /* Helper */,
 				16CFD7261FB2A6F20015F2C1 /* Resources */,
 			);
@@ -1335,6 +1334,7 @@
 			path = EnNetWork;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
 		16CFD7241FB2A6F20015F2C1 /* Global */ = {
 			isa = PBXGroup;
 			children = (
@@ -1344,6 +1344,8 @@
 			path = Global;
 			sourceTree = "<group>";
 		};
+=======
+>>>>>>> V2.3
 		16CFD7251FB2A6F20015F2C1 /* Helper */ = {
 			isa = PBXGroup;
 			children = (

@@ -216,15 +216,16 @@
         self.isLoading = 2;
         
     }else if ([s integerValue] == 1){
-        ///大家都在买
-        
-         self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/commodity/get_other_buy?mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
-        [self requestALLPeopleDataBaseURLString:self.baseURLString];
-    
-    }else if ([s integerValue] == 2){
         ///赛鲜精选
         self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/guess/guesslike?mtype=%@&promotionId=2&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
         [self requesSaiXianDataBaseURLString:self.baseURLString];
+       
+    
+    }else if ([s integerValue] == 2){
+        ///大家都在买
+        
+        self.baseURLString = [NSString stringWithFormat:@"%@/m/mobile/commodity/get_other_buy?mtype=%@&appVersionNumber=%@&user=%@&showType=SOGO" , baseUrl,mTypeIOS ,[user valueForKey:@"appVersionNumber"] ,[user valueForKey:@"user"]];
+        [self requestALLPeopleDataBaseURLString:self.baseURLString];
    
     }else if ([s integerValue] >=3){
         ///一级分类请求数据
@@ -635,6 +636,9 @@
         if (tableView == self.secondTableView) {
             return self.secondaryMarray.count;
         }
+        if (self.dataArray.count == 0) {
+            return 1;
+        }
         return self.dataArray.count;
     }else{
         return self.dataArray.count;
@@ -645,7 +649,7 @@
         if (tableView == self.secondTableView) {
             return 41*kScale;
         }
-        if (indexPath.row == self.dataArray.count-1) {
+        if (indexPath.row == self.dataArray.count-1 || self.dataArray.count == 0) {
             return 200*kScale;
         }
         return 100*kScale;
@@ -788,11 +792,11 @@
         NSString *CellIdentifier = [NSString stringWithFormat:@"right_cell_%ld" ,indexPath.row];//以indexPath来唯一确定cell
         
         HomePageSortListTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell1 == nil) {
+       // if (cell1 == nil) {
             cell1 = [[HomePageSortListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone];
             cell1.backgroundColor = [UIColor whiteColor];
-        }
+        //}
         
         cell1.cartBtn.tag = indexPath.row;
         [cell1.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];
@@ -829,6 +833,18 @@
                 [self.feedBackBtn addTarget:self action:@selector(postfeedbackAction) forControlEvents:1];
                 
             }
+        }else{
+            self.feedBackBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.feedBackBtn.frame = CGRectMake(0, 100*kScale, kWidth - 85*kScale, 100*kScale);
+            self.feedBackBtn.backgroundColor = [UIColor whiteColor];
+            [self.feedBackBtn setTitle:@"  没有商品啦~告诉我你想买点啥" forState:0];
+            [self.feedBackBtn setTitleColor:RGB(136, 136, 136, 1) forState:0];
+            self.feedBackBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f*kScale];
+            
+            [self.feedBackBtn setImage:[UIImage imageNamed:@"bianji"] forState:0];
+            [cell1 addSubview:self.feedBackBtn];
+            [self.feedBackBtn addTarget:self action:@selector(postfeedbackAction) forControlEvents:1];
+            
         }
        
         return cell1;
@@ -841,11 +857,11 @@
         NSString *CellIdentifier = [NSString stringWithFormat:@"sCellIdentifier_cell%ld" ,indexPath.row];//以indexPath来唯一确定cell
         
         HomePageTableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell1 == nil) {
+//        if (cell1 == nil) {
             cell1 = [[HomePageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             [cell1 setSelectionStyle:UITableViewCellSelectionStyleNone];
             cell1.backgroundColor = [UIColor whiteColor];
-        }
+        //}
         
         cell1.cartBtn.tag = indexPath.row;
         [cell1.cartBtn addTarget:self action:@selector(cartBtnAction:) forControlEvents:1];
@@ -1268,7 +1284,7 @@
             [[PurchaseCarAnimationTool shareTool]startAnimationandView:weakCell.mainImv andRect:imageViewRect andFinisnRect:CGPointMake(ScreenWidth/5*3, ScreenHeight-49) topView:self.view andFinishBlock:^(BOOL finish) {
                 
                 
-                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[3];
+                UIView *tabbarBtn = self.tabBarController.tabBar.subviews[2];
                 [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
             }];
             [[GlobalHelper shareInstance].addShoppingCartMarray addObject:model];

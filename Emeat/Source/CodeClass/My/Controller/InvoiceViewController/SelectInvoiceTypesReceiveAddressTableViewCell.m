@@ -53,8 +53,13 @@
     
     self.receiverTextField.text = model.invoiceReceiver;
     self.receiverPhoneNumTextField.text = model.invoiceReceiverPhone;
-    self.receiverAddressTextField.text =  model.invoiceReceiverAddress;
-    self.receiverDetailsAddressTextField.text =  model.invoiceReceiverDetailsAddress;   
+    
+    NSString *string = model.invoiceReceiverAddress;
+    
+    NSArray *array = [string componentsSeparatedByString:@","];
+    
+    self.receiverAddressTextField.text =  [array firstObject];
+    self.receiverDetailsAddressTextField.text = [array lastObject];   
     self.sendFreeTextField.enabled = NO;
     
     

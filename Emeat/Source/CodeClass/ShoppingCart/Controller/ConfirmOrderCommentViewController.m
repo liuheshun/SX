@@ -26,7 +26,7 @@
     [self.view addSubview: self.textView];
     [self.textView addSubview:self.placeHolderLabel];
     [self.textView addSubview:self.residueLabel];
-    
+    [self setmainFrame];
   
 }
 
@@ -51,9 +51,37 @@
 
 
 
+
+-(void)setmainFrame{
+    
+    [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view.mas_right).with.offset(-15*kScale);
+        make.left.equalTo(self.view.mas_left).with.offset(15*kScale);
+        
+        make.top.equalTo(self.view.mas_top).with.offset(kBarHeight+15*kScale);
+        make.height.equalTo(@(125*kScale));
+    }];
+    
+    [self.placeHolderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.textView.mas_right).with.offset(-10*kScale);
+        make.left.equalTo(self.textView.mas_left).with.offset(10*kScale);
+        make.top.equalTo(self.textView.mas_top).with.offset(8*kScale);
+        make.height.equalTo(@(15*kScale));
+    }];
+    
+    [self.residueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view.mas_right).with.offset(-25*kScale);
+        make.top.equalTo(self.view.mas_top).with.offset(110*kScale+kBarHeight+15*kScale);
+        make.height.equalTo(@(13*kScale));
+        make.width.equalTo(@(65*kScale));
+        
+    }];
+    
+}
+
 -(UITextView *)textView{
     if (!_textView) {
-        _textView = [[UITextView alloc] initWithFrame:CGRectMake(15, kBarHeight+15, kWidth-30, 120)]; //初始化大小并自动释放
+        _textView = [[UITextView alloc] init]; //初始化大小并自动释放
         
         _textView.textColor = [UIColor blackColor];//设置textview里面的字体颜色
         _textView.layer.borderColor = RGB(138, 138, 138, 1).CGColor;
@@ -81,7 +109,7 @@
 
 -(UILabel *)placeHolderLabel{
     if (!_placeHolderLabel) {
-        _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, 200, 20)];
+        _placeHolderLabel = [[UILabel alloc] init];
         _placeHolderLabel.numberOfLines = 0;
         _placeHolderLabel.font = [UIFont systemFontOfSize:12.0f];
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
@@ -104,7 +132,7 @@
     if (!_residueLabel) {
         
         //多余的一步不需要的可以不写  计算textview的输入字数
-        _residueLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(self.textView)-73, HEIGHT(self.textView)-30, 70, 30)];
+        _residueLabel = [[UILabel alloc] init];
         _residueLabel.backgroundColor = [UIColor clearColor];
         _residueLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
         _residueLabel.text =[NSString stringWithFormat:@"140/140"];
@@ -142,18 +170,40 @@
 -(BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range
 replacementText:(NSString*)text
 {
+    NSString *str = [NSString stringWithFormat:@"%@%@", textView.text, text];
+    
+    if (str.length > 140)
+    {
+        NSRange rangeIndex = [str rangeOfComposedCharacterSequenceAtIndex:140];
+        self.placeHolderLabel.text = @"";//这里给空
+        
+        if (rangeIndex.length == 1)//字数超限
+        {
+            textView.text = [str substringToIndex:140];
+            //这里重新统计下字数，字数超限，我发现就不走textViewDidChange方法了，你若不统计字数，忽略这行
+            self.residueLabel.text = [NSString stringWithFormat:@"%lu/%d", 140-(unsigned long)textView.text.length, 140];
+        }else{
+            NSRange rangeRange = [str rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 140)];
+            textView.text = [str substringWithRange:rangeRange];
+        }
+        return NO;
+    }
+    
+    
     if ([text isEqualToString:@"\n"]) {//这里"\n"对应的是键盘的 return 回收键盘之用
         
-            [textView resignFirstResponder];
+        [textView resignFirstResponder];
         
-            return YES;
-        }
+        return YES;
+    }
     
-        if (range.location >= 140){
-            return  NO;
-        }else{
-            return YES;
-        }
+    if (range.location >= 140){
+        
+        
+        return  NO;
+    }else{
+        return YES;
+    }
     
 }
 
